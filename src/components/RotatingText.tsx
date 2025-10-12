@@ -188,7 +188,7 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>(
         <span className="sr-only">{texts[currentTextIndex]}</span>
         <AnimatePresence mode={animatePresenceMode} initial={animatePresenceInitial}>
           <motion.span
-            key={currentTextIndex}
+            key={`${currentTextIndex}-${texts[currentTextIndex]}`}
             className={cn(splitBy === 'lines' ? 'flex flex-col w-full' : 'flex flex-wrap whitespace-pre-wrap relative')}
             layout
             aria-hidden="true"
