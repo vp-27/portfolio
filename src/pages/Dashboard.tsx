@@ -2,12 +2,11 @@ import { useState } from 'react'
 import TopNav from '../components/TopNav'
 import PortfolioHeader from '../components/PortfolioHeader'
 import PortfolioChart from '../components/PortfolioChart'
-import StockList from '../components/StockList'
+import AboutAndSkills from '../components/AboutAndSkills'
 import BuyingPower from '../components/BuyingPower'
 import BottomNav from '../components/BottomNav'
-import Lists from '../components/Lists'
 import PortfolioSections from '../components/PortfolioSections'
-import { mockPortfolio, mockStocks, mockChartData, mockSkillCategories } from '../data/mockData'
+import { mockPortfolio, mockChartData, mockSkillCategories } from '../data/mockData'
 
 export default function Dashboard() {
   const [timeRange, setTimeRange] = useState('1D')
@@ -50,7 +49,7 @@ export default function Dashboard() {
               <BuyingPower portfolio={mockPortfolio} />
               
               {/* Portfolio Sections - Hidden on mobile, shown on desktop in left column */}
-              <div className="hidden lg:block">
+              <div className="hidden lg:block px-4">
                 <PortfolioSections />
               </div>
             </div>
@@ -62,8 +61,7 @@ export default function Dashboard() {
                   <PortfolioSections />
                 </div>
                 
-                <StockList stocks={mockStocks} />
-                <Lists skillCategories={mockSkillCategories} />
+                <AboutAndSkills skillCategories={mockSkillCategories} />
               </div>
             </div>
           </div>

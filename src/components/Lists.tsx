@@ -38,18 +38,18 @@ export default function Lists({ skillCategories }: ListsProps) {
   return (
     <div className="mt-6">
       <div className="flex items-center justify-between px-4 mb-3">
-        <h2 className="text-lg font-medium">Skills</h2>
+        <h2 className="text-xl font-medium">Skills</h2>
         <button className="bg-transparent text-gray-400 hover:text-white transition-colors" aria-label="Add new skill category">
           <Plus className="w-5 h-5" />
         </button>
       </div>
       
-      <div>
-        {skillCategories.map((category) => {
+      <div className="bg-black rounded-lg border border-gray-900 overflow-hidden">
+        {skillCategories.map((category, index) => {
           const isExpanded = expandedLists.has(category.id)
           
           return (
-            <div key={category.id} className="border-b border-gray-900">
+            <div key={category.id} className={index !== skillCategories.length - 1 ? "border-b border-gray-900" : ""}>
               <button
                 onClick={() => toggleList(category.id)}
                 className="w-full flex items-center justify-between px-4 py-3 bg-transparent hover:bg-[#1A1A1A] transition-colors"
