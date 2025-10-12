@@ -6,7 +6,7 @@ import AboutAndSkills from '../components/AboutAndSkills'
 import BuyingPower from '../components/BuyingPower'
 import BottomNav from '../components/BottomNav'
 import PortfolioSections from '../components/PortfolioSections'
-import { mockPortfolio, mockChartData, mockSkillCategories } from '../data/mockData'
+import { mockPortfolio, mockChartData, mockSkillCategories, mockExperiences, mockProjects, mockEducation, mockCertifications } from '../data/mockData'
 
 export default function Dashboard() {
   const [timeRange, setTimeRange] = useState('1D')
@@ -50,7 +50,12 @@ export default function Dashboard() {
               
               {/* Portfolio Sections - Hidden on mobile, shown on desktop in left column */}
               <div className="hidden lg:block px-4">
-                <PortfolioSections />
+                <PortfolioSections 
+                  experiences={mockExperiences}
+                  projects={mockProjects}
+                  education={mockEducation}
+                  certifications={mockCertifications}
+                />
               </div>
             </div>
             
@@ -58,7 +63,12 @@ export default function Dashboard() {
               <div className="px-4 lg:px-0 lg:pt-4">
                 {/* Portfolio Sections - Shown on mobile, hidden on desktop */}
                 <div className="lg:hidden mb-6">
-                  <PortfolioSections />
+                  <PortfolioSections 
+                    experiences={mockExperiences}
+                    projects={mockProjects}
+                    education={mockEducation}
+                    certifications={mockCertifications}
+                  />
                 </div>
                 
                 <AboutAndSkills skillCategories={mockSkillCategories} />

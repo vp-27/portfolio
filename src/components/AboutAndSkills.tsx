@@ -15,10 +15,10 @@ interface AboutMeData {
 }
 
 const aboutData: AboutMeData = {
-  name: 'Your Name',
-  title: 'Full Stack Developer & Financial Analyst',
-  location: 'San Francisco, CA',
-  bio: 'Passionate developer with expertise in building scalable applications and analyzing financial markets. Focused on creating elegant solutions that bridge technology and finance.',
+  name: 'Vandan Patel',
+  title: 'Finance & Computer Science @ Rutgers Business School',
+  location: 'Secaucus, NJ',
+  bio: 'Finance and Computer Science student with experience in algorithmic trading, financial modeling, and full-stack development. Passionate about bridging quantitative finance with modern technology to build scalable solutions.',
 }
 
 // Emoji mapping for skill categories

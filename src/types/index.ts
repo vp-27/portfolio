@@ -40,3 +40,39 @@ export interface SkillCategory {
   icon: 'technical' | 'financial' | 'soft' | 'language' | 'tools'
   skills: Skill[]
 }
+
+export interface Experience {
+  id: string
+  company: string
+  position: string
+  location: string
+  startDate: string
+  endDate: string
+  bullets: string[]
+}
+
+export interface Project {
+  id: string
+  name: string
+  subtitle: string
+  duration: string
+  bullets: string[]
+  technologies?: string[]
+}
+
+export interface Education {
+  id: string
+  institution: string
+  degrees: string[]
+  location: string
+  graduationDate: string
+  gpa: string
+  honors: string[]
+}
+
+export interface Certification {
+  id: string
+  name: string
+  issuer: string
+  date?: string
+}
