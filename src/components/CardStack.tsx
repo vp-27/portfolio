@@ -21,9 +21,23 @@ export default function CardStack({ cards, onDismiss }: CardStackProps) {
   // Calculate position of About Me section
   useEffect(() => {
     const updatePosition = () => {
-      const aboutSection = document.querySelector('[data-section="about"]')
-      if (aboutSection) {
-        const rect = aboutSection.getBoundingClientRect()
+      // Find the visible About Me section (desktop or mobile)
+      const aboutSections = document.querySelectorAll('[data-section="about"]')
+      let visibleSection: Element | null = null
+      
+      // Find the visible one (not display:none or hidden by responsive classes)
+      for (let i = 0; i < aboutSections.length; i++) {
+        const section = aboutSections[i]
+        const rect = section.getBoundingClientRect()
+        // Check if element is visible (has dimensions)
+        if (rect.height > 0 && rect.width > 0) {
+          visibleSection = section
+          break
+        }
+      }
+      
+      if (visibleSection) {
+        const rect = visibleSection.getBoundingClientRect()
         setAboutMePosition({
           top: rect.top + window.scrollY,
           left: rect.left + window.scrollX,
@@ -126,7 +140,7 @@ export default function CardStack({ cards, onDismiss }: CardStackProps) {
   }
 
   return (
-    <div className="lg:hidden">
+    <div>
       <AnimatePresence>
         {cards.map((card, index) => {
           const style = getCardStyle(card, index)
