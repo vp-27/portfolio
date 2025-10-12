@@ -47,16 +47,15 @@ export default function CardStack({ cards, onDismiss }: CardStackProps) {
 
   // Calculate offset for stacked effect
   const getCardStyle = (card: StackedCard, index: number) => {
-    const offset = index * 12 // 12px offset per card
-    const scale = 1 - (index * 0.02) // Slightly scale down each card
-    const rotation = index * 0.5 // Very subtle rotation
+    const offset = index * 8 // 8px offset per card (reduced for tighter stack)
+    const scale = 1 - (index * 0.015) // Slightly scale down each card (reduced for subtler effect)
     
     return {
       top: aboutMePosition.top + offset,
       left: aboutMePosition.left,
       width: aboutMePosition.width || 'calc(100% - 32px)',
       scale,
-      rotate: `${rotation}deg`,
+      rotate: '0deg', // No rotation - stack straight down
       zIndex: 50 + card.order // Use card.order so most recent is on top
     }
   }
