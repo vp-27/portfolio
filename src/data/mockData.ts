@@ -1,5 +1,14 @@
 import type { Stock, PortfolioData, ChartDataPoint, Skill, SkillCategory, Experience, Project, Education, Certification } from '../types'
 
+// Helper function to format date from YYYY-MM to "Mon YYYY"
+const formatDate = (dateStr: string): string => {
+  const [year, month] = dateStr.split('-')
+  const date = new Date(parseInt(year), parseInt(month) - 1)
+  const monthName = date.toLocaleDateString('en-US', { month: 'short' })
+  return `${monthName} ${year}`
+}
+
+
 export const mockStocks: Stock[] = [
   {
     id: '1',
@@ -170,7 +179,7 @@ export const generateCareerTimelineData = (): ChartDataPoint[] => {
       const progress = j / steps
       const value = current.value + (next.value - current.value) * progress
       data.push({ 
-        time: current.date,
+        time: formatDate(current.date),
         value: value,
         label: j === 0 ? current.label : undefined
       })
@@ -180,7 +189,7 @@ export const generateCareerTimelineData = (): ChartDataPoint[] => {
   // Add final milestone
   const lastMilestone = milestones[milestones.length - 1]
   data.push({ 
-    time: lastMilestone.date,
+    time: formatDate(lastMilestone.date),
     value: lastMilestone.value,
     label: lastMilestone.label
   })
