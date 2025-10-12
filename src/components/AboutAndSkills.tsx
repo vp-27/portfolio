@@ -150,13 +150,16 @@ export default function AboutAndSkills({ skillCategories }: AboutAndSkillsProps)
                 <div key={category.id} className={index !== skillCategories.length - 1 ? "border-b border-gray-900" : ""}>
                   <button
                     onClick={() => toggleList(category.id)}
-                    className="w-full flex items-center justify-between px-4 py-3 bg-transparent hover:bg-[#1A1A1A] transition-colors"
+                    className="w-full flex items-center justify-between px-4 py-4 bg-transparent hover:bg-[#1A1A1A] transition-colors"
                   >
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center text-lg">
+                    <div className="flex items-center gap-4">
+                      <div className="w-16 h-16 bg-[#2D2D2D] rounded-2xl flex items-center justify-center text-3xl flex-shrink-0">
                         {skillEmojis[category.icon] || '📦'}
                       </div>
-                      <span className="text-white">{category.name}</span>
+                      <div className="flex flex-col items-start">
+                        <span className="text-white text-base font-normal">{category.name}</span>
+                        <span className="text-gray-500 text-sm">{category.skills.length} {category.skills.length === 1 ? 'item' : 'items'}</span>
+                      </div>
                     </div>
                     <div className="text-gray-400">
                       {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
