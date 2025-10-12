@@ -8,16 +8,18 @@ interface ExperienceCardProps {
 }
 
 export default function ExperienceCard({ experience, type }: ExperienceCardProps) {
+  const hasContent = experience && type
+
   const renderContent = () => {
-    if (!experience || !type) {
+    if (!hasContent) {
       return (
-        <div className="text-center py-8">
+        <div className="flex items-center justify-center h-full">
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="text-[#D4AF37] text-lg font-medium"
           >
-            Hover over chart to reveal experiences
+            Try hovering over the chart!
           </motion.p>
         </div>
       )
@@ -103,10 +105,25 @@ export default function ExperienceCard({ experience, type }: ExperienceCardProps
   }
 
   return (
-    <div className="bg-[#2A2A2A] rounded-[20px] p-6 shadow-lg border border-gray-800">
+    <motion.div 
+      className="bg-[#2A2A2A] rounded-lg shadow-lg border border-gray-800 overflow-hidden"
+      initial={{ height: 'auto', opacity: 1 }}
+      animate={{ 
+        height: hasContent ? 'auto' : '80px',
+        paddingTop: hasContent ? '24px' : '16px',
+        paddingBottom: hasContent ? '24px' : '16px',
+        paddingLeft: '24px',
+        paddingRight: '24px',
+        opacity: 1
+      }}
+      transition={{ 
+        duration: 0.4,
+        ease: [0.4, 0.0, 0.2, 1]
+      }}
+    >
       <AnimatePresence mode="wait">
         {renderContent()}
       </AnimatePresence>
-    </div>
+    </motion.div>
   )
 }
