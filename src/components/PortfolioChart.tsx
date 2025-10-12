@@ -5,10 +5,26 @@ interface PortfolioChartProps {
   data: ChartDataPoint[]
   isPositive: boolean
   onPointClick?: (point: ChartDataPoint) => void
+  onPointHover?: (label: string | null) => void
 }
 
-export default function PortfolioChart({ data, isPositive, onPointClick }: PortfolioChartProps) {
+export default function PortfolioChart({ data, isPositive, onPointClick, onPointHover }: PortfolioChartProps) {
   const strokeColor = isPositive ? '#00C805' : '#FF5000'
+
+  const handleMouseMove = (data: any) => {
+    if (data && data.activePayload && data.activePayload.length > 0) {
+      const point = data.activePayload[0].payload
+      if (point.label && onPointHover) {
+        onPointHover(point.label)
+      }
+    }
+  }
+
+  const handleMouseLeave = () => {
+    if (onPointHover) {
+      onPointHover(null)
+    }
+  }
 
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
@@ -60,6 +76,8 @@ export default function PortfolioChart({ data, isPositive, onPointClick }: Portf
           data={data} 
           margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
           onClick={handleClick}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
         >
           <defs>
             <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">

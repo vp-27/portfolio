@@ -12,6 +12,7 @@ import type { ChartDataPoint } from '../types'
 export default function Dashboard() {
   const [timeRange, setTimeRange] = useState('ALL')
   const [highlightedItem, setHighlightedItem] = useState<string | null>(null)
+  const [hoveredLabel, setHoveredLabel] = useState<string | null>(null)
 
   // Filter chart data based on selected time range
   const chartData = useMemo(() => {
@@ -79,12 +80,13 @@ export default function Dashboard() {
         <div className="max-w-7xl mx-auto">
           <div className="lg:grid lg:grid-cols-[1fr,400px] lg:gap-6">
             <div className="lg:px-4">
-              <PortfolioHeader portfolio={mockPortfolio} />
+              <PortfolioHeader portfolio={mockPortfolio} hoveredLabel={hoveredLabel} />
               <div className="px-4">
                 <PortfolioChart 
                   data={chartData} 
                   isPositive={mockPortfolio.todayReturn >= 0}
                   onPointClick={handleChartPointClick}
+                  onPointHover={setHoveredLabel}
                 />
               </div>
               <div className="px-4 py-2">
