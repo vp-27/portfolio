@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react'
-import { ChevronDown } from 'lucide-react'
 import RotatingText, { type RotatingTextRef } from './RotatingText'
 import type { PortfolioData } from '../types'
 
@@ -40,17 +39,6 @@ export default function PortfolioHeader({ portfolio, hoveredLabel }: PortfolioHe
 
   return (
     <div className="pt-4 pb-2 px-4 md:px-0">
-      {/* Account Type and Earn Button */}
-      <div className="flex items-center justify-between mb-4">
-        <button className="flex items-center gap-1 bg-transparent text-white hover:text-gray-300 transition-colors">
-          <span className="text-sm">Individual</span>
-          <ChevronDown className="w-4 h-4" />
-        </button>
-        <button className="px-3 py-1.5 bg-[#C4F000] text-black rounded-full text-xs font-medium hover:bg-[#b3e000] transition-colors">
-          Earn $5
-        </button>
-      </div>
-
       {/* Portfolio Value - Rotating Text Animation */}
       <div className="mb-2">
         <RotatingText
