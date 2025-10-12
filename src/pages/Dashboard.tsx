@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useEffect } from 'react'
+import { useState, useMemo, useRef } from 'react'
 import TopNav from '../components/TopNav'
 import PortfolioHeader from '../components/PortfolioHeader'
 import PortfolioChart from '../components/PortfolioChart'
@@ -6,10 +6,9 @@ import AboutAndSkills from '../components/AboutAndSkills'
 import BuyingPower from '../components/BuyingPower'
 import BottomNav from '../components/BottomNav'
 import PortfolioSections from '../components/PortfolioSections'
-import CardStack from '../components/CardStack'
+import ExperienceCard from '../components/ExperienceCard'
 import { mockPortfolio, filterTimelineData, mockSkillCategories, mockExperiences, mockProjects, mockEducation, mockCertifications } from '../data/mockData'
-import { useCardStack } from '../hooks/useCardStack'
-import type { ChartDataPoint } from '../types'
+import type { ChartDataPoint, Experience, Project } from '../types'
 
 export default function Dashboard() {
   const [timeRange, setTimeRange] = useState('ALL')
@@ -17,17 +16,10 @@ export default function Dashboard() {
   const [hoveredLabel, setHoveredLabel] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const lastHoveredLabel = useRef<string | null>(null)
-  const [cardsEnabled, setCardsEnabled] = useState(false)
-
-  // Enable cards after initial page load + animation time
-  useEffect(() => {
-    // Wait for About Me section to render and animate
-    const timer = setTimeout(() => {
-      setCardsEnabled(true)
-    }, 800) // Reduced timing - cards activate shortly after text animation
-    
-    return () => clearTimeout(timer)
-  }, [])
+  const [lastHoveredExperience, setLastHoveredExperience] = useState<{
+    data: Experience | Project | null
+    type: 'experience' | 'project' | null
+  }>({ data: null, type: null })
 
   // Milestone to Experience/Project mapping
   const milestoneMap = useMemo(() => ({
@@ -47,13 +39,28 @@ export default function Dashboard() {
     return filterTimelineData(timeRange)
   }, [timeRange])
 
-  // Card stack hook for mobile
-  const { stackedCards, dismissCard, triggerCardFromMilestone } = useCardStack({
-    experiences: mockExperiences,
-    projects: mockProjects,
-    milestoneMap,
-    chartData
-  })
+  const handleChartPointHover = (label: string | null) => {
+    setHoveredLabel(label)
+    
+    // Update last hovered experience when hovering over milestones
+    if (label && label !== lastHoveredLabel.current) {
+      lastHoveredLabel.current = label
+      const mapping = milestoneMap[label as keyof typeof milestoneMap]
+      
+      if (mapping) {
+        const data = mapping.type === 'experience' 
+          ? mockExperiences.find(exp => exp.id === mapping.id)
+          : mockProjects.find(proj => proj.id === mapping.id)
+        
+        if (data) {
+          setLastHoveredExperience({ data, type: mapping.type })
+        }
+      }
+    } else if (!label) {
+      // Reset when not hovering
+      lastHoveredLabel.current = null
+    }
+  }
 
   // Get description for current time range
   const getTimeRangeDescription = () => {
@@ -103,23 +110,6 @@ export default function Dashboard() {
     }
   }
 
-  const handleChartPointHover = (label: string | null) => {
-    setHoveredLabel(label)
-    
-    // Only trigger card stacking after initial animation is complete
-    if (!cardsEnabled) return
-    
-    // Trigger card stacking on mobile when hovering over milestones
-    // Only trigger if it's a new label (not the same one we're already hovering)
-    if (label && label !== lastHoveredLabel.current) {
-      lastHoveredLabel.current = label
-      triggerCardFromMilestone(label)
-    } else if (!label) {
-      // Reset when not hovering
-      lastHoveredLabel.current = null
-    }
-  }
-
   const handleChartPointClick = (point: ChartDataPoint) => {
     // Map chart milestones to experiences/projects
     const milestoneMapForHighlight: Record<string, string> = {
@@ -155,9 +145,6 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-black text-white">
       <TopNav onNavigate={handleNavigate} onSearch={handleSearch} />
-      
-      {/* Card Stack Overlay - Mobile Only */}
-      <CardStack cards={stackedCards} onDismiss={dismissCard} />
       
       <div className="md:pt-14 pb-20 md:pb-8">
         <div className="max-w-7xl mx-auto md:px-4">
@@ -197,8 +184,16 @@ export default function Dashboard() {
                 <BuyingPower portfolio={mockPortfolio} />
               </div>
               
-              {/* About Me - Shown on mobile right under Buying Power (GPA line) */}
-              <div className="lg:hidden md:px-4 mb-6 mt-6" data-section="about">
+              {/* Experience Card - Shown above About Me */}
+              <div className="md:px-4 mb-6 mt-6">
+                <ExperienceCard 
+                  experience={lastHoveredExperience.data} 
+                  type={lastHoveredExperience.type}
+                />
+              </div>
+              
+              {/* About Me - Shown on mobile right under Experience Card */}
+              <div className="lg:hidden md:px-4 mb-6" data-section="about">
                 <AboutAndSkills skillCategories={mockSkillCategories} searchQuery={searchQuery} />
               </div>
               
