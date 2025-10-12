@@ -58,11 +58,15 @@ export default function Dashboard() {
       const searchTerm = milestoneMap[point.label]
       if (searchTerm) {
         setHighlightedItem(searchTerm)
-        // Scroll to the sections
+        // Scroll to the sections with proper alignment
         setTimeout(() => {
           const element = document.querySelector('[data-section="experience"]') || 
                          document.querySelector('[data-section="projects"]')
-          element?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          if (element) {
+            const yOffset = -70 // Offset for fixed header
+            const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset
+            window.scrollTo({ top: y, behavior: 'smooth' })
+          }
         }, 100)
       }
     }
@@ -93,7 +97,7 @@ export default function Dashboard() {
                     onClick={() => setTimeRange(range)}
                     className={`px-2.5 py-1 rounded ${
                       timeRange === range
-                        ? 'bg-[#00C805] text-white'
+                        ? 'bg-[#00C805] text-black'
                         : 'bg-transparent text-gray-400 hover:text-white hover:bg-[#1A1A1A]'
                     } transition-colors`}
                   >

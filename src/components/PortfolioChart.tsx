@@ -25,6 +25,25 @@ export default function PortfolioChart({ data, isPositive, onPointClick }: Portf
     return null
   }
 
+  const CustomDot = (props: any) => {
+    const { cx, cy, payload } = props
+    // Only show dots for points with labels (milestones)
+    if (payload.label) {
+      return (
+        <circle
+          cx={cx}
+          cy={cy}
+          r={4}
+          fill={strokeColor}
+          stroke="#000"
+          strokeWidth={1.5}
+          className="cursor-pointer hover:r-6 transition-all"
+        />
+      )
+    }
+    return null
+  }
+
   const handleClick = (data: any) => {
     if (data && data.activePayload && data.activePayload.length > 0) {
       const point = data.activePayload[0].payload
@@ -58,6 +77,8 @@ export default function PortfolioChart({ data, isPositive, onPointClick }: Portf
             fill="url(#colorValue)"
             animationDuration={500}
             isAnimationActive={true}
+            dot={<CustomDot />}
+            activeDot={{ r: 6, fill: strokeColor, stroke: '#000', strokeWidth: 2 }}
           />
         </AreaChart>
       </ResponsiveContainer>
