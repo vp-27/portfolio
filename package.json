@@ -10,11 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "lucide-react": "^0.460.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^6.20.0",
-    "recharts": "^2.10.3",
-    "lucide-react": "^0.460.0"
+    "recharts": "^2.10.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",

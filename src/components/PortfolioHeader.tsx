@@ -11,7 +11,7 @@ export default function PortfolioHeader({ portfolio }: PortfolioHeaderProps) {
   const [showTimeline, setShowTimeline] = useState(false)
 
   useEffect(() => {
-    // Show the dollar amount first, then transition to Timeline after 2 seconds
+    // Transition to Timeline after 2 seconds
     const timer = setTimeout(() => {
       setShowTimeline(true)
     }, 2000)
@@ -31,15 +31,26 @@ export default function PortfolioHeader({ portfolio }: PortfolioHeaderProps) {
         </button>
       </div>
 
-      {/* Portfolio Value - Changed to Timeline with animation */}
-      <div className="mb-2">
-        <h1 className="text-3xl font-normal text-left transition-all duration-500">
-          {showTimeline ? (
-            'Timeline'
-          ) : (
-            `$${portfolio.totalValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-          )}
-        </h1>
+      {/* Portfolio Value - Slide to Timeline */}
+      <div className="mb-2 relative h-9 overflow-hidden">
+        <div 
+          className={`text-3xl font-normal text-left absolute inset-0 transition-all duration-700 ease-out ${
+            showTimeline 
+              ? '-translate-y-full opacity-0' 
+              : 'translate-y-0 opacity-100'
+          }`}
+        >
+          ${portfolio.totalValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+        </div>
+        <div 
+          className={`text-3xl font-normal text-left absolute inset-0 transition-all duration-700 ease-out ${
+            showTimeline 
+              ? 'translate-y-0 opacity-100' 
+              : 'translate-y-full opacity-0'
+          }`}
+        >
+          Timeline
+        </div>
       </div>
 
       {/* Today's Return - Career Momentum */}
