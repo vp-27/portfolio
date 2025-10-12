@@ -45,10 +45,10 @@ export default function AboutAndSkills({ skillCategories }: AboutAndSkillsProps)
   return (
     <>
       {/* Desktop: Combined container */}
-      <div className="hidden lg:block bg-black rounded-lg border border-gray-900">
+      <div className="hidden lg:block bg-black rounded-lg border border-[#2D2D2D]">
         {/* About Me Section */}
-        <div className="border-b border-gray-900">
-          <div className="flex items-center border-b border-gray-900">
+        <div className="border-b border-[#2D2D2D]">
+          <div className="flex items-center border-b border-[#2D2D2D]">
             <div className="flex-1 py-3 px-4 text-white font-medium text-left">
               About Me
             </div>
@@ -73,7 +73,7 @@ export default function AboutAndSkills({ skillCategories }: AboutAndSkillsProps)
 
         {/* Skills Section */}
         <div>
-          <div className="flex items-center justify-between border-b border-gray-900 px-4 py-3">
+          <div className="flex items-center justify-between border-b border-[#2D2D2D] px-4 py-3">
             <span className="text-white font-medium">Skills</span>
             <button className="bg-transparent text-gray-400 hover:text-white transition-colors" aria-label="Add skill">
               <Plus className="w-5 h-5" />
@@ -85,7 +85,7 @@ export default function AboutAndSkills({ skillCategories }: AboutAndSkillsProps)
               const isExpanded = expandedLists.has(category.id)
               
               return (
-                <div key={category.id} className={index !== skillCategories.length - 1 ? "border-b border-gray-900" : ""}>
+                <div key={category.id} className={index !== skillCategories.length - 1 ? "border-b border-[#2D2D2D]" : ""}>
                   <button
                     onClick={() => toggleList(category.id)}
                     className="w-full flex items-center justify-between px-4 py-3 bg-transparent hover:bg-[#1A1A1A] transition-colors"
@@ -120,7 +120,7 @@ export default function AboutAndSkills({ skillCategories }: AboutAndSkillsProps)
         {/* About Me Card */}
         <div>
           <h2 className="text-xl font-medium mb-3 text-left">About Me</h2>
-          <div className="bg-[#0D0D0D] rounded-lg p-6 border border-gray-900">
+          <div className="bg-[#0D0D0D] rounded-lg p-6">
             <div className="space-y-4">
               <div>
                 <h3 className="text-base font-medium mb-1">{aboutData.name}</h3>
@@ -142,12 +142,12 @@ export default function AboutAndSkills({ skillCategories }: AboutAndSkillsProps)
         {/* Skills Card */}
         <div>
           <h2 className="text-xl font-medium mb-3 text-left">Skills</h2>
-          <div className="bg-[#0D0D0D] rounded-lg border border-gray-900 overflow-hidden">
+          <div className="bg-[#0D0D0D] rounded-lg border border-[#2D2D2D] overflow-hidden">
             {skillCategories.map((category, index) => {
               const isExpanded = expandedLists.has(category.id)
               
               return (
-                <div key={category.id} className={index !== skillCategories.length - 1 ? "border-b border-gray-900" : ""}>
+                <div key={category.id} className={index !== skillCategories.length - 1 ? "border-b border-[#2D2D2D]" : ""}>
                   <button
                     onClick={() => toggleList(category.id)}
                     className="w-full flex items-center justify-between px-4 py-4 bg-transparent hover:bg-[#1A1A1A] transition-colors"

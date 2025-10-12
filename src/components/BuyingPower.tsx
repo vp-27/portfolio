@@ -7,7 +7,7 @@ interface BuyingPowerProps {
 
 export default function BuyingPower({ portfolio }: BuyingPowerProps) {
   return (
-    <div className="px-4 py-3 border-b border-gray-900">
+    <div className="px-4 py-3 border-b border-white">
       <button className="w-full flex items-center justify-between bg-transparent hover:bg-[#1A1A1A] py-2 px-2 -mx-2 rounded transition-colors">
         <div className="flex items-center gap-2">
           <span className="text-white text-sm">Buying power</span>
