@@ -54,33 +54,30 @@ export default function PortfolioSections() {
   }
 
   return (
-    <div className="hidden lg:block mt-8 px-4">
-      <h2 className="text-xl font-medium mb-4 text-left">Portfolio Sections</h2>
-      <div className="space-y-4">
-        {sections.map((section) => (
-          <div
-            key={section.id}
-            className="bg-[#0D0D0D] rounded-lg p-6 border border-gray-900 hover:border-gray-700 transition-colors cursor-pointer"
-          >
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-[#FF5000] rounded-full flex items-center justify-center flex-shrink-0">
-                <div className="text-black">
-                  {getIcon(section.icon)}
-                </div>
-              </div>
-              <div className="flex-1">
-                <h3 className="font-medium mb-2">{section.title}</h3>
-                <p className="text-sm text-gray-400 mb-4">
-                  {section.description}
-                </p>
-                <button className="bg-transparent text-[#FF5000] text-sm font-medium hover:text-[#ff6620] transition-colors">
-                  {section.action}
-                </button>
+    <div className="mt-8 px-4 space-y-4">
+      {sections.map((section) => (
+        <div
+          key={section.id}
+          className="bg-[#0D0D0D] rounded-lg p-6 border border-gray-900 hover:border-gray-700 transition-colors cursor-pointer"
+        >
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 bg-[#FF5000] rounded-full flex items-center justify-center flex-shrink-0">
+              <div className="text-black">
+                {getIcon(section.icon)}
               </div>
             </div>
+            <div className="flex-1">
+              <h2 className="text-xl font-medium mb-2">{section.title}</h2>
+              <p className="text-sm text-gray-400 mb-4">
+                {section.description}
+              </p>
+              <button className="bg-transparent text-[#FF5000] text-sm font-medium hover:text-[#ff6620] transition-colors">
+                {section.action}
+              </button>
+            </div>
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
   )
 }
