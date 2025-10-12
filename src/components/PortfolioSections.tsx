@@ -1,5 +1,6 @@
 import { MapPin, Calendar } from 'lucide-react'
 import type { Experience, Project, Education, Certification } from '../types'
+import ExperienceItem from './ExperienceItem'
 
 interface PortfolioSectionsProps {
   experiences: Experience[]
@@ -41,41 +42,15 @@ export default function PortfolioSections({ experiences, projects, education, ce
         ) : (
           <div className="space-y-3">
             {filteredExperiences.map((exp) => {
-            const isHighlighted = highlightedItem && exp.company.includes(highlightedItem)
-            return (
-              <div 
-                key={exp.id} 
-                className={`bg-[#0D0D0D] rounded-lg p-6 transition-all duration-300 ${
-                  isHighlighted ? 'ring-2 ring-[#00C805] bg-[#1A1A1A]' : ''
-                }`}
-              >
-                <div className="flex items-start justify-between mb-2">
-                  <div className="flex-1">
-                    <h3 className="font-medium text-white">{exp.position}</h3>
-                    <p className="text-sm text-[#FF5000]">{exp.company}</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-4 text-xs text-gray-400 mb-3">
-                  <div className="flex items-center gap-1">
-                    <MapPin className="w-3 h-3" />
-                    <span>{exp.location}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Calendar className="w-3 h-3" />
-                    <span>{exp.startDate} – {exp.endDate}</span>
-                  </div>
-                </div>
-                <ul className="space-y-2 text-sm text-gray-300">
-                  {exp.bullets.map((bullet, idx) => (
-                    <li key={idx} className="flex gap-2">
-                      <span className="text-[#FF5000] mt-1">•</span>
-                      <span>{bullet}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )
-          })}
+              const isHighlighted = !!(highlightedItem && exp.company.includes(highlightedItem))
+              return (
+                <ExperienceItem 
+                  key={exp.id}
+                  experience={exp}
+                  isHighlighted={isHighlighted}
+                />
+              )
+            })}
           </div>
         )}
       </div>
