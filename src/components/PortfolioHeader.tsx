@@ -39,7 +39,7 @@ export default function PortfolioHeader({ portfolio, hoveredLabel }: PortfolioHe
   }, [hoveredLabel, hasTransitioned])
 
   return (
-    <div className="px-4 pt-4 pb-2">
+    <div className="pt-4 pb-2 px-4 md:px-0">
       {/* Account Type and Earn Button */}
       <div className="flex items-center justify-between mb-4">
         <button className="flex items-center gap-1 bg-transparent text-white hover:text-gray-300 transition-colors">

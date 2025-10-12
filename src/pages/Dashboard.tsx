@@ -103,12 +103,14 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-black text-white">
       <TopNav onNavigate={handleNavigate} onSearch={handleSearch} />
-      <div className="pt-14 pb-20 md:pb-8">
-        <div className="max-w-7xl mx-auto">
+      <div className="md:pt-14 pb-20 md:pb-8">
+        <div className="max-w-7xl mx-auto md:px-4">
           <div className="lg:grid lg:grid-cols-[1fr,400px] lg:gap-6">
-            <div className="lg:px-4">
-              <PortfolioHeader portfolio={mockPortfolio} hoveredLabel={hoveredLabel} />
-              <div className="px-4">
+            <div>
+              <div className="md:px-4">
+                <PortfolioHeader portfolio={mockPortfolio} hoveredLabel={hoveredLabel} />
+              </div>
+              <div>
                 <PortfolioChart 
                   data={chartData} 
                   isPositive={mockPortfolio.todayReturn >= 0}
@@ -116,10 +118,10 @@ export default function Dashboard() {
                   onPointHover={setHoveredLabel}
                 />
               </div>
-              <div className="px-4 py-2">
+              <div className="py-2 md:px-4">
                 <p className="text-xs text-gray-500 text-center">{getTimeRangeDescription()}</p>
               </div>
-              <div className="flex items-center gap-1 px-4 py-2 text-xs">
+              <div className="flex items-center gap-1 py-2 text-xs md:px-4">
                 {['1D', '1W', '1M', '3M', 'YTD', '1Y', 'ALL'].map((range) => (
                   <button
                     key={range}
@@ -140,10 +142,12 @@ export default function Dashboard() {
                   </svg>
                 </button>
               </div>
-              <BuyingPower portfolio={mockPortfolio} />
+              <div className="md:px-4">
+                <BuyingPower portfolio={mockPortfolio} />
+              </div>
               
               {/* Portfolio Sections - Hidden on mobile, shown on desktop in left column */}
-              <div className="hidden lg:block px-4" data-section="experience">
+              <div className="hidden lg:block md:px-4" data-section="experience">
                 <PortfolioSections 
                   experiences={mockExperiences}
                   projects={mockProjects}
@@ -156,7 +160,7 @@ export default function Dashboard() {
             </div>
             
             <div className="lg:pr-4 mt-6 lg:mt-0">
-              <div className="px-4 lg:px-0 lg:pt-4">
+              <div className="lg:pt-4">
                 {/* Portfolio Sections - Shown on mobile, hidden on desktop */}
                 <div className="lg:hidden mb-6" data-section="projects">
                   <PortfolioSections 

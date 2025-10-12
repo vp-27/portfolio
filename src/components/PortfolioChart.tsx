@@ -67,7 +67,7 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
   }
 
   return (
-    <div className="w-full h-48 md:h-64 cursor-pointer">
+    <div className="w-full h-64 md:h-64 cursor-pointer">
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart 
           data={data} 
