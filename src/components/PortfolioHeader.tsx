@@ -50,9 +50,9 @@ export default function PortfolioHeader({ portfolio, hoveredLabel }: PortfolioHe
           initial={{ y: "100%", opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: "-100%", opacity: 0 }}
-          staggerDuration={0.015}
-          transition={{ type: "spring", damping: 30, stiffness: 400 }}
-          rotationInterval={2500}
+          staggerDuration={0.005}
+          transition={{ type: "spring", damping: 40, stiffness: 500 }}
+          rotationInterval={500}
           auto={false}
         />
       </div>

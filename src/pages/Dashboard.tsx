@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef } from 'react'
+import { useState, useMemo, useRef, useEffect } from 'react'
 import TopNav from '../components/TopNav'
 import PortfolioHeader from '../components/PortfolioHeader'
 import PortfolioChart from '../components/PortfolioChart'
@@ -17,6 +17,17 @@ export default function Dashboard() {
   const [hoveredLabel, setHoveredLabel] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const lastHoveredLabel = useRef<string | null>(null)
+  const [cardsEnabled, setCardsEnabled] = useState(false)
+
+  // Enable cards after initial page load + animation time
+  useEffect(() => {
+    // Wait for About Me section to render and animate
+    const timer = setTimeout(() => {
+      setCardsEnabled(true)
+    }, 800) // Reduced timing - cards activate shortly after text animation
+    
+    return () => clearTimeout(timer)
+  }, [])
 
   // Milestone to Experience/Project mapping
   const milestoneMap = useMemo(() => ({
@@ -94,6 +105,9 @@ export default function Dashboard() {
 
   const handleChartPointHover = (label: string | null) => {
     setHoveredLabel(label)
+    
+    // Only trigger card stacking after initial animation is complete
+    if (!cardsEnabled) return
     
     // Trigger card stacking on mobile when hovering over milestones
     // Only trigger if it's a new label (not the same one we're already hovering)
