@@ -6,7 +6,7 @@ interface SkillItemProps {
 
 export default function SkillItem({ skill }: SkillItemProps) {
   return (
-    <div className="flex items-center justify-between px-4 py-3 border-b border-gray-900 hover:bg-[#1A1A1A] transition-colors">
+    <div className="flex items-center justify-between px-4 py-3 hover:bg-[#1A1A1A] transition-colors">
       <div className="flex-1">
         <div className="flex items-center justify-between mb-1">
           <span className="text-white text-sm font-medium">{skill.name}</span>
