@@ -48,10 +48,20 @@ export default function Dashboard() {
                 </button>
               </div>
               <BuyingPower portfolio={mockPortfolio} />
-              <PortfolioSections />
+              
+              {/* Portfolio Sections - Hidden on mobile, shown on desktop in left column */}
+              <div className="hidden lg:block">
+                <PortfolioSections />
+              </div>
             </div>
+            
             <div className="lg:pr-4 mt-6 lg:mt-0">
               <div className="px-4 lg:px-0 lg:pt-4">
+                {/* Portfolio Sections - Shown on mobile, hidden on desktop */}
+                <div className="lg:hidden mb-6">
+                  <PortfolioSections />
+                </div>
+                
                 <StockList stocks={mockStocks} />
                 <Lists skillCategories={mockSkillCategories} />
               </div>
