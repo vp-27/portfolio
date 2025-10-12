@@ -437,6 +437,18 @@ export const mockProjects: Project[] = [
     ],
     technologies: ['React', 'Selenium', 'Python'],
   },
+  {
+    id: '6',
+    name: 'Bender Trust – LIBOR Analysis',
+    subtitle: 'Financial Modeling & Risk Assessment',
+    duration: 'Mar 2024 – May 2024',
+    bullets: [
+      'Developed comprehensive LIBOR transition analysis model projecting 5-year impact on trust portfolios',
+      'Built financial projections analyzing interest rate scenarios and their effects on $50M+ asset portfolio',
+      'Presented findings to trust committee, informing strategic decisions on interest rate hedge positioning',
+    ],
+    technologies: ['Excel', 'Financial Modeling', 'Bloomberg Terminal'],
+  },
 ]
 
 // Education Data
