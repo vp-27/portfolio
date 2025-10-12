@@ -157,19 +157,19 @@ export const generateCareerTimelineData = (): ChartDataPoint[] => {
   
   // Career milestones with dates and momentum scores (0-100)
   const milestones = [
-    { date: '2023-09', value: 20, label: 'Started Rutgers' },
-    { date: '2024-03', value: 35, label: 'Bender Trust Project' },
-    { date: '2024-06', value: 50, label: 'OroGenie Project' },
-    { date: '2024-07', value: 70, label: 'Kaktus Internship' },
-    { date: '2024-11', value: 75, label: 'Algo Trading Project' },
-    { date: '2025-03', value: 85, label: 'Shark Tank Finalist' },
-    { date: '2025-05', value: 88, label: 'GrindSheet Launch' },
-    { date: '2025-06', value: 90, label: 'Sunny Hackathon' },
-    { date: '2025-07', value: 95, label: 'Moweb Internship' },
-    { date: '2025-09', value: 100, label: 'SEBS Data Analyst' },
+    { date: '2023-09', value: 15, label: 'Started Rutgers' },
+    { date: '2024-03', value: 32, label: 'Bender Trust Project' },
+    { date: '2024-06', value: 48, label: 'OroGenie Project' },
+    { date: '2024-07', value: 68, label: 'Kaktus Internship' }, // Big bump for internship
+    { date: '2024-11', value: 72, label: 'Algo Trading Project' },
+    { date: '2025-03', value: 80, label: 'Shark Tank Finalist' },
+    { date: '2025-05', value: 83, label: 'GrindSheet Launch' },
+    { date: '2025-06', value: 85, label: 'Sunny Hackathon' },
+    { date: '2025-07', value: 92, label: 'Moweb Internship' }, // Big bump for internship
+    { date: '2025-09', value: 100, label: 'SEBS Data Analyst' }, // Big bump for internship
   ]
   
-  // Generate smooth curve between milestones
+  // Generate curve with volatility between milestones
   for (let i = 0; i < milestones.length - 1; i++) {
     const current = milestones[i]
     const next = milestones[i + 1]
@@ -177,10 +177,14 @@ export const generateCareerTimelineData = (): ChartDataPoint[] => {
     
     for (let j = 0; j < steps; j++) {
       const progress = j / steps
-      const value = current.value + (next.value - current.value) * progress
+      // Add some upward volatility using sine wave
+      const volatility = Math.sin(progress * Math.PI * 3) * (next.value - current.value) * 0.08
+      const baseValue = current.value + (next.value - current.value) * progress
+      const value = baseValue + volatility
+      
       data.push({ 
         time: formatDate(current.date),
-        value: value,
+        value: Math.max(current.value, value), // Ensure we don't go below current milestone
         label: j === 0 ? current.label : undefined
       })
     }
