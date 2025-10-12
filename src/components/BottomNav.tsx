@@ -15,7 +15,7 @@ export default function BottomNav() {
         {navItems.map((item) => (
           <button
             key={item.label}
-            className={`flex flex-col items-center justify-center flex-1 h-full ${
+            className={`flex flex-col items-center justify-center flex-1 h-full bg-transparent ${
               item.active ? 'text-white' : 'text-gray-500'
             }`}
           >

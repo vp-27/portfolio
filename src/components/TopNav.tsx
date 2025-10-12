@@ -34,19 +34,19 @@ export default function TopNav() {
                 <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
               </svg>
             </button>
-            <button className="text-white text-sm hover:text-gray-300 transition-colors">Rewards</button>
-            <button className="text-white text-sm hover:text-gray-300 transition-colors">Investing</button>
-            <button className="text-white text-sm hover:text-gray-300 transition-colors">Crypto</button>
-            <button className="text-white text-sm hover:text-gray-300 transition-colors">Spending</button>
-            <button className="text-white text-sm hover:text-gray-300 transition-colors">Retirement</button>
+            <button className="bg-transparent text-white text-sm hover:text-gray-300 transition-colors">Rewards</button>
+            <button className="bg-transparent text-white text-sm hover:text-gray-300 transition-colors">Investing</button>
+            <button className="bg-transparent text-white text-sm hover:text-gray-300 transition-colors">Crypto</button>
+            <button className="bg-transparent text-white text-sm hover:text-gray-300 transition-colors">Spending</button>
+            <button className="bg-transparent text-white text-sm hover:text-gray-300 transition-colors">Retirement</button>
           </div>
 
           {/* Right Icons */}
           <div className="flex items-center gap-4 ml-4">
-            <button className="text-gray-400 hover:text-white transition-colors" aria-label="Notifications">
+            <button className="bg-transparent text-gray-400 hover:text-white transition-colors" aria-label="Notifications">
               <Bell className="w-5 h-5" />
             </button>
-            <button className="text-gray-400 hover:text-white transition-colors" aria-label="Account">
+            <button className="bg-transparent text-gray-400 hover:text-white transition-colors" aria-label="Account">
               <User className="w-5 h-5" />
             </button>
           </div>
