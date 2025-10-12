@@ -81,11 +81,11 @@ export default function AboutAndSkills({ skillCategories }: AboutAndSkillsProps)
           </div>
           
           <div>
-            {skillCategories.map((category, index) => {
+            {skillCategories.map((category) => {
               const isExpanded = expandedLists.has(category.id)
               
               return (
-                <div key={category.id} className={index !== skillCategories.length - 1 ? "border-b border-[#2D2D2D]" : ""}>
+                <div key={category.id}>
                   <button
                     onClick={() => toggleList(category.id)}
                     className="w-full flex items-center justify-between px-4 py-3 bg-transparent hover:bg-[#1A1A1A] transition-colors"
@@ -143,11 +143,11 @@ export default function AboutAndSkills({ skillCategories }: AboutAndSkillsProps)
         <div>
           <h2 className="text-xl font-medium mb-3 text-left">Skills</h2>
           <div className="bg-[#0D0D0D] rounded-lg border border-[#2D2D2D] overflow-hidden">
-            {skillCategories.map((category, index) => {
+            {skillCategories.map((category) => {
               const isExpanded = expandedLists.has(category.id)
               
               return (
-                <div key={category.id} className={index !== skillCategories.length - 1 ? "border-b border-[#2D2D2D]" : ""}>
+                <div key={category.id}>
                   <button
                     onClick={() => toggleList(category.id)}
                     className="w-full flex items-center justify-between px-4 py-4 bg-transparent hover:bg-[#1A1A1A] transition-colors"
