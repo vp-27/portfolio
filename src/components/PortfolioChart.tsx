@@ -29,14 +29,11 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
       const point = payload[0].payload
-      if (point.label) {
-        return (
-          <div className="bg-[#1A1A1A] border border-[#2D2D2D] rounded px-3 py-2">
-            <p className="text-white text-sm font-medium">{point.label}</p>
-            <p className="text-gray-400 text-xs">{point.time}</p>
-          </div>
-        )
-      }
+      return (
+        <div className="bg-transparent">
+          <p className="text-white text-xs font-medium">{point.time}</p>
+        </div>
+      )
     }
     return null
   }
@@ -86,7 +83,12 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
             </linearGradient>
           </defs>
           <YAxis domain={['dataMin', 'dataMax']} hide />
-          <Tooltip content={<CustomTooltip />} cursor={{ stroke: strokeColor, strokeWidth: 1 }} />
+          <Tooltip 
+            content={<CustomTooltip />} 
+            cursor={{ stroke: strokeColor, strokeWidth: 1 }} 
+            position={{ y: 0 }}
+            offset={10}
+          />
           <Area
             type="monotone"
             dataKey="value"
