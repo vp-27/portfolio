@@ -35,6 +35,7 @@ export default function PortfolioSections({ experiences, projects, education, ce
       {/* Professional Experience Section */}
       <div>
         <h2 className="text-xl font-medium mb-3 text-left">Professional Experience</h2>
+        <div className="border-b border-gray-800 mb-4"></div>
         {filteredExperiences.length === 0 && searchQuery ? (
           <p className="text-sm text-gray-400 text-center py-4">No experiences match your search</p>
         ) : (
@@ -82,6 +83,7 @@ export default function PortfolioSections({ experiences, projects, education, ce
       {/* Projects Section */}
       <div>
         <h2 className="text-xl font-medium mb-3 text-left">Projects</h2>
+        <div className="border-b border-gray-800 mb-4"></div>
         {filteredProjects.length === 0 && searchQuery ? (
           <p className="text-sm text-gray-400 text-center py-4">No projects match your search</p>
         ) : (
@@ -133,6 +135,7 @@ export default function PortfolioSections({ experiences, projects, education, ce
       {/* Education Section */}
       <div data-section="education">
         <h2 className="text-xl font-medium mb-3 text-left">Education</h2>
+        <div className="border-b border-gray-800 mb-4"></div>
         <div className="space-y-3">
           {education.map((edu) => (
             <div key={edu.id} className="bg-[#0D0D0D] rounded-lg p-6">
@@ -170,6 +173,7 @@ export default function PortfolioSections({ experiences, projects, education, ce
       {/* Certifications Section */}
       <div>
         <h2 className="text-xl font-medium mb-3 text-left">Certifications</h2>
+        <div className="border-b border-gray-800 mb-4"></div>
         <div className="space-y-3">
           {certifications.map((cert) => (
             <div key={cert.id} className="bg-[#0D0D0D] rounded-lg p-6">
