@@ -53,7 +53,7 @@ export default function Dashboard() {
               </div>
               <BuyingPower portfolio={mockPortfolio} />
               <div className="hidden lg:block mt-8 px-4">
-                <h2 className="text-xl font-medium mb-4">Get more out of Robinhood</h2>
+                <h2 className="text-xl font-medium mb-4 text-left">Get more out of Robinhood</h2>
                 <div className="bg-[#0D0D0D] rounded-lg p-6 border border-gray-900">
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 bg-[#00C805] rounded-full flex items-center justify-center flex-shrink-0">
