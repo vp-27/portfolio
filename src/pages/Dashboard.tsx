@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import TopNav from '../components/TopNav'
 import PortfolioHeader from '../components/PortfolioHeader'
 import PortfolioChart from '../components/PortfolioChart'
@@ -6,12 +6,39 @@ import AboutAndSkills from '../components/AboutAndSkills'
 import BuyingPower from '../components/BuyingPower'
 import BottomNav from '../components/BottomNav'
 import PortfolioSections from '../components/PortfolioSections'
-import { mockPortfolio, mockChartData, mockSkillCategories, mockExperiences, mockProjects, mockEducation, mockCertifications } from '../data/mockData'
+import { mockPortfolio, filterTimelineData, mockSkillCategories, mockExperiences, mockProjects, mockEducation, mockCertifications } from '../data/mockData'
 import type { ChartDataPoint } from '../types'
 
 export default function Dashboard() {
-  const [timeRange, setTimeRange] = useState('1D')
+  const [timeRange, setTimeRange] = useState('ALL')
   const [highlightedItem, setHighlightedItem] = useState<string | null>(null)
+
+  // Filter chart data based on selected time range
+  const chartData = useMemo(() => {
+    return filterTimelineData(timeRange)
+  }, [timeRange])
+
+  // Get description for current time range
+  const getTimeRangeDescription = () => {
+    switch (timeRange) {
+      case '1D':
+        return 'Recent Activity'
+      case '1W':
+        return 'Last Month'
+      case '1M':
+        return 'Last 3 Months'
+      case '3M':
+        return 'Last Quarter'
+      case 'YTD':
+        return 'Year to Date (2025)'
+      case '1Y':
+        return 'Past Year'
+      case 'ALL':
+        return 'Full Journey'
+      default:
+        return 'Timeline'
+    }
+  }
 
   const handleChartPointClick = (point: ChartDataPoint) => {
     // Map chart milestones to experiences/projects
@@ -51,12 +78,15 @@ export default function Dashboard() {
               <PortfolioHeader portfolio={mockPortfolio} />
               <div className="px-4">
                 <PortfolioChart 
-                  data={mockChartData} 
+                  data={chartData} 
                   isPositive={mockPortfolio.todayReturn >= 0}
                   onPointClick={handleChartPointClick}
                 />
               </div>
-              <div className="flex items-center gap-1 px-4 py-4 text-xs">
+              <div className="px-4 py-2">
+                <p className="text-xs text-gray-500 text-center">{getTimeRangeDescription()}</p>
+              </div>
+              <div className="flex items-center gap-1 px-4 py-2 text-xs">
                 {['1D', '1W', '1M', '3M', 'YTD', '1Y', 'ALL'].map((range) => (
                   <button
                     key={range}

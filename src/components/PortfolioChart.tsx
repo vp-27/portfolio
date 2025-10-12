@@ -56,7 +56,8 @@ export default function PortfolioChart({ data, isPositive, onPointClick }: Portf
             stroke={strokeColor}
             strokeWidth={2}
             fill="url(#colorValue)"
-            animationDuration={300}
+            animationDuration={500}
+            isAnimationActive={true}
           />
         </AreaChart>
       </ResponsiveContainer>

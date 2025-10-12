@@ -191,7 +191,6 @@ export const generateCareerTimelineData = (): ChartDataPoint[] => {
 // Filter timeline data by time range
 export const filterTimelineData = (range: string): ChartDataPoint[] => {
   const allData = generateCareerTimelineData()
-  const now = new Date('2025-10-12') // Current date
   
   let startDate: Date
   
