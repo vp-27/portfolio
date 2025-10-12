@@ -43,10 +43,10 @@ export default function TopNav() {
 
           {/* Right Icons */}
           <div className="flex items-center gap-4 ml-4">
-            <button className="text-gray-400 hover:text-white transition-colors">
+            <button className="text-gray-400 hover:text-white transition-colors" aria-label="Notifications">
               <Bell className="w-5 h-5" />
             </button>
-            <button className="text-gray-400 hover:text-white transition-colors">
+            <button className="text-gray-400 hover:text-white transition-colors" aria-label="Account">
               <User className="w-5 h-5" />
             </button>
           </div>

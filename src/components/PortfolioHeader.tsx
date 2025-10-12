@@ -14,7 +14,7 @@ export default function PortfolioHeader({ portfolio }: PortfolioHeaderProps) {
     <div className="px-4 pt-4 pb-2">
       {/* Account Type and Earn Button */}
       <div className="flex items-center justify-between mb-4">
-        <button className="flex items-center gap-1 text-white hover:text-gray-300 transition-colors">
+        <button className="flex items-center gap-1 bg-transparent text-white hover:text-gray-300 transition-colors">
           <span className="text-sm">Individual</span>
           <ChevronDown className="w-4 h-4" />
         </button>

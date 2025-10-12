@@ -19,30 +19,27 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-black text-white">
       <TopNav />
-
       <div className="pt-14 pb-20 md:pb-8">
         <div className="max-w-7xl mx-auto">
           <div className="lg:grid lg:grid-cols-[1fr,400px] lg:gap-6">
             <div className="lg:px-4">
               <PortfolioHeader portfolio={mockPortfolio} />
-
               <div className="px-4">
                 <PortfolioChart 
                   data={mockChartData} 
                   isPositive={mockPortfolio.todayReturn >= 0}
                 />
               </div>
-
               <div className="flex items-center gap-1 px-4 py-4 text-xs">
                 {['1D', '1W', '1M', '3M', 'YTD', '1Y', 'ALL'].map((range) => (
                   <button
                     key={range}
                     onClick={() => setTimeRange(range)}
-                    className={\`px-2.5 py-1 rounded \${
+                    className={`px-2.5 py-1 rounded ${
                       timeRange === range
                         ? 'bg-[#FF5000] text-white'
                         : 'text-gray-400 hover:text-white hover:bg-[#1A1A1A]'
-                    } transition-colors\`}
+                    } transition-colors`}
                   >
                     {range}
                   </button>
@@ -54,9 +51,7 @@ export default function Dashboard() {
                   </svg>
                 </button>
               </div>
-
               <BuyingPower portfolio={mockPortfolio} />
-
               <div className="hidden lg:block mt-8 px-4">
                 <h2 className="text-xl font-medium mb-4">Get more out of Robinhood</h2>
                 <div className="bg-[#0D0D0D] rounded-lg p-6 border border-gray-900">
@@ -79,7 +74,6 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-
             <div className="lg:pr-4 mt-6 lg:mt-0">
               <div className="px-4 lg:px-0 lg:pt-4">
                 <StockList stocks={mockStocks} />
@@ -89,7 +83,6 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-
       <BottomNav />
     </div>
   )
