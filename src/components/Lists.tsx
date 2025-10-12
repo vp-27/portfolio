@@ -1,21 +1,13 @@
 import { useState } from 'react'
-import { ChevronUp, ChevronDown, Eye, Plus } from 'lucide-react'
-import type { Stock } from '../types'
-import StockItem from './StockItem'
-
-interface List {
-  id: string
-  name: string
-  icon: 'eye' | 'potato'
-  stocks?: Stock[]
-}
+import { ChevronUp, ChevronDown, Code2, TrendingUp, Wrench, Users, Plus } from 'lucide-react'
+import type { SkillCategory } from '../types'
+import SkillItem from './SkillItem'
 
 interface ListsProps {
-  lists: List[]
-  stocks: Stock[]
+  skillCategories: SkillCategory[]
 }
 
-export default function Lists({ lists, stocks }: ListsProps) {
+export default function Lists({ skillCategories }: ListsProps) {
   const [expandedLists, setExpandedLists] = useState<Set<string>>(new Set())
 
   const toggleList = (listId: string) => {
@@ -28,58 +20,56 @@ export default function Lists({ lists, stocks }: ListsProps) {
     setExpandedLists(newExpanded)
   }
 
-  const getIcon = (iconType: 'eye' | 'potato') => {
-    if (iconType === 'eye') {
-      return <Eye className="w-5 h-5" />
+  const getIcon = (iconType: 'technical' | 'financial' | 'soft' | 'language' | 'tools') => {
+    switch (iconType) {
+      case 'technical':
+        return <Code2 className="w-5 h-5" />
+      case 'financial':
+        return <TrendingUp className="w-5 h-5" />
+      case 'tools':
+        return <Wrench className="w-5 h-5" />
+      case 'soft':
+        return <Users className="w-5 h-5" />
+      default:
+        return <Code2 className="w-5 h-5" />
     }
-    // Potato emoji as fallback
-    return <span className="text-lg">🥔</span>
-  }
-
-  const getListStocks = (listName: string) => {
-    // Return different stocks based on list name
-    if (listName === 'Options Watchlist') {
-      return []
-    }
-    // Return subset of stocks for Potato list
-    return stocks.slice(0, 5)
   }
 
   return (
     <div className="mt-6">
       <div className="flex items-center justify-between px-4 mb-3">
-        <h2 className="text-lg font-medium">Lists</h2>
-        <button className="bg-transparent text-gray-400 hover:text-white transition-colors" aria-label="Add new list">
+        <h2 className="text-lg font-medium">Skills</h2>
+        <button className="bg-transparent text-gray-400 hover:text-white transition-colors" aria-label="Add new skill category">
           <Plus className="w-5 h-5" />
         </button>
       </div>
       
       <div>
-        {lists.map((list) => {
-          const isExpanded = expandedLists.has(list.id)
-          const listStocks = getListStocks(list.name)
+        {skillCategories.map((category) => {
+          const isExpanded = expandedLists.has(category.id)
           
           return (
-            <div key={list.id} className="border-b border-gray-900">
+            <div key={category.id} className="border-b border-gray-900">
               <button
-                onClick={() => toggleList(list.id)}
+                onClick={() => toggleList(category.id)}
                 className="w-full flex items-center justify-between px-4 py-3 bg-transparent hover:bg-[#1A1A1A] transition-colors"
               >
                 <div className="flex items-center gap-3">
                   <div className="text-gray-400">
-                    {getIcon(list.icon)}
+                    {getIcon(category.icon)}
                   </div>
-                  <span className="text-white">{list.name}</span>
+                  <span className="text-white">{category.name}</span>
+                  <span className="text-xs text-gray-500">({category.skills.length})</span>
                 </div>
                 <div className="text-gray-400">
                   {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
                 </div>
               </button>
               
-              {isExpanded && listStocks.length > 0 && (
+              {isExpanded && category.skills.length > 0 && (
                 <div className="bg-black">
-                  {listStocks.map((stock) => (
-                    <StockItem key={stock.id} stock={stock} />
+                  {category.skills.map((skill) => (
+                    <SkillItem key={skill.id} skill={skill} />
                   ))}
                 </div>
               )}

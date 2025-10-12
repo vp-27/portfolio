@@ -1,4 +1,4 @@
-import type { Stock, PortfolioData, ChartDataPoint } from '../types'
+import type { Stock, PortfolioData, ChartDataPoint, Skill, SkillCategory } from '../types'
 
 export const mockStocks: Stock[] = [
   {
@@ -182,3 +182,60 @@ export const generateMockChartData = (): ChartDataPoint[] => {
 }
 
 export const mockChartData = generateMockChartData()
+
+// Skills Data for Portfolio Website
+export const mockSkills: Skill[] = [
+  // Technical Skills
+  { id: 'ts1', name: 'React', proficiency: 95, yearsOfExperience: 4, category: 'technical' },
+  { id: 'ts2', name: 'TypeScript', proficiency: 90, yearsOfExperience: 3, category: 'technical' },
+  { id: 'ts3', name: 'Node.js', proficiency: 88, yearsOfExperience: 4, category: 'technical' },
+  { id: 'ts4', name: 'Python', proficiency: 85, yearsOfExperience: 5, category: 'technical' },
+  { id: 'ts5', name: 'Next.js', proficiency: 90, yearsOfExperience: 2, category: 'technical' },
+  { id: 'ts6', name: 'GraphQL', proficiency: 80, yearsOfExperience: 2, category: 'technical' },
+  
+  // Financial Skills
+  { id: 'fs1', name: 'Financial Modeling', proficiency: 85, yearsOfExperience: 3, category: 'financial' },
+  { id: 'fs2', name: 'Portfolio Analysis', proficiency: 88, yearsOfExperience: 4, category: 'financial' },
+  { id: 'fs3', name: 'Risk Management', proficiency: 82, yearsOfExperience: 3, category: 'financial' },
+  { id: 'fs4', name: 'Quantitative Analysis', proficiency: 87, yearsOfExperience: 3, category: 'financial' },
+  
+  // Tools & Platforms
+  { id: 'tl1', name: 'Git & GitHub', proficiency: 95, yearsOfExperience: 5, category: 'tools' },
+  { id: 'tl2', name: 'Docker', proficiency: 85, yearsOfExperience: 3, category: 'tools' },
+  { id: 'tl3', name: 'AWS', proficiency: 80, yearsOfExperience: 2, category: 'tools' },
+  { id: 'tl4', name: 'MongoDB', proficiency: 88, yearsOfExperience: 3, category: 'tools' },
+  { id: 'tl5', name: 'PostgreSQL', proficiency: 90, yearsOfExperience: 4, category: 'tools' },
+  
+  // Soft Skills
+  { id: 'ss1', name: 'Team Leadership', proficiency: 90, yearsOfExperience: 3, category: 'soft' },
+  { id: 'ss2', name: 'Problem Solving', proficiency: 95, yearsOfExperience: 5, category: 'soft' },
+  { id: 'ss3', name: 'Communication', proficiency: 88, yearsOfExperience: 5, category: 'soft' },
+  { id: 'ss4', name: 'Agile Methodologies', proficiency: 85, yearsOfExperience: 4, category: 'soft' },
+]
+
+export const mockSkillCategories: SkillCategory[] = [
+  {
+    id: 'cat1',
+    name: 'Technical Skills',
+    icon: 'technical',
+    skills: mockSkills.filter(s => s.category === 'technical'),
+  },
+  {
+    id: 'cat2',
+    name: 'Financial Skills',
+    icon: 'financial',
+    skills: mockSkills.filter(s => s.category === 'financial'),
+  },
+  {
+    id: 'cat3',
+    name: 'Tools & Platforms',
+    icon: 'tools',
+    skills: mockSkills.filter(s => s.category === 'tools'),
+  },
+  {
+    id: 'cat4',
+    name: 'Soft Skills',
+    icon: 'soft',
+    skills: mockSkills.filter(s => s.category === 'soft'),
+  },
+]

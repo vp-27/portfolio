@@ -6,15 +6,11 @@ import StockList from '../components/StockList'
 import BuyingPower from '../components/BuyingPower'
 import BottomNav from '../components/BottomNav'
 import Lists from '../components/Lists'
-import { mockPortfolio, mockStocks, mockChartData } from '../data/mockData'
+import PortfolioSections from '../components/PortfolioSections'
+import { mockPortfolio, mockStocks, mockChartData, mockSkillCategories } from '../data/mockData'
 
 export default function Dashboard() {
   const [timeRange, setTimeRange] = useState('1D')
-
-  const mockLists = [
-    { id: '1', name: 'Options Watchlist', icon: 'eye' as const },
-    { id: '2', name: 'Potato', icon: 'potato' as const },
-  ]
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -52,32 +48,12 @@ export default function Dashboard() {
                 </button>
               </div>
               <BuyingPower portfolio={mockPortfolio} />
-              <div className="hidden lg:block mt-8 px-4">
-                <h2 className="text-xl font-medium mb-4 text-left">Get more out of Robinhood</h2>
-                <div className="bg-[#0D0D0D] rounded-lg p-6 border border-gray-900">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-[#00C805] rounded-full flex items-center justify-center flex-shrink-0">
-                      <svg viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 text-black">
-                        <path d="M12 2L2 7v10c0 5.5 3.8 10.7 10 12 6.2-1.3 10-6.5 10-12V7l-10-5z" />
-                      </svg>
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-medium mb-2">Joint accounts</h3>
-                      <p className="text-sm text-gray-400 mb-4">
-                        Manage your family's investments where you already manage your own.
-                      </p>
-                      <button className="bg-transparent text-[#FF5000] text-sm font-medium hover:text-[#ff6620] transition-colors">
-                        Get started
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <PortfolioSections />
             </div>
             <div className="lg:pr-4 mt-6 lg:mt-0">
               <div className="px-4 lg:px-0 lg:pt-4">
                 <StockList stocks={mockStocks} />
-                <Lists lists={mockLists} stocks={mockStocks} />
+                <Lists skillCategories={mockSkillCategories} />
               </div>
             </div>
           </div>

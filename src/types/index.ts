@@ -25,3 +25,18 @@ export interface ChartDataPoint {
   time: string
   value: number
 }
+
+export interface Skill {
+  id: string
+  name: string
+  proficiency: number // 0-100
+  yearsOfExperience?: number
+  category: string
+}
+
+export interface SkillCategory {
+  id: string
+  name: string
+  icon: 'technical' | 'financial' | 'soft' | 'language' | 'tools'
+  skills: Skill[]
+}
