@@ -7,9 +7,39 @@ import BuyingPower from '../components/BuyingPower'
 import BottomNav from '../components/BottomNav'
 import PortfolioSections from '../components/PortfolioSections'
 import { mockPortfolio, mockChartData, mockSkillCategories, mockExperiences, mockProjects, mockEducation, mockCertifications } from '../data/mockData'
+import type { ChartDataPoint } from '../types'
 
 export default function Dashboard() {
   const [timeRange, setTimeRange] = useState('1D')
+  const [highlightedItem, setHighlightedItem] = useState<string | null>(null)
+
+  const handleChartPointClick = (point: ChartDataPoint) => {
+    // Map chart milestones to experiences/projects
+    const milestoneMap: Record<string, string> = {
+      'Bender Trust Project': 'Bender',
+      'OroGenie Project': 'OroGenie',
+      'Kaktus Internship': 'Kaktus',
+      'Algo Trading Project': 'Algorithmic',
+      'Shark Tank Finalist': 'Shark Tank',
+      'GrindSheet Launch': 'GrindSheet',
+      'Sunny Hackathon': 'Sunny',
+      'Moweb Internship': 'Moweb',
+      'SEBS Data Analyst': 'SEBS',
+    }
+
+    if (point.label) {
+      const searchTerm = milestoneMap[point.label]
+      if (searchTerm) {
+        setHighlightedItem(searchTerm)
+        // Scroll to the sections
+        setTimeout(() => {
+          const element = document.querySelector('[data-section="experience"]') || 
+                         document.querySelector('[data-section="projects"]')
+          element?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }, 100)
+      }
+    }
+  }
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -23,6 +53,7 @@ export default function Dashboard() {
                 <PortfolioChart 
                   data={mockChartData} 
                   isPositive={mockPortfolio.todayReturn >= 0}
+                  onPointClick={handleChartPointClick}
                 />
               </div>
               <div className="flex items-center gap-1 px-4 py-4 text-xs">
@@ -32,7 +63,7 @@ export default function Dashboard() {
                     onClick={() => setTimeRange(range)}
                     className={`px-2.5 py-1 rounded ${
                       timeRange === range
-                        ? 'bg-[#FF5000] text-white'
+                        ? 'bg-[#00C805] text-white'
                         : 'bg-transparent text-gray-400 hover:text-white hover:bg-[#1A1A1A]'
                     } transition-colors`}
                   >
@@ -49,12 +80,13 @@ export default function Dashboard() {
               <BuyingPower portfolio={mockPortfolio} />
               
               {/* Portfolio Sections - Hidden on mobile, shown on desktop in left column */}
-              <div className="hidden lg:block px-4">
+              <div className="hidden lg:block px-4" data-section="experience">
                 <PortfolioSections 
                   experiences={mockExperiences}
                   projects={mockProjects}
                   education={mockEducation}
                   certifications={mockCertifications}
+                  highlightedItem={highlightedItem}
                 />
               </div>
             </div>
@@ -62,12 +94,13 @@ export default function Dashboard() {
             <div className="lg:pr-4 mt-6 lg:mt-0">
               <div className="px-4 lg:px-0 lg:pt-4">
                 {/* Portfolio Sections - Shown on mobile, hidden on desktop */}
-                <div className="lg:hidden mb-6">
+                <div className="lg:hidden mb-6" data-section="projects">
                   <PortfolioSections 
                     experiences={mockExperiences}
                     projects={mockProjects}
                     education={mockEducation}
                     certifications={mockCertifications}
+                    highlightedItem={highlightedItem}
                   />
                 </div>
                 

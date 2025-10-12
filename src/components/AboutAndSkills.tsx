@@ -54,20 +54,22 @@ export default function AboutAndSkills({ skillCategories }: AboutAndSkillsProps)
             </div>
           </div>
           
-          <div className="p-4 space-y-4">
+          <div className="p-6 space-y-4">
             <div>
-              <h3 className="text-base font-medium mb-1">{aboutData.name}</h3>
-              <p className="text-sm text-gray-400">{aboutData.title}</p>
+              <h3 className="text-xl font-medium mb-2 text-white">{aboutData.name}</h3>
+              <p className="text-sm text-gray-300 leading-relaxed">{aboutData.title}</p>
             </div>
 
-            <div className="flex items-center gap-2 text-sm text-gray-400">
+            <div className="flex items-center gap-2 text-sm text-gray-400 pt-2">
               <MapPin className="w-4 h-4" />
               <span>{aboutData.location}</span>
             </div>
 
-            <p className="text-sm text-gray-400 leading-relaxed">
-              {aboutData.bio}
-            </p>
+            <div className="pt-2 border-t border-[#2D2D2D]">
+              <p className="text-sm text-gray-300 leading-relaxed">
+                {aboutData.bio}
+              </p>
+            </div>
           </div>
         </div>
 

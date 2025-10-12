@@ -10,12 +10,12 @@ export default function BuyingPower({ portfolio }: BuyingPowerProps) {
     <div className="px-4 py-3 border-b border-[#2D2D2D]">
       <button className="w-full flex items-center justify-between bg-transparent hover:bg-[#1A1A1A] py-2 px-2 -mx-2 rounded transition-colors">
         <div className="flex items-center gap-2">
-          <span className="text-white text-sm">Buying power</span>
+          <span className="text-white text-sm">GPA</span>
           <HelpCircle className="w-4 h-4 text-gray-500" />
         </div>
         <div className="flex items-center gap-2">
           <span className="text-white font-medium">
-            ${portfolio.buyingPower.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            {(portfolio.buyingPower / 100).toFixed(2)}
           </span>
           <ChevronDown className="w-4 h-4 text-gray-500" />
         </div>

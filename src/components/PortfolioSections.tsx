@@ -6,43 +6,52 @@ interface PortfolioSectionsProps {
   projects: Project[]
   education: Education[]
   certifications: Certification[]
+  highlightedItem?: string | null
 }
 
-export default function PortfolioSections({ experiences, projects, education, certifications }: PortfolioSectionsProps) {
+export default function PortfolioSections({ experiences, projects, education, certifications, highlightedItem }: PortfolioSectionsProps) {
   return (
     <div className="mt-8 space-y-6">
       {/* Professional Experience Section */}
       <div>
         <h2 className="text-xl font-medium mb-3 text-left">Professional Experience</h2>
         <div className="space-y-3">
-          {experiences.map((exp) => (
-            <div key={exp.id} className="bg-[#0D0D0D] rounded-lg p-6">
-              <div className="flex items-start justify-between mb-2">
-                <div className="flex-1">
-                  <h3 className="font-medium text-white">{exp.position}</h3>
-                  <p className="text-sm text-[#FF5000]">{exp.company}</p>
+          {experiences.map((exp) => {
+            const isHighlighted = highlightedItem && exp.company.includes(highlightedItem)
+            return (
+              <div 
+                key={exp.id} 
+                className={`bg-[#0D0D0D] rounded-lg p-6 transition-all duration-300 ${
+                  isHighlighted ? 'ring-2 ring-[#00C805] bg-[#1A1A1A]' : ''
+                }`}
+              >
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex-1">
+                    <h3 className="font-medium text-white">{exp.position}</h3>
+                    <p className="text-sm text-[#FF5000]">{exp.company}</p>
+                  </div>
                 </div>
+                <div className="flex items-center gap-4 text-xs text-gray-400 mb-3">
+                  <div className="flex items-center gap-1">
+                    <MapPin className="w-3 h-3" />
+                    <span>{exp.location}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Calendar className="w-3 h-3" />
+                    <span>{exp.startDate} – {exp.endDate}</span>
+                  </div>
+                </div>
+                <ul className="space-y-2 text-sm text-gray-300">
+                  {exp.bullets.map((bullet, idx) => (
+                    <li key={idx} className="flex gap-2">
+                      <span className="text-[#FF5000] mt-1">•</span>
+                      <span>{bullet}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <div className="flex items-center gap-4 text-xs text-gray-400 mb-3">
-                <div className="flex items-center gap-1">
-                  <MapPin className="w-3 h-3" />
-                  <span>{exp.location}</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Calendar className="w-3 h-3" />
-                  <span>{exp.startDate} – {exp.endDate}</span>
-                </div>
-              </div>
-              <ul className="space-y-2 text-sm text-gray-300">
-                {exp.bullets.map((bullet, idx) => (
-                  <li key={idx} className="flex gap-2">
-                    <span className="text-[#FF5000] mt-1">•</span>
-                    <span>{bullet}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
 
@@ -50,38 +59,46 @@ export default function PortfolioSections({ experiences, projects, education, ce
       <div>
         <h2 className="text-xl font-medium mb-3 text-left">Projects</h2>
         <div className="space-y-3">
-          {projects.map((project) => (
-            <div key={project.id} className="bg-[#0D0D0D] rounded-lg p-6">
-              <div className="mb-2">
-                <h3 className="font-medium text-white">{project.name}</h3>
-                <p className="text-sm text-gray-400">{project.subtitle}</p>
-              </div>
-              <div className="flex items-center gap-1 text-xs text-gray-400 mb-3">
-                <Calendar className="w-3 h-3" />
-                <span>{project.duration}</span>
-              </div>
-              <ul className="space-y-2 text-sm text-gray-300 mb-3">
-                {project.bullets.map((bullet, idx) => (
-                  <li key={idx} className="flex gap-2">
-                    <span className="text-[#FF5000] mt-1">•</span>
-                    <span>{bullet}</span>
-                  </li>
-                ))}
-              </ul>
-              {project.technologies && (
-                <div className="flex flex-wrap gap-2">
-                  {project.technologies.map((tech, idx) => (
-                    <span
-                      key={idx}
-                      className="px-2 py-1 text-xs bg-[#1A1A1A] text-gray-300 rounded"
-                    >
-                      {tech}
-                    </span>
-                  ))}
+          {projects.map((project) => {
+            const isHighlighted = highlightedItem && project.name.includes(highlightedItem)
+            return (
+              <div 
+                key={project.id} 
+                className={`bg-[#0D0D0D] rounded-lg p-6 transition-all duration-300 ${
+                  isHighlighted ? 'ring-2 ring-[#00C805] bg-[#1A1A1A]' : ''
+                }`}
+              >
+                <div className="mb-2">
+                  <h3 className="font-medium text-white">{project.name}</h3>
+                  <p className="text-sm text-gray-400">{project.subtitle}</p>
                 </div>
-              )}
-            </div>
-          ))}
+                <div className="flex items-center gap-1 text-xs text-gray-400 mb-3">
+                  <Calendar className="w-3 h-3" />
+                  <span>{project.duration}</span>
+                </div>
+                <ul className="space-y-2 text-sm text-gray-300 mb-3">
+                  {project.bullets.map((bullet, idx) => (
+                    <li key={idx} className="flex gap-2">
+                      <span className="text-[#FF5000] mt-1">•</span>
+                      <span>{bullet}</span>
+                    </li>
+                  ))}
+                </ul>
+                {project.technologies && (
+                  <div className="flex flex-wrap gap-2">
+                    {project.technologies.map((tech, idx) => (
+                      <span
+                        key={idx}
+                        className="px-2 py-1 text-xs bg-[#1A1A1A] text-gray-300 rounded"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )
+          })}
         </div>
       </div>
 

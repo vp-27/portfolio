@@ -142,19 +142,110 @@ export const mockPortfolio: PortfolioData = {
   totalReturnPercent: 27.61, // Weighted average of improvements
 }
 
-// Generate mock chart data for the last trading day (6.5 hours)
+// Generate career timeline chart data
+export const generateCareerTimelineData = (): ChartDataPoint[] => {
+  const data: ChartDataPoint[] = []
+  
+  // Career milestones with dates and momentum scores (0-100)
+  const milestones = [
+    { date: '2023-09', value: 20, label: 'Started Rutgers' },
+    { date: '2024-03', value: 35, label: 'Bender Trust Project' },
+    { date: '2024-06', value: 50, label: 'OroGenie Project' },
+    { date: '2024-07', value: 70, label: 'Kaktus Internship' },
+    { date: '2024-11', value: 75, label: 'Algo Trading Project' },
+    { date: '2025-03', value: 85, label: 'Shark Tank Finalist' },
+    { date: '2025-05', value: 88, label: 'GrindSheet Launch' },
+    { date: '2025-06', value: 90, label: 'Sunny Hackathon' },
+    { date: '2025-07', value: 95, label: 'Moweb Internship' },
+    { date: '2025-09', value: 100, label: 'SEBS Data Analyst' },
+  ]
+  
+  // Generate smooth curve between milestones
+  for (let i = 0; i < milestones.length - 1; i++) {
+    const current = milestones[i]
+    const next = milestones[i + 1]
+    const steps = 10
+    
+    for (let j = 0; j < steps; j++) {
+      const progress = j / steps
+      const value = current.value + (next.value - current.value) * progress
+      data.push({ 
+        time: current.date,
+        value: value,
+        label: j === 0 ? current.label : undefined
+      })
+    }
+  }
+  
+  // Add final milestone
+  const lastMilestone = milestones[milestones.length - 1]
+  data.push({ 
+    time: lastMilestone.date,
+    value: lastMilestone.value,
+    label: lastMilestone.label
+  })
+  
+  return data
+}
+
+// Filter timeline data by time range
+export const filterTimelineData = (range: string): ChartDataPoint[] => {
+  const allData = generateCareerTimelineData()
+  const now = new Date('2025-10-12') // Current date
+  
+  let startDate: Date
+  
+  switch (range) {
+    case '1D':
+      // Last week of activity (treating as recent)
+      startDate = new Date('2025-09-01')
+      break
+    case '1W':
+      // Last month
+      startDate = new Date('2025-09-01')
+      break
+    case '1M':
+      // Last 3 months
+      startDate = new Date('2025-07-01')
+      break
+    case '3M':
+      // Last 3 months
+      startDate = new Date('2025-07-01')
+      break
+    case 'YTD':
+      // Year to date (2025)
+      startDate = new Date('2025-01-01')
+      break
+    case '1Y':
+      // Last year
+      startDate = new Date('2024-10-01')
+      break
+    case 'ALL':
+    default:
+      // All time (from college start)
+      return allData
+  }
+  
+  // Filter data points based on date
+  return allData.filter(point => {
+    const pointDate = new Date(point.time + '-01')
+    return pointDate >= startDate
+  })
+}
+
+export const mockChartData = generateCareerTimelineData()
+
+// Keep old function for reference
 export const generateMockChartData = (): ChartDataPoint[] => {
   const data: ChartDataPoint[] = []
   const startValue = mockPortfolio.totalValue - mockPortfolio.todayReturn
-  const points = 78 // 6.5 hours * 12 points per hour (every 5 minutes)
+  const points = 78
   
   for (let i = 0; i <= points; i++) {
     const progress = i / points
-    // Add some randomness to make it look realistic
     const randomVariation = (Math.random() - 0.5) * 50
     const value = startValue + (mockPortfolio.todayReturn * progress) + randomVariation
     
-    // Generate time stamps (9:30 AM to 4:00 PM ET)
     const startHour = 9
     const startMinute = 30
     const totalMinutes = startMinute + (i * 5)
@@ -167,8 +258,6 @@ export const generateMockChartData = (): ChartDataPoint[] => {
   
   return data
 }
-
-export const mockChartData = generateMockChartData()
 
 // Skills Data for Portfolio Website
 export const mockSkills: Skill[] = [

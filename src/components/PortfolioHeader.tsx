@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { ChevronDown } from 'lucide-react'
 import type { PortfolioData } from '../types'
 
@@ -7,8 +8,15 @@ interface PortfolioHeaderProps {
 
 export default function PortfolioHeader({ portfolio }: PortfolioHeaderProps) {
   const isPositive = portfolio.todayReturn >= 0
-  const overnightReturn = -10.86
-  const overnightPercent = 0.31
+  const [showTimeline, setShowTimeline] = useState(false)
+
+  useEffect(() => {
+    // Show the dollar amount first, then transition to Timeline after 2 seconds
+    const timer = setTimeout(() => {
+      setShowTimeline(true)
+    }, 2000)
+    return () => clearTimeout(timer)
+  }, [])
 
   return (
     <div className="px-4 pt-4 pb-2">
@@ -23,35 +31,33 @@ export default function PortfolioHeader({ portfolio }: PortfolioHeaderProps) {
         </button>
       </div>
 
-      {/* Portfolio Value */}
+      {/* Portfolio Value - Changed to Timeline with animation */}
       <div className="mb-2">
-        <h1 className="text-3xl font-normal">
-          ${portfolio.totalValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+        <h1 className="text-3xl font-normal text-left transition-all duration-500">
+          {showTimeline ? (
+            'Timeline'
+          ) : (
+            `$${portfolio.totalValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+          )}
         </h1>
       </div>
 
-      {/* Today's Return */}
+      {/* Today's Return - Career Momentum */}
       <div className={`flex items-center gap-2 text-sm ${isPositive ? 'text-[#00C805]' : 'text-[#FF5000]'}`}>
         <span className="flex items-center">
           <span className="mr-1">{isPositive ? '▲' : '▼'}</span>
-          ${Math.abs(portfolio.todayReturn).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          {Math.abs(portfolio.todayReturnPercent).toFixed(2)}% Growth
         </span>
-        <span>
-          ({isPositive ? '' : ''}{portfolio.todayReturnPercent.toFixed(2)}%)
-        </span>
-        <span className="text-gray-400">Today</span>
+        <span className="text-gray-400">Recent</span>
       </div>
 
-      {/* Overnight Return */}
-      <div className={`flex items-center gap-2 text-sm mt-0.5 ${overnightReturn >= 0 ? 'text-[#00C805]' : 'text-[#FF5000]'}`}>
+      {/* Total Career Growth */}
+      <div className="flex items-center gap-2 text-sm mt-0.5 text-[#00C805]">
         <span className="flex items-center">
-          <span className="mr-1">{overnightReturn >= 0 ? '▲' : '▼'}</span>
-          ${Math.abs(overnightReturn).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          <span className="mr-1">▲</span>
+          {portfolio.totalReturnPercent.toFixed(2)}% Overall
         </span>
-        <span>
-          ({overnightPercent.toFixed(2)}%)
-        </span>
-        <span className="text-gray-400">Overnight</span>
+        <span className="text-gray-400">Career Growth</span>
       </div>
     </div>
   )

@@ -24,6 +24,8 @@ export interface PortfolioData {
 export interface ChartDataPoint {
   time: string
   value: number
+  label?: string
+  experienceId?: string
 }
 
 export interface Skill {
