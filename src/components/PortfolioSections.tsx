@@ -91,15 +91,15 @@ export default function PortfolioSections({ experiences, projects, education, ce
               ))}
               <div className="flex items-center gap-4 text-xs text-gray-400 mt-2 mb-3">
                 <div className="flex items-center gap-1">
-                  <MapPin className="w-3 h-3" />
+                  <MapPin className="w-3 h-3 text-[#FF5000]" />
                   <span>{edu.location}</span>
                 </div>
                 <div className="flex items-center gap-1">
-                  <Calendar className="w-3 h-3" />
+                  <Calendar className="w-3 h-3 text-[#00C805]" />
                   <span>{edu.graduationDate}</span>
                 </div>
               </div>
-              <p className="text-sm text-gray-300 mb-2">GPA: <span className="text-[#FF5000] font-medium">{edu.gpa}</span></p>
+              <p className="text-sm text-gray-300 mb-2">GPA: <span className="text-[#00C805] font-semibold">{edu.gpa}</span></p>
               <div className="text-sm text-gray-300">
                 <p className="font-medium mb-1">Honors:</p>
                 <ul className="space-y-1">
@@ -127,7 +127,7 @@ export default function PortfolioSections({ experiences, projects, education, ce
               <p className="text-sm text-gray-400">{cert.issuer}</p>
               {cert.date && (
                 <div className="flex items-center gap-1 text-xs text-gray-400 mt-1">
-                  <Calendar className="w-3 h-3" />
+                  <Calendar className="w-3 h-3 text-[#00C805]" />
                   <span>{cert.date}</span>
                 </div>
               )}

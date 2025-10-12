@@ -43,11 +43,11 @@ export default function ExperienceItem({ experience, isHighlighted }: Experience
             {/* Metadata Row */}
             <div className="flex items-center gap-4 text-xs text-gray-500">
               <div className="flex items-center gap-1.5">
-                <MapPin className="w-3.5 h-3.5" />
+                <MapPin className="w-3.5 h-3.5 text-[#FF5000]" />
                 <span>{experience.location}</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5" />
+                <Calendar className="w-3.5 h-3.5 text-[#00C805]" />
                 <span>{experience.startDate} – {experience.endDate}</span>
               </div>
             </div>

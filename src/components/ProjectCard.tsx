@@ -43,21 +43,34 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
         
         {/* Duration */}
         <div className="flex items-center gap-1.5 text-xs text-gray-500 mb-4">
-          <Calendar className="w-3.5 h-3.5" />
+          <Calendar className="w-3.5 h-3.5 text-[#00C805]" />
           <span>{project.duration}</span>
         </div>
 
         {/* Technologies */}
         {!isExpanded && project.technologies && project.technologies.length > 0 && (
           <div className="flex flex-wrap gap-1.5 mt-auto">
-            {project.technologies.slice(0, 3).map((tech, idx) => (
-              <span
-                key={idx}
-                className="px-2 py-1 text-[10px] font-medium bg-[#2A2A2A] text-gray-400 rounded border border-gray-700"
-              >
-                {tech}
-              </span>
-            ))}
+            {project.technologies.slice(0, 3).map((tech, idx) => {
+              // Color code technologies
+              const isFinancial = ['Bloomberg Terminal', 'Alpaca API', 'Yahoo Finance', 'Webull API'].includes(tech)
+              const isProgramming = ['Python', 'TypeScript', 'JavaScript', 'React', 'Flask', 'SQL', 'Node.js'].includes(tech)
+              
+              let badgeColor = 'bg-[#2A2A2A] text-gray-400 border-gray-700' // default
+              if (isFinancial) {
+                badgeColor = 'bg-[#00C805]/10 text-[#00C805] border-[#00C805]/30' // green for financial
+              } else if (isProgramming) {
+                badgeColor = 'bg-[#FF5000]/10 text-[#FF5000] border-[#FF5000]/30' // orange/red for programming
+              }
+              
+              return (
+                <span
+                  key={idx}
+                  className={`px-2 py-1 text-[10px] font-medium rounded border ${badgeColor}`}
+                >
+                  {tech}
+                </span>
+              )
+            })}
             {project.technologies.length > 3 && (
               <span className="px-2 py-1 text-[10px] font-medium text-gray-500">
                 +{project.technologies.length - 3}
@@ -97,14 +110,27 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
               {/* All Technologies */}
               {project.technologies && project.technologies.length > 0 && (
                 <div className="flex flex-wrap gap-1.5 mb-4">
-                  {project.technologies.map((tech, idx) => (
-                    <span
-                      key={idx}
-                      className="px-2 py-1 text-[10px] font-medium bg-[#2A2A2A] text-gray-400 rounded border border-gray-700"
-                    >
-                      {tech}
-                    </span>
-                  ))}
+                  {project.technologies.map((tech, idx) => {
+                    // Color code technologies
+                    const isFinancial = ['Bloomberg Terminal', 'Alpaca API', 'Yahoo Finance', 'Webull API'].includes(tech)
+                    const isProgramming = ['Python', 'TypeScript', 'JavaScript', 'React', 'Flask', 'SQL', 'Node.js', 'dbt-core'].includes(tech)
+                    
+                    let badgeColor = 'bg-[#2A2A2A] text-gray-400 border-gray-700' // default
+                    if (isFinancial) {
+                      badgeColor = 'bg-[#00C805]/10 text-[#00C805] border-[#00C805]/30' // green for financial
+                    } else if (isProgramming) {
+                      badgeColor = 'bg-[#FF5000]/10 text-[#FF5000] border-[#FF5000]/30' // orange/red for programming
+                    }
+                    
+                    return (
+                      <span
+                        key={idx}
+                        className={`px-2 py-1 text-[10px] font-medium rounded border ${badgeColor}`}
+                      >
+                        {tech}
+                      </span>
+                    )
+                  })}
                 </div>
               )}
 
@@ -115,7 +141,7 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
                     e.stopPropagation()
                     // Add visit link logic here
                   }}
-                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-[#2A2A2A] hover:bg-[#333333] text-white text-xs font-medium rounded transition-colors"
+                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-[#00C805]/10 hover:bg-[#00C805]/20 text-[#00C805] border border-[#00C805]/30 hover:border-[#00C805]/50 text-xs font-medium rounded transition-colors"
                 >
                   <ExternalLink className="w-3.5 h-3.5" />
                   Visit
@@ -125,7 +151,7 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
                     e.stopPropagation()
                     // Add code link logic here
                   }}
-                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-[#2A2A2A] hover:bg-[#333333] text-white text-xs font-medium rounded transition-colors"
+                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-[#FF5000]/10 hover:bg-[#FF5000]/20 text-[#FF5000] border border-[#FF5000]/30 hover:border-[#FF5000]/50 text-xs font-medium rounded transition-colors"
                 >
                   <Github className="w-3.5 h-3.5" />
                   Code
