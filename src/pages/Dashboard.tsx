@@ -13,6 +13,7 @@ export default function Dashboard() {
   const [timeRange, setTimeRange] = useState('ALL')
   const [highlightedItem, setHighlightedItem] = useState<string | null>(null)
   const [hoveredLabel, setHoveredLabel] = useState<string | null>(null)
+  const [searchQuery, setSearchQuery] = useState('')
 
   // Filter chart data based on selected time range
   const chartData = useMemo(() => {
@@ -38,6 +39,32 @@ export default function Dashboard() {
         return 'Full Journey'
       default:
         return 'Timeline'
+    }
+  }
+
+  // Handle navigation to sections
+  const handleNavigate = (section: string) => {
+    if (section === 'top') {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      return
+    }
+
+    const sectionElement = document.querySelector(`[data-section="${section}"]`)
+    if (sectionElement) {
+      const yOffset = -70 // Offset for fixed header
+      const y = sectionElement.getBoundingClientRect().top + window.pageYOffset + yOffset
+      window.scrollTo({ top: y, behavior: 'smooth' })
+    }
+  }
+
+  // Handle search
+  const handleSearch = (query: string) => {
+    setSearchQuery(query)
+    if (query) {
+      // Automatically scroll to skills section when searching
+      setTimeout(() => {
+        handleNavigate('skills')
+      }, 100)
     }
   }
 
@@ -75,7 +102,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <TopNav />
+      <TopNav onNavigate={handleNavigate} onSearch={handleSearch} />
       <div className="pt-14 pb-20 md:pb-8">
         <div className="max-w-7xl mx-auto">
           <div className="lg:grid lg:grid-cols-[1fr,400px] lg:gap-6">
@@ -123,6 +150,7 @@ export default function Dashboard() {
                   education={mockEducation}
                   certifications={mockCertifications}
                   highlightedItem={highlightedItem}
+                  searchQuery={searchQuery}
                 />
               </div>
             </div>
@@ -137,16 +165,19 @@ export default function Dashboard() {
                     education={mockEducation}
                     certifications={mockCertifications}
                     highlightedItem={highlightedItem}
+                    searchQuery={searchQuery}
                   />
                 </div>
                 
-                <AboutAndSkills skillCategories={mockSkillCategories} />
+                <div data-section="skills">
+                  <AboutAndSkills skillCategories={mockSkillCategories} searchQuery={searchQuery} />
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <BottomNav />
+      <BottomNav onNavigate={handleNavigate} />
     </div>
   )
 }

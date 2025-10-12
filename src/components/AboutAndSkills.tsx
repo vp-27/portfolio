@@ -5,6 +5,7 @@ import SkillItem from './SkillItem'
 
 interface AboutAndSkillsProps {
   skillCategories: SkillCategory[]
+  searchQuery?: string
 }
 
 interface AboutMeData {
@@ -29,8 +30,16 @@ const skillEmojis: Record<string, string> = {
   'soft': '🤝',
 }
 
-export default function AboutAndSkills({ skillCategories }: AboutAndSkillsProps) {
+export default function AboutAndSkills({ skillCategories, searchQuery = '' }: AboutAndSkillsProps) {
   const [expandedLists, setExpandedLists] = useState<Set<string>>(new Set())
+
+  // Filter skills based on search query
+  const filteredSkillCategories = skillCategories.map(category => ({
+    ...category,
+    skills: category.skills.filter(skill => 
+      !searchQuery || skill.name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  })).filter(category => category.skills.length > 0)
 
   const toggleList = (listId: string) => {
     const newExpanded = new Set(expandedLists)
@@ -45,7 +54,7 @@ export default function AboutAndSkills({ skillCategories }: AboutAndSkillsProps)
   return (
     <>
       {/* Desktop: Combined container */}
-      <div className="hidden lg:block bg-black rounded-lg border border-[#2D2D2D]">
+      <div className="hidden lg:block bg-black rounded-lg border border-[#2D2D2D]" data-section="about">
         {/* About Me Section */}
         <div className="border-b border-[#2D2D2D]">
           <div className="flex items-center border-b border-[#2D2D2D]">
@@ -83,7 +92,11 @@ export default function AboutAndSkills({ skillCategories }: AboutAndSkillsProps)
           </div>
           
           <div>
-            {skillCategories.map((category) => {
+            {filteredSkillCategories.length === 0 && searchQuery ? (
+              <p className="text-sm text-gray-400 text-center py-4 px-4">No skills match your search</p>
+            ) : (
+              <>
+                {filteredSkillCategories.map((category) => {
               const isExpanded = expandedLists.has(category.id)
               
               return (
@@ -113,6 +126,8 @@ export default function AboutAndSkills({ skillCategories }: AboutAndSkillsProps)
                 </div>
               )
             })}
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -120,7 +135,7 @@ export default function AboutAndSkills({ skillCategories }: AboutAndSkillsProps)
       {/* Mobile: Separate cards */}
       <div className="lg:hidden space-y-6">
         {/* About Me Card */}
-        <div>
+        <div data-section="about">
           <h2 className="text-xl font-medium mb-3 text-left">About Me</h2>
           <div className="bg-[#0D0D0D] rounded-lg p-6">
             <div className="space-y-4">
@@ -145,7 +160,11 @@ export default function AboutAndSkills({ skillCategories }: AboutAndSkillsProps)
         <div>
           <h2 className="text-xl font-medium mb-3 text-left">Skills</h2>
           <div className="bg-[#0D0D0D] rounded-lg border border-[#2D2D2D] overflow-hidden">
-            {skillCategories.map((category) => {
+            {filteredSkillCategories.length === 0 && searchQuery ? (
+              <p className="text-sm text-gray-400 text-center py-4 px-4">No skills match your search</p>
+            ) : (
+              <>
+                {filteredSkillCategories.map((category) => {
               const isExpanded = expandedLists.has(category.id)
               
               return (
@@ -178,6 +197,8 @@ export default function AboutAndSkills({ skillCategories }: AboutAndSkillsProps)
                 </div>
               )
             })}
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -7,16 +7,39 @@ interface PortfolioSectionsProps {
   education: Education[]
   certifications: Certification[]
   highlightedItem?: string | null
+  searchQuery?: string
 }
 
-export default function PortfolioSections({ experiences, projects, education, certifications, highlightedItem }: PortfolioSectionsProps) {
+export default function PortfolioSections({ experiences, projects, education, certifications, highlightedItem, searchQuery = '' }: PortfolioSectionsProps) {
+  // Filter function for search
+  const matchesSearch = (text: string) => {
+    if (!searchQuery) return true
+    return text.toLowerCase().includes(searchQuery.toLowerCase())
+  }
+
+  const filteredExperiences = experiences.filter(exp => 
+    matchesSearch(exp.position) || 
+    matchesSearch(exp.company) || 
+    exp.bullets.some(b => matchesSearch(b))
+  )
+
+  const filteredProjects = projects.filter(proj => 
+    matchesSearch(proj.name) || 
+    matchesSearch(proj.subtitle) || 
+    proj.bullets.some(b => matchesSearch(b)) ||
+    (proj.technologies && proj.technologies.some(t => matchesSearch(t)))
+  )
+
   return (
     <div className="mt-8 space-y-6">
       {/* Professional Experience Section */}
       <div>
         <h2 className="text-xl font-medium mb-3 text-left">Professional Experience</h2>
-        <div className="space-y-3">
-          {experiences.map((exp) => {
+        {filteredExperiences.length === 0 && searchQuery ? (
+          <p className="text-sm text-gray-400 text-center py-4">No experiences match your search</p>
+        ) : (
+          <div className="space-y-3">
+            {filteredExperiences.map((exp) => {
             const isHighlighted = highlightedItem && exp.company.includes(highlightedItem)
             return (
               <div 
@@ -52,14 +75,18 @@ export default function PortfolioSections({ experiences, projects, education, ce
               </div>
             )
           })}
-        </div>
+          </div>
+        )}
       </div>
 
       {/* Projects Section */}
       <div>
         <h2 className="text-xl font-medium mb-3 text-left">Projects</h2>
-        <div className="space-y-3">
-          {projects.map((project) => {
+        {filteredProjects.length === 0 && searchQuery ? (
+          <p className="text-sm text-gray-400 text-center py-4">No projects match your search</p>
+        ) : (
+          <div className="space-y-3">
+            {filteredProjects.map((project) => {
             const isHighlighted = highlightedItem && project.name.includes(highlightedItem)
             return (
               <div 
@@ -99,11 +126,12 @@ export default function PortfolioSections({ experiences, projects, education, ce
               </div>
             )
           })}
-        </div>
+          </div>
+        )}
       </div>
 
       {/* Education Section */}
-      <div>
+      <div data-section="education">
         <h2 className="text-xl font-medium mb-3 text-left">Education</h2>
         <div className="space-y-3">
           {education.map((edu) => (
