@@ -19,10 +19,10 @@ export default function ExperienceItem({ experience, isHighlighted }: Experience
       layout
       onClick={() => setIsExpanded(!isExpanded)}
       className={`
-        bg-[#1C1C1C] rounded-lg overflow-hidden cursor-pointer
+        bg-transparent rounded-lg overflow-hidden cursor-pointer
         transition-all duration-300 ease-out
         border border-gray-800
-        hover:border-gray-600 hover:bg-[#212121]
+        hover:border-gray-600 hover:bg-[#0A0A0A]
         ${isHighlighted ? 'ring-1 ring-[#00C805] border-[#00C805]' : ''}
       `}
     >

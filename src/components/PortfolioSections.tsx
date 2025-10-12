@@ -1,6 +1,7 @@
 import { MapPin, Calendar } from 'lucide-react'
 import type { Experience, Project, Education, Certification } from '../types'
 import ExperienceItem from './ExperienceItem'
+import ProjectCard from './ProjectCard'
 
 interface PortfolioSectionsProps {
   experiences: Experience[]
@@ -62,47 +63,17 @@ export default function PortfolioSections({ experiences, projects, education, ce
         {filteredProjects.length === 0 && searchQuery ? (
           <p className="text-sm text-gray-400 text-center py-4">No projects match your search</p>
         ) : (
-          <div className="space-y-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {filteredProjects.map((project) => {
-            const isHighlighted = highlightedItem && project.name.includes(highlightedItem)
-            return (
-              <div 
-                key={project.id} 
-                className={`bg-[#0D0D0D] rounded-lg p-6 transition-all duration-300 ${
-                  isHighlighted ? 'ring-2 ring-[#00C805] bg-[#1A1A1A]' : ''
-                }`}
-              >
-                <div className="mb-2">
-                  <h3 className="font-medium text-white">{project.name}</h3>
-                  <p className="text-sm text-gray-400">{project.subtitle}</p>
-                </div>
-                <div className="flex items-center gap-1 text-xs text-gray-400 mb-3">
-                  <Calendar className="w-3 h-3" />
-                  <span>{project.duration}</span>
-                </div>
-                <ul className="space-y-2 text-sm text-gray-300 mb-3">
-                  {project.bullets.map((bullet, idx) => (
-                    <li key={idx} className="flex gap-2">
-                      <span className="text-[#FF5000] mt-1">•</span>
-                      <span>{bullet}</span>
-                    </li>
-                  ))}
-                </ul>
-                {project.technologies && (
-                  <div className="flex flex-wrap gap-2">
-                    {project.technologies.map((tech, idx) => (
-                      <span
-                        key={idx}
-                        className="px-2 py-1 text-xs bg-[#1A1A1A] text-gray-300 rounded"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )
-          })}
+              const isHighlighted = !!(highlightedItem && project.name.includes(highlightedItem))
+              return (
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  isHighlighted={isHighlighted}
+                />
+              )
+            })}
           </div>
         )}
       </div>
@@ -113,7 +84,7 @@ export default function PortfolioSections({ experiences, projects, education, ce
         <div className="border-b border-gray-800 mb-4"></div>
         <div className="space-y-3">
           {education.map((edu) => (
-            <div key={edu.id} className="bg-[#0D0D0D] rounded-lg p-6">
+            <div key={edu.id} className="bg-transparent border border-gray-800 rounded-lg p-6 hover:border-gray-600 hover:bg-[#0A0A0A] transition-all">
               <h3 className="font-medium text-white mb-2">{edu.institution}</h3>
               {edu.degrees.map((degree, idx) => (
                 <p key={idx} className="text-sm text-gray-300 mb-1">{degree}</p>
@@ -151,7 +122,7 @@ export default function PortfolioSections({ experiences, projects, education, ce
         <div className="border-b border-gray-800 mb-4"></div>
         <div className="space-y-3">
           {certifications.map((cert) => (
-            <div key={cert.id} className="bg-[#0D0D0D] rounded-lg p-6">
+            <div key={cert.id} className="bg-transparent border border-gray-800 rounded-lg p-6 hover:border-gray-600 hover:bg-[#0A0A0A] transition-all">
               <h3 className="font-medium text-white">{cert.name}</h3>
               <p className="text-sm text-gray-400">{cert.issuer}</p>
               {cert.date && (
