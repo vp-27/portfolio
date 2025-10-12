@@ -38,7 +38,7 @@ export default function Dashboard() {
       case 'ALL':
         return 'Full Journey'
       default:
-        return 'Timeline'
+        return "Vandan's Timeline"
     }
   }
 

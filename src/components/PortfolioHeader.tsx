@@ -20,7 +20,7 @@ export default function PortfolioHeader({ portfolio, hoveredLabel }: PortfolioHe
   useEffect(() => {
     if (!hasTransitioned) {
       const timer = setTimeout(() => {
-        setCurrentText('Timeline')
+        setCurrentText("Vandan's Timeline")
         setHasTransitioned(true)
       }, 2000)
       return () => clearTimeout(timer)
@@ -33,7 +33,7 @@ export default function PortfolioHeader({ portfolio, hoveredLabel }: PortfolioHe
       if (hoveredLabel) {
         setCurrentText(hoveredLabel)
       } else {
-        setCurrentText('Timeline')
+        setCurrentText("Vandan's Timeline")
       }
     }
   }, [hoveredLabel, hasTransitioned])
