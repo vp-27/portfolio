@@ -56,12 +56,14 @@ export default function TopNav({ onNavigate, onSearch }: TopNavProps) {
           <div className="flex items-center">
             <button 
               onClick={() => handleNavigate('top')}
-              className="w-8 h-8 bg-[#00C805] rounded-sm flex items-center justify-center hover:bg-[#00b005] transition-colors"
+              className="flex items-center justify-center hover:opacity-80 transition-opacity"
               aria-label="Home"
             >
-              <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-black">
-                <path d="M12 2L2 7v10c0 5.5 3.8 10.7 10 12 6.2-1.3 10-6.5 10-12V7l-10-5z" />
-              </svg>
+              <img 
+                src="/images/vp-logo.png" 
+                alt="VP Logo" 
+                className="w-10 h-10"
+              />
             </button>
           </div>
 
