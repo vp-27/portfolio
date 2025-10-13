@@ -85,32 +85,50 @@ export default function PortfolioSections({ experiences, projects, education, ce
         <div className="space-y-3">
           {education.map((edu) => (
             <div key={edu.id} className="bg-transparent border border-gray-800 rounded-lg p-6 hover:border-gray-600 hover:bg-[#0A0A0A] transition-all">
-              <h3 className="font-medium text-white mb-2">{edu.institution}</h3>
-              {edu.degrees.map((degree, idx) => (
-                <p key={idx} className="text-sm text-gray-300 mb-1">{degree}</p>
-              ))}
-              <div className="flex items-center gap-4 text-xs text-gray-400 mt-2 mb-3">
-                <div className="flex items-center gap-1">
-                  <MapPin className="w-3 h-3 text-[#FF5000]" />
+              {/* Header with institution name and GPA */}
+              <div className="flex items-start justify-between mb-3">
+                <h3 className="font-medium text-white text-base">{edu.institution}</h3>
+                <div className="text-right">
+                  <div className="text-xs text-gray-400 mb-0.5">GPA</div>
+                  <div className="text-lg font-semibold text-[#00C805]">{edu.gpa}</div>
+                </div>
+              </div>
+              
+              {/* Degrees */}
+              <div className="space-y-1.5 mb-3">
+                {edu.degrees.map((degree, idx) => (
+                  <p key={idx} className="text-sm text-gray-300 leading-relaxed">{degree}</p>
+                ))}
+              </div>
+              
+              {/* Location and Date */}
+              <div className="flex items-center gap-4 text-xs text-gray-400 mb-3">
+                <div className="flex items-center gap-1.5">
+                  <MapPin className="w-3.5 h-3.5 text-gray-500" />
                   <span>{edu.location}</span>
                 </div>
-                <div className="flex items-center gap-1">
-                  <Calendar className="w-3 h-3 text-[#00C805]" />
+                <div className="flex items-center gap-1.5">
+                  <Calendar className="w-3.5 h-3.5 text-gray-500" />
                   <span>{edu.graduationDate}</span>
                 </div>
               </div>
-              <p className="text-sm text-gray-300 mb-2">GPA: <span className="text-[#00C805] font-semibold">{edu.gpa}</span></p>
-              <div className="text-sm text-gray-300">
-                <p className="font-medium mb-1">Honors:</p>
-                <ul className="space-y-1">
-                  {edu.honors.map((honor, idx) => (
-                    <li key={idx} className="flex gap-2">
-                      <span className="text-[#FF5000]">•</span>
-                      <span>{honor}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              
+              {/* Honors */}
+              {edu.honors && edu.honors.length > 0 && (
+                <div className="pt-3 border-t border-gray-800">
+                  <div className="flex items-start gap-2">
+                    <span className="text-xs text-gray-400 mt-0.5 flex-shrink-0">Honors</span>
+                    <div className="flex-1 space-y-1">
+                      {edu.honors.map((honor, idx) => (
+                        <div key={idx} className="flex items-start gap-2">
+                          <span className="text-[#00C805] mt-1.5 flex-shrink-0">•</span>
+                          <span className="text-sm text-gray-300">{honor}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </div>
