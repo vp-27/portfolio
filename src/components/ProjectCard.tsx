@@ -80,29 +80,16 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
         {/* Technologies */}
         {!isExpanded && project.technologies && project.technologies.length > 0 && (
           <div className="flex flex-wrap gap-1.5 mt-auto">
-            {project.technologies.slice(0, 3).map((tech, idx) => {
-              // Color code technologies
-              const isFinancial = ['Bloomberg Terminal', 'Alpaca API', 'Yahoo Finance', 'Webull API'].includes(tech)
-              const isProgramming = ['Python', 'TypeScript', 'JavaScript', 'React', 'Flask', 'SQL', 'Node.js'].includes(tech)
-              
-              let badgeColor = 'bg-[#2A2A2A] text-gray-400 border-gray-700' // default
-              if (isFinancial) {
-                badgeColor = 'bg-[#00C805]/10 text-[#00C805] border-[#00C805]/30' // green for financial
-              } else if (isProgramming) {
-                badgeColor = 'bg-[#FF5000]/10 text-[#FF5000] border-[#FF5000]/30' // orange/red for programming
-              }
-              
-              return (
-                <span
-                  key={idx}
-                  className={`px-2 py-1 text-[10px] font-medium rounded border ${badgeColor}`}
-                >
-                  {tech}
-                </span>
-              )
-            })}
+            {project.technologies.slice(0, 3).map((tech, idx) => (
+              <span
+                key={idx}
+                className="px-3 py-1.5 text-[11px] font-medium rounded-full bg-[#2C2C2E] text-white hover:bg-[#3A3A3C] transition-colors"
+              >
+                {tech}
+              </span>
+            ))}
             {project.technologies.length > 3 && (
-              <span className="px-2 py-1 text-[10px] font-medium text-gray-500">
+              <span className="px-3 py-1.5 text-[11px] font-medium text-gray-500 rounded-full bg-[#2C2C2E]">
                 +{project.technologies.length - 3}
               </span>
             )}
@@ -140,27 +127,14 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
               {/* All Technologies */}
               {project.technologies && project.technologies.length > 0 && (
                 <div className="flex flex-wrap gap-1.5 mb-4">
-                  {project.technologies.map((tech, idx) => {
-                    // Color code technologies
-                    const isFinancial = ['Bloomberg Terminal', 'Alpaca API', 'Yahoo Finance', 'Webull API'].includes(tech)
-                    const isProgramming = ['Python', 'TypeScript', 'JavaScript', 'React', 'Flask', 'SQL', 'Node.js', 'dbt-core'].includes(tech)
-                    
-                    let badgeColor = 'bg-[#2A2A2A] text-gray-400 border-gray-700' // default
-                    if (isFinancial) {
-                      badgeColor = 'bg-[#00C805]/10 text-[#00C805] border-[#00C805]/30' // green for financial
-                    } else if (isProgramming) {
-                      badgeColor = 'bg-[#FF5000]/10 text-[#FF5000] border-[#FF5000]/30' // orange/red for programming
-                    }
-                    
-                    return (
-                      <span
-                        key={idx}
-                        className={`px-2 py-1 text-[10px] font-medium rounded border ${badgeColor}`}
-                      >
-                        {tech}
-                      </span>
-                    )
-                  })}
+                  {project.technologies.map((tech, idx) => (
+                    <span
+                      key={idx}
+                      className="px-3 py-1.5 text-[11px] font-medium rounded-full bg-[#2C2C2E] text-white hover:bg-[#3A3A3C] transition-colors"
+                    >
+                      {tech}
+                    </span>
+                  ))}
                 </div>
               )}
             </div>
