@@ -62,6 +62,7 @@ export interface Project {
   technologies?: string[]
   liveUrl?: string
   githubUrl?: string
+  imageUrl?: string
 }
 
 export interface Education {

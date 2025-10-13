@@ -10,18 +10,30 @@ interface ProjectCardProps {
 
 export default function ProjectCard({ project, isHighlighted }: ProjectCardProps) {
   const [isExpanded, setIsExpanded] = useState(false)
+  
+  // Generate consistent random color based on project id
+  const getAccentColor = (id: string) => {
+    // Use project id to consistently generate same color
+    const hash = id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
+    return hash % 2 === 0 ? '#00C805' : '#FF5000' // Green or Orange/Red
+  }
+  
+  const accentColor = getAccentColor(project.id)
 
   return (
     <motion.div
       layout
       onClick={() => setIsExpanded(!isExpanded)}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
       className={`
         bg-[#1C1C1E] rounded-2xl overflow-hidden cursor-pointer
         transition-all duration-300 ease-out
         border border-transparent
-        hover:bg-[#232326]
+        hover:bg-[#232326] hover:shadow-lg
         ${isHighlighted ? 'ring-2 ring-[#00C805] border-[#00C805]' : ''}
         h-full flex flex-col
+        relative
       `}
     >
       {/* Collapsed State - Robinhood Card Style */}
@@ -32,6 +44,40 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
             <h3 className="font-bold text-white text-xl mb-1">{project.name}</h3>
             <p className="text-sm text-gray-500">{project.duration}</p>
           </div>
+
+          {/* Project Image Preview */}
+          {project.imageUrl ? (
+            <div 
+              className="mb-4 rounded-lg overflow-hidden bg-[#0A0A0A] h-24 flex items-center justify-center border-2"
+              style={{ borderColor: accentColor }}
+            >
+              <img 
+                src={project.imageUrl} 
+                alt={project.name}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  // Fallback if image fails to load
+                  e.currentTarget.style.display = 'none'
+                }}
+              />
+            </div>
+          ) : (
+            // Placeholder with gradient when no image
+            <div 
+              className="mb-4 rounded-lg h-24 flex items-center justify-center relative overflow-hidden border-2"
+              style={{ borderColor: accentColor }}
+            >
+              <div 
+                className="absolute inset-0 opacity-20"
+                style={{
+                  background: `linear-gradient(135deg, ${accentColor}33 0%, transparent 100%)`
+                }}
+              />
+              <svg className="w-12 h-12 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+          )}
 
           {/* Dotted line separator */}
           <div className="border-b border-dotted border-gray-700 mb-4"></div>
@@ -56,6 +102,11 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
           {/* Bottom section with subtitle */}
           <div className="mt-auto">
             <p className="text-sm text-gray-400 line-clamp-2">{project.subtitle}</p>
+            {/* Click indicator */}
+            <div className="flex items-center gap-1 mt-3 text-xs text-gray-500">
+              <span>Tap to expand</span>
+              <ChevronRight className="w-3 h-3" />
+            </div>
           </div>
         </div>
       ) : (
