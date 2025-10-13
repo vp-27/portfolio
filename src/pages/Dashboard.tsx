@@ -181,7 +181,7 @@ export default function Dashboard() {
               </div>
               
               <div className="md:px-4">
-                <BuyingPower portfolio={mockPortfolio} />
+                <BuyingPower />
               </div>
               
               {/* Experience Card - Shown above About Me */}

@@ -61,18 +61,16 @@ export default function PortfolioHeader({ portfolio, hoveredLabel }: PortfolioHe
       <div className={`flex items-center gap-2 text-sm ${isPositive ? 'text-[#00C805]' : 'text-[#FF5000]'}`}>
         <span className="flex items-center">
           <span className="mr-1">{isPositive ? '▲' : '▼'}</span>
-          {Math.abs(portfolio.todayReturnPercent).toFixed(2)}% Growth
+          Recent Growth
         </span>
-        <span className="text-gray-400">Recent</span>
       </div>
 
       {/* Total Career Growth */}
       <div className="flex items-center gap-2 text-sm mt-0.5 text-[#00C805]">
         <span className="flex items-center">
           <span className="mr-1">▲</span>
-          {portfolio.totalReturnPercent.toFixed(2)}% Overall
+          Career Growth
         </span>
-        <span className="text-gray-400">Career Growth</span>
       </div>
     </div>
   )
