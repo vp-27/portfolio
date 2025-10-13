@@ -22,13 +22,15 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
 
   return (
     <motion.div
-      layout
+      layout="position"
       onClick={() => setIsExpanded(!isExpanded)}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
+      transition={{ 
+        layout: { duration: 0.2, ease: [0.4, 0.0, 0.2, 1] },
+        default: { duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }
+      }}
       className={`
         bg-[#1C1C1E] rounded-2xl overflow-hidden cursor-pointer
-        transition-all duration-300 ease-out
+        transition-all duration-200 ease-out
         border border-transparent
         hover:bg-[#232326] hover:shadow-lg
         ${isHighlighted ? 'ring-2 ring-[#00C805] border-[#00C805]' : ''}
@@ -39,14 +41,17 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
       {/* Collapsed State - Robinhood Card Style */}
       {!isExpanded ? (
         <div className="p-5 flex flex-col h-full">
-          {/* Title and Subtitle */}
-          <div className="mb-3">
-            <h3 className="font-bold text-white text-xl mb-1">{project.name}</h3>
-            <p className="text-sm text-gray-500">{project.duration}</p>
+          {/* Title and Duration with Arrow */}
+          <div className="mb-3 flex items-start justify-between">
+            <div className="flex-1">
+              <h3 className="font-bold text-white text-xl mb-1">{project.name}</h3>
+              <p className="text-sm text-gray-500">{project.duration}</p>
+            </div>
+            <ChevronRight className="w-5 h-5 text-gray-500 flex-shrink-0 ml-2" />
           </div>
 
-          {/* Project Image Preview */}
-          {project.imageUrl ? (
+          {/* Project Image Preview - Only show if image exists */}
+          {project.imageUrl && (
             <div 
               className="mb-4 rounded-lg overflow-hidden bg-[#0A0A0A] h-24 flex items-center justify-center border-2"
               style={{ borderColor: accentColor }}
@@ -60,22 +65,6 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
                   e.currentTarget.style.display = 'none'
                 }}
               />
-            </div>
-          ) : (
-            // Placeholder with gradient when no image
-            <div 
-              className="mb-4 rounded-lg h-24 flex items-center justify-center relative overflow-hidden border-2"
-              style={{ borderColor: accentColor }}
-            >
-              <div 
-                className="absolute inset-0 opacity-20"
-                style={{
-                  background: `linear-gradient(135deg, ${accentColor}33 0%, transparent 100%)`
-                }}
-              />
-              <svg className="w-12 h-12 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-              </svg>
             </div>
           )}
 
@@ -102,20 +91,15 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
           {/* Bottom section with subtitle */}
           <div className="mt-auto">
             <p className="text-sm text-gray-400 line-clamp-2">{project.subtitle}</p>
-            {/* Click indicator */}
-            <div className="flex items-center gap-1 mt-3 text-xs text-gray-500">
-              <span>Tap to expand</span>
-              <ChevronRight className="w-3 h-3" />
-            </div>
           </div>
         </div>
       ) : (
         /* Expanded State */
-        <div className="p-5 flex-1">
-          <div className="flex items-start justify-between mb-3">
+        <div className="p-6 flex-1">
+          <div className="flex items-start justify-between mb-4">
             <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-white text-lg mb-1.5">{project.name}</h3>
-              <p className="text-sm text-gray-400 line-clamp-2">{project.subtitle}</p>
+              <h3 className="font-semibold text-white text-xl mb-1.5">{project.name}</h3>
+              <p className="text-sm text-gray-400">{project.subtitle}</p>
             </div>
             
             {/* Date Range and Chevron - Right Aligned */}
@@ -127,7 +111,7 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
               </div>
               <motion.div
                 animate={{ rotate: isExpanded ? 90 : 0 }}
-                transition={{ duration: 0.2 }}
+                transition={{ duration: 0.15, ease: [0.4, 0.0, 0.2, 1] }}
                 className="text-gray-500"
               >
                 <ChevronRight className="w-5 h-5" />
@@ -135,8 +119,28 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
             </div>
           </div>
 
+          {/* Large Project Image - Only show if image exists */}
+          {project.imageUrl && (
+            <motion.div 
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              transition={{ duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
+              className="mb-4 rounded-lg overflow-hidden bg-[#0A0A0A] border-2"
+              style={{ borderColor: accentColor }}
+            >
+              <img 
+                src={project.imageUrl} 
+                alt={project.name}
+                className="w-full h-48 object-cover"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none'
+                }}
+              />
+            </motion.div>
+          )}
+
           {/* Action Buttons */}
-          <div className="flex gap-2 mb-3">
+          <div className="flex gap-2 mb-4">
             {project.liveUrl && (
               <button
                 onClick={(e) => {
@@ -165,12 +169,12 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
 
           {/* Bullet points */}
           <div className="space-y-3 mb-4">
-            {project.bullets.slice(0, 2).map((bullet, idx) => (
+            {project.bullets.map((bullet, idx) => (
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: idx * 0.03 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: idx * 0.03, duration: 0.15, ease: [0.4, 0.0, 0.2, 1] }}
                 className="flex gap-3 text-sm text-gray-300 leading-relaxed"
               >
                 <span className="text-[#00C805] mt-0.5 flex-shrink-0 text-xs">▸</span>

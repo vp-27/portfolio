@@ -388,7 +388,7 @@ export const mockProjects: Project[] = [
       'Synthesized trade signals by analyzing historical volatility trends and intraday price action, achieving a Sharpe ratio of 1.7',
     ],
     technologies: ['Python', 'Alpaca API', 'Pandas', 'NumPy'],
-    imageUrl: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=200&fit=crop',
+    imageUrl: '/images/algostocktrading.png',
   },
   {
     id: '2',
@@ -417,7 +417,7 @@ export const mockProjects: Project[] = [
     ],
     technologies: ['React', 'PWA', 'TypeScript'],
     githubUrl: 'https://github.com/vp-27/grindsheet',
-    imageUrl: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&h=200&fit=crop',
+    imageUrl: '/images/grindsheetUsage.png',
   },
   {
     id: '4',
@@ -432,7 +432,7 @@ export const mockProjects: Project[] = [
     technologies: ['FastAPI', 'LLM', 'Pathway', 'Python'],
     liveUrl: 'https://insurance2-u4ew.onrender.com/',
     githubUrl: 'https://github.com/vp-27/insurance2',
-    imageUrl: 'https://images.unsplash.com/photo-1556155092-490a1ba16284?w=400&h=200&fit=crop',
+    imageUrl: '/images/sunny.png',
   },
   {
     id: '5',
@@ -447,7 +447,7 @@ export const mockProjects: Project[] = [
     technologies: ['React', 'Selenium', 'Python'],
     liveUrl: 'https://perkpal.vercel.app/',
     githubUrl: 'https://github.com/vp-27/perkopoly',
-    imageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=200&fit=crop',
+    imageUrl: '/images/perkpal.png',
   },
   {
     id: '6',
