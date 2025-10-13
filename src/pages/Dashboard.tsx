@@ -63,27 +63,6 @@ export default function Dashboard() {
   }
 
   // Get description for current time range
-  const getTimeRangeDescription = () => {
-    switch (timeRange) {
-      case '1D':
-        return 'Recent Activity'
-      case '1W':
-        return 'Last Month'
-      case '1M':
-        return 'Last 3 Months'
-      case '3M':
-        return 'Last Quarter'
-      case 'YTD':
-        return 'Year to Date (2025)'
-      case '1Y':
-        return 'Past Year'
-      case 'ALL':
-        return 'Full Journey'
-      default:
-        return "Vandan's Timeline"
-    }
-  }
-
   // Handle navigation to sections
   const handleNavigate = (section: string) => {
     if (section === 'top') {
@@ -161,15 +140,12 @@ export default function Dashboard() {
                   onPointHover={handleChartPointHover}
                 />
               </div>
-              <div className="py-2 md:px-4">
-                <p className="text-xs text-gray-500 text-center">{getTimeRangeDescription()}</p>
-              </div>
               <div className="flex items-center gap-1 py-2 text-xs md:px-4">
                 {['1D', '1W', '1M', '3M', 'YTD', '1Y', 'ALL'].map((range) => (
                   <button
                     key={range}
                     onClick={() => setTimeRange(range)}
-                    className={`px-2.5 py-1 rounded ${
+                    className={`px-2.5 py-1 rounded font-bold ${
                       timeRange === range
                         ? 'bg-[#00C805] text-black'
                         : 'bg-transparent text-gray-400 hover:text-white hover:bg-[#1A1A1A]'
