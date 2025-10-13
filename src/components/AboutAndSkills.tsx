@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { ChevronUp, ChevronDown, Plus, MapPin } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ChevronRight, Plus, MapPin } from 'lucide-react'
 import type { SkillCategory } from '../types'
 import SkillItem from './SkillItem'
 
@@ -100,7 +101,7 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '' }: Ab
               const isExpanded = expandedLists.has(category.id)
               
               return (
-                <div key={category.id}>
+                <motion.div key={category.id} layout>
                   <button
                     onClick={() => toggleList(category.id)}
                     className="w-full flex items-center justify-between px-4 py-3 bg-transparent hover:bg-[#1A1A1A] transition-colors"
@@ -111,19 +112,38 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '' }: Ab
                       </div>
                       <span className="text-white">{category.name}</span>
                     </div>
-                    <div className="text-gray-400">
-                      {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
-                    </div>
+                    <motion.div
+                      animate={{ rotate: isExpanded ? 90 : 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="text-gray-400"
+                    >
+                      <ChevronRight className="w-5 h-5" />
+                    </motion.div>
                   </button>
                   
-                  {isExpanded && category.skills.length > 0 && (
-                    <div className="bg-black">
-                      {category.skills.map((skill) => (
-                        <SkillItem key={skill.id} skill={skill} />
-                      ))}
-                    </div>
-                  )}
-                </div>
+                  <AnimatePresence>
+                    {isExpanded && category.skills.length > 0 && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.25, ease: [0.4, 0.0, 0.2, 1] }}
+                        className="overflow-hidden bg-black"
+                      >
+                        {category.skills.map((skill, idx) => (
+                          <motion.div
+                            key={skill.id}
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: idx * 0.02 }}
+                          >
+                            <SkillItem skill={skill} categoryIcon={category.icon} />
+                          </motion.div>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
               )
             })}
               </>
@@ -168,7 +188,7 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '' }: Ab
               const isExpanded = expandedLists.has(category.id)
               
               return (
-                <div key={category.id}>
+                <motion.div key={category.id} layout>
                   <button
                     onClick={() => toggleList(category.id)}
                     className="w-full flex items-center justify-between px-4 py-4 bg-transparent hover:bg-[#1A1A1A] transition-colors"
@@ -182,19 +202,38 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '' }: Ab
                         <span className="text-gray-500 text-sm">{category.skills.length} {category.skills.length === 1 ? 'item' : 'items'}</span>
                       </div>
                     </div>
-                    <div className="text-gray-400">
-                      {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
-                    </div>
+                    <motion.div
+                      animate={{ rotate: isExpanded ? 90 : 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="text-gray-400"
+                    >
+                      <ChevronRight className="w-5 h-5" />
+                    </motion.div>
                   </button>
                   
-                  {isExpanded && category.skills.length > 0 && (
-                    <div className="bg-black">
-                      {category.skills.map((skill) => (
-                        <SkillItem key={skill.id} skill={skill} />
-                      ))}
-                    </div>
-                  )}
-                </div>
+                  <AnimatePresence>
+                    {isExpanded && category.skills.length > 0 && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.25, ease: [0.4, 0.0, 0.2, 1] }}
+                        className="overflow-hidden bg-black"
+                      >
+                        {category.skills.map((skill, idx) => (
+                          <motion.div
+                            key={skill.id}
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: idx * 0.02 }}
+                          >
+                            <SkillItem skill={skill} categoryIcon={category.icon} />
+                          </motion.div>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
               )
             })}
               </>

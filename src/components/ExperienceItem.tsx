@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { MapPin, Calendar, ChevronRight } from 'lucide-react'
+import { MapPin, ChevronRight } from 'lucide-react'
 import type { Experience } from '../types'
 
 interface ExperienceItemProps {
@@ -28,38 +28,36 @@ export default function ExperienceItem({ experience, isHighlighted }: Experience
     >
       {/* Collapsed Header - Always Visible */}
       <div className="p-5">
-        <div className="flex items-start justify-between">
+        <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-1.5">
-              <h3 className="font-semibold text-white text-base truncate">{experience.position}</h3>
+            {/* Company Name - Most Prominent */}
+            <div className="flex items-center gap-2 mb-0.5">
+              <h3 className="font-semibold text-white text-base">{experience.company}</h3>
               {isCurrent && (
                 <span className="px-2 py-0.5 text-[10px] font-semibold bg-[#00C805] text-black rounded-sm flex-shrink-0">
                   ACTIVE
                 </span>
               )}
             </div>
-            <p className="text-sm text-gray-400 mb-3">{experience.company}</p>
-            
-            {/* Metadata Row */}
-            <div className="flex items-center gap-4 text-xs text-gray-500">
-              <div className="flex items-center gap-1.5">
-                <MapPin className="w-3.5 h-3.5 text-[#FF5000]" />
-                <span>{experience.location}</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5 text-[#00C805]" />
-                <span>{experience.startDate} – {experience.endDate}</span>
-              </div>
-            </div>
+            {/* Position - Secondary, Left-aligned */}
+            <p className="text-sm text-gray-400 text-left">{experience.position}</p>
           </div>
           
-          <motion.div
-            animate={{ rotate: isExpanded ? 90 : 0 }}
-            transition={{ duration: 0.2 }}
-            className="text-gray-500 ml-4 flex-shrink-0"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </motion.div>
+          {/* Date Range - Right Aligned */}
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <div className="text-right">
+              <p className="text-xs text-gray-400 whitespace-nowrap">
+                {experience.startDate} – {experience.endDate}
+              </p>
+            </div>
+            <motion.div
+              animate={{ rotate: isExpanded ? 90 : 0 }}
+              transition={{ duration: 0.2 }}
+              className="text-gray-500"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </motion.div>
+          </div>
         </div>
       </div>
 
@@ -74,7 +72,13 @@ export default function ExperienceItem({ experience, isHighlighted }: Experience
             className="overflow-hidden"
           >
             <div className="px-5 pb-5 pt-2 border-t border-gray-800">
-              <div className="space-y-3.5 mt-4">
+              {/* Location info - Using Robinhood Red */}
+              <div className="flex items-center gap-1.5 text-xs mb-4 mt-3">
+                <MapPin className="w-3.5 h-3.5 text-[#FF5000]" />
+                <span className="text-[#FF5000]">{experience.location}</span>
+              </div>
+              
+              <div className="space-y-3.5">
                 {experience.bullets.map((bullet, idx) => (
                   <motion.div
                     key={idx}
