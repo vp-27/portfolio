@@ -400,6 +400,8 @@ export const mockProjects: Project[] = [
       'Enhanced SQL-driven portfolio analytics, evaluating performance trends, asset allocation, and risk exposure to support risk-managed trading strategies and quantitative trading analysis',
     ],
     technologies: ['React', 'Flask', 'WebSocket', 'SQL', 'Yahoo Finance API'],
+    liveUrl: 'https://orogenie.vercel.app/',
+    githubUrl: 'https://github.com/vp-27/orogenie',
   },
   {
     id: '3',
@@ -412,6 +414,7 @@ export const mockProjects: Project[] = [
       'Increased engagement 40% through gamified badges and leaderboards, leveraging behavioral psychology to drive retention',
     ],
     technologies: ['React', 'PWA', 'TypeScript'],
+    githubUrl: 'https://github.com/vp-27/grindsheet',
   },
   {
     id: '4',
@@ -424,6 +427,8 @@ export const mockProjects: Project[] = [
       'Built an LLM co-pilot on a FastAPI backend to serve personalized recommendations with natural language explanations',
     ],
     technologies: ['FastAPI', 'LLM', 'Pathway', 'Python'],
+    liveUrl: 'https://insurance2-u4ew.onrender.com/',
+    githubUrl: 'https://github.com/vp-27/insurance2',
   },
   {
     id: '5',
@@ -436,6 +441,8 @@ export const mockProjects: Project[] = [
       'Presented venture pitch to investor panel, securing finalist recognition for platform\'s scalability and technical innovation',
     ],
     technologies: ['React', 'Selenium', 'Python'],
+    liveUrl: 'https://perkpal.vercel.app/',
+    githubUrl: 'https://github.com/vp-27/perkopoly',
   },
   {
     id: '6',

@@ -51,26 +51,30 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
 
         {/* Action Buttons - Always Visible */}
         <div className="flex gap-2 mb-3">
-          <button
-            onClick={(e) => {
-              e.stopPropagation()
-              // Add visit link logic here
-            }}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-[#00C805]/10 hover:bg-[#00C805]/20 text-[#00C805] border border-[#00C805]/30 hover:border-[#00C805]/50 text-xs font-medium rounded transition-colors"
-          >
-            <ExternalLink className="w-3.5 h-3.5" />
-            Visit
-          </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation()
-              // Add code link logic here
-            }}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-[#FF5000]/10 hover:bg-[#FF5000]/20 text-[#FF5000] border border-[#FF5000]/30 hover:border-[#FF5000]/50 text-xs font-medium rounded transition-colors"
-          >
-            <Github className="w-3.5 h-3.5" />
-            Code
-          </button>
+          {project.liveUrl && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                window.open(project.liveUrl, '_blank')
+              }}
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-[#00C805]/10 hover:bg-[#00C805]/20 text-[#00C805] border border-[#00C805]/30 hover:border-[#00C805]/50 text-xs font-medium rounded transition-colors"
+            >
+              <ExternalLink className="w-3.5 h-3.5" />
+              Visit
+            </button>
+          )}
+          {project.githubUrl && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                window.open(project.githubUrl, '_blank')
+              }}
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-[#FF5000]/10 hover:bg-[#FF5000]/20 text-[#FF5000] border border-[#FF5000]/30 hover:border-[#FF5000]/50 text-xs font-medium rounded transition-colors"
+            >
+              <Github className="w-3.5 h-3.5" />
+              Code
+            </button>
+          )}
         </div>
 
         {/* Technologies */}

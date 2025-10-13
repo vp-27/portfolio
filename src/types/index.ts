@@ -60,6 +60,8 @@ export interface Project {
   duration: string
   bullets: string[]
   technologies?: string[]
+  liveUrl?: string
+  githubUrl?: string
 }
 
 export interface Education {
