@@ -143,7 +143,7 @@ export const mockStocks: Stock[] = [
 ]
 
 export const mockPortfolio: PortfolioData = {
-  totalValue: 52027.00, // Total "market value" of all experiences
+  totalValue: 5202.70, // Total "market value" of all experiences
   buyingPower: 394.00, // GPA * 100 = 3.94 * 100
   todayReturn: 84.16,
   todayReturnPercent: 2.15,
