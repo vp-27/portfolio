@@ -162,12 +162,12 @@ export default function Dashboard() {
                 ))}
               </div>
               
-              <div className="md:px-4">
+              <div className="px-4 md:px-4">
                 <BuyingPower />
               </div>
               
               {/* Experience Card - Shown above About Me */}
-              <div className="md:px-4 mb-6 mt-6">
+              <div className="px-4 md:px-4 mb-6 mt-6">
                 <ExperienceCard 
                   experience={lastHoveredExperience.data} 
                   type={lastHoveredExperience.type}
@@ -176,12 +176,12 @@ export default function Dashboard() {
               </div>
               
               {/* About Me - Shown on mobile right under Experience Card */}
-              <div className="lg:hidden md:px-4 mb-6" data-section="about">
+              <div className="lg:hidden px-4 md:px-4 mb-6" data-section="about">
                 <AboutAndSkills skillCategories={mockSkillCategories} searchQuery={searchQuery} />
               </div>
               
               {/* Portfolio Sections - Hidden on mobile, shown on desktop in left column */}
-              <div className="hidden lg:block md:px-4" data-section="experience">
+              <div className="hidden lg:block px-4 md:px-4" data-section="experience">
                 <PortfolioSections 
                   experiences={mockExperiences}
                   projects={mockProjects}
@@ -196,7 +196,7 @@ export default function Dashboard() {
             <div className="lg:pr-4 mt-6 lg:mt-0">
               <div className="lg:pt-4">
                 {/* Portfolio Sections - Shown on mobile, hidden on desktop */}
-                <div className="lg:hidden mb-6" data-section="projects">
+                <div className="lg:hidden px-4 mb-6" data-section="projects">
                   <PortfolioSections 
                     experiences={mockExperiences}
                     projects={mockProjects}
