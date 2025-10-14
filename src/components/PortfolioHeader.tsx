@@ -21,7 +21,7 @@ export default function PortfolioHeader({ portfolio, hoveredLabel }: PortfolioHe
       const timer = setTimeout(() => {
         setCurrentText("Vandan's Timeline")
         setHasTransitioned(true)
-      }, 2000)
+      }, 500)
       return () => clearTimeout(timer)
     }
   }, [hasTransitioned])
