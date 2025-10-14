@@ -310,8 +310,15 @@ export const filterTimelineData = (range: string): ChartDataPoint[] => {
   }
   
   // Filter data points based on date
+  // Parse "Mon YYYY" format properly for mobile compatibility
   return allData.filter(point => {
-    const pointDate = new Date(point.time + '-01')
+    // point.time format is "Mon YYYY" (e.g., "Sep 2023")
+    const [monthStr, yearStr] = point.time.split(' ')
+    const monthMap: { [key: string]: number } = {
+      'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
+      'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
+    }
+    const pointDate = new Date(parseInt(yearStr), monthMap[monthStr] || 0, 1)
     return pointDate >= startDate
   })
 }
