@@ -45,14 +45,16 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
     if (payload.label) {
       const isActive = activeLabel === payload.label
       const dotColor = isActive ? '#E8A03D' : strokeColor
+      const dotRadius = isActive ? 6 : 4
+      const strokeWidth = isActive ? 2 : 1.5
       return (
         <circle
           cx={cx}
           cy={cy}
-          r={4}
+          r={dotRadius}
           fill={dotColor}
           stroke="#000"
-          strokeWidth={1.5}
+          strokeWidth={strokeWidth}
           className="cursor-pointer hover:r-6 transition-all"
         />
       )
