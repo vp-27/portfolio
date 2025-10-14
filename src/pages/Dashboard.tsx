@@ -146,20 +146,22 @@ export default function Dashboard() {
                   onPointHover={handleChartPointHover}
                 />
               </div>
-              <div className="flex items-center gap-1 py-2 text-xs px-4">
-                {['1D', '1W', '1M', '3M', 'YTD', '1Y', 'ALL'].map((range) => (
-                  <button
-                    key={range}
-                    onClick={() => setTimeRange(range)}
-                    className={`px-2.5 py-1 rounded font-bold ${
-                      timeRange === range
-                        ? 'bg-[#00C805] text-black'
-                        : 'bg-transparent text-gray-400 hover:text-white hover:bg-[#1A1A1A]'
-                    } transition-colors`}
-                  >
-                    {range}
-                  </button>
-                ))}
+              <div className="px-4 md:px-4">
+                <div className="flex items-center gap-1 py-2 text-xs pb-3 border-b border-[#2D2D2D]">
+                  {['1D', '1W', '1M', '3M', 'YTD', '1Y', 'ALL'].map((range) => (
+                    <button
+                      key={range}
+                      onClick={() => setTimeRange(range)}
+                      className={`px-2.5 py-1 rounded font-bold ${
+                        timeRange === range
+                          ? 'bg-[#00C805] text-black'
+                          : 'bg-transparent text-gray-400 hover:text-white hover:bg-[#1A1A1A]'
+                      } transition-colors`}
+                    >
+                      {range}
+                    </button>
+                  ))}
+                </div>
               </div>
               
               <div className="px-4 md:px-4">

@@ -66,7 +66,7 @@ export default function PortfolioHeader({ portfolio, hoveredLabel }: PortfolioHe
       </div>
 
       {/* Total Career Growth */}
-      <div className="flex items-center gap-2 text-sm mt-0.5 text-[#00C805] pb-3 border-b border-[#2D2D2D]">
+      <div className="flex items-center gap-2 text-sm mt-0.5 text-[#00C805]">
         <span className="flex items-center">
           <span className="mr-1">▲</span>
           Career Growth
