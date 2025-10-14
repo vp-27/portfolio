@@ -146,7 +146,7 @@ export default function Dashboard() {
                   onPointHover={handleChartPointHover}
                 />
               </div>
-              <div className="flex items-center gap-1 py-2 text-xs md:px-4">
+              <div className="flex items-center gap-1 py-2 text-xs px-4">
                 {['1D', '1W', '1M', '3M', 'YTD', '1Y', 'ALL'].map((range) => (
                   <button
                     key={range}
