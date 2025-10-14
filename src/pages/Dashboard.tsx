@@ -177,7 +177,7 @@ export default function Dashboard() {
               
               {/* About Me - Shown on mobile right under Experience Card */}
               <div className="lg:hidden px-4 md:px-4 mb-6" data-section="about">
-                <AboutAndSkills skillCategories={mockSkillCategories} searchQuery={searchQuery} />
+                <AboutAndSkills skillCategories={mockSkillCategories} searchQuery={searchQuery} showOnlyAbout={true} />
               </div>
               
               {/* Portfolio Sections - Hidden on mobile, shown on desktop in left column */}
@@ -207,9 +207,9 @@ export default function Dashboard() {
                   />
                 </div>
                 
-                {/* Skills section - Hidden on mobile (moved above), shown on desktop */}
-                <div className="hidden lg:block" data-section="skills">
-                  <AboutAndSkills skillCategories={mockSkillCategories} searchQuery={searchQuery} />
+                {/* Skills section - Moved to bottom on mobile, combined with About on desktop */}
+                <div className="lg:block px-4 lg:px-0 mb-6 lg:mb-0" data-section="skills">
+                  <AboutAndSkills skillCategories={mockSkillCategories} searchQuery={searchQuery} showOnlySkills={true} />
                 </div>
               </div>
             </div>

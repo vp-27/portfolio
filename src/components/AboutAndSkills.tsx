@@ -7,6 +7,8 @@ import SkillItem from './SkillItem'
 interface AboutAndSkillsProps {
   skillCategories: SkillCategory[]
   searchQuery?: string
+  showOnlyAbout?: boolean
+  showOnlySkills?: boolean
 }
 
 interface AboutMeData {
@@ -31,7 +33,7 @@ const skillEmojis: Record<string, string> = {
   'soft': '🤝',
 }
 
-export default function AboutAndSkills({ skillCategories, searchQuery = '' }: AboutAndSkillsProps) {
+export default function AboutAndSkills({ skillCategories, searchQuery = '', showOnlyAbout = false, showOnlySkills = false }: AboutAndSkillsProps) {
   const [expandedLists, setExpandedLists] = useState<Set<string>>(new Set())
 
   // Filter skills based on search query
@@ -155,31 +157,34 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '' }: Ab
       {/* Mobile: Separate cards */}
       <div className="lg:hidden space-y-6">
         {/* About Me Card */}
-        <div data-section="about">
-          <h2 className="text-xl font-bold mb-3 text-left">About Me</h2>
-          <div className="bg-[#0D0D0D] rounded-lg p-6">
-            <div className="space-y-4">
-              <div>
-                <h3 className="text-base font-medium mb-1">{aboutData.name}</h3>
-                <p className="text-sm text-gray-400">{aboutData.title}</p>
-              </div>
+        {!showOnlySkills && (
+          <div data-section="about">
+            <h2 className="text-xl font-bold mb-3 text-left">About Me</h2>
+            <div className="bg-[#0D0D0D] rounded-lg p-6">
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-base font-medium mb-1">{aboutData.name}</h3>
+                  <p className="text-sm text-gray-400">{aboutData.title}</p>
+                </div>
 
-              <div className="flex items-center gap-2 text-sm text-gray-400">
-                <MapPin className="w-4 h-4" />
-                <span>{aboutData.location}</span>
-              </div>
+                <div className="flex items-center gap-2 text-sm text-gray-400">
+                  <MapPin className="w-4 h-4" />
+                  <span>{aboutData.location}</span>
+                </div>
 
-              <p className="text-sm text-gray-400 leading-relaxed">
-                {aboutData.bio}
-              </p>
+                <p className="text-sm text-gray-400 leading-relaxed">
+                  {aboutData.bio}
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Skills Card */}
-        <div>
-          <h2 className="text-xl font-bold mb-3 text-left">Skills</h2>
-          <div className="bg-[#0D0D0D] rounded-lg border border-[#2D2D2D] overflow-hidden">
+        {!showOnlyAbout && (
+          <div data-section="skills">
+            <h2 className="text-xl font-bold mb-3 text-left">Skills</h2>
+            <div className="bg-[#0D0D0D] rounded-lg border border-[#2D2D2D] overflow-hidden">
             {filteredSkillCategories.length === 0 && searchQuery ? (
               <p className="text-sm text-gray-400 text-center py-4 px-4">No skills match your search</p>
             ) : (
@@ -238,8 +243,9 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '' }: Ab
             })}
               </>
             )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </>
   )
