@@ -144,6 +144,7 @@ export default function Dashboard() {
                   isPositive={mockPortfolio.todayReturn >= 0}
                   onPointClick={handleChartPointClick}
                   onPointHover={handleChartPointHover}
+                  activeLabel={hoveredLabel}
                 />
               </div>
               <div className="px-4 md:px-4">

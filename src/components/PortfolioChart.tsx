@@ -6,9 +6,10 @@ interface PortfolioChartProps {
   isPositive: boolean
   onPointClick?: (point: ChartDataPoint) => void
   onPointHover?: (label: string | null) => void
+  activeLabel?: string | null
 }
 
-export default function PortfolioChart({ data, isPositive, onPointClick, onPointHover }: PortfolioChartProps) {
+export default function PortfolioChart({ data, isPositive, onPointClick, onPointHover, activeLabel }: PortfolioChartProps) {
   const strokeColor = isPositive ? '#00C805' : '#FF5000'
 
   const handleMouseMove = (data: any) => {
@@ -42,12 +43,14 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
     const { cx, cy, payload } = props
     // Only show dots for points with labels (milestones)
     if (payload.label) {
+      const isActive = activeLabel === payload.label
+      const dotColor = isActive ? '#E8A03D' : strokeColor
       return (
         <circle
           cx={cx}
           cy={cy}
           r={4}
-          fill={strokeColor}
+          fill={dotColor}
           stroke="#000"
           strokeWidth={1.5}
           className="cursor-pointer hover:r-6 transition-all"
@@ -98,7 +101,20 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
             animationDuration={500}
             isAnimationActive={true}
             dot={<CustomDot />}
-            activeDot={{ r: 6, fill: strokeColor, stroke: '#000', strokeWidth: 2 }}
+            activeDot={(props: any) => {
+              const isActive = activeLabel === props.payload.label
+              const dotColor = isActive ? '#E8A03D' : strokeColor
+              return (
+                <circle
+                  cx={props.cx}
+                  cy={props.cy}
+                  r={6}
+                  fill={dotColor}
+                  stroke="#000"
+                  strokeWidth={2}
+                />
+              )
+            }}
           />
         </AreaChart>
       </ResponsiveContainer>
