@@ -155,47 +155,118 @@ export const mockPortfolio: PortfolioData = {
 export const generateCareerTimelineData = (): ChartDataPoint[] => {
   const data: ChartDataPoint[] = []
   
-  // Career milestones with dates and momentum scores (0-100)
+  // Career milestones - values represent skill/experience PLATEAUS
+  // Pattern: Gradual rise → SPIKE UP at achievement → SUSTAIN at new plateau → Continue building
   const milestones = [
-    { date: '2023-09', value: 15, label: 'Started Rutgers' },
-    { date: '2024-03', value: 32, label: 'Bender Trust Project' },
-    { date: '2024-06', value: 48, label: 'OroGenie Project' },
-    { date: '2024-07', value: 68, label: 'Kaktus Internship' }, // Big bump for internship
-    { date: '2024-11', value: 72, label: 'Algo Trading Project' },
-    { date: '2025-03', value: 80, label: 'Shark Tank Finalist' },
-    { date: '2025-05', value: 83, label: 'GrindSheet Launch' },
-    { date: '2025-06', value: 85, label: 'Sunny Hackathon' },
-    { date: '2025-07', value: 92, label: 'Moweb Internship' }, // Big bump for internship
-    { date: '2025-09', value: 100, label: 'SEBS Data Analyst' }, // Big bump for internship
+    { date: '2023-09', value: 15, label: 'Started Rutgers', type: 'start' },
+    { date: '2023-12', value: 20, label: null, type: 'learning' }, // Fall semester learning
+    { date: '2024-01', value: 22, label: null, type: 'learning' }, // Continued learning
+    { date: '2024-03', value: 28, label: 'Bender Trust', type: 'project' }, // Project milestone
+    { date: '2024-05', value: 35, label: null, type: 'learning' }, // Spring semester
+    { date: '2024-06', value: 42, label: 'OroGenie', type: 'project' }, // Major project
+    { date: '2024-07', value: 70, label: 'Kaktus Financial Ops', type: 'internship' }, // LEVEL UP - Floor 2
+    { date: '2024-09', value: 71, label: null, type: 'sustain' }, // Sustain Floor 2 (kept skills)
+    { date: '2024-11', value: 73, label: 'Algo Trading Bot', type: 'project' }, // Building on Floor 2
+    { date: '2025-01', value: 75, label: null, type: 'learning' }, // Continued growth
+    { date: '2025-03', value: 80, label: 'Shark Tank Top 6', type: 'competition' }, // Competition boost
+    { date: '2025-05', value: 83, label: 'GrindSheet', type: 'project' }, // Project
+    { date: '2025-06', value: 85, label: 'Sunny Insurance', type: 'project' }, // Hackathon
+    { date: '2025-07', value: 95, label: 'Moweb Data Team', type: 'internship' }, // LEVEL UP - Floor 3
+    { date: '2025-09', value: 100, label: 'SEBS Data Analyst', type: 'internship' }, // LEVEL UP - Floor 4 (current)
   ]
   
-  // Generate curve with volatility between milestones
+  // Generate curve with step-change growth pattern
   for (let i = 0; i < milestones.length - 1; i++) {
     const current = milestones[i]
     const next = milestones[i + 1]
-    const steps = 10
+    const steps = 14
+    const valueDiff = next.value - current.value
     
-    for (let j = 0; j < steps; j++) {
-      const progress = j / steps
-      // Add some upward volatility using sine wave
-      const volatility = Math.sin(progress * Math.PI * 3) * (next.value - current.value) * 0.08
-      const baseValue = current.value + (next.value - current.value) * progress
-      const value = baseValue + volatility
-      
-      data.push({ 
+    // Add the current milestone point with its dot
+    if (i === 0 || current.label) {
+      data.push({
         time: formatDate(current.date),
-        value: Math.max(current.value, value), // Ensure we don't go below current milestone
-        label: j === 0 ? current.label : undefined
+        value: current.value,
+        label: current.label || undefined
+      })
+    }
+    
+    // Generate journey TO the next milestone
+    for (let j = 1; j < steps; j++) {
+      const progress = j / steps
+      const baseValue = current.value + valueDiff * progress
+      let value = baseValue
+      
+      if (next.type === 'internship') {
+        // Journey TO internship: steady rise, then SHARP SPIKE UP to new plateau
+        if (progress < 0.7) {
+          // Pre-internship: steady upward build
+          const steadyGrowth = progress * Math.abs(valueDiff) * 0.2
+          const noise = (Math.random() - 0.5) * 1.8
+          value = current.value + steadyGrowth + noise
+        } else {
+          // SPIKE UP phase - reaching new floor
+          const spike = Math.pow((progress - 0.7) / 0.3, 2.8)
+          const totalRise = Math.abs(valueDiff)
+          value = current.value + (totalRise * 0.2) + (totalRise * 0.8 * spike) + (Math.random() - 0.3) * 1.5
+        }
+      } else if (next.type === 'sustain') {
+        // SUSTAIN phase: stay at elevated level with small fluctuations
+        // This is the plateau after an internship - you MAINTAIN the skills
+        const flatFluctuation = Math.sin(progress * Math.PI * 4) * Math.abs(valueDiff) * 0.4
+        const noise = (Math.random() - 0.5) * 1.5
+        value = baseValue + flatFluctuation + noise
+      } else if (next.type === 'project') {
+        // Journey TO project: steady upward growth on current plateau
+        const growth = Math.sin(progress * Math.PI) * Math.abs(valueDiff) * 0.2
+        const noise = (Math.random() - 0.5) * 2.0
+        value = baseValue + growth + noise
+      } else if (next.type === 'competition') {
+        // Journey TO competition: build then boost at result
+        if (progress < 0.65) {
+          const steady = Math.sin(progress * Math.PI * 1.2) * Math.abs(valueDiff) * 0.18
+          const noise = (Math.random() - 0.5) * 1.8
+          value = baseValue + steady + noise
+        } else {
+          // Boost from competition success
+          const boost = Math.pow((progress - 0.65) / 0.35, 2.2)
+          value = current.value + Math.abs(valueDiff) * 0.3 + (Math.abs(valueDiff) * 0.7 * boost) + (Math.random() - 0.35) * 1.5
+        }
+      } else if (next.type === 'learning') {
+        // Learning phase: steady upward growth (coursework, skills building)
+        const learning = Math.sin(progress * Math.PI) * Math.abs(valueDiff) * 0.18
+        const noise = (Math.random() - 0.5) * 1.8
+        value = baseValue + learning + noise
+      } else {
+        // Default: moderate steady growth
+        const wave = Math.sin(progress * Math.PI * 1.5) * Math.abs(valueDiff) * 0.18
+        const noise = (Math.random() - 0.5) * 1.8
+        value = baseValue + wave + noise
+      }
+      
+      // Add small realistic volatility (NOT crashes, just normal fluctuation)
+      if (Math.random() < 0.11 && j > 2 && j < steps - 2) {
+        value -= (Math.random() * 2.0 + 0.3) // Small dips
+      }
+      
+      if (Math.random() < 0.09 && j > 2 && j < steps - 2) {
+        value += (Math.random() * 2.0 + 0.3) // Small spikes
+      }
+      
+      data.push({
+        time: formatDate(current.date),
+        value: Math.max(current.value - 2, Math.min(next.value + 1, value)), // Tight bounds - no big drops
+        label: undefined
       })
     }
   }
   
   // Add final milestone
   const lastMilestone = milestones[milestones.length - 1]
-  data.push({ 
+  data.push({
     time: formatDate(lastMilestone.date),
     value: lastMilestone.value,
-    label: lastMilestone.label
+    label: lastMilestone.label || undefined
   })
   
   return data

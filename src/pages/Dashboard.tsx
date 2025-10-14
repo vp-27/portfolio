@@ -23,14 +23,14 @@ export default function Dashboard() {
 
   // Milestone to Experience/Project mapping
   const milestoneMap = useMemo(() => ({
-    'Bender Trust Project': { type: 'project' as const, id: '6' },
-    'OroGenie Project': { type: 'project' as const, id: '2' },
-    'Kaktus Internship': { type: 'experience' as const, id: '3' },
-    'Algo Trading Project': { type: 'project' as const, id: '1' },
-    'Shark Tank Finalist': { type: 'project' as const, id: '5' },
-    'GrindSheet Launch': { type: 'project' as const, id: '3' },
-    'Sunny Hackathon': { type: 'project' as const, id: '4' },
-    'Moweb Internship': { type: 'experience' as const, id: '2' },
+    'Bender Trust': { type: 'project' as const, id: '6' },
+    'OroGenie': { type: 'project' as const, id: '2' },
+    'Kaktus Financial Ops': { type: 'experience' as const, id: '3' },
+    'Algo Trading Bot': { type: 'project' as const, id: '1' },
+    'Shark Tank Top 6': { type: 'project' as const, id: '5' },
+    'GrindSheet': { type: 'project' as const, id: '3' },
+    'Sunny Insurance': { type: 'project' as const, id: '4' },
+    'Moweb Data Team': { type: 'experience' as const, id: '2' },
     'SEBS Data Analyst': { type: 'experience' as const, id: '1' },
   }), [])
 
@@ -92,14 +92,14 @@ export default function Dashboard() {
   const handleChartPointClick = (point: ChartDataPoint) => {
     // Map chart milestones to experiences/projects
     const milestoneMapForHighlight: Record<string, string> = {
-      'Bender Trust Project': 'Bender',
-      'OroGenie Project': 'OroGenie',
-      'Kaktus Internship': 'Kaktus',
-      'Algo Trading Project': 'Algorithmic',
-      'Shark Tank Finalist': 'Shark Tank',
-      'GrindSheet Launch': 'GrindSheet',
-      'Sunny Hackathon': 'Sunny',
-      'Moweb Internship': 'Moweb',
+      'Bender Trust': 'Bender',
+      'OroGenie': 'OroGenie',
+      'Kaktus Financial Ops': 'Kaktus',
+      'Algo Trading Bot': 'Algorithmic',
+      'Shark Tank Top 6': 'Shark Tank',
+      'GrindSheet': 'GrindSheet',
+      'Sunny Insurance': 'Sunny',
+      'Moweb Data Team': 'Moweb',
       'SEBS Data Analyst': 'SEBS',
     }
 

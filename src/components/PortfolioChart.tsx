@@ -71,7 +71,7 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart 
           data={data} 
-          margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
+          margin={{ top: 10, right: 10, left: 10, bottom: 10 }}
           onClick={handleClick}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
