@@ -21,6 +21,12 @@ export default function Dashboard() {
     type: 'experience' | 'project' | null
   }>({ data: null, type: null })
 
+  // Handle dismissing the experience card
+  const handleDismissExperienceCard = () => {
+    setLastHoveredExperience({ data: null, type: null })
+    lastHoveredLabel.current = null
+  }
+
   // Milestone to Experience/Project mapping
   const milestoneMap = useMemo(() => ({
     'Bender Trust': { type: 'project' as const, id: '6' },
@@ -165,6 +171,7 @@ export default function Dashboard() {
                 <ExperienceCard 
                   experience={lastHoveredExperience.data} 
                   type={lastHoveredExperience.type}
+                  onDismiss={handleDismissExperienceCard}
                 />
               </div>
               

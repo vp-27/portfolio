@@ -1,13 +1,14 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { MapPin, Calendar, Code } from 'lucide-react'
+import { MapPin, Calendar, Code, X } from 'lucide-react'
 import type { Experience, Project } from '../types'
 
 interface ExperienceCardProps {
   experience: Experience | Project | null
   type: 'experience' | 'project' | null
+  onDismiss?: () => void
 }
 
-export default function ExperienceCard({ experience, type }: ExperienceCardProps) {
+export default function ExperienceCard({ experience, type, onDismiss }: ExperienceCardProps) {
   const hasContent = experience && type
 
   const renderContent = () => {
@@ -106,7 +107,7 @@ export default function ExperienceCard({ experience, type }: ExperienceCardProps
 
   return (
     <motion.div 
-      className="bg-[#2B2D2E] rounded-lg shadow-lg border border-[#3A3C3D] overflow-hidden"
+      className="bg-[#2B2D2E] rounded-lg shadow-lg border border-[#3A3C3D] overflow-hidden relative"
       initial={{ height: 'auto', opacity: 1 }}
       animate={{ 
         height: hasContent ? 'auto' : '80px',
@@ -121,6 +122,20 @@ export default function ExperienceCard({ experience, type }: ExperienceCardProps
         ease: [0.4, 0.0, 0.2, 1]
       }}
     >
+      {/* X button - only show when there's content */}
+      {hasContent && onDismiss && (
+        <motion.button
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={onDismiss}
+          className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors z-10"
+          aria-label="Dismiss"
+        >
+          <X className="w-5 h-5" />
+        </motion.button>
+      )}
+      
       <AnimatePresence mode="wait">
         {renderContent()}
       </AnimatePresence>
