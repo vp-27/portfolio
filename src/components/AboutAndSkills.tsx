@@ -59,7 +59,7 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '' }: Ab
         {/* About Me Section */}
         <div className="border-b border-[#2D2D2D]">
           <div className="flex items-center border-b border-[#2D2D2D]">
-            <div className="flex-1 py-3 px-4 text-white font-medium text-left">
+            <div className="flex-1 py-3 px-4 text-white font-bold text-left">
               About Me
             </div>
           </div>
@@ -86,7 +86,7 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '' }: Ab
         {/* Skills Section */}
         <div>
           <div className="flex items-center justify-between border-b border-[#2D2D2D] px-4 py-3">
-            <span className="text-white font-medium">Skills</span>
+            <span className="text-white font-bold">Skills</span>
             <button className="bg-transparent text-gray-400 hover:text-white transition-colors" aria-label="Add skill">
               <Plus className="w-5 h-5" />
             </button>
@@ -107,10 +107,10 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '' }: Ab
                     className="w-full flex items-center justify-between px-4 py-3 bg-transparent hover:bg-[#1A1A1A] transition-colors"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center text-lg">
+                      <div className="w-10 h-12 bg-[#1A1A1A] rounded-md flex items-center justify-center text-lg">
                         {skillEmojis[category.icon] || '📦'}
                       </div>
-                      <span className="text-white">{category.name}</span>
+                      <span className="text-white font-semibold">{category.name}</span>
                     </div>
                     <motion.div
                       animate={{ rotate: isExpanded ? 90 : 0 }}
@@ -156,7 +156,7 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '' }: Ab
       <div className="lg:hidden space-y-6">
         {/* About Me Card */}
         <div data-section="about">
-          <h2 className="text-xl font-medium mb-3 text-left">About Me</h2>
+          <h2 className="text-xl font-bold mb-3 text-left">About Me</h2>
           <div className="bg-[#0D0D0D] rounded-lg p-6">
             <div className="space-y-4">
               <div>
@@ -178,7 +178,7 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '' }: Ab
 
         {/* Skills Card */}
         <div>
-          <h2 className="text-xl font-medium mb-3 text-left">Skills</h2>
+          <h2 className="text-xl font-bold mb-3 text-left">Skills</h2>
           <div className="bg-[#0D0D0D] rounded-lg border border-[#2D2D2D] overflow-hidden">
             {filteredSkillCategories.length === 0 && searchQuery ? (
               <p className="text-sm text-gray-400 text-center py-4 px-4">No skills match your search</p>
@@ -194,11 +194,11 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '' }: Ab
                     className="w-full flex items-center justify-between px-4 py-4 bg-transparent hover:bg-[#1A1A1A] transition-colors"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="w-16 h-16 bg-[#2D2D2D] rounded-2xl flex items-center justify-center text-3xl flex-shrink-0">
+                      <div className="w-14 h-16 bg-[#1A1A1A] rounded-2xl flex items-center justify-center text-3xl flex-shrink-0">
                         {skillEmojis[category.icon] || '📦'}
                       </div>
                       <div className="flex flex-col items-start">
-                        <span className="text-white text-base font-normal">{category.name}</span>
+                        <span className="text-white text-base font-semibold">{category.name}</span>
                         <span className="text-gray-500 text-sm">{category.skills.length} {category.skills.length === 1 ? 'item' : 'items'}</span>
                       </div>
                     </div>
