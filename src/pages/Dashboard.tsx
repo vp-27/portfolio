@@ -14,6 +14,7 @@ export default function Dashboard() {
   const [timeRange, setTimeRange] = useState('ALL')
   const [highlightedItem, setHighlightedItem] = useState<string | null>(null)
   const [hoveredLabel, setHoveredLabel] = useState<string | null>(null)
+  const [activeLabel, setActiveLabel] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const lastHoveredLabel = useRef<string | null>(null)
   const [lastHoveredExperience, setLastHoveredExperience] = useState<{
@@ -25,6 +26,7 @@ export default function Dashboard() {
   const handleDismissExperienceCard = () => {
     setLastHoveredExperience({ data: null, type: null })
     lastHoveredLabel.current = null
+    setActiveLabel(null)
   }
 
   // Milestone to Experience/Project mapping
@@ -51,6 +53,7 @@ export default function Dashboard() {
     // Update last hovered experience when hovering over milestones
     if (label && label !== lastHoveredLabel.current) {
       lastHoveredLabel.current = label
+      setActiveLabel(label) // Set the active label to persist
       const mapping = milestoneMap[label as keyof typeof milestoneMap]
       
       if (mapping) {
@@ -144,7 +147,7 @@ export default function Dashboard() {
                   isPositive={mockPortfolio.todayReturn >= 0}
                   onPointClick={handleChartPointClick}
                   onPointHover={handleChartPointHover}
-                  activeLabel={hoveredLabel}
+                  activeLabel={activeLabel}
                 />
               </div>
               <div className="px-4 md:px-4">
