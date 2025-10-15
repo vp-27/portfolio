@@ -315,28 +315,28 @@ export const filterTimelineData = (range: string): ChartDataPoint[] => {
   
   switch (range) {
     case '1D':
-      // Last week of activity (treating as recent)
-      startDate = new Date('2025-09-01')
+      // For career timeline with monthly data, show current month only
+      startDate = new Date(2025, 9, 1) // October 1, 2025
       break
     case '1W':
-      // Last month
-      startDate = new Date('2025-09-01')
+      // Show last 2 months for meaningful view
+      startDate = new Date(2025, 8, 1) // September 1, 2025
       break
     case '1M':
-      // Last 3 months
-      startDate = new Date('2025-07-01')
+      // Last 1 month
+      startDate = new Date(2025, 8, 1) // September 1, 2025 (1 month back from Oct)
       break
     case '3M':
       // Last 3 months
-      startDate = new Date('2025-07-01')
+      startDate = new Date(2025, 6, 1) // July 1, 2025 (3 months back from Oct)
       break
     case 'YTD':
       // Year to date (2025)
-      startDate = new Date('2025-01-01')
+      startDate = new Date(2025, 0, 1) // January 1, 2025
       break
     case '1Y':
       // Last year
-      startDate = new Date('2024-10-01')
+      startDate = new Date(2024, 9, 1) // October 1, 2024
       break
     case 'ALL':
     default:
