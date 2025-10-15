@@ -269,6 +269,41 @@ export const generateCareerTimelineData = (): ChartDataPoint[] => {
     label: lastMilestone.label || undefined
   })
   
+  // Continue from last milestone to current date (October 2025)
+  const [lastYear, lastMonth] = lastMilestone.date.split('-').map(Number)
+  const lastMilestoneDate = new Date(lastYear, lastMonth - 1)
+  const currentDate = new Date(2025, 9) // October 2025 (month is 0-indexed)
+  
+  // Only add continuation if current date is after last milestone
+  if (currentDate > lastMilestoneDate) {
+    const monthsDiff = (currentDate.getFullYear() - lastMilestoneDate.getFullYear()) * 12 + 
+                       (currentDate.getMonth() - lastMilestoneDate.getMonth())
+    
+    // Generate points from last milestone to current date
+    const steps = 14 // points per month
+    for (let month = 1; month <= monthsDiff; month++) {
+      const nextDate = new Date(lastMilestoneDate)
+      nextDate.setMonth(lastMilestoneDate.getMonth() + month)
+      const dateStr = `${nextDate.getFullYear()}-${String(nextDate.getMonth() + 1).padStart(2, '0')}`
+      
+      // Generate intermediate points for this month
+      for (let j = 1; j <= steps; j++) {
+        const progress = j / steps
+        // Sustain at current level with small growth and fluctuations
+        const smallGrowth = 0.3 * progress // Very small upward trend
+        const fluctuation = Math.sin(progress * Math.PI * 3) * 1.5
+        const noise = (Math.random() - 0.5) * 1.8
+        const value = lastMilestone.value + smallGrowth + fluctuation + noise
+        
+        data.push({
+          time: formatDate(dateStr),
+          value: Math.max(lastMilestone.value - 2, Math.min(lastMilestone.value + 3, value)),
+          label: undefined
+        })
+      }
+    }
+  }
+  
   return data
 }
 
@@ -311,16 +346,35 @@ export const filterTimelineData = (range: string): ChartDataPoint[] => {
   
   // Filter data points based on date
   // Parse "Mon YYYY" format properly for mobile compatibility
-  return allData.filter(point => {
+  const monthMap: { [key: string]: number } = {
+    'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
+    'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
+  }
+  
+  const filteredData = allData.filter(point => {
     // point.time format is "Mon YYYY" (e.g., "Sep 2023")
     const [monthStr, yearStr] = point.time.split(' ')
-    const monthMap: { [key: string]: number } = {
-      'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
-      'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
-    }
     const pointDate = new Date(parseInt(yearStr), monthMap[monthStr] || 0, 1)
     return pointDate >= startDate
   })
+  
+  // Reverse fill: if we have fewer than 2 points, add points from before the range
+  const MIN_POINTS = 2
+  if (filteredData.length < MIN_POINTS) {
+    const pointsNeeded = MIN_POINTS - filteredData.length
+    const earliestFilteredIndex = allData.findIndex(point => point === filteredData[0])
+    
+    if (earliestFilteredIndex > 0) {
+      // Add points from before the filtered range
+      const pointsToAdd = allData.slice(
+        Math.max(0, earliestFilteredIndex - pointsNeeded),
+        earliestFilteredIndex
+      )
+      return [...pointsToAdd, ...filteredData]
+    }
+  }
+  
+  return filteredData
 }
 
 export const mockChartData = generateCareerTimelineData()
