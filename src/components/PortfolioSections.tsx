@@ -35,7 +35,7 @@ export default function PortfolioSections({ experiences, projects, education, ce
   return (
     <div className="mt-8 space-y-6">
       {/* Professional Experience Section */}
-      <div>
+      <div data-section="experience">
         <h2 className="text-xl font-medium mb-3 text-left">Professional Experience</h2>
         <div className="border-b border-gray-800 mb-4"></div>
         {filteredExperiences.length === 0 && searchQuery ? (
@@ -57,7 +57,7 @@ export default function PortfolioSections({ experiences, projects, education, ce
       </div>
 
       {/* Projects Section */}
-      <div>
+      <div data-section="projects">
         <h2 className="text-xl font-medium mb-3 text-left">Projects</h2>
         <div className="border-b border-gray-800 mb-4"></div>
         {filteredProjects.length === 0 && searchQuery ? (

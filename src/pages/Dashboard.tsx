@@ -74,17 +74,50 @@ export default function Dashboard() {
   // Get description for current time range
   // Handle navigation to sections
   const handleNavigate = (section: string) => {
+    console.log('Navigating to section:', section)
+    
     if (section === 'top') {
       window.scrollTo({ top: 0, behavior: 'smooth' })
       return
     }
 
-    const sectionElement = document.querySelector(`[data-section="${section}"]`)
-    if (sectionElement) {
-      const yOffset = -70 // Offset for fixed header
-      const y = sectionElement.getBoundingClientRect().top + window.pageYOffset + yOffset
-      window.scrollTo({ top: y, behavior: 'smooth' })
-    }
+    // Use setTimeout to ensure DOM is ready
+    setTimeout(() => {
+      // Find all matching sections and get the visible one
+      const allSectionElements = document.querySelectorAll(`[data-section="${section}"]`)
+      console.log('Found sections:', allSectionElements.length)
+      
+      // Find the visible section (not hidden by Tailwind classes)
+      let sectionElement: Element | null = null
+      allSectionElements.forEach((el) => {
+        const computed = window.getComputedStyle(el.parentElement || el)
+        if (computed.display !== 'none') {
+          sectionElement = el
+          console.log('Found visible section')
+        }
+      })
+      
+      console.log('Selected section element:', sectionElement)
+      
+      if (sectionElement) {
+        // Check if we're on mobile (no top nav) or desktop
+        const isMobile = window.innerWidth < 768
+        const yOffset = isMobile ? -20 : -70 // Less offset on mobile, more on desktop for fixed header
+        const elementTop = (sectionElement as HTMLElement).getBoundingClientRect().top
+        const pageOffset = window.pageYOffset
+        const y = elementTop + pageOffset + yOffset
+        
+        console.log('Mobile:', isMobile)
+        console.log('Element top:', elementTop)
+        console.log('Page offset:', pageOffset)
+        console.log('Y offset:', yOffset)
+        console.log('Scrolling to Y:', y)
+        
+        window.scrollTo({ top: y, behavior: 'smooth' })
+      } else {
+        console.log('No visible section element found!')
+      }
+    }, 50)
   }
 
   // Handle search
@@ -187,7 +220,7 @@ export default function Dashboard() {
               </div>
               
               {/* Portfolio Sections - Hidden on mobile, shown on desktop in left column */}
-              <div className="hidden lg:block px-4 md:px-4" data-section="experience">
+              <div className="hidden lg:block px-4 md:px-4">
                 <PortfolioSections 
                   experiences={mockExperiences}
                   projects={mockProjects}
@@ -201,8 +234,9 @@ export default function Dashboard() {
             
             <div className="lg:pr-4 mt-6 lg:mt-0">
               <div className="lg:pt-4">
+                
                 {/* Portfolio Sections - Shown on mobile, hidden on desktop */}
-                <div className="lg:hidden px-4 mb-6" data-section="projects">
+                <div className="lg:hidden px-4 mb-6">
                   <PortfolioSections 
                     experiences={mockExperiences}
                     projects={mockProjects}
@@ -211,9 +245,7 @@ export default function Dashboard() {
                     highlightedItem={highlightedItem}
                     searchQuery={searchQuery}
                   />
-                </div>
-                
-                {/* Skills section - Moved to bottom on mobile, combined with About on desktop */}
+                </div>                {/* Skills section - Moved to bottom on mobile, combined with About on desktop */}
                 <div className="lg:block px-4 lg:px-0 mb-6 lg:mb-0" data-section="skills">
                   <AboutAndSkills skillCategories={mockSkillCategories} searchQuery={searchQuery} showOnlySkills={true} />
                 </div>
