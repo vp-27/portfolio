@@ -81,7 +81,7 @@ export default function TopNav({ onNavigate, onSearch }: TopNavProps) {
           </div>
 
           {/* Navigation Links */}
-          <div className="hidden lg:flex items-center gap-6">
+          <div className="hidden lg:flex items-center gap-6 mr-8">
             <div className="relative" ref={dropdownRef}>
               <button 
                 onClick={() => setIsResumeDropdownOpen(!isResumeDropdownOpen)}

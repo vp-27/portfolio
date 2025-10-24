@@ -102,12 +102,15 @@ export default function Dashboard() {
       if (sectionElement) {
         // Check if we're on mobile (no top nav) or desktop
         const isMobile = window.innerWidth < 768
-        const yOffset = isMobile ? -20 : -70 // Less offset on mobile, more on desktop for fixed header
+        // For education section on desktop, use a larger offset to account for it being lower on the page
+        const isEducation = section === 'education'
+        const yOffset = isMobile ? -20 : (isEducation ? -90 : -70) // Less offset on mobile, more on desktop for fixed header
         const elementTop = (sectionElement as HTMLElement).getBoundingClientRect().top
         const pageOffset = window.pageYOffset
         const y = elementTop + pageOffset + yOffset
         
         console.log('Mobile:', isMobile)
+        console.log('Section:', section)
         console.log('Element top:', elementTop)
         console.log('Page offset:', pageOffset)
         console.log('Y offset:', yOffset)
