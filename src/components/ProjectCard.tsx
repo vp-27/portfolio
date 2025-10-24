@@ -147,7 +147,11 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
                   e.stopPropagation()
                   window.open(project.liveUrl, '_blank')
                 }}
-                className="flex items-center justify-center gap-2 px-6 py-3 bg-[#00C805] hover:bg-[#00D806] text-black text-sm font-semibold rounded-lg transition-all active:scale-95 flex-1"
+                style={{
+                  backgroundColor: accentColor,
+                  color: accentColor === '#00C805' ? '#000' : '#fff'
+                }}
+                className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold rounded-lg transition-all active:scale-95 flex-1 hover:opacity-90"
               >
                 <ExternalLink className="w-4 h-4" />
                 Visit Site
