@@ -35,7 +35,7 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
         border border-[#2C2C2E]
         hover:bg-[#232326] hover:shadow-xl hover:border-[#3A3A3C]
         ${isHighlighted ? 'ring-2 ring-[#00C805] border-[#00C805]' : ''}
-        h-full flex flex-col
+        flex flex-col
         relative
       `}
     >
@@ -48,7 +48,7 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
-            className="p-5 flex flex-col h-full"
+            className="p-5 flex flex-col"
           >
           {/* Title and Duration with Arrow */}
           <div className="mb-3 flex items-start justify-between">
@@ -110,7 +110,7 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.3 }}
-          className="p-6 flex-1"
+          className="p-6"
         >
           <div className="flex items-start justify-between mb-4">
             <div className="flex-1 min-w-0">
