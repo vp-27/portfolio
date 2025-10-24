@@ -134,12 +134,6 @@ export default function TopNav({ onNavigate, onSearch }: TopNavProps) {
               Projects
             </button>
             <button 
-              onClick={() => handleNavigate('skills')}
-              className="bg-transparent text-white text-sm hover:text-gray-300 transition-colors"
-            >
-              Skills
-            </button>
-            <button 
               onClick={() => handleNavigate('education')}
               className="bg-transparent text-white text-sm hover:text-gray-300 transition-colors"
             >
