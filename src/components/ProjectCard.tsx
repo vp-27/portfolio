@@ -23,17 +23,15 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
   return (
     <motion.div
       onClick={() => setIsExpanded(!isExpanded)}
-      layout="position"
+      animate={{
+        height: 'auto'
+      }}
       transition={{ 
-        layout: {
-          type: "tween",
-          duration: 0.3, 
-          ease: [0.4, 0.0, 0.2, 1]
-        }
+        duration: 0.4,
+        ease: [0.4, 0.0, 0.2, 1]
       }}
       className={`
         bg-[#1C1C1E] rounded-2xl overflow-hidden cursor-pointer
-        transition-all duration-300 ease-[cubic-bezier(0.4,0.0,0.2,1)]
         border border-[#2C2C2E]
         hover:bg-[#232326] hover:shadow-xl hover:border-[#3A3A3C]
         ${isHighlighted ? 'ring-2 ring-[#00C805] border-[#00C805]' : ''}
@@ -46,14 +44,10 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
         {!isExpanded ? (
           <motion.div 
             key="collapsed"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ 
-              type: "tween",
-              duration: 0.2, 
-              ease: [0.4, 0.0, 0.2, 1]
-            }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
             className="p-5 flex flex-col h-full"
           >
           {/* Title and Duration with Arrow */}
@@ -112,14 +106,10 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
         /* Expanded State */
         <motion.div 
           key="expanded"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ 
-            type: "tween",
-            duration: 0.2, 
-            ease: [0.4, 0.0, 0.2, 1]
-          }}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.3 }}
           className="p-6 flex-1"
         >
           <div className="flex items-start justify-between mb-4">
@@ -137,7 +127,7 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
               </div>
               <motion.div
                 animate={{ rotate: isExpanded ? 90 : 0 }}
-                transition={{ duration: 0.3, ease: [0.4, 0.0, 0.2, 1] }}
+                transition={{ duration: 0.4, ease: [0.4, 0.0, 0.2, 1] }}
                 className="text-gray-500"
               >
                 <ChevronRight className="w-5 h-5" />
