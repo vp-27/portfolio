@@ -87,11 +87,23 @@ export default function Dashboard() {
       const allSectionElements = document.querySelectorAll(`[data-section="${section}"]`)
       console.log('Found sections:', allSectionElements.length)
       
+      // Helper function to check if element or any ancestor is hidden
+      const isElementVisible = (element: Element): boolean => {
+        let current: Element | null = element
+        while (current && current !== document.body) {
+          const computed = window.getComputedStyle(current)
+          if (computed.display === 'none') {
+            return false
+          }
+          current = current.parentElement
+        }
+        return true
+      }
+      
       // Find the visible section (not hidden by Tailwind classes)
       let sectionElement: Element | null = null
       allSectionElements.forEach((el) => {
-        const computed = window.getComputedStyle(el.parentElement || el)
-        if (computed.display !== 'none') {
+        if (isElementVisible(el)) {
           sectionElement = el
           console.log('Found visible section')
         }
@@ -102,9 +114,7 @@ export default function Dashboard() {
       if (sectionElement) {
         // Check if we're on mobile (no top nav) or desktop
         const isMobile = window.innerWidth < 768
-        // For education section on desktop, use a larger offset to account for it being lower on the page
-        const isEducation = section === 'education'
-        const yOffset = isMobile ? -20 : (isEducation ? -90 : -70) // Less offset on mobile, more on desktop for fixed header
+        const yOffset = isMobile ? -20 : -70 // Less offset on mobile, more on desktop for fixed header
         const elementTop = (sectionElement as HTMLElement).getBoundingClientRect().top
         const pageOffset = window.pageYOffset
         const y = elementTop + pageOffset + yOffset
