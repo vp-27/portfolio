@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { ExternalLink, Github, ChevronRight } from 'lucide-react'
 import type { Project } from '../types'
 
@@ -22,37 +22,53 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
 
   return (
     <motion.div
-      layout
       onClick={() => setIsExpanded(!isExpanded)}
+      layout="position"
       transition={{ 
-        layout: { duration: 0.3, ease: [0.4, 0.0, 0.2, 1] }
+        layout: {
+          type: "tween",
+          duration: 0.3, 
+          ease: [0.4, 0.0, 0.2, 1]
+        }
       }}
       className={`
         bg-[#1C1C1E] rounded-2xl overflow-hidden cursor-pointer
-        transition-all duration-200 ease-out
-        border border-transparent
-        hover:bg-[#232326] hover:shadow-lg
+        transition-all duration-300 ease-[cubic-bezier(0.4,0.0,0.2,1)]
+        border border-[#2C2C2E]
+        hover:bg-[#232326] hover:shadow-xl hover:border-[#3A3A3C]
         ${isHighlighted ? 'ring-2 ring-[#00C805] border-[#00C805]' : ''}
         h-full flex flex-col
         relative
       `}
     >
-      {/* Collapsed State - Robinhood Card Style */}
-      {!isExpanded ? (
-        <div className="p-5 flex flex-col h-full">
+      <AnimatePresence mode="wait" initial={false}>
+        {/* Collapsed State - Robinhood Card Style */}
+        {!isExpanded ? (
+          <motion.div 
+            key="collapsed"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ 
+              type: "tween",
+              duration: 0.2, 
+              ease: [0.4, 0.0, 0.2, 1]
+            }}
+            className="p-5 flex flex-col h-full"
+          >
           {/* Title and Duration with Arrow */}
           <div className="mb-3 flex items-start justify-between">
             <div className="flex-1">
-              <h3 className="font-bold text-white text-xl mb-1">{project.name}</h3>
-              <p className="text-sm text-gray-500">{project.duration}</p>
+              <h3 className="font-bold text-white text-[22px] mb-1.5 leading-tight">{project.name}</h3>
+              <p className="text-sm text-gray-500 font-medium">{project.duration}</p>
             </div>
-            <ChevronRight className="w-5 h-5 text-gray-500 flex-shrink-0 ml-2" />
+            <ChevronRight className="w-5 h-5 text-gray-500 flex-shrink-0 ml-2 mt-1" />
           </div>
 
           {/* Project Image Preview - Only show if image exists */}
           {project.imageUrl && (
             <div 
-              className="mb-4 rounded-lg overflow-hidden bg-[#0A0A0A] h-24 flex items-center justify-center border-2"
+              className="mb-4 rounded-xl overflow-hidden bg-[#0A0A0A] h-[88px] flex items-center justify-center border-[3px]"
               style={{ borderColor: accentColor }}
             >
               <img 
@@ -71,17 +87,17 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
           <div className="border-b border-dotted border-gray-700 mb-4"></div>
 
           {/* Technologies as badges */}
-          <div className="flex flex-wrap gap-1.5 mb-4">
+          <div className="flex flex-wrap gap-2 mb-4">
             {project.technologies && project.technologies.slice(0, 3).map((tech, idx) => (
               <span
                 key={idx}
-                className="px-3 py-1.5 text-[11px] font-medium rounded-full bg-[#2C2C2E] text-white"
+                className="px-3.5 py-1.5 text-[11px] font-semibold rounded-full bg-[#2C2C2E] text-gray-300"
               >
                 {tech}
               </span>
             ))}
             {project.technologies && project.technologies.length > 3 && (
-              <span className="px-3 py-1.5 text-[11px] font-medium text-gray-500 rounded-full bg-[#2C2C2E]">
+              <span className="px-3.5 py-1.5 text-[11px] font-semibold text-gray-500 rounded-full bg-[#2C2C2E]">
                 +{project.technologies.length - 3}
               </span>
             )}
@@ -89,28 +105,39 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
 
           {/* Bottom section with subtitle */}
           <div className="mt-auto">
-            <p className="text-sm text-gray-400 line-clamp-2">{project.subtitle}</p>
+            <p className="text-sm text-gray-400 line-clamp-2 leading-relaxed">{project.subtitle}</p>
           </div>
-        </div>
+        </motion.div>
       ) : (
         /* Expanded State */
-        <div className="p-6 flex-1">
+        <motion.div 
+          key="expanded"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ 
+            type: "tween",
+            duration: 0.2, 
+            ease: [0.4, 0.0, 0.2, 1]
+          }}
+          className="p-6 flex-1"
+        >
           <div className="flex items-start justify-between mb-4">
             <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-white text-xl mb-1.5">{project.name}</h3>
-              <p className="text-sm text-gray-400">{project.subtitle}</p>
+              <h3 className="font-bold text-white text-[22px] mb-1.5 leading-tight">{project.name}</h3>
+              <p className="text-sm text-gray-400 leading-relaxed">{project.subtitle}</p>
             </div>
             
             {/* Date Range and Chevron - Right Aligned */}
             <div className="flex items-center gap-2 flex-shrink-0 ml-3">
               <div className="text-right">
-                <p className="text-xs text-gray-400 whitespace-nowrap">
+                <p className="text-xs text-gray-400 whitespace-nowrap font-medium">
                   {project.duration}
                 </p>
               </div>
               <motion.div
                 animate={{ rotate: isExpanded ? 90 : 0 }}
-                transition={{ duration: 0.15, ease: [0.4, 0.0, 0.2, 1] }}
+                transition={{ duration: 0.3, ease: [0.4, 0.0, 0.2, 1] }}
                 className="text-gray-500"
               >
                 <ChevronRight className="w-5 h-5" />
@@ -125,7 +152,7 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, ease: [0.4, 0.0, 0.2, 1] }}
-              className="mb-4 rounded-lg overflow-hidden bg-[#0A0A0A] border-2"
+              className="mb-4 rounded-xl overflow-hidden bg-[#0A0A0A] border-[3px]"
               style={{ borderColor: accentColor }}
             >
               <img 
@@ -189,19 +216,20 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
 
           {/* All Technologies */}
           {project.technologies && project.technologies.length > 0 && (
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap gap-2">
               {project.technologies.map((tech, idx) => (
                 <span
                   key={idx}
-                  className="px-3 py-1.5 text-[11px] font-medium rounded-full bg-[#2C2C2E] text-white hover:bg-[#3A3A3C] transition-colors"
+                  className="px-3.5 py-1.5 text-[11px] font-semibold rounded-full bg-[#2C2C2E] text-gray-300 hover:bg-[#3A3A3C] transition-colors"
                 >
                   {tech}
                 </span>
               ))}
             </div>
           )}
-        </div>
+        </motion.div>
       )}
+      </AnimatePresence>
     </motion.div>
   )
 }
