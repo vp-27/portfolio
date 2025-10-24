@@ -22,11 +22,10 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
 
   return (
     <motion.div
-      layout="position"
+      layout
       onClick={() => setIsExpanded(!isExpanded)}
       transition={{ 
-        layout: { duration: 0.2, ease: [0.4, 0.0, 0.2, 1] },
-        default: { duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }
+        layout: { duration: 0.3, ease: [0.4, 0.0, 0.2, 1] }
       }}
       className={`
         bg-[#1C1C1E] rounded-2xl overflow-hidden cursor-pointer
@@ -122,9 +121,10 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
           {/* Large Project Image - Only show if image exists */}
           {project.imageUrl && (
             <motion.div 
-              initial={{ opacity: 0, height: 0 }}
+              initial={false}
               animate={{ opacity: 1, height: "auto" }}
-              transition={{ duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: [0.4, 0.0, 0.2, 1] }}
               className="mb-4 rounded-lg overflow-hidden bg-[#0A0A0A] border-2"
               style={{ borderColor: accentColor }}
             >
@@ -147,10 +147,10 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
                   e.stopPropagation()
                   window.open(project.liveUrl, '_blank')
                 }}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-[#00C805]/10 hover:bg-[#00C805]/20 text-[#00C805] border border-[#00C805]/30 hover:border-[#00C805]/50 text-xs font-medium rounded transition-colors"
+                className="flex items-center justify-center gap-2 px-6 py-3 bg-[#00C805] hover:bg-[#00D806] text-black text-sm font-semibold rounded-lg transition-all active:scale-95 flex-1"
               >
-                <ExternalLink className="w-3.5 h-3.5" />
-                Visit
+                <ExternalLink className="w-4 h-4" />
+                Visit Site
               </button>
             )}
             {project.githubUrl && (
@@ -159,10 +159,10 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
                   e.stopPropagation()
                   window.open(project.githubUrl, '_blank')
                 }}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-[#FF5000]/10 hover:bg-[#FF5000]/20 text-[#FF5000] border border-[#FF5000]/30 hover:border-[#FF5000]/50 text-xs font-medium rounded transition-colors"
+                className="flex items-center justify-center gap-2 px-6 py-3 bg-[#2C2C2E] hover:bg-[#3A3A3C] text-white text-sm font-semibold rounded-lg transition-all active:scale-95 flex-1"
               >
-                <Github className="w-3.5 h-3.5" />
-                Code
+                <Github className="w-4 h-4" />
+                View Code
               </button>
             )}
           </div>
