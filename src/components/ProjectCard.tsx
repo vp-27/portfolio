@@ -208,13 +208,13 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.3, ease: [0.4, 0.0, 0.2, 1] }}
-                className="mb-4 md:mb-5 rounded-xl overflow-hidden bg-[#0A0A0A] border-2 md:border-[3px]"
+                className="mb-4 md:mb-5 rounded-xl overflow-hidden bg-[#0A0A0A] border-2 md:border-[3px] flex items-center justify-center"
                 style={{ borderColor: accentColor }}
               >
                 <img 
                   src={project.imageUrl} 
                   alt={project.name}
-                  className="w-full h-44 md:h-52 object-cover"
+                  className="w-full h-auto object-contain"
                   onError={(e) => {
                     e.currentTarget.style.display = 'none'
                   }}
