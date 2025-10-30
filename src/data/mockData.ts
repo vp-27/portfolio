@@ -537,6 +537,7 @@ export const mockProjects: Project[] = [
     githubUrl: 'https://github.com/vp-27/grindsheet',
     imageUrl: '/images/grindsheetUsage.png',
     logoUrl: '/images/logoImages/grindsheetClear.png',
+    isMobileApp: true,
   },
   {
     id: '4',

@@ -64,6 +64,7 @@ export interface Project {
   githubUrl?: string
   imageUrl?: string
   logoUrl?: string
+  isMobileApp?: boolean
 }
 
 export interface Education {
