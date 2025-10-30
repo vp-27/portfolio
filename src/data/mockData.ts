@@ -583,6 +583,7 @@ export const mockProjects: Project[] = [
     liveUrl: 'https://perkpal.vercel.app/',
     githubUrl: 'https://github.com/vp-27/perkopoly',
     imageUrl: '/images/perkpal.png',
+    logoUrl: '/images/logoImages/perkPalClear.png',
   },
   {
     id: '6',
