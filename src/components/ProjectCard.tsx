@@ -48,13 +48,13 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
-            className="p-5 flex flex-col"
+            className="p-4 md:p-5 flex flex-col"
           >
             {/* Top Row: Logo + Title/Duration */}
-            <div className="flex gap-5 mb-4">
+            <div className="flex gap-3 md:gap-5 mb-3 md:mb-4">
               {/* Project Logo - Left Side */}
               {project.logoUrl && (
-                <div className="flex-shrink-0 w-28 h-28 flex items-center justify-center">
+                <div className="flex-shrink-0 w-20 h-20 md:w-28 md:h-28 flex items-center justify-center">
                   <img 
                     src={project.logoUrl} 
                     alt={`${project.name} logo`}
@@ -68,36 +68,36 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
               
               {/* Title, Duration, and Arrow - Right Side */}
               <div className="flex-1 flex items-start justify-between min-w-0">
-                <div className="flex-1 min-w-0 mr-4">
-                  <h3 className="font-bold text-white text-[20px] mb-1.5 leading-tight">{project.name}</h3>
-                  <p className="text-xs text-gray-500 font-medium mb-2">{project.duration}</p>
-                  <p className="text-sm text-gray-400 line-clamp-2 leading-relaxed">{project.subtitle}</p>
+                <div className="flex-1 min-w-0 mr-2 md:mr-4">
+                  <h3 className="font-bold text-white text-[17px] md:text-[20px] mb-1 md:mb-1.5 leading-tight">{project.name}</h3>
+                  <p className="text-[10px] md:text-xs text-gray-500 font-medium mb-1.5 md:mb-2">{project.duration}</p>
+                  <p className="text-xs md:text-sm text-gray-400 line-clamp-2 leading-relaxed">{project.subtitle}</p>
                 </div>
-                <ChevronRight className="w-5 h-5 text-gray-500 flex-shrink-0 mt-1" />
+                <ChevronRight className="w-4 h-4 md:w-5 md:h-5 text-gray-500 flex-shrink-0 mt-0.5 md:mt-1" />
               </div>
             </div>
 
-            {/* Technologies and Buttons Row */}
-            <div className="flex items-center justify-between gap-4">
+            {/* Technologies and Buttons - Stack on Mobile, Row on Desktop */}
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-4">
               {/* Technologies as badges */}
-              <div className="flex flex-wrap gap-2 flex-1">
+              <div className="flex flex-wrap gap-1.5 md:gap-2 flex-1">
                 {project.technologies && project.technologies.slice(0, 5).map((tech, idx) => (
                   <span
                     key={idx}
-                    className="px-3 py-1 text-[11px] font-semibold rounded-full bg-[#2C2C2E] text-gray-300"
+                    className="px-2.5 md:px-3 py-0.5 md:py-1 text-[10px] md:text-[11px] font-semibold rounded-full bg-[#2C2C2E] text-gray-300"
                   >
                     {tech}
                   </span>
                 ))}
                 {project.technologies && project.technologies.length > 5 && (
-                  <span className="px-3 py-1 text-[11px] font-semibold text-gray-500 rounded-full bg-[#2C2C2E]">
+                  <span className="px-2.5 md:px-3 py-0.5 md:py-1 text-[10px] md:text-[11px] font-semibold text-gray-500 rounded-full bg-[#2C2C2E]">
                     +{project.technologies.length - 5}
                   </span>
                 )}
               </div>
 
-              {/* Action Buttons - Right Side */}
-              <div className="flex gap-2 flex-shrink-0">
+              {/* Action Buttons - Full Width on Mobile, Auto on Desktop */}
+              <div className="flex gap-2 w-full md:w-auto md:flex-shrink-0">
                 {project.liveUrl && (
                   <button
                     onClick={(e) => {
@@ -108,10 +108,11 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
                       backgroundColor: accentColor,
                       color: accentColor === '#00C805' ? '#000' : '#fff'
                     }}
-                    className="flex items-center justify-center gap-2 px-5 py-2.5 text-xs font-semibold rounded-lg transition-all active:scale-95 hover:opacity-90 whitespace-nowrap"
+                    className="flex items-center justify-center gap-1.5 md:gap-2 px-4 md:px-5 py-2 md:py-2.5 text-[11px] md:text-xs font-semibold rounded-lg transition-all active:scale-95 hover:opacity-90 whitespace-nowrap flex-1 md:flex-initial"
                   >
-                    <ExternalLink className="w-3.5 h-3.5" />
-                    Visit Site
+                    <ExternalLink className="w-3 h-3 md:w-3.5 md:h-3.5" />
+                    <span className="hidden sm:inline">Visit Site</span>
+                    <span className="sm:hidden">Visit</span>
                   </button>
                 )}
                 {project.githubUrl && (
@@ -120,10 +121,11 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
                       e.stopPropagation()
                       window.open(project.githubUrl, '_blank')
                     }}
-                    className="flex items-center justify-center gap-2 px-5 py-2.5 bg-[#2C2C2E] hover:bg-[#3A3A3C] text-white text-xs font-semibold rounded-lg transition-all active:scale-95 whitespace-nowrap"
+                    className="flex items-center justify-center gap-1.5 md:gap-2 px-4 md:px-5 py-2 md:py-2.5 bg-[#2C2C2E] hover:bg-[#3A3A3C] text-white text-[11px] md:text-xs font-semibold rounded-lg transition-all active:scale-95 whitespace-nowrap flex-1 md:flex-initial"
                   >
-                    <Github className="w-3.5 h-3.5" />
-                    View Code
+                    <Github className="w-3 h-3 md:w-3.5 md:h-3.5" />
+                    <span className="hidden sm:inline">View Code</span>
+                    <span className="sm:hidden">Code</span>
                   </button>
                 )}
               </div>
@@ -137,23 +139,23 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.3 }}
-          className="p-6"
+          className="p-4 md:p-6"
         >
           {/* Header with Title and Chevron */}
-          <div className="flex items-start justify-between mb-4">
+          <div className="flex items-start justify-between mb-3 md:mb-4">
             <div className="flex-1 min-w-0">
-              <h3 className="font-bold text-white text-[22px] mb-1.5 leading-tight">{project.name}</h3>
-              <p className="text-xs text-gray-500 font-medium mb-2">{project.duration}</p>
-              <p className="text-sm text-gray-400 leading-relaxed">{project.subtitle}</p>
+              <h3 className="font-bold text-white text-[19px] md:text-[22px] mb-1 md:mb-1.5 leading-tight">{project.name}</h3>
+              <p className="text-[10px] md:text-xs text-gray-500 font-medium mb-1.5 md:mb-2">{project.duration}</p>
+              <p className="text-xs md:text-sm text-gray-400 leading-relaxed">{project.subtitle}</p>
             </div>
             
             {/* Chevron - Rotated to indicate collapse */}
             <motion.div
               animate={{ rotate: isExpanded ? 90 : 0 }}
               transition={{ duration: 0.4, ease: [0.4, 0.0, 0.2, 1] }}
-              className="text-gray-500 flex-shrink-0 ml-3"
+              className="text-gray-500 flex-shrink-0 ml-2 md:ml-3"
             >
-              <ChevronRight className="w-5 h-5" />
+              <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />
             </motion.div>
           </div>
 
@@ -164,13 +166,13 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, ease: [0.4, 0.0, 0.2, 1] }}
-              className="mb-5 rounded-xl overflow-hidden bg-[#0A0A0A] border-[3px]"
+              className="mb-4 md:mb-5 rounded-xl overflow-hidden bg-[#0A0A0A] border-2 md:border-[3px]"
               style={{ borderColor: accentColor }}
             >
               <img 
                 src={project.imageUrl} 
                 alt={project.name}
-                className="w-full h-52 object-cover"
+                className="w-full h-44 md:h-52 object-cover"
                 onError={(e) => {
                   e.currentTarget.style.display = 'none'
                 }}
@@ -179,18 +181,18 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
           )}
 
           {/* Detailed Achievement Bullets */}
-          <div className="mb-5">
-            <h4 className="text-sm font-semibold text-white mb-3">Key Achievements</h4>
-            <div className="space-y-3">
+          <div className="mb-4 md:mb-5">
+            <h4 className="text-xs md:text-sm font-semibold text-white mb-2 md:mb-3">Key Achievements</h4>
+            <div className="space-y-2 md:space-y-3">
               {project.bullets.map((bullet, idx) => (
                 <motion.div
                   key={idx}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: idx * 0.04, duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
-                  className="flex gap-3 text-sm text-gray-300 leading-relaxed"
+                  className="flex gap-2 md:gap-3 text-xs md:text-sm text-gray-300 leading-relaxed"
                 >
-                  <span className="text-[#00C805] mt-0.5 flex-shrink-0 text-xs">▸</span>
+                  <span className="text-[#00C805] mt-0.5 flex-shrink-0 text-[10px] md:text-xs">▸</span>
                   <span>{bullet}</span>
                 </motion.div>
               ))}
@@ -199,13 +201,13 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
 
           {/* All Technologies */}
           {project.technologies && project.technologies.length > 0 && (
-            <div className="mb-5">
-              <h4 className="text-sm font-semibold text-white mb-3">Technologies Used</h4>
-              <div className="flex flex-wrap gap-2">
+            <div className="mb-4 md:mb-5">
+              <h4 className="text-xs md:text-sm font-semibold text-white mb-2 md:mb-3">Technologies Used</h4>
+              <div className="flex flex-wrap gap-1.5 md:gap-2">
                 {project.technologies.map((tech, idx) => (
                   <span
                     key={idx}
-                    className="px-3.5 py-1.5 text-[11px] font-semibold rounded-full bg-[#2C2C2E] text-gray-300 hover:bg-[#3A3A3C] transition-colors"
+                    className="px-2.5 md:px-3.5 py-1 md:py-1.5 text-[10px] md:text-[11px] font-semibold rounded-full bg-[#2C2C2E] text-gray-300 hover:bg-[#3A3A3C] transition-colors"
                   >
                     {tech}
                   </span>
@@ -226,9 +228,9 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
                   backgroundColor: accentColor,
                   color: accentColor === '#00C805' ? '#000' : '#fff'
                 }}
-                className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold rounded-lg transition-all active:scale-95 flex-1 hover:opacity-90"
+                className="flex items-center justify-center gap-2 px-5 md:px-6 py-2.5 md:py-3 text-xs md:text-sm font-semibold rounded-lg transition-all active:scale-95 flex-1 hover:opacity-90"
               >
-                <ExternalLink className="w-4 h-4" />
+                <ExternalLink className="w-3.5 h-3.5 md:w-4 md:h-4" />
                 Visit Site
               </button>
             )}
@@ -238,9 +240,9 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
                   e.stopPropagation()
                   window.open(project.githubUrl, '_blank')
                 }}
-                className="flex items-center justify-center gap-2 px-6 py-3 bg-[#2C2C2E] hover:bg-[#3A3A3C] text-white text-sm font-semibold rounded-lg transition-all active:scale-95 flex-1"
+                className="flex items-center justify-center gap-2 px-5 md:px-6 py-2.5 md:py-3 bg-[#2C2C2E] hover:bg-[#3A3A3C] text-white text-xs md:text-sm font-semibold rounded-lg transition-all active:scale-95 flex-1"
               >
-                <Github className="w-4 h-4" />
+                <Github className="w-3.5 h-3.5 md:w-4 md:h-4" />
                 View Code
               </button>
             )}
