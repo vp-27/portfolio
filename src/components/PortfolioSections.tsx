@@ -63,7 +63,7 @@ export default function PortfolioSections({ experiences, projects, education, ce
         {filteredProjects.length === 0 && searchQuery ? (
           <p className="text-sm text-gray-400 text-center py-4">No projects match your search</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4">
             {filteredProjects.map((project) => {
               const isHighlighted = !!(highlightedItem && project.name.includes(highlightedItem))
               return (
