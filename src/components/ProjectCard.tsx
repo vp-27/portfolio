@@ -59,18 +59,15 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
             <ChevronRight className="w-5 h-5 text-gray-500 flex-shrink-0 ml-2 mt-1" />
           </div>
 
-          {/* Project Image Preview - Only show if image exists */}
-          {project.imageUrl && (
-            <div 
-              className="mb-4 rounded-xl overflow-hidden bg-[#0A0A0A] h-[88px] flex items-center justify-center border-[3px]"
-              style={{ borderColor: accentColor }}
-            >
+          {/* Project Logo - Only show if logo exists */}
+          {project.logoUrl && (
+            <div className="mb-5 h-[140px] flex items-center justify-center">
               <img 
-                src={project.imageUrl} 
-                alt={project.name}
-                className="w-full h-full object-cover"
+                src={project.logoUrl} 
+                alt={`${project.name} logo`}
+                className="w-80 h-80 object-contain"
                 onError={(e) => {
-                  // Fallback if image fails to load
+                  // Fallback if logo fails to load
                   e.currentTarget.style.display = 'none'
                 }}
               />

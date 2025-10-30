@@ -521,6 +521,7 @@ export const mockProjects: Project[] = [
     ],
     technologies: ['Python', 'Alpaca API', 'Pandas', 'NumPy'],
     imageUrl: '/images/algostocktrading.png',
+    logoUrl: '/images/logoImages/algoStockTradingClear.png',
   },
   {
     id: '2',
@@ -550,6 +551,7 @@ export const mockProjects: Project[] = [
     technologies: ['React', 'PWA', 'TypeScript'],
     githubUrl: 'https://github.com/vp-27/grindsheet',
     imageUrl: '/images/grindsheetUsage.png',
+    logoUrl: '/images/logoImages/grindsheetClear.png',
   },
   {
     id: '4',

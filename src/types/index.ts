@@ -63,6 +63,7 @@ export interface Project {
   liveUrl?: string
   githubUrl?: string
   imageUrl?: string
+  logoUrl?: string
 }
 
 export interface Education {
