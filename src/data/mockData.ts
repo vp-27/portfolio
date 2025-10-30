@@ -537,6 +537,7 @@ export const mockProjects: Project[] = [
     liveUrl: 'https://orogenie.vercel.app/',
     githubUrl: 'https://github.com/vp-27/orogenie',
     imageUrl: '/images/orogenieShot.png',
+    logoUrl: '/images/logoImages/orogenieClear.png',
   },
   {
     id: '3',
@@ -594,6 +595,7 @@ export const mockProjects: Project[] = [
       'Presented findings to trust committee, informing strategic decisions on interest rate hedge positioning',
     ],
     technologies: ['Excel', 'Financial Modeling', 'Bloomberg Terminal'],
+    logoUrl: '/images/logoImages/benderTrustClear.png',
   },
 ]
 
