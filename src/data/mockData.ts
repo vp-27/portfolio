@@ -566,7 +566,7 @@ export const mockProjects: Project[] = [
     technologies: ['FastAPI', 'LLM', 'Pathway', 'Python'],
     liveUrl: 'https://insurance2-u4ew.onrender.com/',
     githubUrl: 'https://github.com/vp-27/insurance2',
-    imageUrl: '/images/sunny.png',
+    logoUrl: '/images/logoImages/sunnyClear.png',
   },
   {
     id: '5',
