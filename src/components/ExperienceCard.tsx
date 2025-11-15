@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { MapPin, Calendar, Code, X } from 'lucide-react'
 import type { Experience, Project } from '../types'
+import styles from './ExperienceCard.module.css'
 
 interface ExperienceCardProps {
   experience: Experience | Project | null
@@ -29,13 +30,7 @@ export default function ExperienceCard({ experience, type, onDismiss }: Experien
     if (type === 'experience') {
       const exp = experience as Experience
       return (
-        <motion.div
-          key={exp.id}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.3 }}
-        >
+        <div>
           <div className="flex items-start justify-between mb-3">
             <div className="flex-1">
               <h3 className="font-semibold text-[#E8A03D] text-lg">{exp.position}</h3>
@@ -60,18 +55,12 @@ export default function ExperienceCard({ experience, type, onDismiss }: Experien
               </li>
             ))}
           </ul>
-        </motion.div>
+        </div>
       )
     } else {
       const proj = experience as Project
       return (
-        <motion.div
-          key={proj.id}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.3 }}
-        >
+        <div>
           <div className="flex items-start justify-between mb-3">
             <div className="flex-1">
               <h3 className="font-semibold text-[#E8A03D] text-lg">{proj.name}</h3>
@@ -100,45 +89,70 @@ export default function ExperienceCard({ experience, type, onDismiss }: Experien
               ))}
             </div>
           )}
-        </motion.div>
+        </div>
       )
     }
   }
 
+  // Create unique key for AnimatePresence to detect changes
+  const contentKey = hasContent 
+    ? `${type}-${(experience as any)?.id}` 
+    : 'placeholder'
+
   return (
-    <motion.div 
-      className="bg-[#2B2D2E] rounded-lg shadow-lg border border-[#3A3C3D] overflow-hidden relative"
-      initial={{ height: 'auto', opacity: 1 }}
-      animate={{ 
-        height: hasContent ? 'auto' : '80px',
-        paddingTop: hasContent ? '24px' : '16px',
-        paddingBottom: hasContent ? '24px' : '16px',
-        paddingLeft: '24px',
-        paddingRight: '24px',
-        opacity: 1
-      }}
-      transition={{ 
-        duration: 0.4,
-        ease: [0.4, 0.0, 0.2, 1]
-      }}
-    >
-      {/* X button - only show when there's content */}
-      {hasContent && onDismiss && (
-        <motion.button
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={onDismiss}
-          className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors z-10"
-          aria-label="Dismiss"
-        >
-          <X className="w-5 h-5" />
-        </motion.button>
-      )}
-      
-      <AnimatePresence mode="wait">
-        {renderContent()}
-      </AnimatePresence>
-    </motion.div>
+    <div className="relative min-h-[80px]">
+      {/* Background stacked cards */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* Card 3 - furthest back */}
+        <div 
+          className={`${styles.stackLayerBase} ${styles.stackLayerBack} bg-[#232425] border border-[#353637] shadow-xl opacity-40`}
+        />
+        {/* Card 2 - middle */}
+        <div 
+          className={`${styles.stackLayerBase} ${styles.stackLayerMiddle} bg-[#262728] border border-[#3A3C3D] shadow-xl opacity-70`}
+        />
+        {/* Card 1 - closest background */}
+        <div 
+          className={`${styles.stackLayerBase} ${styles.stackLayerFront} bg-[#2B2D2E] border border-[#3A3C3D] shadow-xl opacity-90`}
+        />
+      </div>
+
+      {/* Main card - on top with swipe animations */}
+      <div className="relative z-10">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={contentKey}
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -100, opacity: 0 }}
+            transition={{
+              type: "spring",
+              stiffness: 300,
+              damping: 30,
+              opacity: { duration: 0.2 }
+            }}
+            className={`bg-[#2B2D2E] rounded-lg shadow-2xl border border-[#3A3C3D] overflow-hidden relative px-6 ${
+              hasContent ? 'py-6 min-h-0' : 'py-4 min-h-[80px]'
+            }`}
+          >
+            {/* X button - only show when there's content */}
+            {hasContent && onDismiss && (
+              <motion.button
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                onClick={onDismiss}
+                className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors z-10"
+                aria-label="Dismiss"
+              >
+                <X className="w-5 h-5" />
+              </motion.button>
+            )}
+            
+            {renderContent()}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </div>
   )
 }
