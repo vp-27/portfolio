@@ -167,9 +167,12 @@ export default function ExperienceCard({ experience, type, onDismiss }: Experien
   )
 
   // Create background cards with PREVIOUS content (outgoing)
-  const backgroundCard1 = createCardElement(false, '', previousContent)
-  const backgroundCard2 = createCardElement(false, 'bg-[#2A2C2D]', previousContent)
-  const backgroundCard3 = createCardElement(false, 'bg-[#282A2B]', previousContent)
+  // When current content is empty (placeholder state), show placeholder in background too
+  const backgroundContentData = hasContent ? previousContent : { experience: null, type: null }
+  
+  const backgroundCard1 = createCardElement(false, '', backgroundContentData)
+  const backgroundCard2 = createCardElement(false, 'bg-[#2A2C2D]', backgroundContentData)
+  const backgroundCard3 = createCardElement(false, 'bg-[#282A2B]', backgroundContentData)
 
   const stackedCardsData = [
     { id: 'bg-3', content: backgroundCard3 },
