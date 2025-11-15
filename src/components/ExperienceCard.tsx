@@ -167,9 +167,9 @@ export default function ExperienceCard({ experience, type, onDismiss }: Experien
   )
 
   // Create background cards with PREVIOUS content (outgoing)
-  const backgroundCard1 = createCardElement(false, 'opacity-90', previousContent)
-  const backgroundCard2 = createCardElement(false, 'opacity-70 bg-[#2A2C2D]', previousContent)
-  const backgroundCard3 = createCardElement(false, 'opacity-50 bg-[#282A2B]', previousContent)
+  const backgroundCard1 = createCardElement(false, '', previousContent)
+  const backgroundCard2 = createCardElement(false, 'bg-[#2A2C2D]', previousContent)
+  const backgroundCard3 = createCardElement(false, 'bg-[#282A2B]', previousContent)
 
   const stackedCardsData = [
     { id: 'bg-3', content: backgroundCard3 },

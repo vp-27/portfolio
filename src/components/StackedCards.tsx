@@ -38,7 +38,7 @@ export default function StackedCards({
                 x: 0,
                 transformOrigin: 'top center',
                 zIndex: index,
-                opacity: 1 - offset * 0.1
+                opacity: 1 - offset * 0.05 // Reduced opacity difference to prevent shadow stacking
               }}
               initial={false}
               transition={{
