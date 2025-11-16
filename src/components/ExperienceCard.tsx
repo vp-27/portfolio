@@ -13,17 +13,26 @@ interface ExperienceCardProps {
 export default function ExperienceCard({ experience, type, onDismiss }: ExperienceCardProps) {
   const hasContent = experience && type
   
+  // Track if we've ever had content before (for first hover detection)
+  const hadContentBefore = useRef(false)
+  
   // Use ref to track previous content synchronously
   const previousContentRef = useRef<{
     experience: Experience | Project | null
     type: 'experience' | 'project' | null
-  }>({ experience, type })
+  }>({ experience: null, type: null })
   
   // Store current as previous BEFORE render
-  const previousContent = previousContentRef.current
+  // If this is the first time showing content, previous should be placeholder
+  const previousContent = hadContentBefore.current 
+    ? previousContentRef.current 
+    : { experience: null, type: null }
   
   // Update ref after render for next time
   useEffect(() => {
+    if (hasContent) {
+      hadContentBefore.current = true
+    }
     previousContentRef.current = { experience, type }
   })
 
@@ -167,7 +176,8 @@ export default function ExperienceCard({ experience, type, onDismiss }: Experien
   )
 
   // Create background cards with PREVIOUS content (outgoing)
-  // When current content is empty (placeholder state), show placeholder in background too
+  // Show previous content in background during transitions
+  // If dismissing (going to placeholder), show placeholder in background too
   const backgroundContentData = hasContent ? previousContent : { experience: null, type: null }
   
   const backgroundCard1 = createCardElement(false, '', backgroundContentData)
