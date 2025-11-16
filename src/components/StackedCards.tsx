@@ -9,11 +9,13 @@ interface StackedCardData {
 interface StackedCardsProps {
   cards: StackedCardData[]
   className?: string
+  isInitial?: boolean
 }
 
 export default function StackedCards({
   cards,
-  className = ''
+  className = '',
+  isInitial = false
 }: StackedCardsProps) {
   // Separate the top card from background cards
   const topCard = cards[cards.length - 1]
@@ -38,7 +40,7 @@ export default function StackedCards({
                 x: 0,
                 transformOrigin: 'top center',
                 zIndex: index,
-                opacity: 1 - offset * 0.05 // Reduced opacity difference to prevent shadow stacking
+                opacity: isInitial ? 0 : 1 - offset * 0.05 // Reduced opacity difference to prevent shadow stacking
               }}
               initial={false}
               transition={{

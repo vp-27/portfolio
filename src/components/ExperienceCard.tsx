@@ -202,6 +202,7 @@ export default function ExperienceCard({ experience, type, onDismiss }: Experien
     <StackedCards 
       cards={stackedCardsData}
       className="w-full"
+      isInitial={!hadContentBefore.current && hasContent}
     />
   )
 }
