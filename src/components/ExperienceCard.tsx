@@ -11,7 +11,7 @@ interface ExperienceCardProps {
 }
 
 export default function ExperienceCard({ experience, type, onDismiss }: ExperienceCardProps) {
-  const hasContent = experience && type
+  const hasContent = !!(experience && type)
   
   // Track if we've ever had content before (for first hover detection)
   const hadContentBefore = useRef(false)
