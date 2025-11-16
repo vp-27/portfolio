@@ -60,11 +60,11 @@ export default function StackedCards({
           initial={{ y: 100, opacity: 0, scale: 1 }}
           animate={{ y: 0, opacity: 1, scale: 1 }}
           exit={{ 
-            y: 24, // Sink down to align with background stack
-            opacity: 0, // Fully transparent to avoid shadow overlay
-            scale: 0.97, // Slightly smaller as it sinks
+            y: 8, // Sink to position of first background card
+            opacity: 1, // Keep fully opaque - becomes the background card
+            scale: 0.97, // Match first background card scale
             transition: {
-              duration: 0.4,
+              duration: 0.3,
               ease: [0.4, 0, 0.2, 1]
             }
           }}
