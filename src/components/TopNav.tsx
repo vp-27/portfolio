@@ -24,9 +24,8 @@ export default function TopNav({ onNavigate, onSearch }: TopNavProps) {
 
   const handleResumeClick = (resumeType: string) => {
     const resumePaths: Record<string, string> = {
-      'Computer Science': '/resumes/Vandan_Patel_CS.pdf',
+      'Software Engineering': '/resumes/Vandan_Patel_CS.pdf',
       'Finance': '/resumes/Vandan_Patel_Finance.pdf',
-      'Product Management': '/resumes/Vandan_Patel_PM.pdf',
     }
     window.open(resumePaths[resumeType], '_blank')
     setIsResumeDropdownOpen(false)
@@ -109,14 +108,6 @@ export default function TopNav({ onNavigate, onSearch }: TopNavProps) {
                   >
                     <div className="font-medium">Finance</div>
                     <div className="text-xs text-gray-400 mt-0.5">Financial roles</div>
-                  </button>
-                  <div className="border-t border-gray-800" />
-                  <button
-                    onClick={() => handleResumeClick('Product Management')}
-                    className="w-full px-4 py-2.5 text-left text-sm text-white hover:bg-[#2A2A2A] transition-colors"
-                  >
-                    <div className="font-medium">Product Management</div>
-                    <div className="text-xs text-gray-400 mt-0.5">PM roles</div>
                   </button>
                 </div>
               )}

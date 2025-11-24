@@ -19,9 +19,8 @@ export default function BottomNav({ onNavigate }: BottomNavProps) {
 
   const handleResumeClick = (resumeType: string) => {
     const resumePaths: Record<string, string> = {
-      'Computer Science': '/resumes/Vandan_Patel_CS.pdf',
+      'Software Engineering': '/resumes/Vandan_Patel_CS.pdf',
       'Finance': '/resumes/Vandan_Patel_Finance.pdf',
-      'Product Management': '/resumes/Vandan_Patel_PM.pdf',
     }
     window.open(resumePaths[resumeType], '_blank')
     setIsResumeModalOpen(false)
@@ -114,7 +113,7 @@ export default function BottomNav({ onNavigate }: BottomNavProps) {
 
               <button
                 onClick={() => handleResumeClick('Finance')}
-                className="w-full bg-[#1A1A1A] hover:bg-[#252525] text-left px-6 py-4 rounded-xl mb-3 transition-colors"
+                className="w-full bg-[#1A1A1A] hover:bg-[#252525] text-left px-6 py-4 rounded-xl transition-colors"
               >
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-[#FFB800]/10 rounded-full flex items-center justify-center">
@@ -123,21 +122,6 @@ export default function BottomNav({ onNavigate }: BottomNavProps) {
                   <div>
                     <div className="text-white font-semibold text-base">Finance</div>
                     <div className="text-gray-400 text-sm">Financial & Quantitative roles</div>
-                  </div>
-                </div>
-              </button>
-
-              <button
-                onClick={() => handleResumeClick('Product Management')}
-                className="w-full bg-[#1A1A1A] hover:bg-[#252525] text-left px-6 py-4 rounded-xl transition-colors"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-[#5AC8FA]/10 rounded-full flex items-center justify-center">
-                    <FileText className="w-6 h-6 text-[#5AC8FA]" />
-                  </div>
-                  <div>
-                    <div className="text-white font-semibold text-base">Product Management</div>
-                    <div className="text-gray-400 text-sm">PM & Strategy roles</div>
                   </div>
                 </div>
               </button>
