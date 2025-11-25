@@ -105,7 +105,7 @@ export default function BottomNav({ onNavigate }: BottomNavProps) {
                     <FileText className="w-6 h-6 text-[#00C805]" />
                   </div>
                   <div>
-                    <div className="text-white font-semibold text-base">Computer Science</div>
+                    <div className="text-white font-semibold text-base">Software Engineering</div>
                     <div className="text-gray-400 text-sm">Technical & Engineering roles</div>
                   </div>
                 </div>

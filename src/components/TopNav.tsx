@@ -98,7 +98,7 @@ export default function TopNav({ onNavigate, onSearch }: TopNavProps) {
                     onClick={() => handleResumeClick('Computer Science')}
                     className="w-full px-4 py-2.5 text-left text-sm text-white hover:bg-[#2A2A2A] transition-colors"
                   >
-                    <div className="font-medium">Computer Science</div>
+                    <div className="font-medium">Software Engineering</div>
                     <div className="text-xs text-gray-400 mt-0.5">Technical roles</div>
                   </button>
                   <div className="border-t border-gray-800" />
