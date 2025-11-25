@@ -24,7 +24,7 @@ export default function TopNav({ onNavigate, onSearch }: TopNavProps) {
 
   const handleResumeClick = (resumeType: string) => {
     const resumePaths: Record<string, string> = {
-      'Software Engineering': '/resumes/Vandan_Patel_CS.pdf',
+      'Computer Science': '/resumes/Vandan_Patel_CS.pdf',
       'Finance': '/resumes/Vandan_Patel_Finance.pdf',
     }
     window.open(resumePaths[resumeType], '_blank')
