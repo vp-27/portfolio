@@ -43,13 +43,13 @@ export default function ExperienceCard({ experience, type, onDismiss }: Experien
     
     if (!hasContentToRender) {
       return (
-        <div className="flex items-center justify-center h-full min-h-[80px]">
+        <div className="flex items-center justify-center h-full min-h-[60px] md:min-h-[80px]">
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-[#E8A03D] text-lg font-medium"
+            className="text-[#E8A03D] text-base md:text-lg font-medium"
           >
-            Try hovering over the chart!
+            Select a milestone above
           </motion.p>
         </div>
       )
@@ -136,7 +136,7 @@ export default function ExperienceCard({ experience, type, onDismiss }: Experien
     return (
       <div
         className={`bg-[#2B2D2E] rounded-lg shadow-2xl border border-[#3A3C3D] overflow-hidden relative px-6 ${
-          cardHasContent ? 'py-6 min-h-0' : 'py-4 min-h-[80px]'
+          cardHasContent ? 'py-6 min-h-0' : 'py-3 md:py-4 min-h-[60px] md:min-h-[80px]'
         } ${additionalClasses}`}
       >
         {/* X button - only show when there's content and on main card */}
