@@ -1,4 +1,5 @@
 import { useState, useMemo, useRef } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import TopNav from '../components/TopNav'
 import PortfolioHeader from '../components/PortfolioHeader'
 import PortfolioChart from '../components/PortfolioChart'
@@ -219,13 +220,22 @@ export default function Dashboard() {
               </div>
               
               {/* Experience Card - Shown above About Me */}
-              <div className="px-4 md:px-4 mb-6 mt-6">
-                <ExperienceCard 
-                  experience={lastHoveredExperience.data} 
-                  type={lastHoveredExperience.type}
-                  onDismiss={handleDismissExperienceCard}
-                />
-              </div>
+              <AnimatePresence>
+                {lastHoveredExperience.data && (
+                  <motion.div 
+                    initial={{ height: 0, opacity: 0, marginTop: 0, marginBottom: 0 }}
+                    animate={{ height: 'auto', opacity: 1, marginTop: 24, marginBottom: 24 }}
+                    exit={{ height: 0, opacity: 0, marginTop: 0, marginBottom: 0 }}
+                    className="px-4 md:px-4 overflow-hidden"
+                  >
+                    <ExperienceCard 
+                      experience={lastHoveredExperience.data} 
+                      type={lastHoveredExperience.type}
+                      onDismiss={handleDismissExperienceCard}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
               
               {/* About Me - Shown on mobile right under Experience Card */}
               <div className="lg:hidden px-4 md:px-4 mb-6" data-section="about">
