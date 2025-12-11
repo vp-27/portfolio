@@ -35,6 +35,7 @@ const skillEmojis: Record<string, string> = {
 
 export default function AboutAndSkills({ skillCategories, searchQuery = '', showOnlyAbout = false, showOnlySkills = false }: AboutAndSkillsProps) {
   const [expandedLists, setExpandedLists] = useState<Set<string>>(new Set())
+  const [isHovered, setIsHovered] = useState(false)
 
   // Filter skills based on search query
   const filteredSkillCategories = skillCategories.map(category => ({
@@ -67,14 +68,33 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '', show
           </div>
           
           <div className="p-6 space-y-4">
-            <div>
-              <h3 className="text-xl font-medium mb-2 text-white">{aboutData.name}</h3>
-              <p className="text-sm text-gray-300 leading-relaxed">{aboutData.title}</p>
-            </div>
-
-            <div className="flex items-center gap-2 text-sm text-gray-400 pt-2">
-              <MapPin className="w-4 h-4" />
-              <span>{aboutData.location}</span>
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex-1">
+                <h3 className="text-xl font-medium mb-2 text-white">{aboutData.name}</h3>
+                <p className="text-sm text-gray-300 leading-relaxed">{aboutData.title}</p>
+                <div className="flex items-center gap-2 text-sm text-gray-400 pt-2">
+                  <MapPin className="w-4 h-4" />
+                  <span>{aboutData.location}</span>
+                </div>
+              </div>
+              
+              {/* Profile Picture with hover effect */}
+              <div 
+                className="relative w-32 h-32 cursor-pointer flex-shrink-0"
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+              >
+                <img
+                  src="/images/pfp_theme%20transparent.png"
+                  alt="Vandan Patel - Themed"
+                  className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${isHovered ? 'opacity-0' : 'opacity-100'}`}
+                />
+                <img
+                  src="/images/pfp_original.jpg"
+                  alt="Vandan Patel - Original"
+                  className={`absolute inset-0 w-full h-full object-contain rounded-full transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+                />
+              </div>
             </div>
 
             <div className="pt-2 border-t border-[#2D2D2D]">
@@ -162,14 +182,33 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '', show
             <h2 className="text-xl font-medium mb-3 text-left">About Me</h2>
             <div className="bg-[#0D0D0D] rounded-lg p-6">
               <div className="space-y-4">
-                <div>
-                  <h3 className="text-base font-medium mb-1">{aboutData.name}</h3>
-                  <p className="text-sm text-gray-400">{aboutData.title}</p>
-                </div>
-
-                <div className="flex items-center gap-2 text-sm text-gray-400">
-                  <MapPin className="w-4 h-4" />
-                  <span>{aboutData.location}</span>
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1">
+                    <h3 className="text-base font-medium mb-1">{aboutData.name}</h3>
+                    <p className="text-sm text-gray-400">{aboutData.title}</p>
+                    <div className="flex items-center gap-2 text-sm text-gray-400 pt-2">
+                      <MapPin className="w-4 h-4" />
+                      <span>{aboutData.location}</span>
+                    </div>
+                  </div>
+                  
+                  {/* Profile Picture with hover effect */}
+                  <div 
+                    className="relative w-28 h-28 cursor-pointer flex-shrink-0"
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                  >
+                    <img
+                      src="/images/pfp_theme%20transparent.png"
+                      alt="Vandan Patel - Themed"
+                      className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${isHovered ? 'opacity-0' : 'opacity-100'}`}
+                    />
+                    <img
+                      src="/images/pfp_original.jpg"
+                      alt="Vandan Patel - Original"
+                      className={`absolute inset-0 w-full h-full object-contain rounded-full transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+                    />
+                  </div>
                 </div>
 
                 <p className="text-sm text-gray-400 leading-relaxed">

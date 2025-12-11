@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { MapPin } from 'lucide-react'
 
 interface AboutMeData {
@@ -15,6 +16,8 @@ const aboutData: AboutMeData = {
 }
 
 export default function AboutMe() {
+  const [isHovered, setIsHovered] = useState(false)
+
   return (
     <div className="bg-black rounded-lg border border-gray-900">
       {/* Header with tab */}
@@ -26,16 +29,35 @@ export default function AboutMe() {
       
       {/* Content */}
       <div className="p-6 space-y-4">
-        {/* Name & Title */}
-        <div>
-          <h3 className="text-xl font-medium mb-2 text-white">{aboutData.name}</h3>
-          <p className="text-sm text-gray-300 leading-relaxed">{aboutData.title}</p>
-        </div>
-
-        {/* Location */}
-        <div className="flex items-center gap-2 text-sm text-gray-400 pt-2">
-          <MapPin className="w-4 h-4" />
-          <span>{aboutData.location}</span>
+        {/* Name, Title & Profile Picture */}
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex-1">
+            <h3 className="text-xl font-medium mb-2 text-white">{aboutData.name}</h3>
+            <p className="text-sm text-gray-300 leading-relaxed">{aboutData.title}</p>
+            {/* Location */}
+            <div className="flex items-center gap-2 text-sm text-gray-400 pt-2">
+              <MapPin className="w-4 h-4" />
+              <span>{aboutData.location}</span>
+            </div>
+          </div>
+          
+          {/* Profile Picture with hover effect */}
+          <div 
+            className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-gray-800 cursor-pointer flex-shrink-0 transition-all duration-300 hover:border-green-500"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            <img
+              src="/images/pfp_theme%20transparent.png"
+              alt="Vandan Patel - Themed"
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${isHovered ? 'opacity-0' : 'opacity-100'}`}
+            />
+            <img
+              src="/images/pfp_original.jpg"
+              alt="Vandan Patel - Original"
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+            />
+          </div>
         </div>
 
         {/* Bio */}
