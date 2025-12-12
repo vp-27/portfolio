@@ -186,7 +186,7 @@ export default function Dashboard() {
           <div className="lg:grid lg:grid-cols-[1fr,400px] lg:gap-6">
             <div>
               <div className="md:px-4">
-                <PortfolioHeader portfolio={mockPortfolio} hoveredLabel={hoveredLabel} />
+                <PortfolioHeader portfolio={mockPortfolio} hoveredLabel={hoveredLabel} activeLabel={activeLabel} />
               </div>
               <div>
                 <PortfolioChart 
