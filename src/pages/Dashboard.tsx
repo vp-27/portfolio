@@ -222,7 +222,7 @@ export default function Dashboard() {
               </div>
               
               {/* About Me - Shown on mobile right under Experience Card */}
-              <div className="lg:hidden px-4 md:px-4 mb-6" data-section="about">
+              <div className="lg:hidden px-4 md:px-4 mt-4 mb-6" data-section="about">
                 <AboutAndSkills skillCategories={mockSkillCategories} searchQuery={searchQuery} showOnlyAbout={true} />
               </div>
               
