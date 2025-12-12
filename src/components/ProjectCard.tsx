@@ -27,8 +27,8 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
         height: 'auto'
       }}
       transition={{ 
-        duration: 0.4,
-        ease: [0.4, 0.0, 0.2, 1]
+        duration: 0.2,
+        ease: [0.32, 0.72, 0, 1]
       }}
       className={`
         bg-[#1C1C1E] rounded-2xl overflow-hidden cursor-pointer
@@ -44,10 +44,10 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
         {!isExpanded ? (
           <motion.div 
             key="collapsed"
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2, ease: [0.32, 0.72, 0, 1] }}
             className="p-4 md:p-5 flex flex-col"
           >
             {/* Top Row: Logo + Title/Duration */}
@@ -135,10 +135,10 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
         /* Expanded State - Full Details View */
         <motion.div 
           key="expanded"
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.3 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.2, ease: [0.32, 0.72, 0, 1] }}
           className="p-4 md:p-6"
         >
           {/* Header with Title and Chevron */}
@@ -152,7 +152,7 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
             {/* Chevron - Rotated to indicate collapse */}
             <motion.div
               animate={{ rotate: isExpanded ? 90 : 0 }}
-              transition={{ duration: 0.4, ease: [0.4, 0.0, 0.2, 1] }}
+              transition={{ duration: 0.2, ease: [0.32, 0.72, 0, 1] }}
               className="text-gray-500 flex-shrink-0 ml-2 md:ml-3"
             >
               <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />
@@ -171,9 +171,9 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
                     {project.bullets.map((bullet, idx) => (
                       <motion.div
                         key={idx}
-                        initial={{ opacity: 0, x: -10 }}
+                        initial={{ opacity: 0, x: -6 }}
                         animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: idx * 0.04, duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
+                        transition={{ delay: idx * 0.03, duration: 0.15, ease: [0.32, 0.72, 0, 1] }}
                         className="flex gap-2 md:gap-3 text-xs md:text-sm text-gray-300 leading-relaxed"
                       >
                         <span className="text-[#00C805] mt-0.5 flex-shrink-0 text-[10px] md:text-xs">▸</span>
@@ -187,7 +187,7 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
                 <motion.div 
                   initial={false}
                   animate={{ opacity: 1 }}
-                  transition={{ duration: 0.3, ease: [0.4, 0.0, 0.2, 1] }}
+                  transition={{ duration: 0.2, ease: [0.32, 0.72, 0, 1] }}
                   className="flex items-center justify-center rounded-xl overflow-hidden bg-transparent border-2 md:border-[3px]"
                   style={{ borderColor: accentColor }}
                 >
@@ -207,7 +207,7 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
                 initial={false}
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3, ease: [0.4, 0.0, 0.2, 1] }}
+                transition={{ duration: 0.2, ease: [0.32, 0.72, 0, 1] }}
                 className="mb-4 md:mb-5 rounded-xl overflow-hidden bg-[#0A0A0A] border-2 md:border-[3px] flex items-center justify-center"
                 style={{ borderColor: accentColor }}
               >
@@ -231,9 +231,9 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
                 {project.bullets.map((bullet, idx) => (
                   <motion.div
                     key={idx}
-                    initial={{ opacity: 0, x: -10 }}
+                    initial={{ opacity: 0, x: -6 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: idx * 0.04, duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
+                    transition={{ delay: idx * 0.03, duration: 0.15, ease: [0.32, 0.72, 0, 1] }}
                     className="flex gap-2 md:gap-3 text-xs md:text-sm text-gray-300 leading-relaxed"
                   >
                     <span className="text-[#00C805] mt-0.5 flex-shrink-0 text-[10px] md:text-xs">▸</span>
