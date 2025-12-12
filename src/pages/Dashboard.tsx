@@ -1,5 +1,4 @@
 import { useState, useMemo, useRef } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
 import TopNav from '../components/TopNav'
 import PortfolioHeader from '../components/PortfolioHeader'
 import PortfolioChart from '../components/PortfolioChart'
@@ -7,7 +6,6 @@ import AboutAndSkills from '../components/AboutAndSkills'
 import BuyingPower from '../components/BuyingPower'
 import BottomNav from '../components/BottomNav'
 import PortfolioSections from '../components/PortfolioSections'
-import ExperienceCard from '../components/ExperienceCard'
 import { mockPortfolio, filterTimelineData, mockSkillCategories, mockExperiences, mockProjects, mockEducation, mockCertifications } from '../data/mockData'
 import type { ChartDataPoint, Experience, Project } from '../types'
 
@@ -216,26 +214,12 @@ export default function Dashboard() {
               </div>
               
               <div className="px-4 md:px-4">
-                <BuyingPower />
+                <BuyingPower 
+                  experienceData={lastHoveredExperience.data}
+                  experienceType={lastHoveredExperience.type}
+                  onDismiss={handleDismissExperienceCard}
+                />
               </div>
-              
-              {/* Experience Card - Shown above About Me */}
-              <AnimatePresence>
-                {lastHoveredExperience.data && (
-                  <motion.div 
-                    initial={{ height: 0, opacity: 0, marginTop: 0, marginBottom: 0 }}
-                    animate={{ height: 'auto', opacity: 1, marginTop: 24, marginBottom: 24 }}
-                    exit={{ height: 0, opacity: 0, marginTop: 0, marginBottom: 0 }}
-                    className="px-4 md:px-4 overflow-hidden"
-                  >
-                    <ExperienceCard 
-                      experience={lastHoveredExperience.data} 
-                      type={lastHoveredExperience.type}
-                      onDismiss={handleDismissExperienceCard}
-                    />
-                  </motion.div>
-                )}
-              </AnimatePresence>
               
               {/* About Me - Shown on mobile right under Experience Card */}
               <div className="lg:hidden px-4 md:px-4 mb-6" data-section="about">
