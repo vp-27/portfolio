@@ -80,19 +80,19 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '', show
               
               {/* Profile Picture with hover effect */}
               <div 
-                className="relative w-32 h-32 cursor-pointer flex-shrink-0"
+                className="relative w-32 h-32 cursor-pointer flex-shrink-0 overflow-visible"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
               >
                 <img
                   src="/images/pfp_theme%20transparent.png"
                   alt="Vandan Patel - Themed"
-                  className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${isHovered ? 'opacity-0' : 'opacity-100'}`}
+                  className={`absolute -top-4 -right-4 w-40 h-40 object-contain transition-opacity duration-300 ${isHovered ? 'opacity-0' : 'opacity-100'}`}
                 />
                 <img
                   src="/images/pfp_original.jpg"
                   alt="Vandan Patel - Original"
-                  className={`absolute inset-0 w-full h-full object-contain rounded-full transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+                  className={`absolute top-0 right-0 w-32 h-32 object-cover rounded-full transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
                 />
               </div>
             </div>
@@ -194,19 +194,19 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '', show
                   
                   {/* Profile Picture with hover effect */}
                   <div 
-                    className="relative w-28 h-28 cursor-pointer flex-shrink-0"
+                    className="relative w-28 h-28 cursor-pointer flex-shrink-0 overflow-visible"
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
                   >
                     <img
                       src="/images/pfp_theme%20transparent.png"
                       alt="Vandan Patel - Themed"
-                      className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${isHovered ? 'opacity-0' : 'opacity-100'}`}
+                      className={`absolute -top-3 -right-3 w-36 h-36 object-contain transition-opacity duration-300 ${isHovered ? 'opacity-0' : 'opacity-100'}`}
                     />
                     <img
                       src="/images/pfp_original.jpg"
                       alt="Vandan Patel - Original"
-                      className={`absolute inset-0 w-full h-full object-contain rounded-full transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+                      className={`absolute top-0 right-0 w-28 h-28 object-cover rounded-full transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
                     />
                   </div>
                 </div>
