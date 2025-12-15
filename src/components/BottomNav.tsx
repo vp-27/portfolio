@@ -123,24 +123,24 @@ export default function BottomNav({ onNavigate }: BottomNavProps) {
               <div className="bg-[#1A1A1A] mx-4 rounded-xl overflow-hidden">
                 <button
                   onClick={() => handleResumeClick('Computer Science')}
-                  className="w-full flex items-center justify-between px-4 py-3.5 hover:bg-[#252525] transition-colors border-b border-gray-800"
+                  className="w-full flex items-center justify-between px-4 py-4 hover:bg-[#252525] transition-colors border-b border-gray-800"
                 >
-                  <div className="flex items-center gap-3">
-                    <DocumentTextIcon className="w-5 h-5 text-[#00C805]" />
-                    <span className="text-white text-[15px]">Software Engineering</span>
+                  <div className="flex items-center gap-3.5">
+                    <DocumentTextIcon className="w-6 h-6 text-[#00C805]" />
+                    <span className="text-white text-base">Software Engineering</span>
                   </div>
-                  <ChevronRightIcon className="w-4 h-4 text-gray-500" />
+                  <ChevronRightIcon className="w-5 h-5 text-gray-500" />
                 </button>
 
                 <button
                   onClick={() => handleResumeClick('Finance')}
-                  className="w-full flex items-center justify-between px-4 py-3.5 hover:bg-[#252525] transition-colors"
+                  className="w-full flex items-center justify-between px-4 py-4 hover:bg-[#252525] transition-colors"
                 >
-                  <div className="flex items-center gap-3">
-                    <DocumentTextIcon className="w-5 h-5 text-[#FFB800]" />
-                    <span className="text-white text-[15px]">Finance</span>
+                  <div className="flex items-center gap-3.5">
+                    <DocumentTextIcon className="w-6 h-6 text-[#FFB800]" />
+                    <span className="text-white text-base">Finance</span>
                   </div>
-                  <ChevronRightIcon className="w-4 h-4 text-gray-500" />
+                  <ChevronRightIcon className="w-5 h-5 text-gray-500" />
                 </button>
               </div>
             </div>
@@ -154,13 +154,13 @@ export default function BottomNav({ onNavigate }: BottomNavProps) {
                     handleExternalLink('https://github.com/vp-27')
                     setIsProfileModalOpen(false)
                   }}
-                  className="w-full flex items-center justify-between px-4 py-3.5 hover:bg-[#252525] transition-colors border-b border-gray-800"
+                  className="w-full flex items-center justify-between px-4 py-4 hover:bg-[#252525] transition-colors border-b border-gray-800"
                 >
-                  <div className="flex items-center gap-3">
-                    <GithubIcon className="w-5 h-5 text-white" />
-                    <span className="text-white text-[15px]">GitHub</span>
+                  <div className="flex items-center gap-3.5">
+                    <GithubIcon className="w-6 h-6 text-white" />
+                    <span className="text-white text-base">GitHub</span>
                   </div>
-                  <ChevronRightIcon className="w-4 h-4 text-gray-500" />
+                  <ChevronRightIcon className="w-5 h-5 text-gray-500" />
                 </button>
 
                 <button
@@ -168,13 +168,13 @@ export default function BottomNav({ onNavigate }: BottomNavProps) {
                     handleExternalLink('https://www.linkedin.com/in/vandan-patel-vp/')
                     setIsProfileModalOpen(false)
                   }}
-                  className="w-full flex items-center justify-between px-4 py-3.5 hover:bg-[#252525] transition-colors border-b border-gray-800"
+                  className="w-full flex items-center justify-between px-4 py-4 hover:bg-[#252525] transition-colors border-b border-gray-800"
                 >
-                  <div className="flex items-center gap-3">
-                    <LinkedinIcon className="w-5 h-5 text-[#0A66C2]" />
-                    <span className="text-white text-[15px]">LinkedIn</span>
+                  <div className="flex items-center gap-3.5">
+                    <LinkedinIcon className="w-6 h-6 text-[#0A66C2]" />
+                    <span className="text-white text-base">LinkedIn</span>
                   </div>
-                  <ChevronRightIcon className="w-4 h-4 text-gray-500" />
+                  <ChevronRightIcon className="w-5 h-5 text-gray-500" />
                 </button>
 
                 <button
@@ -182,13 +182,13 @@ export default function BottomNav({ onNavigate }: BottomNavProps) {
                     handleExternalLink('mailto:vrp77@scarletmail.rutgers.edu')
                     setIsProfileModalOpen(false)
                   }}
-                  className="w-full flex items-center justify-between px-4 py-3.5 hover:bg-[#252525] transition-colors"
+                  className="w-full flex items-center justify-between px-4 py-4 hover:bg-[#252525] transition-colors"
                 >
-                  <div className="flex items-center gap-3">
-                    <EnvelopeIcon className="w-5 h-5 text-gray-400" />
-                    <span className="text-white text-[15px]">Email</span>
+                  <div className="flex items-center gap-3.5">
+                    <EnvelopeIcon className="w-6 h-6 text-gray-400" />
+                    <span className="text-white text-base">Email</span>
                   </div>
-                  <ChevronRightIcon className="w-4 h-4 text-gray-500" />
+                  <ChevronRightIcon className="w-5 h-5 text-gray-500" />
                 </button>
               </div>
             </div>
