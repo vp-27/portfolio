@@ -1,4 +1,4 @@
-import { BriefcaseIcon, FolderIcon, UserIcon, XMarkIcon, DocumentTextIcon, EnvelopeIcon, ChevronRightIcon } from '@heroicons/react/24/solid'
+import { BriefcaseIcon, FolderIcon, UserIcon, DocumentTextIcon, EnvelopeIcon, ChevronRightIcon } from '@heroicons/react/24/solid'
 import { useState } from 'react'
 
 // Custom Robinhood-style chart icon for home/portfolio
