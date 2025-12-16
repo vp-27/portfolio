@@ -44,7 +44,7 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
     // Only show dots for points with labels (milestones)
     if (payload.label) {
       const isActive = activeLabel === payload.label
-      const dotColor = isActive ? '#E8A03D' : strokeColor
+      const dotColor = isActive ? '#C9A227' : strokeColor
       const dotRadius = isActive ? 6 : 4
       const strokeWidth = isActive ? 2 : 1.5
       return (
@@ -105,7 +105,7 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
             dot={<CustomDot />}
             activeDot={(props: any) => {
               const isActive = activeLabel === props.payload.label
-              const dotColor = isActive ? '#E8A03D' : strokeColor
+              const dotColor = isActive ? '#C9A227' : strokeColor
               return (
                 <circle
                   cx={props.cx}

@@ -47,7 +47,7 @@ export default function ExperienceCard({ experience, type, onDismiss }: Experien
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-[#E8A03D] text-base md:text-lg font-medium"
+            className="text-[#C9A227] text-base md:text-lg font-medium"
           >
             Select a milestone above
           </motion.p>
@@ -61,7 +61,7 @@ export default function ExperienceCard({ experience, type, onDismiss }: Experien
         <div>
           <div className="flex items-start justify-between mb-3">
             <div className="flex-1">
-              <h3 className="font-semibold text-[#E8A03D] text-lg">{expData.position}</h3>
+              <h3 className="font-semibold text-[#C9A227] text-lg">{expData.position}</h3>
               <p className="text-sm text-gray-400 mt-1">{expData.company}</p>
             </div>
           </div>
@@ -78,7 +78,7 @@ export default function ExperienceCard({ experience, type, onDismiss }: Experien
           <ul className="space-y-2.5 text-sm text-gray-300">
             {expData.bullets.slice(0, 2).map((bullet, idx) => (
               <li key={idx} className="flex gap-2">
-                <span className="text-[#E8A03D] mt-1.5">•</span>
+                <span className="text-[#C9A227] mt-1.5">•</span>
                 <span>{bullet}</span>
               </li>
             ))}
@@ -91,7 +91,7 @@ export default function ExperienceCard({ experience, type, onDismiss }: Experien
         <div>
           <div className="flex items-start justify-between mb-3">
             <div className="flex-1">
-              <h3 className="font-semibold text-[#E8A03D] text-lg">{proj.name}</h3>
+              <h3 className="font-semibold text-[#C9A227] text-lg">{proj.name}</h3>
               <p className="text-sm text-gray-400 mt-1">{proj.subtitle}</p>
             </div>
           </div>
@@ -102,7 +102,7 @@ export default function ExperienceCard({ experience, type, onDismiss }: Experien
           <ul className="space-y-2.5 text-sm text-gray-300 mb-4">
             {proj.bullets.slice(0, 2).map((bullet, idx) => (
               <li key={idx} className="flex gap-2">
-                <span className="text-[#E8A03D] mt-1.5">•</span>
+                <span className="text-[#C9A227] mt-1.5">•</span>
                 <span>{bullet}</span>
               </li>
             ))}
