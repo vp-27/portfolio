@@ -6,10 +6,11 @@ import type { Experience } from '../types'
 interface ExperienceItemProps {
   experience: Experience
   isHighlighted?: boolean
+  isFirst?: boolean
   isLast?: boolean
 }
 
-export default function ExperienceItem({ experience, isHighlighted, isLast = false }: ExperienceItemProps) {
+export default function ExperienceItem({ experience, isHighlighted, isFirst = false, isLast = false }: ExperienceItemProps) {
   const [isExpanded, setIsExpanded] = useState(false)
 
   // Determine if this is a current position
@@ -23,7 +24,8 @@ export default function ExperienceItem({ experience, isHighlighted, isLast = fal
         bg-transparent overflow-hidden cursor-pointer
         transition-all duration-200 ease-out
         hover:bg-[#0D0D0D]
-        ${!isLast ? 'border-b border-[#1E1E1E] lg:border-[#222]' : ''}
+        ${isFirst ? 'hover:rounded-t-xl' : ''}
+        ${isLast ? 'hover:rounded-b-xl' : 'border-b border-[#1E1E1E] lg:border-[#222]'}
         ${isHighlighted ? 'bg-[#00C805]/10' : ''}
       `}
     >

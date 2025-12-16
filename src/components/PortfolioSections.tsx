@@ -38,7 +38,7 @@ export default function PortfolioSections({ experiences, projects, education, ce
       {/* Professional Experience Section */}
       <div data-section="experience">
         <div className="flex items-center">
-          <h2 className="text-xl font-medium text-left">Professional Experience</h2>
+          <h2 className="text-2xl lg:text-xl font-medium text-left">Professional Experience</h2>
           <Link to="/experience" className="lg:hidden flex items-center">
             <ChevronRight className="w-5 h-5 text-gray-400" />
           </Link>
@@ -56,6 +56,7 @@ export default function PortfolioSections({ experiences, projects, education, ce
                   key={exp.id}
                   experience={exp}
                   isHighlighted={isHighlighted}
+                  isFirst={index === 0}
                   isLast={index === filteredExperiences.length - 1}
                 />
               )
@@ -67,7 +68,7 @@ export default function PortfolioSections({ experiences, projects, education, ce
       {/* Projects Section */}
       <div data-section="projects">
         <div className="flex items-center">
-          <h2 className="text-xl font-medium text-left">Projects</h2>
+          <h2 className="text-2xl lg:text-xl font-medium text-left">Projects</h2>
           <Link to="/projects" className="lg:hidden flex items-center">
             <ChevronRight className="w-5 h-5 text-gray-400" />
           </Link>
@@ -95,7 +96,7 @@ export default function PortfolioSections({ experiences, projects, education, ce
       {/* Education Section */}
       <div data-section="education">
         <div className="flex items-center">
-          <h2 className="text-xl font-medium text-left">Education</h2>
+          <h2 className="text-2xl lg:text-xl font-medium text-left">Education</h2>
           <Link to="/education" className="lg:hidden flex items-center">
             <ChevronRight className="w-5 h-5 text-gray-400" />
           </Link>
@@ -104,7 +105,7 @@ export default function PortfolioSections({ experiences, projects, education, ce
         <div className="lg:hidden mb-3" />
         <div>
           {education.map((edu, index) => (
-            <div key={edu.id} className={`bg-transparent py-4 hover:bg-[#0D0D0D] transition-all ${index !== education.length - 1 ? 'border-b border-[#1E1E1E] lg:border-[#222]' : ''}`}>
+            <div key={edu.id} className={`bg-transparent py-4 hover:bg-[#0D0D0D] transition-all ${index === 0 ? 'hover:rounded-t-xl' : ''} ${index === education.length - 1 ? 'hover:rounded-b-xl' : 'border-b border-[#1E1E1E] lg:border-[#222]'}`}>
               {/* Header with institution name and GPA */}
               <div className="flex items-start justify-between mb-2">
                 <h3 className="font-semibold text-white text-base">{edu.institution}</h3>
@@ -157,7 +158,7 @@ export default function PortfolioSections({ experiences, projects, education, ce
       {/* Certifications Section */}
       <div>
         <div className="flex items-center">
-          <h2 className="text-xl font-medium text-left">Certifications</h2>
+          <h2 className="text-2xl lg:text-xl font-medium text-left">Certifications</h2>
           <Link to="/education" className="lg:hidden flex items-center">
             <ChevronRight className="w-5 h-5 text-gray-400" />
           </Link>
@@ -166,7 +167,7 @@ export default function PortfolioSections({ experiences, projects, education, ce
         <div className="lg:hidden mb-3" />
         <div>
           {certifications.map((cert, index) => (
-            <div key={cert.id} className={`bg-transparent py-3 hover:bg-[#0D0D0D] transition-all ${index !== certifications.length - 1 ? 'border-b border-[#1E1E1E] lg:border-[#222]' : ''}`}>
+            <div key={cert.id} className={`bg-transparent py-3 hover:bg-[#0D0D0D] transition-all ${index === 0 ? 'hover:rounded-t-xl' : ''} ${index === certifications.length - 1 ? 'hover:rounded-b-xl' : 'border-b border-[#1E1E1E] lg:border-[#222]'}`}>
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="font-medium text-white text-sm">{cert.name}</h3>
