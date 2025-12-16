@@ -1,5 +1,6 @@
 import { BriefcaseIcon, FolderIcon, UserIcon, DocumentTextIcon, EnvelopeIcon, ChevronRightIcon } from '@heroicons/react/24/solid'
 import { useState } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 // Custom Robinhood-style chart icon for home/portfolio
 const ChartIcon = ({ className, strokeWidth = 2 }: { className?: string; strokeWidth?: number }) => (
@@ -31,20 +32,10 @@ const LinkedinIcon = ({ className }: { className?: string }) => (
   </svg>
 )
 
-interface BottomNavProps {
-  onNavigate?: (section: string) => void
-}
-
-export default function BottomNav({ onNavigate }: BottomNavProps) {
-  const [activeTab, setActiveTab] = useState('home')
+export default function BottomNav() {
+  const navigate = useNavigate()
+  const location = useLocation()
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
-
-  const handleNavigate = (section: string, label: string) => {
-    setActiveTab(label.toLowerCase())
-    if (onNavigate) {
-      onNavigate(section)
-    }
-  }
 
   const handleResumeClick = (resumeType: string) => {
     const resumePaths: Record<string, string> = {
@@ -59,11 +50,17 @@ export default function BottomNav({ onNavigate }: BottomNavProps) {
   }
 
   const navItems = [
-    { icon: ChartIcon, label: 'Home', section: 'top', type: 'navigation', isCustom: true },
-    { icon: BriefcaseIcon, label: 'Experience', section: 'experience', type: 'navigation', isCustom: false },
-    { icon: FolderIcon, label: 'Projects', section: 'projects', type: 'navigation', isCustom: false },
-    { icon: UserIcon, label: 'Profile', section: 'profile', type: 'action', isCustom: false },
+    { icon: ChartIcon, label: 'Home', path: '/', isCustom: true },
+    { icon: BriefcaseIcon, label: 'Experience', path: '/experience', isCustom: false },
+    { icon: FolderIcon, label: 'Projects', path: '/projects', isCustom: false },
+    { icon: UserIcon, label: 'Profile', path: null, type: 'action', isCustom: false },
   ]
+
+  const isActive = (path: string | null) => {
+    if (!path) return false
+    if (path === '/') return location.pathname === '/'
+    return location.pathname === path
+  }
 
   return (
     <>
@@ -76,9 +73,9 @@ export default function BottomNav({ onNavigate }: BottomNavProps) {
               onClick={() => {
                 if (item.type === 'action') {
                   setIsProfileModalOpen(true)
-                  setActiveTab(item.label.toLowerCase())
-                } else {
-                  handleNavigate(item.section, item.label)
+                } else if (item.path) {
+                  navigate(item.path)
+                  window.scrollTo(0, 0)
                 }
               }}
               className="flex items-center justify-center p-3 bg-transparent transition-all"
@@ -86,14 +83,14 @@ export default function BottomNav({ onNavigate }: BottomNavProps) {
               {item.isCustom ? (
                 <item.icon 
                   className={`w-7 h-7 transition-colors ${
-                    activeTab === item.label.toLowerCase() ? 'text-white' : 'text-gray-500'
+                    isActive(item.path) ? 'text-white' : 'text-gray-500'
                   }`}
-                  strokeWidth={activeTab === item.label.toLowerCase() ? 2.5 : 2}
+                  strokeWidth={isActive(item.path) ? 2.5 : 2}
                 />
               ) : (
                 <item.icon 
                   className={`w-7 h-7 transition-colors ${
-                    activeTab === item.label.toLowerCase() ? 'text-white' : 'text-gray-500'
+                    isActive(item.path) || (item.type === 'action' && isProfileModalOpen) ? 'text-white' : 'text-gray-500'
                   }`}
                 />
               )}

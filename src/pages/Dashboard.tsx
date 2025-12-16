@@ -253,7 +253,7 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-      <BottomNav onNavigate={handleNavigate} />
+      <BottomNav />
     </div>
   )
 }

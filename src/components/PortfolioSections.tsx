@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { MapPin, Calendar, ChevronRight } from 'lucide-react'
 import type { Experience, Project, Education, Certification } from '../types'
 import ExperienceItem from './ExperienceItem'
@@ -36,9 +37,11 @@ export default function PortfolioSections({ experiences, projects, education, ce
     <div className="mt-10 space-y-8">
       {/* Professional Experience Section */}
       <div data-section="experience">
-        <div className="flex items-center gap-1">
+        <div className="flex items-center">
           <h2 className="text-xl font-medium text-left">Professional Experience</h2>
-          <ChevronRight className="w-5 h-5 text-gray-400 lg:hidden" />
+          <Link to="/experience" className="lg:hidden flex items-center">
+            <ChevronRight className="w-5 h-5 text-gray-400" />
+          </Link>
         </div>
         <div className="hidden lg:block border-b border-[#2D2D2D] mt-2 mb-1" />
         <div className="lg:hidden mb-3" />
@@ -63,9 +66,11 @@ export default function PortfolioSections({ experiences, projects, education, ce
 
       {/* Projects Section */}
       <div data-section="projects">
-        <div className="flex items-center gap-1">
+        <div className="flex items-center">
           <h2 className="text-xl font-medium text-left">Projects</h2>
-          <ChevronRight className="w-5 h-5 text-gray-400 lg:hidden" />
+          <Link to="/projects" className="lg:hidden flex items-center">
+            <ChevronRight className="w-5 h-5 text-gray-400" />
+          </Link>
         </div>
         <div className="hidden lg:block border-b border-[#2D2D2D] mt-2 mb-3" />
         <div className="lg:hidden mb-3" />
@@ -89,9 +94,11 @@ export default function PortfolioSections({ experiences, projects, education, ce
 
       {/* Education Section */}
       <div data-section="education">
-        <div className="flex items-center gap-1">
+        <div className="flex items-center">
           <h2 className="text-xl font-medium text-left">Education</h2>
-          <ChevronRight className="w-5 h-5 text-gray-400 lg:hidden" />
+          <Link to="/education" className="lg:hidden flex items-center">
+            <ChevronRight className="w-5 h-5 text-gray-400" />
+          </Link>
         </div>
         <div className="hidden lg:block border-b border-[#2D2D2D] mt-2 mb-1" />
         <div className="lg:hidden mb-3" />
@@ -149,9 +156,11 @@ export default function PortfolioSections({ experiences, projects, education, ce
 
       {/* Certifications Section */}
       <div>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center">
           <h2 className="text-xl font-medium text-left">Certifications</h2>
-          <ChevronRight className="w-5 h-5 text-gray-400 lg:hidden" />
+          <Link to="/education" className="lg:hidden flex items-center">
+            <ChevronRight className="w-5 h-5 text-gray-400" />
+          </Link>
         </div>
         <div className="hidden lg:block border-b border-[#2D2D2D] mt-2 mb-1" />
         <div className="lg:hidden mb-3" />
