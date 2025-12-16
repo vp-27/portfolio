@@ -6,9 +6,10 @@ import type { Experience } from '../types'
 interface ExperienceItemProps {
   experience: Experience
   isHighlighted?: boolean
+  isLast?: boolean
 }
 
-export default function ExperienceItem({ experience, isHighlighted }: ExperienceItemProps) {
+export default function ExperienceItem({ experience, isHighlighted, isLast = false }: ExperienceItemProps) {
   const [isExpanded, setIsExpanded] = useState(false)
 
   // Determine if this is a current position
@@ -19,15 +20,15 @@ export default function ExperienceItem({ experience, isHighlighted }: Experience
       layout
       onClick={() => setIsExpanded(!isExpanded)}
       className={`
-        bg-transparent rounded-lg overflow-hidden cursor-pointer
-        transition-all duration-300 ease-out
-        border border-gray-800
-        hover:border-gray-600 hover:bg-[#0A0A0A]
-        ${isHighlighted ? 'ring-1 ring-[#00C805] border-[#00C805]' : ''}
+        bg-transparent overflow-hidden cursor-pointer
+        transition-all duration-200 ease-out
+        hover:bg-[#0D0D0D]
+        ${!isLast ? 'border-b border-[#1E1E1E] lg:border-[#222]' : ''}
+        ${isHighlighted ? 'bg-[#00C805]/10' : ''}
       `}
     >
       {/* Collapsed Header - Always Visible */}
-      <div className="p-5">
+      <div className="px-4 py-4">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
             {/* Company Name - Most Prominent */}
@@ -71,14 +72,14 @@ export default function ExperienceItem({ experience, isHighlighted }: Experience
             transition={{ duration: 0.25, ease: [0.4, 0.0, 0.2, 1] }}
             className="overflow-hidden"
           >
-            <div className="px-5 pb-5 pt-2 border-t border-gray-800">
+            <div className="px-4 pb-4 pt-0">
               {/* Location info - Using Robinhood Red */}
-              <div className="flex items-center gap-1.5 text-xs mb-4 mt-3">
+              <div className="flex items-center gap-1.5 text-xs mb-3">
                 <MapPin className="w-3.5 h-3.5 text-[#FF5000]" />
                 <span className="text-[#FF5000]">{experience.location}</span>
               </div>
               
-              <div className="space-y-3.5">
+              <div className="space-y-2.5">
                 {experience.bullets.map((bullet, idx) => (
                   <motion.div
                     key={idx}

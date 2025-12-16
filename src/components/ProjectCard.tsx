@@ -31,10 +31,10 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
         ease: [0.32, 0.72, 0, 1]
       }}
       className={`
-        bg-[#1C1C1E] rounded-2xl overflow-hidden cursor-pointer
-        border border-[#2C2C2E]
-        hover:bg-[#232326] hover:shadow-xl hover:border-[#3A3A3C]
-        ${isHighlighted ? 'ring-2 ring-[#00C805] border-[#00C805]' : ''}
+        bg-[#1C1C1E] rounded-xl overflow-hidden cursor-pointer
+        transition-all duration-200 ease-out
+        hover:bg-[#252528]
+        ${isHighlighted ? 'ring-1 ring-[#00C805]' : ''}
         flex flex-col
         relative
       `}

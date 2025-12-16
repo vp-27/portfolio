@@ -226,8 +226,8 @@ export default function Dashboard() {
                 <AboutAndSkills skillCategories={mockSkillCategories} searchQuery={searchQuery} showOnlyAbout={true} />
               </div>
               
-              {/* Portfolio Sections - Hidden on mobile, shown on desktop in left column */}
-              <div className="hidden lg:block px-4 md:px-4">
+              {/* Portfolio Sections - Experience, Projects, Education, Certifications */}
+              <div className="px-4 md:px-4">
                 <PortfolioSections 
                   experiences={mockExperiences}
                   projects={mockProjects}
@@ -239,25 +239,17 @@ export default function Dashboard() {
               </div>
             </div>
             
-            <div className="lg:pr-4 mt-6 lg:mt-0">
-              <div className="lg:pt-4">
-                
-                {/* Portfolio Sections - Shown on mobile, hidden on desktop */}
-                <div className="lg:hidden px-4 mb-6">
-                  <PortfolioSections 
-                    experiences={mockExperiences}
-                    projects={mockProjects}
-                    education={mockEducation}
-                    certifications={mockCertifications}
-                    highlightedItem={highlightedItem}
-                    searchQuery={searchQuery}
-                  />
-                </div>                {/* Skills section - Moved to bottom on mobile, combined with About on desktop */}
-                <div className="lg:block px-4 lg:px-0 mb-6 lg:mb-0" data-section="skills">
-                  <AboutAndSkills skillCategories={mockSkillCategories} searchQuery={searchQuery} showOnlySkills={true} />
-                </div>
+            {/* Right Sidebar - Sticky on desktop */}
+            <div className="hidden lg:block lg:pr-4">
+              <div className="lg:sticky lg:top-[70px] lg:max-h-[calc(100vh-90px)] lg:overflow-y-auto lg:scrollbar-hide">
+                <AboutAndSkills skillCategories={mockSkillCategories} searchQuery={searchQuery} />
               </div>
             </div>
+          </div>
+          
+          {/* Mobile Layout - Skills at bottom */}
+          <div className="lg:hidden px-4 mb-6" data-section="skills">
+            <AboutAndSkills skillCategories={mockSkillCategories} searchQuery={searchQuery} showOnlySkills={true} />
           </div>
         </div>
       </div>
