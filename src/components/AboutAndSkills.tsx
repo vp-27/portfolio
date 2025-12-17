@@ -179,7 +179,7 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '', show
         {/* About Me Card */}
         {!showOnlySkills && (
           <div data-section="about">
-            <h2 className="text-xl font-medium mb-3 text-left">About Me</h2>
+            <h2 className="text-2xl font-medium mb-3 text-left">About Me</h2>
             <div className="bg-[#0D0D0D] rounded-lg p-6">
               <div className="space-y-4">
                 <div className="flex items-start justify-between gap-4">
@@ -222,7 +222,7 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '', show
         {/* Skills Card */}
         {!showOnlyAbout && (
           <div data-section="skills">
-            <h2 className="text-xl font-medium mb-3 text-left">Skills</h2>
+            <h2 className="text-2xl font-medium mb-3 text-left">Skills</h2>
             <div className="bg-[#0D0D0D] rounded-lg border border-[#2D2D2D] overflow-hidden">
             {filteredSkillCategories.length === 0 && searchQuery ? (
               <p className="text-sm text-gray-400 text-center py-4 px-4">No skills match your search</p>

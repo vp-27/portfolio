@@ -248,7 +248,7 @@ export default function Dashboard() {
           </div>
           
           {/* Mobile Layout - Skills at bottom */}
-          <div className="lg:hidden px-4 mb-6" data-section="skills">
+          <div className="lg:hidden px-4 mt-8 mb-6" data-section="skills">
             <AboutAndSkills skillCategories={mockSkillCategories} searchQuery={searchQuery} showOnlySkills={true} />
           </div>
         </div>
