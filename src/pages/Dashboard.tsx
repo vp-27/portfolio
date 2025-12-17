@@ -201,7 +201,7 @@ export default function Dashboard() {
                     <button
                       key={range}
                       onClick={() => setTimeRange(range)}
-                      className={`px-2.5 py-1 rounded font-bold ${
+                      className={`px-2.5 py-1 rounded-lg font-bold ${
                         timeRange === range
                           ? 'bg-[#00C805] text-black'
                           : 'bg-transparent text-gray-400 hover:text-white hover:bg-[#1A1A1A]'
