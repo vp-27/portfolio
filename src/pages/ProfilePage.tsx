@@ -55,9 +55,9 @@ export default function ProfilePage() {
         {/* Profile Avatar & Name */}
         <div className="flex flex-col items-center pt-2 pb-4">
           <img 
-            src="/images/vp-logo.png" 
+            src="/images/pfp_theme transparent.png" 
             alt="Vandan Patel" 
-            className="w-20 h-20 mb-3"
+            className="w-24 h-auto rounded-full mb-3 object-contain"
           />
           <h2 className="text-xl font-semibold text-white">Vandan Patel</h2>
         </div>
