@@ -105,7 +105,10 @@ export default function PortfolioSections({ experiences, projects, education, ce
         <div className="lg:hidden mb-3" />
         <div>
           {education.map((edu, index) => (
-            <div key={edu.id} className={`bg-transparent py-4 hover:bg-[#0D0D0D] transition-all ${index === 0 ? 'hover:rounded-t-xl' : ''} ${index === education.length - 1 ? 'hover:rounded-b-xl' : 'border-b border-[#1E1E1E] lg:border-[#222]'}`}>
+            <div
+              key={edu.id}
+              className={`bg-transparent py-4 cursor-default ${index === education.length - 1 ? '' : 'border-b border-[#1E1E1E] lg:border-[#222]'}`}
+            >
               {/* Header with institution name and GPA */}
               <div className="flex items-start justify-between mb-2">
                 <h3 className="font-semibold text-white text-base">{edu.institution}</h3>
@@ -167,7 +170,10 @@ export default function PortfolioSections({ experiences, projects, education, ce
         <div className="lg:hidden mb-3" />
         <div>
           {certifications.map((cert, index) => (
-            <div key={cert.id} className={`bg-transparent py-3 hover:bg-[#0D0D0D] transition-all ${index === 0 ? 'hover:rounded-t-xl' : ''} ${index === certifications.length - 1 ? 'hover:rounded-b-xl' : 'border-b border-[#1E1E1E] lg:border-[#222]'}`}>
+            <div
+              key={cert.id}
+              className={`bg-transparent py-3 cursor-default ${index === certifications.length - 1 ? '' : 'border-b border-[#1E1E1E] lg:border-[#222]'}`}
+            >
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="font-medium text-white text-sm">{cert.name}</h3>

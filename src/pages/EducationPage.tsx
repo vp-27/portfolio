@@ -38,7 +38,7 @@ export default function EducationPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-[#1C1C1E] rounded-xl p-5"
+                className="bg-[#1C1C1E] rounded-xl p-5 cursor-default hover:bg-transparent"
               >
                 {/* Header with GPA */}
                 <div className="flex items-start justify-between mb-3">
@@ -99,7 +99,7 @@ export default function EducationPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 + 0.2 }}
-                className="bg-[#1C1C1E] rounded-xl p-4"
+                className="bg-[#1C1C1E] rounded-xl p-4 cursor-default hover:bg-transparent"
               >
                 <div className="flex items-center justify-between">
                   <div>
