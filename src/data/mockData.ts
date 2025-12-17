@@ -472,7 +472,7 @@ export const mockExperiences: Experience[] = [
     position: 'Data Analyst Intern',
     location: 'New Brunswick, NJ',
     startDate: 'Sep 2025',
-    endDate: 'Present',
+    endDate: 'Dec 2025',
     bullets: [
       'Eliminated 40+ hours of annual manual verification across 300+ buildings by engineering Power Automate solution, enabling semi-annual cycles and eliminating data entry errors impacting facility management',
       'Enabled real-time progress tracking via dynamic notifications, improving task completion by 35% and reducing follow-ups',
