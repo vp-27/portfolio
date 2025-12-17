@@ -3,6 +3,7 @@ import Dashboard from './pages/Dashboard'
 import ExperiencePage from './pages/ExperiencePage'
 import ProjectsPage from './pages/ProjectsPage'
 import EducationPage from './pages/EducationPage'
+import ProfilePage from './pages/ProfilePage'
 import './App.css'
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
         <Route path="/experience" element={<ExperiencePage />} />
         <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/education" element={<EducationPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
       </Routes>
     </div>
   )
