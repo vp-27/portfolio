@@ -161,16 +161,7 @@ export default function Dashboard() {
       const searchTerm = milestoneMapForHighlight[point.label]
       if (searchTerm) {
         setHighlightedItem(searchTerm)
-        // Scroll to the sections with proper alignment
-        setTimeout(() => {
-          const element = document.querySelector('[data-section="experience"]') || 
-                         document.querySelector('[data-section="projects"]')
-          if (element) {
-            const yOffset = -70 // Offset for fixed header
-            const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset
-            window.scrollTo({ top: y, behavior: 'smooth' })
-          }
-        }, 100)
+        // Removed auto-scroll to avoid conflicting with chart scrubbing animations
       }
     }
   }
