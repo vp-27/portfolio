@@ -50,7 +50,7 @@ export default function TopNav({ onNavigate, onSearch }: TopNavProps) {
   return (
     <nav className="hidden md:flex fixed top-0 left-0 right-0 bg-black border-b border-gray-900 z-50">
       <div className="max-w-7xl mx-auto md:px-4 w-full">
-        <div className="flex items-center justify-between h-14">
+        <div className="flex items-center justify-between h-14 md:pr-4">
           {/* Logo */}
           <div className="flex items-center">
             <button 
