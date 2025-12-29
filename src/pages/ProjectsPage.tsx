@@ -114,13 +114,13 @@ export default function ProjectsPage() {
                       {/* Duration */}
                       <p className="text-xs text-gray-500 mb-3">{project.duration}</p>
 
-                      {/* Project Image if exists */}
+                      {/* Project Image if exists - capped height for vertical screenshots */}
                       {project.imageUrl && (
-                        <div className="mb-4 rounded-xl overflow-hidden border border-[#2C2C2E]">
+                        <div className="mb-4 rounded-xl overflow-hidden border border-[#2C2C2E] max-h-[300px] flex items-center justify-center bg-black">
                           <img
                             src={project.imageUrl}
                             alt={project.name}
-                            className="w-full h-auto object-contain"
+                            className="w-auto max-w-full h-auto max-h-[300px] object-contain"
                           />
                         </div>
                       )}
