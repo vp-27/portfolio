@@ -73,16 +73,17 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
               {/* Divider */}
               {hasLinks && <span className="text-gray-600">·</span>}
 
-              {/* Quick link icons inline */}
+              {/* Quick link pills inline - matching expanded button style */}
               {project.liveUrl && (
                 <span
                   onClick={(e) => {
                     e.stopPropagation()
                     window.open(project.liveUrl, '_blank')
                   }}
-                  className="p-1 rounded-md hover:bg-[#00C805] hover:text-black text-gray-500 transition-colors"
+                  className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#00C805] hover:bg-[#00E676] text-black text-[10px] font-semibold transition-colors"
                 >
-                  <ExternalLink className="w-3.5 h-3.5" />
+                  <ExternalLink className="w-3 h-3" />
+                  Visit
                 </span>
               )}
               {project.githubUrl && (
@@ -91,9 +92,10 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
                     e.stopPropagation()
                     window.open(project.githubUrl, '_blank')
                   }}
-                  className="p-1 rounded-md hover:bg-[#3A3A3C] text-gray-500 transition-colors"
+                  className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#2A2A2D] hover:bg-[#3A3A3C] text-white text-[10px] font-semibold transition-colors"
                 >
-                  <Github className="w-3.5 h-3.5" />
+                  <Github className="w-3 h-3" />
+                  Code
                 </span>
               )}
 
@@ -172,7 +174,7 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
                 ))}
               </div>
 
-              {/* Action Buttons */}
+              {/* Action Buttons - Full width in expanded */}
               <div className="flex gap-2 pt-3 border-t border-[#2C2C2E]">
                 {project.liveUrl && (
                   <button
