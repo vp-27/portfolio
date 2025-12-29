@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ExternalLink, Github, ChevronRight } from 'lucide-react'
+import { ExternalLink, Github, ChevronDown } from 'lucide-react'
 import type { Project } from '../types'
 
 interface ProjectCardProps {
@@ -8,105 +8,81 @@ interface ProjectCardProps {
   isHighlighted?: boolean
 }
 
-// Color palette for icon backgrounds - vibrant Robinhood-style
-const iconColors = [
-  '#00C805', // Green
-  '#FF5000', // Orange
-  '#FFD600', // Yellow
-  '#00B0FF', // Blue
-  '#FF6B6B', // Coral
-  '#9C27B0', // Purple
-]
-
-// Get consistent color based on project id
-const getIconColor = (id: string) => {
-  const hash = id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
-  return iconColors[hash % iconColors.length]
-}
-
 export default function ProjectCard({ project, isHighlighted }: ProjectCardProps) {
   const [isExpanded, setIsExpanded] = useState(false)
-  const iconColor = getIconColor(project.id)
-
-  // Determine if we have external links
   const hasLinks = project.liveUrl || project.githubUrl
 
   return (
-    <div
+    <motion.div
+      layout
+      onClick={() => setIsExpanded(!isExpanded)}
       className={`
-        py-3 border-b border-[#2C2C2E] last:border-b-0
-        ${isHighlighted ? 'bg-[#1A1A1A] -mx-2 px-2 rounded-xl' : ''}
+        bg-[#1C1C1E] rounded-2xl overflow-hidden cursor-pointer
+        transition-all duration-200 ease-out
+        hover:bg-[#252528]
+        ${isHighlighted ? 'ring-1 ring-[#00C805]' : ''}
       `}
     >
-      {/* List Row - Always Visible */}
-      <button
-        onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full flex items-center gap-3 md:gap-4 text-left hover:bg-[#1A1A1A] rounded-xl transition-colors p-2 -m-2"
-      >
-        {/* Icon Container with Colorful Background - Larger logo */}
-        <div
-          className="flex-shrink-0 w-[60px] h-[60px] md:w-[72px] md:h-[72px] rounded-xl flex items-center justify-center overflow-hidden"
-          style={{ backgroundColor: iconColor }}
-        >
-          {project.logoUrl ? (
-            <img
-              src={project.logoUrl}
-              alt={`${project.name} logo`}
-              className="w-[140%] h-[140%] object-contain"
-              onError={(e) => {
-                e.currentTarget.style.display = 'none'
-              }}
-            />
-          ) : (
-            <span className="text-2xl font-bold text-black/70">
-              {project.name.charAt(0)}
-            </span>
-          )}
-        </div>
+      {/* Card Header - Always Visible */}
+      <div className="p-3 md:p-4">
+        <div className="flex items-center gap-3 md:gap-4">
+          {/* Left side: Title, Subtitle, Tags */}
+          <div className="flex-1 min-w-0">
+            <h3 className="font-bold text-white text-[17px] md:text-[19px] leading-tight mb-0.5">
+              {project.name}
+            </h3>
+            <p className="text-[13px] md:text-sm text-gray-400 mb-2 line-clamp-1">
+              {project.subtitle}
+            </p>
 
-        {/* Content: Title, Subtitle, and Tags */}
-        <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-white text-[15px] md:text-[17px] leading-tight mb-0.5">
-            {project.name}
-          </h3>
-          <p className="text-[13px] md:text-sm text-gray-500 line-clamp-1 mb-2">
-            {project.subtitle}
-          </p>
-
-          {/* Robinhood-style Tech Tags - Shown in collapsed view */}
-          {project.technologies && project.technologies.length > 0 && (
-            <div className="flex flex-wrap gap-1.5">
-              {project.technologies.slice(0, 3).map((tech, idx) => (
-                <span
-                  key={idx}
-                  className="px-2.5 py-1 text-[10px] md:text-[11px] font-semibold rounded-full bg-[#2A2A2D] text-gray-300"
-                >
-                  {tech}
-                </span>
-              ))}
-              {project.technologies.length > 3 && (
-                <span className="px-2 py-1 text-[10px] md:text-[11px] font-medium text-gray-500">
-                  +{project.technologies.length - 3}
-                </span>
+            {/* Tech Tags + Quick Links inline */}
+            <div className="flex items-center gap-2 flex-wrap">
+              {/* Tech Tags - Show 2 in collapsed, indicate more */}
+              {project.technologies && project.technologies.length > 0 && !isExpanded && (
+                <>
+                  {project.technologies.slice(0, 2).map((tech, idx) => (
+                    <span
+                      key={idx}
+                      className="px-2.5 py-0.5 text-[10px] md:text-[11px] font-semibold rounded-full bg-[#2A2A2D] text-gray-300"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                  {project.technologies.length > 2 && (
+                    <span className="text-[10px] md:text-[11px] font-medium text-gray-500">
+                      +{project.technologies.length - 2}
+                    </span>
+                  )}
+                </>
               )}
-            </div>
-          )}
-        </div>
 
-        {/* Right side: Link indicator + Chevron */}
-        <div className="flex items-center gap-2 flex-shrink-0">
-          {/* Quick link indicator - shows there are external links */}
-          {hasLinks && !isExpanded && (
-            <div className="hidden sm:flex items-center gap-1.5">
+              {/* Tech Tags - Show ALL when expanded */}
+              {project.technologies && project.technologies.length > 0 && isExpanded && (
+                <>
+                  {project.technologies.map((tech, idx) => (
+                    <span
+                      key={idx}
+                      className="px-2.5 py-0.5 text-[10px] md:text-[11px] font-semibold rounded-full bg-[#2A2A2D] text-gray-300"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </>
+              )}
+
+              {/* Divider */}
+              {hasLinks && <span className="text-gray-600">·</span>}
+
+              {/* Quick link icons inline */}
               {project.liveUrl && (
                 <span
                   onClick={(e) => {
                     e.stopPropagation()
                     window.open(project.liveUrl, '_blank')
                   }}
-                  className="p-1.5 rounded-lg bg-[#2A2A2D] hover:bg-[#3A3A3C] transition-colors"
+                  className="p-1 rounded-md hover:bg-[#00C805] hover:text-black text-gray-500 transition-colors"
                 >
-                  <ExternalLink className="w-3.5 h-3.5 text-gray-400" />
+                  <ExternalLink className="w-3.5 h-3.5" />
                 </span>
               )}
               {project.githubUrl && (
@@ -115,23 +91,46 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
                     e.stopPropagation()
                     window.open(project.githubUrl, '_blank')
                   }}
-                  className="p-1.5 rounded-lg bg-[#2A2A2D] hover:bg-[#3A3A3C] transition-colors"
+                  className="p-1 rounded-md hover:bg-[#3A3A3C] text-gray-500 transition-colors"
                 >
-                  <Github className="w-3.5 h-3.5 text-gray-400" />
+                  <Github className="w-3.5 h-3.5" />
                 </span>
               )}
-            </div>
-          )}
 
-          {/* Chevron Indicator */}
-          <motion.div
-            animate={{ rotate: isExpanded ? 90 : 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            <ChevronRight className="w-5 h-5 text-gray-500" />
-          </motion.div>
+              {/* Expand indicator with "More" text */}
+              <div className="flex items-center gap-0.5 text-gray-500 text-[11px]">
+                <motion.div
+                  animate={{ rotate: isExpanded ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <ChevronDown className="w-3.5 h-3.5" />
+                </motion.div>
+                <span>{isExpanded ? 'Less' : 'More'}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Right side: Large Logo */}
+          <div className="flex-shrink-0 w-[90px] h-[90px] md:w-[110px] md:h-[110px] flex items-center justify-center">
+            {project.logoUrl ? (
+              <img
+                src={project.logoUrl}
+                alt={`${project.name} logo`}
+                className="w-[130%] h-[130%] object-contain"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none'
+                }}
+              />
+            ) : (
+              <div className="w-full h-full rounded-xl bg-[#00C805]/20 flex items-center justify-center">
+                <span className="text-3xl font-bold text-[#00C805]">
+                  {project.name.charAt(0)}
+                </span>
+              </div>
+            )}
+          </div>
         </div>
-      </button>
+      </div>
 
       {/* Expanded Details */}
       <AnimatePresence>
@@ -143,16 +142,13 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
             transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
             className="overflow-hidden"
           >
-            <div className="pt-4 pl-[72px] md:pl-[88px] pr-2">
+            <div className="px-3 md:px-4 pb-3 md:pb-4">
               {/* Duration */}
               <p className="text-xs text-gray-500 mb-3">{project.duration}</p>
 
               {/* Project Image if exists */}
               {project.imageUrl && (
-                <div
-                  className="mb-4 rounded-lg overflow-hidden border-2"
-                  style={{ borderColor: iconColor }}
-                >
+                <div className="mb-4 rounded-xl overflow-hidden border border-[#2C2C2E]">
                   <img
                     src={project.imageUrl}
                     alt={project.name}
@@ -164,29 +160,17 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
               {/* Bullets */}
               <div className="space-y-3 mb-4">
                 {project.bullets.map((bullet, idx) => (
-                  <p
+                  <motion.p
                     key={idx}
-                    className="text-sm text-gray-300 leading-relaxed pl-3 border-l-2"
-                    style={{ borderColor: `${iconColor}40` }}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: idx * 0.03 }}
+                    className="text-sm text-gray-300 leading-relaxed pl-3 border-l-2 border-[#00C805]/30"
                   >
                     {bullet}
-                  </p>
+                  </motion.p>
                 ))}
               </div>
-
-              {/* All Technologies */}
-              {project.technologies && project.technologies.length > 3 && (
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.technologies.map((tech, idx) => (
-                    <span
-                      key={idx}
-                      className="px-3 py-1 text-[11px] font-semibold rounded-full bg-[#2A2A2D] text-gray-300"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              )}
 
               {/* Action Buttons */}
               <div className="flex gap-2 pt-3 border-t border-[#2C2C2E]">
@@ -196,11 +180,7 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
                       e.stopPropagation()
                       window.open(project.liveUrl, '_blank')
                     }}
-                    style={{
-                      backgroundColor: iconColor,
-                      color: ['#FFD600', '#00C805'].includes(iconColor) ? '#000' : '#fff'
-                    }}
-                    className="flex items-center justify-center gap-2 px-5 py-2.5 text-xs font-semibold rounded-lg transition-all active:scale-95 flex-1"
+                    className="flex items-center justify-center gap-2 px-5 py-2.5 bg-[#00C805] hover:bg-[#00E676] text-black text-xs font-semibold rounded-lg transition-all active:scale-95 flex-1"
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
                     Visit Site
@@ -223,6 +203,6 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   )
 }

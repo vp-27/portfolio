@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { MapPin, ChevronRight } from 'lucide-react'
+import { MapPin, ChevronRight, Briefcase } from 'lucide-react'
 import type { Experience } from '../types'
 
 interface ExperienceItemProps {
@@ -10,6 +10,11 @@ interface ExperienceItemProps {
   isLast?: boolean
 }
 
+// Get first letter for icon fallback
+const getInitials = (company: string) => {
+  return company.charAt(0).toUpperCase()
+}
+
 export default function ExperienceItem({ experience, isHighlighted, isFirst = false, isLast = false }: ExperienceItemProps) {
   const [isExpanded, setIsExpanded] = useState(false)
 
@@ -17,70 +22,79 @@ export default function ExperienceItem({ experience, isHighlighted, isFirst = fa
   const isCurrent = experience.endDate.toLowerCase() === 'present'
 
   return (
-    <motion.div
-      layout
-      onClick={() => setIsExpanded(!isExpanded)}
+    <div
       className={`
-        bg-transparent overflow-hidden cursor-pointer
-        transition-all duration-200 ease-out
-        hover:bg-[#0D0D0D]
-        ${isFirst ? 'hover:rounded-t-xl' : ''}
-        ${isLast ? 'hover:rounded-b-xl' : 'border-b border-[#1E1E1E] lg:border-[#222]'}
-        ${isHighlighted ? 'bg-[#00C805]/10' : ''}
+        py-3 
+        ${isLast ? '' : 'border-b border-[#2C2C2E]'}
+        ${isHighlighted ? 'bg-[#00C805]/10 -mx-2 px-2 rounded-xl' : ''}
       `}
     >
-      {/* Collapsed Header - Always Visible */}
-      <div className="px-4 py-4">
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex-1 min-w-0">
-            {/* Company Name - Most Prominent */}
-            <div className="flex items-center gap-2 mb-0.5">
-              <h3 className="font-semibold text-white text-base">{experience.company}</h3>
-              {isCurrent && (
-                <span className="px-2 py-0.5 text-[10px] font-semibold bg-[#00C805] text-black rounded-sm flex-shrink-0">
-                  ACTIVE
-                </span>
-              )}
-            </div>
-            {/* Position - Secondary, Left-aligned */}
-            <p className="text-sm text-gray-400 text-left">{experience.position}</p>
-          </div>
-          
-          {/* Date Range - Right Aligned */}
-          <div className="flex items-center gap-2 flex-shrink-0">
-            <div className="text-right">
-              <p className="text-xs text-gray-400 whitespace-nowrap">
-                {experience.startDate} – {experience.endDate}
-              </p>
-            </div>
-            <motion.div
-              animate={{ rotate: isExpanded ? 90 : 0 }}
-              transition={{ duration: 0.2 }}
-              className="text-gray-500"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </motion.div>
-          </div>
+      {/* List Row - Always Visible */}
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="w-full flex items-center gap-3 md:gap-4 text-left hover:bg-[#1A1A1A] rounded-xl transition-colors p-2 -m-2"
+      >
+        {/* Gray-bordered Icon Container - Prediction Markets style */}
+        <div className="flex-shrink-0 w-[56px] h-[56px] md:w-[64px] md:h-[64px] rounded-xl border-2 border-[#3A3A3C] bg-[#1C1C1E] flex items-center justify-center">
+          <span className="text-xl md:text-2xl font-bold text-gray-400">
+            {getInitials(experience.company)}
+          </span>
         </div>
-      </div>
 
-      {/* Expanded Content */}
+        {/* Content: Company, Position, Current badge */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-0.5">
+            <h3 className="font-semibold text-white text-[15px] md:text-[17px] leading-tight">
+              {experience.company}
+            </h3>
+            {isCurrent && (
+              <span className="px-2 py-0.5 text-[9px] md:text-[10px] font-semibold bg-[#00C805] text-black rounded-sm flex-shrink-0">
+                ACTIVE
+              </span>
+            )}
+          </div>
+          <p className="text-[13px] md:text-sm text-gray-500">
+            {experience.position}
+          </p>
+        </div>
+
+        {/* Right side: Date + Chevron */}
+        <div className="flex items-center gap-2 flex-shrink-0">
+          <p className="text-[11px] md:text-xs text-gray-500 whitespace-nowrap hidden sm:block">
+            {experience.startDate} – {experience.endDate}
+          </p>
+          <motion.div
+            animate={{ rotate: isExpanded ? 90 : 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <ChevronRight className="w-5 h-5 text-gray-500" />
+          </motion.div>
+        </div>
+      </button>
+
+      {/* Expanded Details */}
       <AnimatePresence>
         {isExpanded && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: [0.4, 0.0, 0.2, 1] }}
+            transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
             className="overflow-hidden"
           >
-            <div className="px-4 pb-4 pt-0">
-              {/* Location info - Using Robinhood Red */}
+            <div className="pt-4 pl-[68px] md:pl-[80px] pr-2">
+              {/* Date on mobile */}
+              <p className="text-xs text-gray-500 mb-2 sm:hidden">
+                {experience.startDate} – {experience.endDate}
+              </p>
+
+              {/* Location info */}
               <div className="flex items-center gap-1.5 text-xs mb-3">
                 <MapPin className="w-3.5 h-3.5 text-[#FF5000]" />
                 <span className="text-[#FF5000]">{experience.location}</span>
               </div>
-              
+
+              {/* Bullets */}
               <div className="space-y-3">
                 {experience.bullets.map((bullet, idx) => (
                   <motion.p
@@ -88,7 +102,7 @@ export default function ExperienceItem({ experience, isHighlighted, isFirst = fa
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: idx * 0.03 }}
-                    className="text-sm text-gray-300 leading-relaxed pl-3 border-l-2 border-[#00C805]/30"
+                    className="text-sm text-gray-300 leading-relaxed pl-3 border-l-2 border-[#3A3A3C]"
                   >
                     {bullet}
                   </motion.p>
@@ -98,6 +112,6 @@ export default function ExperienceItem({ experience, isHighlighted, isFirst = fa
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.div>
+    </div>
   )
 }

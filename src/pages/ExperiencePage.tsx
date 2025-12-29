@@ -1,23 +1,33 @@
 import { useNavigate } from 'react-router-dom'
-import { useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { ChevronLeft, MapPin } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ChevronLeft, ChevronRight, MapPin } from 'lucide-react'
 import BottomNav from '../components/BottomNav'
 import { mockExperiences } from '../data/mockData'
 
+// Get first letter for icon fallback
+const getInitials = (company: string) => {
+  return company.charAt(0).toUpperCase()
+}
+
 export default function ExperiencePage() {
   const navigate = useNavigate()
+  const [expandedId, setExpandedId] = useState<string | null>(null)
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
   }, [])
+
+  const toggleExpand = (id: string) => {
+    setExpandedId(expandedId === id ? null : id)
+  }
 
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Header */}
       <div className="sticky top-0 bg-black/95 backdrop-blur-sm z-10">
         <div className="relative flex items-center justify-center px-4 py-4">
-          <button 
+          <button
             onClick={() => navigate(-1)}
             className="absolute left-4 p-1 hover:bg-[#1A1A1A] rounded-full transition-colors"
           >
@@ -27,55 +37,101 @@ export default function ExperiencePage() {
         </div>
       </div>
 
-      {/* Experience List */}
-      <div className="px-4 py-4">
-        <div className="space-y-4">
+      {/* Experience List - Gray-tinted Prediction Markets style */}
+      <div className="px-4 py-2">
+        <div className="divide-y divide-[#2C2C2E]">
           {mockExperiences.map((exp, index) => {
+            const isExpanded = expandedId === exp.id
             const isCurrent = exp.endDate.toLowerCase() === 'present'
-            
+
             return (
               <motion.div
                 key={exp.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="bg-[#1C1C1E] rounded-xl p-5"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: index * 0.05 }}
+                className="py-3"
               >
-                {/* Header */}
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h2 className="font-semibold text-white text-lg">{exp.company}</h2>
+                {/* List Row - Always Visible */}
+                <button
+                  onClick={() => toggleExpand(exp.id)}
+                  className="w-full flex items-center gap-3 text-left hover:bg-[#1A1A1A] rounded-xl transition-colors p-2 -m-2"
+                >
+                  {/* Gray-bordered Icon Container */}
+                  <div className="flex-shrink-0 w-[56px] h-[56px] rounded-xl border-2 border-[#3A3A3C] bg-[#1C1C1E] flex items-center justify-center">
+                    <span className="text-xl font-bold text-gray-400">
+                      {getInitials(exp.company)}
+                    </span>
+                  </div>
+
+                  {/* Content: Company, Position, Current badge */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <h2 className="font-semibold text-white text-[15px] leading-tight">
+                        {exp.company}
+                      </h2>
                       {isCurrent && (
-                        <span className="px-2 py-0.5 text-[10px] font-semibold bg-[#00C805] text-black rounded-sm">
+                        <span className="px-2 py-0.5 text-[9px] font-semibold bg-[#00C805] text-black rounded-sm flex-shrink-0">
                           ACTIVE
                         </span>
                       )}
                     </div>
-                    <p className="text-sm text-gray-400">{exp.position}</p>
-                  </div>
-                  <div className="text-right text-xs text-gray-500">
-                    {exp.startDate} – {exp.endDate}
-                  </div>
-                </div>
-
-                {/* Location */}
-                <div className="flex items-center gap-1.5 text-xs mb-4">
-                  <MapPin className="w-3.5 h-3.5 text-[#FF5000]" />
-                  <span className="text-[#FF5000]">{exp.location}</span>
-                </div>
-
-                {/* Bullets */}
-                <div className="space-y-3">
-                  {exp.bullets.map((bullet, idx) => (
-                    <p
-                      key={idx}
-                      className="text-sm text-gray-300 leading-relaxed pl-3 border-l-2 border-[#00C805]/30"
-                    >
-                      {bullet}
+                    <p className="text-[13px] text-gray-500">
+                      {exp.position}
                     </p>
-                  ))}
-                </div>
+                  </div>
+
+                  {/* Right side: Date + Chevron */}
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    <p className="text-[11px] text-gray-500 whitespace-nowrap hidden sm:block">
+                      {exp.startDate} – {exp.endDate}
+                    </p>
+                    <motion.div
+                      animate={{ rotate: isExpanded ? 90 : 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <ChevronRight className="w-5 h-5 text-gray-500" />
+                    </motion.div>
+                  </div>
+                </button>
+
+                {/* Expanded Details */}
+                <AnimatePresence>
+                  {isExpanded && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <div className="pt-4 pl-[68px] pr-2">
+                        {/* Date on mobile */}
+                        <p className="text-xs text-gray-500 mb-2 sm:hidden">
+                          {exp.startDate} – {exp.endDate}
+                        </p>
+
+                        {/* Location info */}
+                        <div className="flex items-center gap-1.5 text-xs mb-3">
+                          <MapPin className="w-3.5 h-3.5 text-[#FF5000]" />
+                          <span className="text-[#FF5000]">{exp.location}</span>
+                        </div>
+
+                        {/* Bullets */}
+                        <div className="space-y-3">
+                          {exp.bullets.map((bullet, idx) => (
+                            <p
+                              key={idx}
+                              className="text-sm text-gray-300 leading-relaxed pl-3 border-l-2 border-[#3A3A3C]"
+                            >
+                              {bullet}
+                            </p>
+                          ))}
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </motion.div>
             )
           })}
