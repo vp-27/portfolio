@@ -34,12 +34,22 @@ export default function ExperienceItem({ experience, isHighlighted, isFirst = fa
         onClick={() => setIsExpanded(!isExpanded)}
         className="w-full flex items-center gap-3 md:gap-4 text-left hover:bg-[#1A1A1A] rounded-xl transition-colors p-2 -m-2 focus:outline-none"
       >
-        {/* Gray-bordered Icon Container - Prediction Markets style */}
-        <div className="flex-shrink-0 w-[56px] h-[56px] md:w-[64px] md:h-[64px] rounded-xl border-2 border-[#3A3A3C] bg-[#1C1C1E] flex items-center justify-center">
-          <span className="text-xl md:text-2xl font-bold text-gray-400">
-            {getInitials(experience.company)}
-          </span>
-        </div>
+        {/* Logo or Fallback Icon */}
+        {experience.logoUrl ? (
+          <div className="flex-shrink-0 w-[72px] h-[72px] md:w-[80px] md:h-[80px] flex items-center justify-center">
+            <img
+              src={experience.logoUrl}
+              alt={experience.company}
+              className="w-full h-full object-contain"
+            />
+          </div>
+        ) : (
+          <div className="flex-shrink-0 w-[72px] h-[72px] md:w-[80px] md:h-[80px] rounded-xl border-2 border-[#3A3A3C] bg-[#1C1C1E] flex items-center justify-center">
+            <span className="text-2xl md:text-3xl font-bold text-gray-400">
+              {getInitials(experience.company)}
+            </span>
+          </div>
+        )}
 
         {/* Content: Company, Position, Current badge */}
         <div className="flex-1 min-w-0">

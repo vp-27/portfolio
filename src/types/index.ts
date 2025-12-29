@@ -50,6 +50,7 @@ export interface Experience {
   location: string
   startDate: string
   endDate: string
+  logoUrl?: string
   bullets: string[]
 }
 
