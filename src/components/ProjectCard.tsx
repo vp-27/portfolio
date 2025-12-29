@@ -35,8 +35,8 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
               {project.subtitle}
             </p>
 
-            {/* Tech Tags + Quick Links inline */}
-            <div className="flex items-center gap-2 flex-wrap">
+            {/* Tech Tags Row */}
+            <div className="flex items-center gap-2 flex-wrap mb-3">
               {/* Tech Tags - Show 2 in collapsed, indicate more */}
               {project.technologies && project.technologies.length > 0 && !isExpanded && (
                 <>
@@ -69,47 +69,9 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
                   ))}
                 </>
               )}
-
-              {/* Divider - hide when expanded */}
-              {hasLinks && !isExpanded && <span className="text-gray-600">·</span>}
-
-              {/* Quick link pills inline - hide when expanded since full buttons show */}
-              {project.liveUrl && !isExpanded && (
-                <span
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    window.open(project.liveUrl, '_blank')
-                  }}
-                  className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#00C805] hover:bg-[#00E676] text-black text-[10px] font-semibold transition-colors"
-                >
-                  <ExternalLink className="w-3 h-3" />
-                  Visit
-                </span>
-              )}
-              {project.githubUrl && !isExpanded && (
-                <span
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    window.open(project.githubUrl, '_blank')
-                  }}
-                  className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#2A2A2D] hover:bg-[#3A3A3C] text-white text-[10px] font-semibold transition-colors"
-                >
-                  <Github className="w-3 h-3" />
-                  Code
-                </span>
-              )}
-
-              {/* Expand indicator with "More" text */}
-              <div className="flex items-center gap-0.5 text-gray-500 text-[11px]">
-                <motion.div
-                  animate={{ rotate: isExpanded ? 180 : 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <ChevronDown className="w-3.5 h-3.5" />
-                </motion.div>
-                <span>{isExpanded ? 'Less' : 'More'}</span>
-              </div>
             </div>
+
+
           </div>
 
           {/* Right side: Large Logo */}
@@ -131,6 +93,50 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
               </div>
             )}
           </div>
+        </div>
+
+        {/* Action Row: More (Left) + Buttons (Right) */}
+        <div className="flex items-center justify-between mt-3">
+          {/* Expand indicator */}
+          <div className="flex items-center gap-0.5 text-gray-500 text-[11px]">
+            <motion.div
+              animate={{ rotate: isExpanded ? 180 : 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <ChevronDown className="w-3.5 h-3.5" />
+            </motion.div>
+            <span>{isExpanded ? 'Less' : 'More'}</span>
+          </div>
+
+          {/* Buttons - Only show when collapsed (expanded view has full width buttons) */}
+          {!isExpanded && hasLinks && (
+            <div className="flex items-center gap-2">
+              {project.liveUrl && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    window.open(project.liveUrl, '_blank')
+                  }}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#00C805] hover:bg-[#00E676] text-black text-[10px] font-bold transition-colors active:scale-95"
+                >
+                  <ExternalLink className="w-3 h-3" />
+                  Visit
+                </button>
+              )}
+              {project.githubUrl && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    window.open(project.githubUrl, '_blank')
+                  }}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#2A2A2D] hover:bg-[#3A3A3C] text-white text-[10px] font-medium transition-colors active:scale-95"
+                >
+                  <Github className="w-3 h-3" />
+                  Code
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
