@@ -1,20 +1,34 @@
 import { useNavigate } from 'react-router-dom'
-import { useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { ChevronLeft, ExternalLink, Github } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ChevronLeft, ChevronRight, ExternalLink, Github } from 'lucide-react'
 import BottomNav from '../components/BottomNav'
 import { mockProjects } from '../data/mockData'
 
+// Color palette for icon backgrounds - vibrant Robinhood-style
+const iconColors = [
+  '#00C805', // Green
+  '#FF5000', // Orange
+  '#FFD600', // Yellow
+  '#00B0FF', // Blue
+  '#FF6B6B', // Coral
+  '#9C27B0', // Purple
+]
+
 export default function ProjectsPage() {
   const navigate = useNavigate()
+  const [expandedId, setExpandedId] = useState<string | null>(null)
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
   }, [])
 
-  const getAccentColor = (id: string) => {
-    const hash = id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
-    return hash % 2 === 0 ? '#00C805' : '#FF5000'
+  const getIconColor = (index: number) => {
+    return iconColors[index % iconColors.length]
+  }
+
+  const toggleExpand = (id: string) => {
+    setExpandedId(expandedId === id ? null : id)
   }
 
   return (
@@ -22,7 +36,7 @@ export default function ProjectsPage() {
       {/* Header */}
       <div className="sticky top-0 bg-black/95 backdrop-blur-sm z-10">
         <div className="relative flex items-center justify-center px-4 py-4">
-          <button 
+          <button
             onClick={() => navigate(-1)}
             className="absolute left-4 p-1 hover:bg-[#1A1A1A] rounded-full transition-colors"
           >
@@ -33,105 +47,206 @@ export default function ProjectsPage() {
       </div>
 
       {/* Projects List */}
-      <div className="px-4 py-4">
-        <div className="space-y-4">
+      <div className="px-4 py-2">
+        <div className="divide-y divide-[#2C2C2E]">
           {mockProjects.map((project, index) => {
-            const accentColor = getAccentColor(project.id)
-            
+            const isExpanded = expandedId === project.id
+            const iconColor = getIconColor(index)
+            const hasLinks = project.liveUrl || project.githubUrl
+
             return (
               <motion.div
                 key={project.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="bg-[#1C1C1E] rounded-xl p-5"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: index * 0.05 }}
+                className="py-3"
               >
-                {/* Header with Logo */}
-                <div className="flex gap-4 mb-4">
-                  {project.logoUrl && (
-                    <div className="flex-shrink-0 w-16 h-16 flex items-center justify-center">
-                      <img 
-                        src={project.logoUrl} 
+                {/* List Row - Always Visible */}
+                <button
+                  onClick={() => toggleExpand(project.id)}
+                  className="w-full flex items-center gap-3 text-left hover:bg-[#1A1A1A] rounded-xl transition-colors p-2 -m-2"
+                >
+                  {/* Icon Container with Colorful Background - Larger logo */}
+                  <div
+                    className="flex-shrink-0 w-[60px] h-[60px] md:w-[72px] md:h-[72px] rounded-xl flex items-center justify-center overflow-hidden"
+                    style={{ backgroundColor: iconColor }}
+                  >
+                    {project.logoUrl ? (
+                      <img
+                        src={project.logoUrl}
                         alt={`${project.name} logo`}
-                        className="w-full h-full object-contain"
+                        className="w-[95%] h-[95%] object-contain"
                         onError={(e) => {
                           e.currentTarget.style.display = 'none'
                         }}
                       />
-                    </div>
-                  )}
-                  <div className="flex-1">
-                    <h2 className="font-bold text-white text-lg mb-1">{project.name}</h2>
-                    <p className="text-xs text-gray-500 mb-1">{project.duration}</p>
-                    <p className="text-sm text-gray-400">{project.subtitle}</p>
-                  </div>
-                </div>
-
-                {/* Project Image if exists */}
-                {project.imageUrl && (
-                  <div 
-                    className="mb-4 rounded-lg overflow-hidden border-2"
-                    style={{ borderColor: accentColor }}
-                  >
-                    <img 
-                      src={project.imageUrl} 
-                      alt={project.name}
-                      className="w-full h-auto object-contain"
-                    />
-                  </div>
-                )}
-
-                {/* Bullets */}
-                <div className="space-y-3 mb-4">
-                  {project.bullets.map((bullet, idx) => (
-                    <p
-                      key={idx}
-                      className="text-sm text-gray-300 leading-relaxed pl-3 border-l-2 border-[#00C805]/30"
-                    >
-                      {bullet}
-                    </p>
-                  ))}
-                </div>
-
-                {/* Technologies */}
-                {project.technologies && project.technologies.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.technologies.map((tech, idx) => (
-                      <span
-                        key={idx}
-                        className="px-3 py-1 text-[11px] font-semibold rounded-full bg-[#2C2C2E] text-gray-300"
-                      >
-                        {tech}
+                    ) : (
+                      <span className="text-2xl font-bold text-black/70">
+                        {project.name.charAt(0)}
                       </span>
-                    ))}
+                    )}
                   </div>
-                )}
 
-                {/* Action Buttons */}
-                <div className="flex gap-2 pt-3 border-t border-[#2C2C2E]">
-                  {project.liveUrl && (
-                    <button
-                      onClick={() => window.open(project.liveUrl, '_blank')}
-                      style={{
-                        backgroundColor: accentColor,
-                        color: accentColor === '#00C805' ? '#000' : '#fff'
-                      }}
-                      className="flex items-center justify-center gap-2 px-5 py-2.5 text-xs font-semibold rounded-lg transition-all active:scale-95 flex-1"
+                  {/* Content: Title, Subtitle, and Tags */}
+                  <div className="flex-1 min-w-0">
+                    <h2 className="font-semibold text-white text-[15px] md:text-[17px] leading-tight mb-0.5">
+                      {project.name}
+                    </h2>
+                    <p className="text-[13px] md:text-sm text-gray-500 line-clamp-1 mb-2">
+                      {project.subtitle}
+                    </p>
+
+                    {/* Robinhood-style Tech Tags */}
+                    {project.technologies && project.technologies.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5">
+                        {project.technologies.slice(0, 3).map((tech, idx) => (
+                          <span
+                            key={idx}
+                            className="px-2.5 py-1 text-[10px] font-semibold rounded-full bg-[#2A2A2D] text-gray-300"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                        {project.technologies.length > 3 && (
+                          <span className="px-2 py-1 text-[10px] font-medium text-gray-500">
+                            +{project.technologies.length - 3}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Right side: Link indicator + Chevron */}
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    {/* Quick link icons on larger screens */}
+                    {hasLinks && !isExpanded && (
+                      <div className="hidden sm:flex items-center gap-1.5">
+                        {project.liveUrl && (
+                          <span
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              window.open(project.liveUrl, '_blank')
+                            }}
+                            className="p-1.5 rounded-lg bg-[#2A2A2D] hover:bg-[#3A3A3C] transition-colors"
+                          >
+                            <ExternalLink className="w-3.5 h-3.5 text-gray-400" />
+                          </span>
+                        )}
+                        {project.githubUrl && (
+                          <span
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              window.open(project.githubUrl, '_blank')
+                            }}
+                            className="p-1.5 rounded-lg bg-[#2A2A2D] hover:bg-[#3A3A3C] transition-colors"
+                          >
+                            <Github className="w-3.5 h-3.5 text-gray-400" />
+                          </span>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Chevron Indicator */}
+                    <motion.div
+                      animate={{ rotate: isExpanded ? 90 : 0 }}
+                      transition={{ duration: 0.2 }}
                     >
-                      <ExternalLink className="w-3.5 h-3.5" />
-                      Visit Site
-                    </button>
-                  )}
-                  {project.githubUrl && (
-                    <button
-                      onClick={() => window.open(project.githubUrl, '_blank')}
-                      className="flex items-center justify-center gap-2 px-5 py-2.5 bg-[#2C2C2E] hover:bg-[#3A3A3C] text-white text-xs font-semibold rounded-lg transition-all active:scale-95 flex-1"
+                      <ChevronRight className="w-5 h-5 text-gray-500" />
+                    </motion.div>
+                  </div>
+                </button>
+
+                {/* Expanded Details */}
+                <AnimatePresence>
+                  {isExpanded && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
+                      className="overflow-hidden"
                     >
-                      <Github className="w-3.5 h-3.5" />
-                      View Code
-                    </button>
+                      <div className="pt-4 pl-[72px] md:pl-[88px] pr-2">
+                        {/* Duration */}
+                        <p className="text-xs text-gray-500 mb-3">{project.duration}</p>
+
+                        {/* Project Image if exists */}
+                        {project.imageUrl && (
+                          <div
+                            className="mb-4 rounded-lg overflow-hidden border-2"
+                            style={{ borderColor: iconColor }}
+                          >
+                            <img
+                              src={project.imageUrl}
+                              alt={project.name}
+                              className="w-full h-auto object-contain"
+                            />
+                          </div>
+                        )}
+
+                        {/* Bullets */}
+                        <div className="space-y-3 mb-4">
+                          {project.bullets.map((bullet, idx) => (
+                            <p
+                              key={idx}
+                              className="text-sm text-gray-300 leading-relaxed pl-3 border-l-2"
+                              style={{ borderColor: `${iconColor}40` }}
+                            >
+                              {bullet}
+                            </p>
+                          ))}
+                        </div>
+
+                        {/* All Technologies (if more than shown in collapsed) */}
+                        {project.technologies && project.technologies.length > 3 && (
+                          <div className="flex flex-wrap gap-2 mb-4">
+                            {project.technologies.map((tech, idx) => (
+                              <span
+                                key={idx}
+                                className="px-3 py-1 text-[11px] font-semibold rounded-full bg-[#2A2A2D] text-gray-300"
+                              >
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+
+                        {/* Action Buttons */}
+                        <div className="flex gap-2 pt-3 border-t border-[#2C2C2E]">
+                          {project.liveUrl && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                window.open(project.liveUrl, '_blank')
+                              }}
+                              style={{
+                                backgroundColor: iconColor,
+                                color: ['#FFD600', '#00C805'].includes(iconColor) ? '#000' : '#fff'
+                              }}
+                              className="flex items-center justify-center gap-2 px-5 py-2.5 text-xs font-semibold rounded-lg transition-all active:scale-95 flex-1"
+                            >
+                              <ExternalLink className="w-3.5 h-3.5" />
+                              Visit Site
+                            </button>
+                          )}
+                          {project.githubUrl && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                window.open(project.githubUrl, '_blank')
+                              }}
+                              className="flex items-center justify-center gap-2 px-5 py-2.5 bg-[#2A2A2D] hover:bg-[#3A3A3C] text-white text-xs font-semibold rounded-lg transition-all active:scale-95 flex-1"
+                            >
+                              <Github className="w-3.5 h-3.5" />
+                              View Code
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    </motion.div>
                   )}
-                </div>
+                </AnimatePresence>
               </motion.div>
             )
           })}
