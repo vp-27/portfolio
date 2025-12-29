@@ -55,7 +55,7 @@ export default function ExperiencePage() {
                 {/* List Row - Always Visible */}
                 <button
                   onClick={() => toggleExpand(exp.id)}
-                  className="w-full flex items-center gap-3 text-left hover:bg-[#1A1A1A] rounded-xl transition-colors p-2 -m-2"
+                  className="w-full flex items-center gap-3 text-left hover:bg-[#1A1A1A] rounded-xl transition-colors p-2 -m-2 focus:outline-none"
                 >
                   {/* Gray-bordered Icon Container */}
                   <div className="flex-shrink-0 w-[56px] h-[56px] rounded-xl border-2 border-[#3A3A3C] bg-[#1C1C1E] flex items-center justify-center">

@@ -32,7 +32,7 @@ export default function ExperienceItem({ experience, isHighlighted, isFirst = fa
       {/* List Row - Always Visible */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full flex items-center gap-3 md:gap-4 text-left hover:bg-[#1A1A1A] rounded-xl transition-colors p-2 -m-2"
+        className="w-full flex items-center gap-3 md:gap-4 text-left hover:bg-[#1A1A1A] rounded-xl transition-colors p-2 -m-2 focus:outline-none"
       >
         {/* Gray-bordered Icon Container - Prediction Markets style */}
         <div className="flex-shrink-0 w-[56px] h-[56px] md:w-[64px] md:h-[64px] rounded-xl border-2 border-[#3A3A3C] bg-[#1C1C1E] flex items-center justify-center">

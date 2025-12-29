@@ -70,11 +70,11 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
                 </>
               )}
 
-              {/* Divider */}
-              {hasLinks && <span className="text-gray-600">·</span>}
+              {/* Divider - hide when expanded */}
+              {hasLinks && !isExpanded && <span className="text-gray-600">·</span>}
 
-              {/* Quick link pills inline - matching expanded button style */}
-              {project.liveUrl && (
+              {/* Quick link pills inline - hide when expanded since full buttons show */}
+              {project.liveUrl && !isExpanded && (
                 <span
                   onClick={(e) => {
                     e.stopPropagation()
@@ -86,7 +86,7 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
                   Visit
                 </span>
               )}
-              {project.githubUrl && (
+              {project.githubUrl && !isExpanded && (
                 <span
                   onClick={(e) => {
                     e.stopPropagation()
@@ -148,13 +148,13 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
               {/* Duration */}
               <p className="text-xs text-gray-500 mb-3">{project.duration}</p>
 
-              {/* Project Image if exists */}
+              {/* Project Image if exists - capped height for vertical screenshots */}
               {project.imageUrl && (
-                <div className="mb-4 rounded-xl overflow-hidden border border-[#2C2C2E]">
+                <div className="mb-4 rounded-xl overflow-hidden border border-[#2C2C2E] max-h-[300px] md:max-h-[400px] flex items-center justify-center bg-black">
                   <img
                     src={project.imageUrl}
                     alt={project.name}
-                    className="w-full h-auto object-contain"
+                    className="w-auto max-w-full h-auto max-h-[300px] md:max-h-[400px] object-contain"
                   />
                 </div>
               )}
