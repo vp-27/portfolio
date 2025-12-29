@@ -20,15 +20,15 @@ export default function PortfolioSections({ experiences, projects, education, ce
     return text.toLowerCase().includes(searchQuery.toLowerCase())
   }
 
-  const filteredExperiences = experiences.filter(exp => 
-    matchesSearch(exp.position) || 
-    matchesSearch(exp.company) || 
+  const filteredExperiences = experiences.filter(exp =>
+    matchesSearch(exp.position) ||
+    matchesSearch(exp.company) ||
     exp.bullets.some(b => matchesSearch(b))
   )
 
-  const filteredProjects = projects.filter(proj => 
-    matchesSearch(proj.name) || 
-    matchesSearch(proj.subtitle) || 
+  const filteredProjects = projects.filter(proj =>
+    matchesSearch(proj.name) ||
+    matchesSearch(proj.subtitle) ||
     proj.bullets.some(b => matchesSearch(b)) ||
     (proj.technologies && proj.technologies.some(t => matchesSearch(t)))
   )
@@ -52,11 +52,10 @@ export default function PortfolioSections({ experiences, projects, education, ce
             {filteredExperiences.map((exp, index) => {
               const isHighlighted = !!(highlightedItem && exp.company.includes(highlightedItem))
               return (
-                <ExperienceItem 
+                <ExperienceItem
                   key={exp.id}
                   experience={exp}
                   isHighlighted={isHighlighted}
-                  isFirst={index === 0}
                   isLast={index === filteredExperiences.length - 1}
                 />
               )
@@ -117,14 +116,14 @@ export default function PortfolioSections({ experiences, projects, education, ce
                   <div className="text-base font-bold text-[#00C805]">{edu.gpa}</div>
                 </div>
               </div>
-              
+
               {/* Degrees */}
               <div className="space-y-1 mb-2">
                 {edu.degrees.map((degree, idx) => (
                   <p key={idx} className="text-sm text-gray-400 leading-relaxed">{degree}</p>
                 ))}
               </div>
-              
+
               {/* Location and Date */}
               <div className="flex items-center gap-4 text-xs">
                 <div className="flex items-center gap-1.5">
@@ -136,7 +135,7 @@ export default function PortfolioSections({ experiences, projects, education, ce
                   <span className="text-[#FF5000]">{edu.graduationDate}</span>
                 </div>
               </div>
-              
+
               {/* Honors */}
               {edu.honors && edu.honors.length > 0 && (
                 <div className="pt-3 mt-3">

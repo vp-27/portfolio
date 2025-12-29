@@ -1,12 +1,11 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { MapPin, ChevronRight, Briefcase } from 'lucide-react'
+import { MapPin, ChevronRight } from 'lucide-react'
 import type { Experience } from '../types'
 
 interface ExperienceItemProps {
   experience: Experience
   isHighlighted?: boolean
-  isFirst?: boolean
   isLast?: boolean
 }
 
@@ -15,7 +14,7 @@ const getInitials = (company: string) => {
   return company.charAt(0).toUpperCase()
 }
 
-export default function ExperienceItem({ experience, isHighlighted, isFirst = false, isLast = false }: ExperienceItemProps) {
+export default function ExperienceItem({ experience, isHighlighted, isLast = false }: ExperienceItemProps) {
   const [isExpanded, setIsExpanded] = useState(false)
 
   // Determine if this is a current position
