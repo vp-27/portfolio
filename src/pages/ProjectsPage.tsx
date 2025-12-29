@@ -82,15 +82,14 @@ export default function ProjectsPage() {
                 )}
 
                 {/* Bullets */}
-                <div className="space-y-2.5 mb-4">
+                <div className="space-y-3 mb-4">
                   {project.bullets.map((bullet, idx) => (
-                    <div
+                    <p
                       key={idx}
-                      className="flex gap-3 text-sm text-gray-300 leading-relaxed"
+                      className="text-sm text-gray-300 leading-relaxed pl-3 border-l-2 border-[#00C805]/30"
                     >
-                      <span className="text-[#00C805] mt-0.5 flex-shrink-0 text-xs">▸</span>
-                      <span>{bullet}</span>
-                    </div>
+                      {bullet}
+                    </p>
                   ))}
                 </div>
 

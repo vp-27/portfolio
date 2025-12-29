@@ -81,18 +81,17 @@ export default function ExperienceItem({ experience, isHighlighted, isFirst = fa
                 <span className="text-[#FF5000]">{experience.location}</span>
               </div>
               
-              <div className="space-y-2.5">
+              <div className="space-y-3">
                 {experience.bullets.map((bullet, idx) => (
-                  <motion.div
+                  <motion.p
                     key={idx}
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: idx * 0.03 }}
-                    className="flex gap-3 text-sm text-gray-300 leading-relaxed"
+                    className="text-sm text-gray-300 leading-relaxed pl-3 border-l-2 border-[#00C805]/30"
                   >
-                    <span className="text-[#00C805] mt-0.5 flex-shrink-0 text-xs">▸</span>
-                    <span>{bullet}</span>
-                  </motion.div>
+                    {bullet}
+                  </motion.p>
                 ))}
               </div>
             </div>

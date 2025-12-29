@@ -95,14 +95,13 @@ export default function CardStack({ cards, onDismiss }: CardStackProps) {
               <span>{exp.startDate} – {exp.endDate}</span>
             </div>
           </div>
-          <ul className="space-y-2 text-sm text-gray-300">
+          <div className="space-y-3">
             {exp.bullets.slice(0, 2).map((bullet, idx) => (
-              <li key={idx} className="flex gap-2">
-                <span className="text-[#FF5000] mt-1">•</span>
-                <span>{bullet}</span>
-              </li>
+              <p key={idx} className="text-sm text-gray-300 leading-relaxed pl-3 border-l-2 border-[#FF5000]/30">
+                {bullet}
+              </p>
             ))}
-          </ul>
+          </div>
         </>
       )
     } else {
@@ -117,14 +116,13 @@ export default function CardStack({ cards, onDismiss }: CardStackProps) {
             <Calendar className="w-3 h-3" />
             <span>{project.duration}</span>
           </div>
-          <ul className="space-y-2 text-sm text-gray-300">
+          <div className="space-y-3">
             {project.bullets.slice(0, 2).map((bullet, idx) => (
-              <li key={idx} className="flex gap-2">
-                <span className="text-[#00C805] mt-1">•</span>
-                <span>{bullet}</span>
-              </li>
+              <p key={idx} className="text-sm text-gray-300 leading-relaxed pl-3 border-l-2 border-[#00C805]/30">
+                {bullet}
+              </p>
             ))}
-          </ul>
+          </div>
           {project.technologies && (
             <div className="flex flex-wrap gap-2 mt-3">
               {project.technologies.slice(0, 4).map((tech, idx) => (
