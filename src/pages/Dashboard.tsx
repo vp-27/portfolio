@@ -7,7 +7,7 @@ import BuyingPower from '../components/BuyingPower'
 import BottomNav from '../components/BottomNav'
 import PortfolioSections from '../components/PortfolioSections'
 import { mockPortfolio, filterTimelineData, mockSkillCategories, mockExperiences, mockProjects, mockEducation, mockCertifications } from '../data/mockData'
-import type { ChartDataPoint, Experience, Project } from '../types'
+import type { ChartDataPoint } from '../types'
 
 export default function Dashboard() {
   const [timeRange, setTimeRange] = useState('ALL')
@@ -16,17 +16,6 @@ export default function Dashboard() {
   const [activeLabel, setActiveLabel] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const lastHoveredLabel = useRef<string | null>(null)
-  const [lastHoveredExperience, setLastHoveredExperience] = useState<{
-    data: Experience | Project | null
-    type: 'experience' | 'project' | null
-  }>({ data: null, type: null })
-
-  // Handle dismissing the experience card
-  const handleDismissExperienceCard = () => {
-    setLastHoveredExperience({ data: null, type: null })
-    lastHoveredLabel.current = null
-    setActiveLabel(null)
-  }
 
   // Milestone to Experience/Project mapping
   const milestoneMap = useMemo(() => ({
@@ -48,22 +37,11 @@ export default function Dashboard() {
 
   const handleChartPointHover = (label: string | null) => {
     setHoveredLabel(label)
-    
-    // Update last hovered experience when hovering over milestones
+
+    // Update active label when hovering over milestones
     if (label && label !== lastHoveredLabel.current) {
       lastHoveredLabel.current = label
       setActiveLabel(label) // Set the active label to persist
-      const mapping = milestoneMap[label as keyof typeof milestoneMap]
-      
-      if (mapping) {
-        const data = mapping.type === 'experience' 
-          ? mockExperiences.find(exp => exp.id === mapping.id)
-          : mockProjects.find(proj => proj.id === mapping.id)
-        
-        if (data) {
-          setLastHoveredExperience({ data, type: mapping.type })
-        }
-      }
     } else if (!label) {
       // Reset when not hovering
       lastHoveredLabel.current = null
@@ -74,7 +52,7 @@ export default function Dashboard() {
   // Handle navigation to sections
   const handleNavigate = (section: string) => {
     console.log('Navigating to section:', section)
-    
+
     if (section === 'top') {
       window.scrollTo({ top: 0, behavior: 'smooth' })
       return
@@ -85,7 +63,7 @@ export default function Dashboard() {
       // Find all matching sections and get the visible one
       const allSectionElements = document.querySelectorAll(`[data-section="${section}"]`)
       console.log('Found sections:', allSectionElements.length)
-      
+
       // Helper function to check if element or any ancestor is hidden
       const isElementVisible = (element: Element): boolean => {
         let current: Element | null = element
@@ -98,7 +76,7 @@ export default function Dashboard() {
         }
         return true
       }
-      
+
       // Find the visible section (not hidden by Tailwind classes)
       let sectionElement: Element | null = null
       allSectionElements.forEach((el) => {
@@ -107,9 +85,9 @@ export default function Dashboard() {
           console.log('Found visible section')
         }
       })
-      
+
       console.log('Selected section element:', sectionElement)
-      
+
       if (sectionElement) {
         // Check if we're on mobile (no top nav) or desktop
         const isMobile = window.innerWidth < 768
@@ -117,14 +95,14 @@ export default function Dashboard() {
         const elementTop = (sectionElement as HTMLElement).getBoundingClientRect().top
         const pageOffset = window.pageYOffset
         const y = elementTop + pageOffset + yOffset
-        
+
         console.log('Mobile:', isMobile)
         console.log('Section:', section)
         console.log('Element top:', elementTop)
         console.log('Page offset:', pageOffset)
         console.log('Y offset:', yOffset)
         console.log('Scrolling to Y:', y)
-        
+
         window.scrollTo({ top: y, behavior: 'smooth' })
       } else {
         console.log('No visible section element found!')
@@ -143,25 +121,79 @@ export default function Dashboard() {
     }
   }
 
-  const handleChartPointClick = (point: ChartDataPoint) => {
-    // Map chart milestones to experiences/projects
-    const milestoneMapForHighlight: Record<string, string> = {
-      'Bender Trust': 'Bender',
-      'OroGenie': 'OroGenie',
-      'Kaktus Financial Ops': 'Kaktus',
-      'Algo Trading Bot': 'Algorithmic',
-      'Shark Tank Top 6': 'Shark Tank',
-      'GrindSheet': 'GrindSheet',
-      'Sunny Insurance': 'Sunny',
-      'Moweb Data Team': 'Moweb',
-      'SEBS Data Analyst': 'SEBS',
+  // Helper to check if element is visible (not hidden by responsive classes)
+  const isElementVisible = (element: Element): boolean => {
+    let current: Element | null = element
+    while (current && current !== document.body) {
+      const computed = window.getComputedStyle(current)
+      if (computed.display === 'none') {
+        return false
+      }
+      current = current.parentElement
     }
+    return true
+  }
 
+  // Scroll to element by data attribute
+  const scrollToElement = (type: 'experience' | 'project', id: string) => {
+    const selector = type === 'experience'
+      ? `[data-experience-id="${id}"]`
+      : `[data-project-id="${id}"]`
+
+    const allElements = document.querySelectorAll(selector)
+
+    // Find the visible element (in case there are duplicates for mobile/desktop)
+    let targetElement: Element | null = null
+    allElements.forEach((el) => {
+      if (isElementVisible(el)) {
+        targetElement = el
+      }
+    })
+
+    if (targetElement) {
+      const isMobile = window.innerWidth < 768
+      const yOffset = isMobile ? -80 : -100 // Account for header
+      const elementTop = (targetElement as HTMLElement).getBoundingClientRect().top
+      const pageOffset = window.pageYOffset
+      const y = elementTop + pageOffset + yOffset
+
+      window.scrollTo({ top: y, behavior: 'smooth' })
+    }
+  }
+
+  const handleChartPointClick = (point: ChartDataPoint) => {
     if (point.label) {
+      // Map chart milestones to search terms for highlighting
+      const milestoneMapForHighlight: Record<string, string> = {
+        'Bender Trust': 'Bender',
+        'OroGenie': 'OroGenie',
+        'Kaktus Financial Ops': 'Kaktus',
+        'Algo Trading Bot': 'Algorithmic',
+        'Shark Tank Top 6': 'Shark Tank',
+        'GrindSheet': 'GrindSheet',
+        'Sunny Insurance': 'Sunny',
+        'Moweb Data Team': 'Moweb',
+        'SEBS Data Analyst': 'SEBS',
+      }
+
       const searchTerm = milestoneMapForHighlight[point.label]
       if (searchTerm) {
+        // Set highlighted item to trigger gold glow animation
         setHighlightedItem(searchTerm)
-        // Removed auto-scroll to avoid conflicting with chart scrubbing animations
+
+        // Get the mapping for this milestone
+        const mapping = milestoneMap[point.label as keyof typeof milestoneMap]
+        if (mapping) {
+          // Scroll to the element
+          setTimeout(() => {
+            scrollToElement(mapping.type, mapping.id)
+          }, 50)
+
+          // Clear highlight after animation completes
+          setTimeout(() => {
+            setHighlightedItem(null)
+          }, 2000)
+        }
       }
     }
   }
@@ -169,7 +201,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-black text-white">
       <TopNav onNavigate={handleNavigate} onSearch={handleSearch} />
-      
+
       <div className="md:pt-14 pb-20 md:pb-8">
         <div className="max-w-7xl mx-auto md:px-4">
           <div className="lg:grid lg:grid-cols-[1fr,400px] lg:gap-6">
@@ -178,8 +210,8 @@ export default function Dashboard() {
                 <PortfolioHeader portfolio={mockPortfolio} hoveredLabel={hoveredLabel} activeLabel={activeLabel} />
               </div>
               <div>
-                <PortfolioChart 
-                  data={chartData} 
+                <PortfolioChart
+                  data={chartData}
                   isPositive={mockPortfolio.todayReturn >= 0}
                   onPointClick={handleChartPointClick}
                   onPointHover={handleChartPointHover}
@@ -192,34 +224,29 @@ export default function Dashboard() {
                     <button
                       key={range}
                       onClick={() => setTimeRange(range)}
-                      className={`px-2.5 py-1 rounded-lg font-bold ${
-                        timeRange === range
+                      className={`px-2.5 py-1 rounded-lg font-bold ${timeRange === range
                           ? 'bg-[#00C805] text-black'
                           : 'bg-transparent text-gray-400 hover:text-white hover:bg-[#1A1A1A]'
-                      } transition-colors`}
+                        } transition-colors`}
                     >
                       {range}
                     </button>
                   ))}
                 </div>
               </div>
-              
+
               <div className="px-4 md:px-4">
-                <BuyingPower 
-                  experienceData={lastHoveredExperience.data}
-                  experienceType={lastHoveredExperience.type}
-                  onDismiss={handleDismissExperienceCard}
-                />
+                <BuyingPower />
               </div>
-              
+
               {/* About Me - Shown on mobile right under Experience Card */}
               <div className="lg:hidden px-4 md:px-4 mt-4 mb-6" data-section="about">
                 <AboutAndSkills skillCategories={mockSkillCategories} searchQuery={searchQuery} showOnlyAbout={true} />
               </div>
-              
+
               {/* Portfolio Sections - Experience, Projects, Education, Certifications */}
               <div className="px-4 md:px-4">
-                <PortfolioSections 
+                <PortfolioSections
                   experiences={mockExperiences}
                   projects={mockProjects}
                   education={mockEducation}
@@ -229,7 +256,7 @@ export default function Dashboard() {
                 />
               </div>
             </div>
-            
+
             {/* Right Sidebar - Sticky on desktop */}
             <div className="hidden lg:block lg:pr-4">
               <div className="lg:sticky lg:top-[70px] lg:max-h-[calc(100vh-90px)] lg:overflow-y-auto lg:scrollbar-hide">
@@ -237,7 +264,7 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
-          
+
           {/* Mobile Layout - Skills at bottom */}
           <div className="lg:hidden px-4 mt-8 mb-6" data-section="skills">
             <AboutAndSkills skillCategories={mockSkillCategories} searchQuery={searchQuery} showOnlySkills={true} />

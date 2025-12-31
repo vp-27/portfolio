@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ExternalLink, Github, ChevronDown } from 'lucide-react'
 import type { Project } from '../types'
@@ -10,21 +10,51 @@ interface ProjectCardProps {
 
 export default function ProjectCard({ project, isHighlighted }: ProjectCardProps) {
   const [isExpanded, setIsExpanded] = useState(false)
+  const [showGlow, setShowGlow] = useState(false)
   const hasLinks = project.liveUrl || project.githubUrl
+
+  // Auto-expand and show gold glow when highlighted
+  useEffect(() => {
+    if (isHighlighted) {
+      setIsExpanded(true)
+      setShowGlow(true)
+      // Remove glow after animation completes
+      const timer = setTimeout(() => {
+        setShowGlow(false)
+      }, 1500)
+      return () => clearTimeout(timer)
+    }
+  }, [isHighlighted])
 
   return (
     <motion.div
       layout
+      data-project-id={project.id}
       onClick={() => setIsExpanded(!isExpanded)}
-      className={`
-        bg-[#1C1C1E] rounded-2xl overflow-hidden cursor-pointer
-        transition-all duration-200 ease-out
-        hover:bg-[#252528]
-        ${isHighlighted ? 'ring-1 ring-[#00C805]' : ''}
-      `}
+      className="bg-[#1C1C1E] rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 ease-out hover:bg-[#252528] relative"
+      style={{
+        boxShadow: showGlow
+          ? '0 0 25px rgba(201, 162, 39, 0.5), inset 0 0 25px rgba(201, 162, 39, 0.1)'
+          : 'none',
+        border: showGlow ? '1px solid rgba(201, 162, 39, 0.4)' : '1px solid transparent',
+      }}
     >
+      {/* Gold glow overlay */}
+      {showGlow && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className="absolute inset-0 rounded-2xl pointer-events-none z-0"
+          style={{
+            background: 'linear-gradient(135deg, rgba(201, 162, 39, 0.12) 0%, rgba(201, 162, 39, 0.03) 100%)',
+          }}
+        />
+      )}
+
       {/* Card Header - Always Visible */}
-      <div className="p-3 md:p-4">
+      <div className="p-3 md:p-4 relative z-10">
         <div className="flex items-center gap-3 md:gap-4">
           {/* Left side: Title, Subtitle, Tags */}
           <div className="flex-1 min-w-0">
@@ -148,7 +178,7 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
-            className="overflow-hidden"
+            className="overflow-hidden relative z-10"
           >
             <div className="px-3 md:px-4 pb-3 md:pb-4">
               {/* Duration */}

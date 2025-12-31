@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MapPin, ChevronRight } from 'lucide-react'
 import type { Experience } from '../types'
@@ -16,22 +16,62 @@ const getInitials = (company: string) => {
 
 export default function ExperienceItem({ experience, isHighlighted, isLast = false }: ExperienceItemProps) {
   const [isExpanded, setIsExpanded] = useState(false)
+  const [showGlow, setShowGlow] = useState(false)
+  const itemRef = useRef<HTMLDivElement>(null)
 
   // Determine if this is a current position
   const isCurrent = experience.endDate.toLowerCase() === 'present'
 
+  // Auto-expand and show gold glow when highlighted
+  useEffect(() => {
+    if (isHighlighted) {
+      setIsExpanded(true)
+      setShowGlow(true)
+      // Remove glow after animation completes
+      const timer = setTimeout(() => {
+        setShowGlow(false)
+      }, 1500)
+      return () => clearTimeout(timer)
+    }
+  }, [isHighlighted])
+
   return (
     <div
+      ref={itemRef}
+      data-experience-id={experience.id}
       className={`
-        py-3 
+        py-3 relative
         ${isLast ? '' : 'border-b border-[#2C2C2E]'}
-        ${isHighlighted ? 'bg-[#00C805]/10 -mx-2 px-2 rounded-xl' : ''}
+        transition-all duration-300
       `}
+      style={{
+        boxShadow: showGlow
+          ? '0 0 20px rgba(201, 162, 39, 0.4), inset 0 0 20px rgba(201, 162, 39, 0.1)'
+          : 'none',
+        borderRadius: showGlow ? '12px' : '0',
+        margin: showGlow ? '0 -8px' : '0',
+        padding: showGlow ? '12px 8px' : undefined,
+      }}
     >
+      {/* Gold glow overlay */}
+      {showGlow && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className="absolute inset-0 rounded-xl pointer-events-none"
+          style={{
+            background: 'linear-gradient(135deg, rgba(201, 162, 39, 0.15) 0%, rgba(201, 162, 39, 0.05) 100%)',
+            border: '1px solid rgba(201, 162, 39, 0.3)',
+          }}
+        />
+      )}
+
       {/* List Row - Always Visible */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full flex items-center gap-3 md:gap-4 text-left hover:bg-[#1A1A1A] rounded-xl transition-colors p-2 -m-2 focus:outline-none"
+        className="w-full flex items-center gap-3 md:gap-4 text-left hover:bg-[#1A1A1A] rounded-xl transition-colors p-2 -m-2 focus:outline-none relative z-10"
       >
         {/* Logo or Fallback Icon */}
         {experience.logoUrl ? (
@@ -89,7 +129,7 @@ export default function ExperienceItem({ experience, isHighlighted, isLast = fal
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
-            className="overflow-hidden"
+            className="overflow-hidden relative z-10"
           >
             <div className="pt-4 pl-[68px] md:pl-[80px] pr-2">
               {/* Date on mobile */}
