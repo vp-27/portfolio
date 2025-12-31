@@ -194,7 +194,7 @@ export default function Dashboard() {
         // Clear highlight after animation completes
         setTimeout(() => {
           setHighlightedItem(null)
-        }, 2000)
+        }, 9000)
       }
     }
   }
