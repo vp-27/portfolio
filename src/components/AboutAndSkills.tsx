@@ -40,7 +40,7 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '', show
   // Filter skills based on search query
   const filteredSkillCategories = skillCategories.map(category => ({
     ...category,
-    skills: category.skills.filter(skill => 
+    skills: category.skills.filter(skill =>
       !searchQuery || skill.name.toLowerCase().includes(searchQuery.toLowerCase())
     )
   })).filter(category => category.skills.length > 0)
@@ -66,20 +66,22 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '', show
               About Me
             </div>
           </div>
-          
+
           <div className="p-6 space-y-4">
             <div className="flex items-start justify-between gap-4">
               <div className="flex-1">
                 <h3 className="text-xl font-medium mb-2 text-white">{aboutData.name}</h3>
                 <p className="text-sm text-gray-300 leading-relaxed">{aboutData.title}</p>
-                <div className="flex items-center gap-2 text-sm text-gray-400 pt-2">
-                  <MapPin className="w-4 h-4" />
-                  <span>{aboutData.location}</span>
+                <div className="inline-flex items-center gap-2 px-1 pr-3 py-1 rounded-full bg-[#1C1C1E] border border-[#3A3A3C] text-xs mt-2">
+                  <div className="w-5 h-5 rounded-full bg-[#00C805]/20 flex items-center justify-center">
+                    <MapPin className="w-3 h-3 text-[#00C805]" />
+                  </div>
+                  <span className="text-gray-300">{aboutData.location}</span>
                 </div>
               </div>
-              
+
               {/* Profile Picture with hover effect */}
-              <div 
+              <div
                 className="relative w-32 h-32 cursor-pointer flex-shrink-0 overflow-visible"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
@@ -113,61 +115,61 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '', show
               <Plus className="w-5 h-5" />
             </button>
           </div>
-          
+
           <div>
             {filteredSkillCategories.length === 0 && searchQuery ? (
               <p className="text-sm text-gray-400 text-center py-4 px-4">No skills match your search</p>
             ) : (
               <>
                 {filteredSkillCategories.map((category) => {
-              const isExpanded = expandedLists.has(category.id)
-              
-              return (
-                <motion.div key={category.id} layout>
-                  <button
-                    onClick={() => toggleList(category.id)}
-                    className="w-full flex items-center justify-between px-4 py-3 bg-transparent hover:bg-[#1A1A1A] transition-colors"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-12 bg-[#1A1A1A] rounded-md flex items-center justify-center text-lg">
-                        {skillEmojis[category.icon] || '📦'}
-                      </div>
-                      <span className="text-white font-semibold">{category.name}</span>
-                    </div>
-                    <motion.div
-                      animate={{ rotate: isExpanded ? 90 : 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="text-gray-400"
-                    >
-                      <ChevronRight className="w-5 h-5" />
-                    </motion.div>
-                  </button>
-                  
-                  <AnimatePresence>
-                    {isExpanded && category.skills.length > 0 && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.25, ease: [0.4, 0.0, 0.2, 1] }}
-                        className="overflow-hidden bg-black"
+                  const isExpanded = expandedLists.has(category.id)
+
+                  return (
+                    <motion.div key={category.id} layout>
+                      <button
+                        onClick={() => toggleList(category.id)}
+                        className="w-full flex items-center justify-between px-4 py-3 bg-transparent hover:bg-[#1A1A1A] transition-colors"
                       >
-                        {category.skills.map((skill, idx) => (
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-12 bg-[#1A1A1A] rounded-md flex items-center justify-center text-lg">
+                            {skillEmojis[category.icon] || '📦'}
+                          </div>
+                          <span className="text-white font-semibold">{category.name}</span>
+                        </div>
+                        <motion.div
+                          animate={{ rotate: isExpanded ? 90 : 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="text-gray-400"
+                        >
+                          <ChevronRight className="w-5 h-5" />
+                        </motion.div>
+                      </button>
+
+                      <AnimatePresence>
+                        {isExpanded && category.skills.length > 0 && (
                           <motion.div
-                            key={skill.id}
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: idx * 0.02 }}
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.25, ease: [0.4, 0.0, 0.2, 1] }}
+                            className="overflow-hidden bg-black"
                           >
-                            <SkillItem skill={skill} categoryIcon={category.icon} />
+                            {category.skills.map((skill, idx) => (
+                              <motion.div
+                                key={skill.id}
+                                initial={{ opacity: 0, x: -10 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: idx * 0.02 }}
+                              >
+                                <SkillItem skill={skill} categoryIcon={category.icon} />
+                              </motion.div>
+                            ))}
                           </motion.div>
-                        ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
-              )
-            })}
+                        )}
+                      </AnimatePresence>
+                    </motion.div>
+                  )
+                })}
               </>
             )}
           </div>
@@ -186,14 +188,16 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '', show
                   <div className="flex-1">
                     <h3 className="text-base font-medium mb-1">{aboutData.name}</h3>
                     <p className="text-sm text-gray-400">{aboutData.title}</p>
-                    <div className="flex items-center gap-2 text-sm text-gray-400 pt-2">
-                      <MapPin className="w-4 h-4" />
-                      <span>{aboutData.location}</span>
+                    <div className="inline-flex items-center gap-2 px-1 pr-3 py-1 rounded-full bg-[#1C1C1E] border border-[#3A3A3C] text-xs mt-2">
+                      <div className="w-5 h-5 rounded-full bg-[#00C805]/20 flex items-center justify-center">
+                        <MapPin className="w-3 h-3 text-[#00C805]" />
+                      </div>
+                      <span className="text-gray-300">{aboutData.location}</span>
                     </div>
                   </div>
-                  
+
                   {/* Profile Picture with hover effect */}
-                  <div 
+                  <div
                     className="relative w-28 h-28 cursor-pointer flex-shrink-0 overflow-visible"
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
@@ -224,64 +228,64 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '', show
           <div data-section="skills">
             <h2 className="text-2xl font-medium mb-3 text-left">Skills</h2>
             <div className="bg-[#0D0D0D] rounded-lg border border-[#2D2D2D] overflow-hidden">
-            {filteredSkillCategories.length === 0 && searchQuery ? (
-              <p className="text-sm text-gray-400 text-center py-4 px-4">No skills match your search</p>
-            ) : (
-              <>
-                {filteredSkillCategories.map((category) => {
-              const isExpanded = expandedLists.has(category.id)
-              
-              return (
-                <motion.div key={category.id} layout>
-                  <button
-                    onClick={() => toggleList(category.id)}
-                    className="w-full flex items-center justify-between px-4 py-4 bg-transparent hover:bg-[#1A1A1A] transition-colors"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="w-14 h-16 bg-[#1A1A1A] rounded-2xl flex items-center justify-center text-3xl flex-shrink-0">
-                        {skillEmojis[category.icon] || '📦'}
-                      </div>
-                      <div className="flex flex-col items-start">
-                        <span className="text-white text-base font-semibold">{category.name}</span>
-                        <span className="text-gray-500 text-sm">{category.skills.length} {category.skills.length === 1 ? 'item' : 'items'}</span>
-                      </div>
-                    </div>
-                    <motion.div
-                      animate={{ rotate: isExpanded ? 90 : 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="text-gray-400"
-                    >
-                      <ChevronRight className="w-5 h-5" />
-                    </motion.div>
-                  </button>
-                  
-                  <AnimatePresence>
-                    {isExpanded && category.skills.length > 0 && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.25, ease: [0.4, 0.0, 0.2, 1] }}
-                        className="overflow-hidden bg-black"
-                      >
-                        {category.skills.map((skill, idx) => (
+              {filteredSkillCategories.length === 0 && searchQuery ? (
+                <p className="text-sm text-gray-400 text-center py-4 px-4">No skills match your search</p>
+              ) : (
+                <>
+                  {filteredSkillCategories.map((category) => {
+                    const isExpanded = expandedLists.has(category.id)
+
+                    return (
+                      <motion.div key={category.id} layout>
+                        <button
+                          onClick={() => toggleList(category.id)}
+                          className="w-full flex items-center justify-between px-4 py-4 bg-transparent hover:bg-[#1A1A1A] transition-colors"
+                        >
+                          <div className="flex items-center gap-4">
+                            <div className="w-14 h-16 bg-[#1A1A1A] rounded-2xl flex items-center justify-center text-3xl flex-shrink-0">
+                              {skillEmojis[category.icon] || '📦'}
+                            </div>
+                            <div className="flex flex-col items-start">
+                              <span className="text-white text-base font-semibold">{category.name}</span>
+                              <span className="text-gray-500 text-sm">{category.skills.length} {category.skills.length === 1 ? 'item' : 'items'}</span>
+                            </div>
+                          </div>
                           <motion.div
-                            key={skill.id}
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: idx * 0.02 }}
+                            animate={{ rotate: isExpanded ? 90 : 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="text-gray-400"
                           >
-                            <SkillItem skill={skill} categoryIcon={category.icon} />
+                            <ChevronRight className="w-5 h-5" />
                           </motion.div>
-                        ))}
+                        </button>
+
+                        <AnimatePresence>
+                          {isExpanded && category.skills.length > 0 && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: 'auto', opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.25, ease: [0.4, 0.0, 0.2, 1] }}
+                              className="overflow-hidden bg-black"
+                            >
+                              {category.skills.map((skill, idx) => (
+                                <motion.div
+                                  key={skill.id}
+                                  initial={{ opacity: 0, x: -10 }}
+                                  animate={{ opacity: 1, x: 0 }}
+                                  transition={{ delay: idx * 0.02 }}
+                                >
+                                  <SkillItem skill={skill} categoryIcon={category.icon} />
+                                </motion.div>
+                              ))}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </motion.div>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
-              )
-            })}
-              </>
-            )}
+                    )
+                  })}
+                </>
+              )}
             </div>
           </div>
         )}

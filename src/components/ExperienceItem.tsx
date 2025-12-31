@@ -145,10 +145,12 @@ export default function ExperienceItem({ experience, isHighlighted, isLast = fal
                 {experience.startDate} – {experience.endDate}
               </p>
 
-              {/* Location info */}
-              <div className="flex items-center gap-1.5 text-xs mb-3">
-                <MapPin className="w-3.5 h-3.5 text-[#FF5000]" />
-                <span className="text-[#FF5000]">{experience.location}</span>
+              {/* Location info - Pill style with icon circle */}
+              <div className="inline-flex items-center gap-2 px-1 pr-3 py-1 rounded-full bg-[#1C1C1E] border border-[#3A3A3C] text-xs mb-3">
+                <div className="w-5 h-5 rounded-full bg-[#00C805]/20 flex items-center justify-center">
+                  <MapPin className="w-3 h-3 text-[#00C805]" />
+                </div>
+                <span className="text-gray-300">{experience.location}</span>
               </div>
 
               {/* Bullets */}

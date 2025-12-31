@@ -17,7 +17,7 @@ export default function EducationPage() {
       {/* Header */}
       <div className="sticky top-0 bg-black/95 backdrop-blur-sm z-10">
         <div className="relative flex items-center justify-center px-4 py-4">
-          <button 
+          <button
             onClick={() => navigate(-1)}
             className="absolute left-4 p-1 hover:bg-[#1A1A1A] rounded-full transition-colors"
           >
@@ -56,15 +56,19 @@ export default function EducationPage() {
                   ))}
                 </div>
 
-                {/* Location and Date */}
-                <div className="flex items-center gap-4 text-xs mb-4">
-                  <div className="flex items-center gap-1.5">
-                    <MapPin className="w-3.5 h-3.5 text-[#FF5000]" />
-                    <span className="text-[#FF5000]">{edu.location}</span>
+                {/* Location and Date - Pill style with icon circles */}
+                <div className="flex items-center gap-2 text-xs mb-4 flex-wrap">
+                  <div className="inline-flex items-center gap-2 px-1 pr-3 py-1 rounded-full bg-[#2A2A2D] border border-[#3A3A3C]">
+                    <div className="w-5 h-5 rounded-full bg-[#00C805]/20 flex items-center justify-center">
+                      <MapPin className="w-3 h-3 text-[#00C805]" />
+                    </div>
+                    <span className="text-gray-300">{edu.location}</span>
                   </div>
-                  <div className="flex items-center gap-1.5">
-                    <Calendar className="w-3.5 h-3.5 text-[#FF5000]" />
-                    <span className="text-[#FF5000]">{edu.graduationDate}</span>
+                  <div className="inline-flex items-center gap-2 px-1 pr-3 py-1 rounded-full bg-[#2A2A2D] border border-[#3A3A3C]">
+                    <div className="w-5 h-5 rounded-full bg-[#00C805]/20 flex items-center justify-center">
+                      <Calendar className="w-3 h-3 text-[#00C805]" />
+                    </div>
+                    <span className="text-gray-300">{edu.graduationDate}</span>
                   </div>
                 </div>
 
