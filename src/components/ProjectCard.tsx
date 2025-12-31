@@ -42,12 +42,12 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
       className="bg-[#1C1C1E] rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 ease-out hover:bg-[#252528] relative"
       style={{
         boxShadow: showGlow
-          ? '0 0 25px rgba(0, 200, 5, 0.5), inset 0 0 25px rgba(0, 200, 5, 0.1)'
+          ? '0 0 25px rgba(201, 162, 39, 0.5), inset 0 0 25px rgba(201, 162, 39, 0.1)'
           : 'none',
-        border: showGlow ? '1px solid rgba(0, 200, 5, 0.4)' : '1px solid transparent',
+        border: showGlow ? '1px solid rgba(201, 162, 39, 0.4)' : '1px solid transparent',
       }}
     >
-      {/* Green glow overlay */}
+      {/* Gold glow overlay */}
       {showGlow && (
         <motion.div
           initial={{ opacity: 0 }}
@@ -56,7 +56,7 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
           transition={{ duration: 0.3 }}
           className="absolute inset-0 rounded-2xl pointer-events-none z-0"
           style={{
-            background: 'linear-gradient(135deg, rgba(0, 200, 5, 0.12) 0%, rgba(0, 200, 5, 0.03) 100%)',
+            background: 'linear-gradient(135deg, rgba(201, 162, 39, 0.12) 0%, rgba(201, 162, 39, 0.03) 100%)',
           }}
         />
       )}
