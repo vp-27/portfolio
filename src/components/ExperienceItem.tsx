@@ -18,13 +18,16 @@ export default function ExperienceItem({ experience, isHighlighted, isLast = fal
   const [isExpanded, setIsExpanded] = useState(false)
   const [showGlow, setShowGlow] = useState(false)
   const itemRef = useRef<HTMLDivElement>(null)
+  const wasHighlighted = useRef(false)
 
   // Determine if this is a current position
   const isCurrent = experience.endDate.toLowerCase() === 'present'
 
   // Auto-expand and show gold glow when highlighted
+  // Auto-collapse when another item becomes highlighted
   useEffect(() => {
     if (isHighlighted) {
+      wasHighlighted.current = true
       setIsExpanded(true)
       setShowGlow(true)
       // Remove glow after animation completes
@@ -32,6 +35,11 @@ export default function ExperienceItem({ experience, isHighlighted, isLast = fal
         setShowGlow(false)
       }, 1500)
       return () => clearTimeout(timer)
+    } else if (wasHighlighted.current) {
+      // This card was previously highlighted but now something else is
+      // Collapse it to keep UI clean
+      wasHighlighted.current = false
+      setIsExpanded(false)
     }
   }, [isHighlighted])
 

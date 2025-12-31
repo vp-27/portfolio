@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ExternalLink, Github, ChevronDown } from 'lucide-react'
 import type { Project } from '../types'
@@ -11,11 +11,14 @@ interface ProjectCardProps {
 export default function ProjectCard({ project, isHighlighted }: ProjectCardProps) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [showGlow, setShowGlow] = useState(false)
+  const wasHighlighted = useRef(false)
   const hasLinks = project.liveUrl || project.githubUrl
 
   // Auto-expand and show gold glow when highlighted
+  // Auto-collapse when another item becomes highlighted
   useEffect(() => {
     if (isHighlighted) {
+      wasHighlighted.current = true
       setIsExpanded(true)
       setShowGlow(true)
       // Remove glow after animation completes
@@ -23,6 +26,11 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
         setShowGlow(false)
       }, 1500)
       return () => clearTimeout(timer)
+    } else if (wasHighlighted.current) {
+      // This card was previously highlighted but now something else is
+      // Collapse it to keep UI clean
+      wasHighlighted.current = false
+      setIsExpanded(false)
     }
   }, [isHighlighted])
 

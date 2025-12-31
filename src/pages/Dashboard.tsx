@@ -173,7 +173,7 @@ export default function Dashboard() {
         'GrindSheet': 'GrindSheet',
         'Sunny Insurance': 'Sunny',
         'Moweb Data Team': 'Moweb',
-        'SEBS Data Analyst': 'SEBS',
+        'SEBS Data Analyst': 'Rutgers',
       }
 
       const searchTerm = milestoneMapForHighlight[point.label]
@@ -225,8 +225,8 @@ export default function Dashboard() {
                       key={range}
                       onClick={() => setTimeRange(range)}
                       className={`px-2.5 py-1 rounded-lg font-bold ${timeRange === range
-                          ? 'bg-[#00C805] text-black'
-                          : 'bg-transparent text-gray-400 hover:text-white hover:bg-[#1A1A1A]'
+                        ? 'bg-[#00C805] text-black'
+                        : 'bg-transparent text-gray-400 hover:text-white hover:bg-[#1A1A1A]'
                         } transition-colors`}
                     >
                       {range}
