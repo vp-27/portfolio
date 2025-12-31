@@ -54,14 +54,14 @@ export default function ExperienceItem({ experience, isHighlighted, isLast = fal
       `}
       style={{
         boxShadow: showGlow
-          ? '0 0 20px rgba(201, 162, 39, 0.4), inset 0 0 20px rgba(201, 162, 39, 0.1)'
+          ? '0 0 20px rgba(0, 200, 5, 0.4), inset 0 0 20px rgba(0, 200, 5, 0.1)'
           : 'none',
         borderRadius: showGlow ? '12px' : '0',
         margin: showGlow ? '0 -8px' : '0',
         padding: showGlow ? '12px 8px' : undefined,
       }}
     >
-      {/* Gold glow overlay */}
+      {/* Green glow overlay */}
       {showGlow && (
         <motion.div
           initial={{ opacity: 0 }}
@@ -70,8 +70,8 @@ export default function ExperienceItem({ experience, isHighlighted, isLast = fal
           transition={{ duration: 0.3 }}
           className="absolute inset-0 rounded-xl pointer-events-none"
           style={{
-            background: 'linear-gradient(135deg, rgba(201, 162, 39, 0.15) 0%, rgba(201, 162, 39, 0.05) 100%)',
-            border: '1px solid rgba(201, 162, 39, 0.3)',
+            background: 'linear-gradient(135deg, rgba(0, 200, 5, 0.15) 0%, rgba(0, 200, 5, 0.05) 100%)',
+            border: '1px solid rgba(0, 200, 5, 0.3)',
           }}
         />
       )}

@@ -7,10 +7,11 @@ interface PortfolioChartProps {
   isPositive: boolean
   onPointClick?: (point: ChartDataPoint) => void
   onPointHover?: (label: string | null) => void
+  onScrubEnd?: () => void
   activeLabel?: string | null
 }
 
-export default function PortfolioChart({ data, isPositive, onPointClick, onPointHover, activeLabel }: PortfolioChartProps) {
+export default function PortfolioChart({ data, isPositive, onPointClick, onPointHover, onScrubEnd, activeLabel }: PortfolioChartProps) {
   const strokeColor = isPositive ? '#00C805' : '#FF5000'
   const chartRef = useRef<HTMLDivElement>(null)
   const [snappedIndex, setSnappedIndex] = useState<number | null>(null)
@@ -81,6 +82,12 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
       onPointHover(null)
     }
     setSnappedIndex(null)
+  }
+
+  const handleInteractionEnd = () => {
+    if (onScrubEnd) {
+      onScrubEnd()
+    }
   }
 
   const CustomTooltip = ({ active, payload }: any) => {
@@ -169,7 +176,12 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
   }
 
   return (
-    <div ref={chartRef} className="w-full h-64 md:h-64 cursor-pointer">
+    <div
+      ref={chartRef}
+      className="w-full h-64 md:h-64 cursor-pointer"
+      onMouseUp={handleInteractionEnd}
+      onTouchEnd={handleInteractionEnd}
+    >
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           data={data}

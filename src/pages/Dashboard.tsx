@@ -161,40 +161,57 @@ export default function Dashboard() {
     }
   }
 
+  // Common navigation logic for clicks and scrubs
+  const navigateToItem = (label: string) => {
+    if (!label) return
+
+    // Map chart milestones to search terms for highlighting
+    const milestoneMapForHighlight: Record<string, string> = {
+      'Bender Trust': 'Bender',
+      'OroGenie': 'OroGenie',
+      'Kaktus Financial Ops': 'Kaktus',
+      'Algo Trading Bot': 'Algorithmic',
+      'Shark Tank Top 6': 'Shark Tank',
+      'GrindSheet': 'GrindSheet',
+      'Sunny Insurance': 'Sunny',
+      'Moweb Data Team': 'Moweb',
+      'SEBS Data Analyst': 'Rutgers',
+    }
+
+    const searchTerm = milestoneMapForHighlight[label]
+    if (searchTerm) {
+      // Set highlighted item to trigger glow animation
+      setHighlightedItem(searchTerm)
+
+      // Get the mapping for this milestone
+      const mapping = milestoneMap[label as keyof typeof milestoneMap]
+      if (mapping) {
+        // Scroll to the element
+        setTimeout(() => {
+          scrollToElement(mapping.type, mapping.id)
+        }, 50)
+
+        // Clear highlight after animation completes
+        setTimeout(() => {
+          setHighlightedItem(null)
+        }, 2000)
+      }
+    }
+  }
+
   const handleChartPointClick = (point: ChartDataPoint) => {
     if (point.label) {
-      // Map chart milestones to search terms for highlighting
-      const milestoneMapForHighlight: Record<string, string> = {
-        'Bender Trust': 'Bender',
-        'OroGenie': 'OroGenie',
-        'Kaktus Financial Ops': 'Kaktus',
-        'Algo Trading Bot': 'Algorithmic',
-        'Shark Tank Top 6': 'Shark Tank',
-        'GrindSheet': 'GrindSheet',
-        'Sunny Insurance': 'Sunny',
-        'Moweb Data Team': 'Moweb',
-        'SEBS Data Analyst': 'Rutgers',
-      }
+      navigateToItem(point.label)
+    }
+  }
 
-      const searchTerm = milestoneMapForHighlight[point.label]
-      if (searchTerm) {
-        // Set highlighted item to trigger gold glow animation
-        setHighlightedItem(searchTerm)
-
-        // Get the mapping for this milestone
-        const mapping = milestoneMap[point.label as keyof typeof milestoneMap]
-        if (mapping) {
-          // Scroll to the element
-          setTimeout(() => {
-            scrollToElement(mapping.type, mapping.id)
-          }, 50)
-
-          // Clear highlight after animation completes
-          setTimeout(() => {
-            setHighlightedItem(null)
-          }, 2000)
-        }
-      }
+  const handleScrubEnd = () => {
+    // If we have a hovered label when interaction ends (lifts finger), navigate to it
+    if (hoveredLabel) {
+      navigateToItem(hoveredLabel)
+    } else if (activeLabel) {
+      // Fallback to active label if available
+      navigateToItem(activeLabel)
     }
   }
 
@@ -215,6 +232,7 @@ export default function Dashboard() {
                   isPositive={mockPortfolio.todayReturn >= 0}
                   onPointClick={handleChartPointClick}
                   onPointHover={handleChartPointHover}
+                  onScrubEnd={handleScrubEnd}
                   activeLabel={activeLabel}
                 />
               </div>
