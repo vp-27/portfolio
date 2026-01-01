@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { ChevronLeft, MapPin, Calendar } from 'lucide-react'
+import { ChevronLeft } from 'lucide-react'
 import BottomNav from '../components/BottomNav'
 import { mockEducation, mockCertifications } from '../data/mockData'
 
@@ -59,14 +59,14 @@ export default function EducationPage() {
                 {/* Location and Date - Pill style with icon circles */}
                 <div className="flex items-center gap-2 text-xs mb-4 flex-wrap">
                   <div className="inline-flex items-center gap-2 px-1 pr-3 py-1 rounded-full bg-[#2A2A2D] border border-[#3A3A3C]">
-                    <div className="w-5 h-5 rounded-full bg-[#00C805]/20 flex items-center justify-center">
-                      <MapPin className="w-3 h-3 text-[#00C805]" />
+                    <div className="w-5 h-5 rounded-full overflow-hidden flex items-center justify-center">
+                      <img src="/images/tags/location.png" alt="" className="w-full h-full object-cover" />
                     </div>
                     <span className="text-gray-300">{edu.location}</span>
                   </div>
                   <div className="inline-flex items-center gap-2 px-1 pr-3 py-1 rounded-full bg-[#2A2A2D] border border-[#3A3A3C]">
-                    <div className="w-5 h-5 rounded-full bg-[#00C805]/20 flex items-center justify-center">
-                      <Calendar className="w-3 h-3 text-[#00C805]" />
+                    <div className="w-5 h-5 rounded-full overflow-hidden flex items-center justify-center">
+                      <img src="/images/tags/calendar.png" alt="" className="w-full h-full object-cover" />
                     </div>
                     <span className="text-gray-300">{edu.graduationDate}</span>
                   </div>
@@ -112,7 +112,9 @@ export default function EducationPage() {
                   </div>
                   {cert.date && (
                     <div className="flex items-center gap-1.5 text-xs text-gray-500 flex-shrink-0">
-                      <Calendar className="w-3.5 h-3.5 text-[#00C805]" />
+                      <div className="w-4 h-4 rounded-full overflow-hidden flex items-center justify-center">
+                        <img src="/images/tags/calendar.png" alt="" className="w-full h-full object-cover" />
+                      </div>
                       <span>{cert.date}</span>
                     </div>
                   )}

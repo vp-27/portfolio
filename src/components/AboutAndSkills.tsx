@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronRight, Plus, MapPin } from 'lucide-react'
+import { ChevronRight, Plus } from 'lucide-react'
 import type { SkillCategory } from '../types'
 import SkillItem from './SkillItem'
 
@@ -73,8 +73,8 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '', show
                 <h3 className="text-xl font-medium mb-2 text-white">{aboutData.name}</h3>
                 <p className="text-sm text-gray-300 leading-relaxed">{aboutData.title}</p>
                 <div className="inline-flex items-center gap-2 px-1 pr-3 py-1 rounded-full bg-[#1C1C1E] border border-[#3A3A3C] text-xs mt-2">
-                  <div className="w-5 h-5 rounded-full bg-[#00C805]/20 flex items-center justify-center">
-                    <MapPin className="w-3 h-3 text-[#00C805]" />
+                  <div className="w-5 h-5 rounded-full overflow-hidden flex items-center justify-center">
+                    <img src="/images/tags/location.png" alt="" className="w-full h-full object-cover" />
                   </div>
                   <span className="text-gray-300">{aboutData.location}</span>
                 </div>
@@ -189,8 +189,8 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '', show
                     <h3 className="text-base font-medium mb-1">{aboutData.name}</h3>
                     <p className="text-sm text-gray-400">{aboutData.title}</p>
                     <div className="inline-flex items-center gap-2 px-1 pr-3 py-1 rounded-full bg-[#1C1C1E] border border-[#3A3A3C] text-xs mt-2">
-                      <div className="w-5 h-5 rounded-full bg-[#00C805]/20 flex items-center justify-center">
-                        <MapPin className="w-3 h-3 text-[#00C805]" />
+                      <div className="w-5 h-5 rounded-full overflow-hidden flex items-center justify-center">
+                        <img src="/images/tags/location.png" alt="" className="w-full h-full object-cover" />
                       </div>
                       <span className="text-gray-300">{aboutData.location}</span>
                     </div>
