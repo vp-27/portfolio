@@ -111,9 +111,11 @@ export default function PortfolioSections({ experiences, projects, education, ce
               {/* Header with institution name and GPA */}
               <div className="flex items-start justify-between mb-2">
                 <h3 className="font-semibold text-white text-base">{edu.institution}</h3>
-                <div className="text-right flex-shrink-0 ml-4">
-                  <div className="text-[10px] text-gray-500 mb-0.5">GPA</div>
-                  <div className="text-base font-bold text-[#00C805]">{edu.gpa}</div>
+                <div className="flex items-center gap-2 flex-shrink-0 ml-4">
+                  <span className="text-xs text-gray-500 font-medium">GPA</span>
+                  <div className="px-2.5 py-1 rounded-lg bg-[#00C805] text-black text-xs font-bold">
+                    {edu.gpa}
+                  </div>
                 </div>
               </div>
 
