@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronRight, Plus } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
 import type { SkillCategory } from '../types'
 import SkillItem from './SkillItem'
 
@@ -109,11 +109,8 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '', show
 
         {/* Skills Section */}
         <div>
-          <div className="flex items-center justify-between border-b border-[#2D2D2D] px-4 py-3">
+          <div className="flex items-center border-b border-[#2D2D2D] px-4 py-3">
             <span className="text-white font-bold">Skills</span>
-            <button className="bg-transparent text-gray-400 hover:text-white transition-colors" aria-label="Add skill">
-              <Plus className="w-5 h-5" />
-            </button>
           </div>
 
           <div>
@@ -128,7 +125,7 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '', show
                     <motion.div key={category.id} layout>
                       <button
                         onClick={() => toggleList(category.id)}
-                        className="w-full flex items-center justify-between px-4 py-3 bg-transparent hover:bg-[#1A1A1A] transition-colors"
+                        className="w-full flex items-center justify-between px-4 py-3 bg-transparent hover:bg-[#1A1A1A] transition-colors focus:outline-none"
                       >
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-12 bg-[#1A1A1A] rounded-md flex items-center justify-center text-lg">
@@ -239,7 +236,7 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '', show
                       <motion.div key={category.id} layout>
                         <button
                           onClick={() => toggleList(category.id)}
-                          className="w-full flex items-center justify-between px-4 py-4 bg-transparent hover:bg-[#1A1A1A] transition-colors"
+                          className="w-full flex items-center justify-between px-4 py-4 bg-transparent hover:bg-[#1A1A1A] transition-colors focus:outline-none"
                         >
                           <div className="flex items-center gap-4">
                             <div className="w-14 h-16 bg-[#1A1A1A] rounded-2xl flex items-center justify-center text-3xl flex-shrink-0">
