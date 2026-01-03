@@ -8,10 +8,9 @@ interface PortfolioChartProps {
   onPointClick?: (point: ChartDataPoint) => void
   onPointHover?: (label: string | null) => void
   onScrubEnd?: () => void
-  activeLabel?: string | null
 }
 
-export default function PortfolioChart({ data, isPositive, onPointClick, onPointHover, onScrubEnd, activeLabel }: PortfolioChartProps) {
+export default function PortfolioChart({ data, isPositive, onPointClick, onPointHover, onScrubEnd }: PortfolioChartProps) {
   const strokeColor = isPositive ? '#00C805' : '#FF5000'
   const chartRef = useRef<HTMLDivElement>(null)
   const [snappedIndex, setSnappedIndex] = useState<number | null>(null)
@@ -138,13 +137,14 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
   }
 
   const CustomDot = (props: any) => {
-    const { cx, cy, payload } = props
+    const { cx, cy, payload, index } = props
     // Only show dots for points with labels (milestones)
     if (payload.label) {
-      const isActive = activeLabel === payload.label
-      const dotColor = isActive ? '#C9A227' : strokeColor
-      const dotRadius = isActive ? 6 : 4
-      const strokeWidth = isActive ? 2 : 1.5
+      // Highlight when this dot is the currently hovered/snapped milestone
+      const isHovered = snappedIndex === index
+      const dotColor = isHovered ? '#C9A227' : strokeColor
+      const dotRadius = isHovered ? 6 : 4
+      const strokeWidth = isHovered ? 2 : 1.5
       return (
         <circle
           cx={cx}
@@ -213,8 +213,9 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
             isAnimationActive={true}
             dot={<CustomDot />}
             activeDot={(props: any) => {
-              const isActive = activeLabel === props.payload.label
-              const dotColor = isActive ? '#C9A227' : strokeColor
+              // Gold when hovering over a milestone, otherwise green
+              const isHovered = snappedIndex !== null && props.payload.label
+              const dotColor = isHovered ? '#C9A227' : strokeColor
 
               // Hide active dot when we're snapped to a milestone
               // This prevents showing two dots (one at mouse, one at milestone)

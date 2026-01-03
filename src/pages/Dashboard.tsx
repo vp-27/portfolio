@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef } from 'react'
+import { useState, useMemo } from 'react'
 import TopNav from '../components/TopNav'
 import PortfolioHeader from '../components/PortfolioHeader'
 import PortfolioChart from '../components/PortfolioChart'
@@ -13,9 +13,7 @@ export default function Dashboard() {
   const [timeRange, setTimeRange] = useState('ALL')
   const [highlightedItem, setHighlightedItem] = useState<string | null>(null)
   const [hoveredLabel, setHoveredLabel] = useState<string | null>(null)
-  const [activeLabel, setActiveLabel] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
-  const lastHoveredLabel = useRef<string | null>(null)
 
   // Milestone to Experience/Project mapping
   const milestoneMap = useMemo(() => ({
@@ -37,15 +35,6 @@ export default function Dashboard() {
 
   const handleChartPointHover = (label: string | null) => {
     setHoveredLabel(label)
-
-    // Update active label when hovering over milestones
-    if (label && label !== lastHoveredLabel.current) {
-      lastHoveredLabel.current = label
-      setActiveLabel(label) // Set the active label to persist
-    } else if (!label) {
-      // Reset when not hovering
-      lastHoveredLabel.current = null
-    }
   }
 
   // Get description for current time range
@@ -209,9 +198,6 @@ export default function Dashboard() {
     // If we have a hovered label when interaction ends (lifts finger), navigate to it
     if (hoveredLabel) {
       navigateToItem(hoveredLabel)
-    } else if (activeLabel) {
-      // Fallback to active label if available
-      navigateToItem(activeLabel)
     }
   }
 
@@ -224,7 +210,7 @@ export default function Dashboard() {
           <div className="lg:grid lg:grid-cols-[1fr,400px] lg:gap-6">
             <div>
               <div className="md:px-4">
-                <PortfolioHeader portfolio={mockPortfolio} hoveredLabel={hoveredLabel} activeLabel={activeLabel} />
+                <PortfolioHeader portfolio={mockPortfolio} hoveredLabel={hoveredLabel} />
               </div>
               <div>
                 <PortfolioChart
@@ -233,7 +219,6 @@ export default function Dashboard() {
                   onPointClick={handleChartPointClick}
                   onPointHover={handleChartPointHover}
                   onScrubEnd={handleScrubEnd}
-                  activeLabel={activeLabel}
                 />
               </div>
               <div className="px-4 md:px-4">

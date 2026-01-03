@@ -5,10 +5,9 @@ import type { PortfolioData } from '../types'
 interface PortfolioHeaderProps {
   portfolio: PortfolioData
   hoveredLabel?: string | null
-  activeLabel?: string | null
 }
 
-export default function PortfolioHeader({ portfolio, hoveredLabel, activeLabel }: PortfolioHeaderProps) {
+export default function PortfolioHeader({ portfolio, hoveredLabel }: PortfolioHeaderProps) {
   const isPositive = portfolio.todayReturn >= 0
   const rotatingTextRef = useRef<RotatingTextRef>(null)
   const [currentText, setCurrentText] = useState<string>(
@@ -27,19 +26,16 @@ export default function PortfolioHeader({ portfolio, hoveredLabel, activeLabel }
     }
   }, [hasTransitioned])
 
-  // Update text when hoveredLabel or activeLabel changes (only if we've already transitioned to Timeline)
-  // Priority: hoveredLabel > activeLabel > default
+  // Update text when hoveredLabel changes (only if we've already transitioned to Timeline)
   useEffect(() => {
     if (hasTransitioned) {
       if (hoveredLabel) {
         setCurrentText(hoveredLabel)
-      } else if (activeLabel) {
-        setCurrentText(activeLabel)
       } else {
         setCurrentText("Vandan's Timeline")
       }
     }
-  }, [hoveredLabel, activeLabel, hasTransitioned])
+  }, [hoveredLabel, hasTransitioned])
 
   return (
     <div className="pt-4 pb-2 px-4 md:px-0">
