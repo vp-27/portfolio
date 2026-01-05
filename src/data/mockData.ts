@@ -584,7 +584,7 @@ export const mockProjects: Project[] = [
       'Enhanced SQL-driven portfolio analytics, evaluating performance trends, asset allocation, and risk exposure to support risk-managed trading strategies and quantitative trading analysis',
     ],
     technologies: ['React', 'Flask', 'WebSocket', 'SQL', 'Yahoo Finance API'],
-    liveUrl: 'https://orogenie.vercel.app/',
+    liveUrl: 'https://orogenie-frontend.onrender.com',
     githubUrl: 'https://github.com/vp-27/orogenie',
     imageUrl: '/images/orogenieShot.png',
     logoUrl: '/images/logoImages/orogenieClear.png',
