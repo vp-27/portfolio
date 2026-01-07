@@ -615,7 +615,7 @@ export const mockEducation: Education[] = [
     ],
     location: 'New Brunswick, NJ',
     graduationDate: 'May 2027',
-    gpa: '3.94',
+    gpa: '3.95',
     honors: [
       'Rutgers Honors College',
       'Dean\'s List (All Semesters)',
