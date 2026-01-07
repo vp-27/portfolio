@@ -6,9 +6,10 @@ import type { Project } from '../types'
 interface ProjectCardProps {
   project: Project
   isHighlighted?: boolean
+  disableLayoutAnimation?: boolean
 }
 
-export default function ProjectCard({ project, isHighlighted }: ProjectCardProps) {
+export default function ProjectCard({ project, isHighlighted, disableLayoutAnimation = false }: ProjectCardProps) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [showGlow, setShowGlow] = useState(false)
   const wasHighlighted = useRef(false)
@@ -36,10 +37,11 @@ export default function ProjectCard({ project, isHighlighted }: ProjectCardProps
 
   return (
     <motion.div
-      layout
+      layout={!disableLayoutAnimation}
+      transition={disableLayoutAnimation ? undefined : { layout: { type: 'tween', ease: 'easeOut', duration: 0.22 } }}
       data-project-id={project.id}
       onClick={() => setIsExpanded(!isExpanded)}
-      className="bg-[#1C1C1E] rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 ease-out hover:bg-[#252528] relative"
+      className="bg-[#1C1C1E] rounded-2xl overflow-hidden cursor-pointer transition-colors duration-200 hover:bg-[#252528] relative"
       style={{
         boxShadow: showGlow
           ? '0 0 25px rgba(201, 162, 39, 0.5), inset 0 0 25px rgba(201, 162, 39, 0.1)'

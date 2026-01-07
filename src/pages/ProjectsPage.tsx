@@ -39,10 +39,11 @@ export default function ProjectsPage() {
 
           return (
             <motion.div
+              layout="position"
               key={project.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.05 }}
+              transition={{ delay: index * 0.05, layout: { type: 'tween', ease: 'easeOut', duration: 0.22 } }}
               onClick={() => toggleExpand(project.id)}
               className="bg-[#1C1C1E] rounded-2xl overflow-hidden cursor-pointer hover:bg-[#252528] transition-colors"
             >

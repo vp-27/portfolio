@@ -85,6 +85,7 @@ export default function PortfolioSections({ experiences, projects, education, ce
                   key={project.id}
                   project={project}
                   isHighlighted={isHighlighted}
+                  disableLayoutAnimation
                 />
               )
             })}
