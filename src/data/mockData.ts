@@ -173,6 +173,7 @@ export const generateCareerTimelineData = (): ChartDataPoint[] => {
     { date: '2025-06', value: 85, label: 'Sunny Insurance', type: 'project' }, // Hackathon
     { date: '2025-07', value: 95, label: 'Moweb Data Team', type: 'internship' }, // LEVEL UP - Floor 3
     { date: '2025-09', value: 100, label: 'SEBS Data Analyst', type: 'internship' }, // LEVEL UP - Floor 4 (current)
+    { date: '2026-01', value: 105, label: 'Edgar Agent', type: 'project' }, // New Project
   ]
 
   // Generate curve with step-change growth pattern
@@ -269,10 +270,10 @@ export const generateCareerTimelineData = (): ChartDataPoint[] => {
     label: lastMilestone.label || undefined
   })
 
-  // Continue from last milestone to current date (October 2025)
+  // Continue from last milestone to current date (January 2026)
   const [lastYear, lastMonth] = lastMilestone.date.split('-').map(Number)
   const lastMilestoneDate = new Date(lastYear, lastMonth - 1)
-  const currentDate = new Date(2025, 9) // October 2025 (month is 0-indexed)
+  const currentDate = new Date(2026, 0) // January 2026 (month is 0-indexed)
 
   // Only add continuation if current date is after last milestone
   if (currentDate > lastMilestoneDate) {
@@ -469,29 +470,29 @@ export const mockExperiences: Experience[] = [
   {
     id: '1',
     company: 'Rutgers School of Environmental and Biological Sciences',
-    position: 'Data Analyst Intern',
+    position: 'Intern, Data Analyst (Automation & Infrastructure)',
     location: 'New Brunswick, NJ',
     startDate: 'Sep 2025',
     endDate: 'Dec 2025',
     logoUrl: '/images/experience_images/rutgers.png',
     bullets: [
-      'Eliminated 40+ hours of annual manual verification across 300+ buildings by engineering Power Automate solution, enabling semi-annual cycles and eliminating data entry errors impacting facility management',
-      'Enabled real-time progress tracking via dynamic notifications, improving task completion by 35% and reducing follow-ups',
-      'Executed workflow re-architecture cutting software costs 60% by replacing premium connectors with native SharePoint solution while preserving 100% reliability',
+      'Owned the design and implementation of internal automation systems to eliminate manual verification across 300+ facilities, translating stakeholder workflows into scalable data validation pipelines',
+      'Re-architected backend workflows to replace legacy premium connectors with native solutions, reducing software licensing costs by 60% while preserving reliability and auditability',
+      'Built real-time progress tracking and automated notification systems to improve transparency and shorten verification cycles by 35%, aligning system behavior with operational needs',
     ],
   },
   {
     id: '2',
     company: 'Moweb Technologies',
-    position: 'Data Team Intern',
+    position: 'Intern, Software Engineering (Data)',
     location: 'Secaucus, NJ',
     startDate: 'Jul 2025',
     endDate: 'Aug 2025',
     logoUrl: '/images/experience_images/moweb.png',
     bullets: [
-      'Developed ETL workflows in dbt-core and SQL, fixing null conflicts and reducing pipeline failures from 20+ weekly to <1',
-      'Delivered optimized financial metric extraction for client reporting, reducing processing times by 40% for real-time analysis',
-      'Directed LLM integration across team workflows, designing workshops that decreased manual reconciliation time by 30%',
+      'Stabilized production ETL pipelines by introducing robust null-handling and data quality checks in dbt-core, reducing recurring failures from 20+ per week to under one',
+      'Refactored data models and optimized Snowflake warehouse usage to reduce query latency by 40% for client-facing analytics workloads',
+      'Designed and integrated LLM-powered quality-check automation to assist with data reconciliation, reducing manual validation overhead and improving consistency across reporting datasets',
     ],
   },
   {
@@ -513,6 +514,20 @@ export const mockExperiences: Experience[] = [
 // Projects Data
 export const mockProjects: Project[] = [
   {
+    id: '7',
+    name: 'Edgar Agent',
+    subtitle: 'SEC 10-K API & MCP Server',
+    duration: 'Jan 2026 – Present',
+    bullets: [
+      'Architected a pay-per-request API for SEC 10-K filings, returning schema-validated financial data and risk factors via a gated quote/nonce flow with cryptographic signature verification',
+      'Engineered an LLM-powered extraction pipeline to transform unstructured EDGAR HTML into structured financials (revenue, net income, fiscal year-end) with validation to prevent malformed outputs',
+      'Built an MCP server exposing the service as a tool for autonomous agents, enabling standardized financial data access without manual scraping or bespoke parsers',
+    ],
+    technologies: ['Python', 'FastAPI', 'x402', 'LLMs', 'MCP'],
+    // imageUrl: '/images/edgarAgent.png',
+    logoUrl: '/images/logoImages/edgarAgentClear.png',
+  },
+  {
     id: '1',
     name: 'Algorithmic Stock Trading',
     subtitle: 'Self-Guided, Volatility & Price Action-Based Strategies',
@@ -529,14 +544,14 @@ export const mockProjects: Project[] = [
   {
     id: '3',
     name: 'GrindSheet',
-    subtitle: 'Fitness Tracking PWA',
+    subtitle: 'Social Fitness Analytics PWA',
     duration: 'May 2025 – Aug 2025',
     bullets: [
-      'Launched a fitness PWA after identifying market whitespace for simple, social tracking via competitive analysis of 20+ apps',
-      'Decreased user input time 60% through 3-step flow by conducting observational research with 15+ gym-goers, prioritizing speed over comprehensive logging based on behavior patterns',
-      'Increased engagement 40% through gamified badges and leaderboards, leveraging behavioral psychology to drive retention',
+      'Built a consumer-facing fitness analytics product focused on low-friction logging and social motivation, translating UX constraints into scalable application architecture',
+      'Designed a multi-factor scoring system to rank workouts and detect personal records, balancing fairness, engagement, and computational efficiency',
+      'Implemented real-time synchronization and offline-first behavior using Supabase WebSockets and optimized client-side state management, reducing query overhead by 80%',
     ],
-    technologies: ['React', 'PWA', 'TypeScript'],
+    technologies: ['React', 'TypeScript', 'Supabase', 'TailwindCSS'],
     githubUrl: 'https://github.com/vp-27/grindsheet',
     imageUrl: '/images/grindsheetUsage.png',
     logoUrl: '/images/logoImages/grindsheetClear.png',
