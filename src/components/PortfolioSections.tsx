@@ -38,7 +38,7 @@ export default function PortfolioSections({ experiences, projects, education, ce
       {/* Professional Experience Section */}
       <div data-section="experience">
         <div className="flex items-center">
-          <h2 className="text-2xl lg:text-xl font-medium text-left">Professional Experience</h2>
+          <h2 className="text-2xl font-medium text-left">Professional Experience</h2>
           <Link to="/experience" className="lg:hidden flex items-center">
             <ChevronRight className="w-5 h-5 text-gray-400" />
           </Link>
@@ -67,7 +67,7 @@ export default function PortfolioSections({ experiences, projects, education, ce
       {/* Projects Section */}
       <div data-section="projects">
         <div className="flex items-center">
-          <h2 className="text-2xl lg:text-xl font-medium text-left">Projects</h2>
+          <h2 className="text-2xl font-medium text-left">Projects</h2>
           <Link to="/projects" className="lg:hidden flex items-center">
             <ChevronRight className="w-5 h-5 text-gray-400" />
           </Link>
@@ -96,7 +96,7 @@ export default function PortfolioSections({ experiences, projects, education, ce
       {/* Education Section */}
       <div data-section="education">
         <div className="flex items-center">
-          <h2 className="text-2xl lg:text-xl font-medium text-left">Education</h2>
+          <h2 className="text-2xl font-medium text-left">Education</h2>
           <Link to="/education" className="lg:hidden flex items-center">
             <ChevronRight className="w-5 h-5 text-gray-400" />
           </Link>
@@ -167,7 +167,7 @@ export default function PortfolioSections({ experiences, projects, education, ce
       {/* Certifications Section */}
       <div>
         <div className="flex items-center">
-          <h2 className="text-2xl lg:text-xl font-medium text-left">Certifications</h2>
+          <h2 className="text-2xl font-medium text-left">Certifications</h2>
           <Link to="/education" className="lg:hidden flex items-center">
             <ChevronRight className="w-5 h-5 text-gray-400" />
           </Link>

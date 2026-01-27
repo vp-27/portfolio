@@ -138,12 +138,12 @@ export default function ProjectCard({ project, isHighlighted, disableLayoutAnima
         {/* Action Row: More (Left) + Buttons (Right) */}
         <div className="flex items-center justify-between mt-3">
           {/* Expand indicator */}
-          <div className="flex items-center gap-0.5 text-gray-500 text-[11px]">
+          <div className="flex items-center gap-1 text-gray-400 text-[13px] font-medium">
             <motion.div
               animate={{ rotate: isExpanded ? 180 : 0 }}
               transition={{ duration: 0.2 }}
             >
-              <ChevronDown className="w-3.5 h-3.5" />
+              <ChevronDown className="w-4 h-4" />
             </motion.div>
             <span>{isExpanded ? 'Less' : 'More'}</span>
           </div>
