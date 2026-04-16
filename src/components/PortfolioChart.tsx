@@ -1,5 +1,5 @@
 import { Area, AreaChart, ResponsiveContainer, YAxis, Tooltip } from 'recharts'
-import { useRef, useCallback, useState } from 'react'
+import { useRef, useCallback, useEffect, useState } from 'react'
 import type { ChartDataPoint } from '../types'
 
 interface PortfolioChartProps {
@@ -14,6 +14,11 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
   const strokeColor = isPositive ? '#00C805' : '#FF5000'
   const chartRef = useRef<HTMLDivElement>(null)
   const [snappedIndex, setSnappedIndex] = useState<number | null>(null)
+  const [armedMilestoneIndex, setArmedMilestoneIndex] = useState<number | null>(null)
+  const touchTapTimeRef = useRef(0)
+  const armResetTimerRef = useRef<number | null>(null)
+
+  const isTouchDevice = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0)
 
   // Snap threshold - distance in pixels to trigger snapping
   // Use larger threshold on touch devices for better UX
@@ -83,6 +88,14 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
     setSnappedIndex(null)
   }
 
+  useEffect(() => {
+    return () => {
+      if (armResetTimerRef.current !== null) {
+        window.clearTimeout(armResetTimerRef.current)
+      }
+    }
+  }, [])
+
   const handleInteractionEnd = () => {
     if (onScrubEnd) {
       onScrubEnd()
@@ -142,9 +155,10 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
     if (payload.label) {
       // Highlight when this dot is the currently hovered/snapped milestone
       const isHovered = snappedIndex === index
-      const dotColor = isHovered ? '#C9A227' : strokeColor
-      const dotRadius = isHovered ? 6 : 4
-      const strokeWidth = isHovered ? 2 : 1.5
+      const isArmed = armedMilestoneIndex === index
+      const dotColor = isArmed || isHovered ? '#C9A227' : strokeColor
+      const dotRadius = isArmed ? 11 : isHovered ? 6 : 4
+      const strokeWidth = isArmed ? 3 : isHovered ? 2 : 1.5
       return (
         <circle
           cx={cx}
@@ -153,7 +167,7 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
           fill={dotColor}
           stroke="#000"
           strokeWidth={strokeWidth}
-          className="cursor-pointer hover:r-6 transition-all"
+          className="cursor-pointer hover:r-6 transition-all duration-150"
         />
       )
     }
@@ -167,11 +181,61 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
       // Apply same snapping logic for clicks
       const nearestMilestone = findNearestMilestone(event, chartData)
 
-      if (nearestMilestone && onPointClick) {
-        onPointClick(nearestMilestone)
-      } else if (activePoint.label && onPointClick) {
-        onPointClick(activePoint)
+      const selectedPoint = nearestMilestone ?? (activePoint.label ? activePoint : null)
+      if (!selectedPoint || !onPointClick) {
+        return
       }
+
+      const selectedIndex = data.findIndex((point) => point.time === selectedPoint.time && point.value === selectedPoint.value)
+      if (selectedIndex < 0) {
+        return
+      }
+
+      if (!isTouchDevice) {
+        onPointClick(selectedPoint)
+        return
+      }
+
+      const now = Date.now()
+      const isSecondTapSameMilestone = armedMilestoneIndex === selectedIndex && (now - touchTapTimeRef.current) < 900
+
+      if (isSecondTapSameMilestone) {
+        setArmedMilestoneIndex(null)
+        touchTapTimeRef.current = 0
+        if (armResetTimerRef.current !== null) {
+          window.clearTimeout(armResetTimerRef.current)
+          armResetTimerRef.current = null
+        }
+        onPointClick(selectedPoint)
+        return
+      }
+
+      setArmedMilestoneIndex(selectedIndex)
+      setSnappedIndex(selectedIndex)
+      if (onPointHover) {
+        onPointHover(selectedPoint.label ?? null)
+      }
+      touchTapTimeRef.current = now
+
+      if (armResetTimerRef.current !== null) {
+        window.clearTimeout(armResetTimerRef.current)
+      }
+      armResetTimerRef.current = window.setTimeout(() => {
+        setArmedMilestoneIndex((current) => (current === selectedIndex ? null : current))
+      }, 1200)
+    }
+  }
+
+  const handleTouchStart = () => {
+    if (armResetTimerRef.current !== null) {
+      window.clearTimeout(armResetTimerRef.current)
+      armResetTimerRef.current = null
+    }
+  }
+
+  const handleTouchEnd = () => {
+    if (!isTouchDevice) {
+      handleInteractionEnd()
     }
   }
 
@@ -179,8 +243,10 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
     <div
       ref={chartRef}
       className="w-full h-64 md:h-64 cursor-pointer"
+      style={{ touchAction: 'pan-y' }}
       onMouseUp={handleInteractionEnd}
-      onTouchEnd={handleInteractionEnd}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
@@ -215,11 +281,12 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
             activeDot={(props: any) => {
               // Gold when hovering over a milestone, otherwise green
               const isHovered = snappedIndex !== null && props.payload.label
+              const isArmed = armedMilestoneIndex !== null && props.payload.label
               const dotColor = isHovered ? '#C9A227' : strokeColor
 
               // Hide active dot when we're snapped to a milestone
               // This prevents showing two dots (one at mouse, one at milestone)
-              const opacity = snappedIndex !== null ? 0 : 1
+              const opacity = snappedIndex !== null || isArmed ? 0 : 1
 
               return (
                 <circle

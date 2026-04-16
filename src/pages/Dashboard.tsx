@@ -197,6 +197,10 @@ export default function Dashboard() {
   }
 
   const handleScrubEnd = () => {
+    if (window.innerWidth < 768) {
+      return
+    }
+
     // If we have a hovered label when interaction ends (lifts finger), navigate to it
     if (hoveredLabel) {
       navigateToItem(hoveredLabel)
