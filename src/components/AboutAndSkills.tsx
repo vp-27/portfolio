@@ -20,9 +20,9 @@ interface AboutMeData {
 
 const aboutData: AboutMeData = {
   name: 'Vandan Patel',
-  title: 'CS & Finance @ Rutgers | Product-Minded Engineer',
+  title: 'CS, Finance & Data Science @ Rutgers Honors College',
   location: 'New York Metro Area',
-  bio: 'I build fintech products that make complex markets feel intuitive. With a background in CS and Finance, I speak the languages of both engineering and capital. I bridge the gap between "technically feasible" and "financially viable," using data to drive design decisions and market psychology to build sticky products.',
+  bio: "I build software that bridges the gap between complex business logic and intuitive product design. I’m the type of engineer who will gladly go the extra mile today to build a tool that saves ten minutes tomorrow. My background lets me zoom out to understand system dynamics, and zoom in to execute the details using React, TypeScript, and Python. Ultimately, I care about shipping the best possible solution, letting the problem dictate the tools rather than the other way around.",
 }
 
 // Emoji mapping for skill categories
