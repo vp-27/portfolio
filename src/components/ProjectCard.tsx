@@ -77,32 +77,12 @@ export default function ProjectCard({ project, isHighlighted, disableLayoutAnima
 
             {/* Tech Tags Row */}
             <div className="flex items-center gap-2 flex-wrap mb-3">
-              {/* Tech Tags - Show 2 in collapsed, indicate more */}
-              {project.technologies && project.technologies.length > 0 && !isExpanded && (
-                <>
-                  {project.technologies.slice(0, 2).map((tech, idx) => (
-                    <span
-                      key={idx}
-                      className="px-2.5 py-0.5 text-[10px] md:text-[11px] font-semibold rounded-full bg-[#2A2A2D] text-gray-300"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                  {project.technologies.length > 2 && (
-                    <span className="text-[10px] md:text-[11px] font-medium text-gray-500">
-                      +{project.technologies.length - 2}
-                    </span>
-                  )}
-                </>
-              )}
-
-              {/* Tech Tags - Show ALL when expanded */}
-              {project.technologies && project.technologies.length > 0 && isExpanded && (
+              {project.technologies && project.technologies.length > 0 && (
                 <>
                   {project.technologies.map((tech, idx) => (
                     <span
                       key={idx}
-                      className="px-2.5 py-0.5 text-[10px] md:text-[11px] font-semibold rounded-full bg-[#2A2A2D] text-gray-300"
+                      className="px-2.5 py-0.5 text-[10px] md:text-[11px] font-semibold rounded-full bg-[#2A2A2D] text-gray-300 whitespace-nowrap"
                     >
                       {tech}
                     </span>

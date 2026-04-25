@@ -62,19 +62,14 @@ export default function ProjectsPage() {
                     {/* Tech Tags */}
                     {project.technologies && project.technologies.length > 0 && (
                       <div className="flex flex-wrap gap-1.5">
-                        {project.technologies.slice(0, 3).map((tech, idx) => (
+                        {project.technologies.map((tech, idx) => (
                           <span
                             key={idx}
-                            className="px-2.5 py-1 text-[10px] font-semibold rounded-full bg-[#2A2A2D] text-gray-300"
+                            className="px-2.5 py-1 text-[10px] font-semibold rounded-full bg-[#2A2A2D] text-gray-300 whitespace-nowrap"
                           >
                             {tech}
                           </span>
                         ))}
-                        {project.technologies.length > 3 && (
-                          <span className="px-2 py-1 text-[10px] font-medium text-gray-500">
-                            +{project.technologies.length - 3}
-                          </span>
-                        )}
                       </div>
                     )}
                   </div>
@@ -138,19 +133,7 @@ export default function ProjectsPage() {
                         ))}
                       </div>
 
-                      {/* All Technologies (if more than 3) */}
-                      {project.technologies && project.technologies.length > 3 && (
-                        <div className="flex flex-wrap gap-2 mb-4">
-                          {project.technologies.map((tech, idx) => (
-                            <span
-                              key={idx}
-                              className="px-3 py-1 text-[11px] font-semibold rounded-full bg-[#2A2A2D] text-gray-300"
-                            >
-                              {tech}
-                            </span>
-                          ))}
-                        </div>
-                      )}
+
 
                       {/* Action Buttons */}
                       <div className="flex gap-2 pt-3 border-t border-[#2C2C2E]">

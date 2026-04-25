@@ -116,17 +116,14 @@ export default function ExperienceCard({ experience, type, onDismiss }: Experien
           {/* Technologies - Robinhood pill style */}
           {proj.technologies && proj.technologies.length > 0 && (
             <div className="flex items-center gap-2 flex-wrap pt-1">
-              {proj.technologies.slice(0, 4).map((tech, idx) => (
+              {proj.technologies.map((tech, idx) => (
                 <span 
                   key={idx} 
-                  className="px-3 py-1 text-[11px] font-semibold rounded-full bg-[#2C2C2E] text-gray-300"
+                  className="px-3 py-1 text-[11px] font-semibold rounded-full bg-[#2C2C2E] text-gray-300 whitespace-nowrap"
                 >
                   {tech}
                 </span>
               ))}
-              {proj.technologies.length > 4 && (
-                <span className="text-xs text-gray-600">+{proj.technologies.length - 4}</span>
-              )}
             </div>
           )}
         </div>
