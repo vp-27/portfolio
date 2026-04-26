@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronRight, Github, Linkedin, Mail, ExternalLink } from 'lucide-react'
+import { ChevronRight, Mail, ExternalLink } from 'lucide-react'
 import type { SkillCategory } from '../types'
 import SkillItem from './SkillItem'
 

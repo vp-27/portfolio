@@ -44,9 +44,6 @@ export default function TopNav({ onNavigate, onSearch, searchQuery = '' }: TopNa
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  const handleExternalLink = (url: string) => {
-    window.open(url, '_blank')
-  }
 
   return (
     <nav className="hidden md:flex fixed top-0 left-0 right-0 bg-black border-b border-gray-900 z-50">

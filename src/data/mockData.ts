@@ -378,31 +378,6 @@ export const filterTimelineData = (range: string): ChartDataPoint[] => {
   return filteredData
 }
 
-const mockChartData = generateCareerTimelineData()
-
-// Keep old function for reference
-const generateMockChartData = (): ChartDataPoint[] => {
-  const data: ChartDataPoint[] = []
-  const startValue = mockPortfolio.totalValue - mockPortfolio.todayReturn
-  const points = 78
-
-  for (let i = 0; i <= points; i++) {
-    const progress = i / points
-    const randomVariation = (Math.random() - 0.5) * 50
-    const value = startValue + (mockPortfolio.todayReturn * progress) + randomVariation
-
-    const startHour = 9
-    const startMinute = 30
-    const totalMinutes = startMinute + (i * 5)
-    const hour = startHour + Math.floor(totalMinutes / 60)
-    const minute = totalMinutes % 60
-    const time = `${hour}:${minute.toString().padStart(2, '0')}`
-
-    data.push({ time, value })
-  }
-
-  return data
-}
 
 // Skills Data for Portfolio Website
 export const mockSkills: Skill[] = [
