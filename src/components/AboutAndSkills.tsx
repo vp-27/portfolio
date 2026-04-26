@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronRight } from 'lucide-react'
+import { ChevronRight, Github, Linkedin, Mail } from 'lucide-react'
 import type { SkillCategory } from '../types'
 import SkillItem from './SkillItem'
 
@@ -9,6 +9,7 @@ interface AboutAndSkillsProps {
   searchQuery?: string
   showOnlyAbout?: boolean
   showOnlySkills?: boolean
+  onSkillClick?: (skillName: string) => void
 }
 
 interface AboutMeData {
@@ -33,7 +34,7 @@ const skillEmojis: Record<string, string> = {
   'soft': '🤝',
 }
 
-export default function AboutAndSkills({ skillCategories, searchQuery = '', showOnlyAbout = false, showOnlySkills = false }: AboutAndSkillsProps) {
+export default function AboutAndSkills({ skillCategories, searchQuery = '', showOnlyAbout = false, showOnlySkills = false, onSkillClick }: AboutAndSkillsProps) {
   const [expandedLists, setExpandedLists] = useState<Set<string>>(new Set())
   const [isHovered, setIsHovered] = useState(false)
 
@@ -78,6 +79,28 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '', show
                   </div>
                   <span className="text-gray-300">{aboutData.location}</span>
                 </div>
+                
+                {/* Social Links */}
+                <div className="flex items-center gap-4 mt-4">
+                  <button 
+                    onClick={() => window.open('https://github.com/vp-27', '_blank')}
+                    className="bg-[#1C1C1E] p-2 rounded-full border border-[#3A3A3C] text-gray-400 hover:text-white hover:bg-[#2A2A2D] transition-colors" 
+                  >
+                    <Github className="w-4 h-4" />
+                  </button>
+                  <button 
+                    onClick={() => window.open('https://www.linkedin.com/in/vandan-patel-vp/', '_blank')}
+                    className="bg-[#1C1C1E] p-2 rounded-full border border-[#3A3A3C] text-gray-400 hover:text-white hover:bg-[#2A2A2D] transition-colors" 
+                  >
+                    <Linkedin className="w-4 h-4" />
+                  </button>
+                  <button 
+                    onClick={() => window.open('mailto:vrp77@scarletmail.rutgers.edu', '_blank')}
+                    className="bg-[#1C1C1E] p-2 rounded-full border border-[#3A3A3C] text-gray-400 hover:text-white hover:bg-[#2A2A2D] transition-colors" 
+                  >
+                    <Mail className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
 
               {/* Profile Picture with hover effect */}
@@ -99,7 +122,7 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '', show
               </div>
             </div>
 
-            <div className="pt-2 border-t border-[#2D2D2D]">
+            <div className="pt-4 border-t border-[#2D2D2D]">
               <p className="text-sm text-gray-300 leading-relaxed">
                 {aboutData.bio}
               </p>
@@ -153,7 +176,13 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '', show
                           >
                             <div>
                               {category.skills.map((skill) => (
-                                <SkillItem key={skill.id} skill={skill} categoryIcon={category.icon} />
+                                <SkillItem 
+                                  key={skill.id} 
+                                  skill={skill} 
+                                  categoryIcon={category.icon} 
+                                  onClick={() => onSkillClick?.(skill.name)}
+                                  isActive={searchQuery === skill.name}
+                                />
                               ))}
                             </div>
                           </motion.div>
@@ -186,6 +215,28 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '', show
                       </div>
                       <span className="text-gray-300">{aboutData.location}</span>
                     </div>
+                    
+                    {/* Social Links */}
+                    <div className="flex items-center gap-3 mt-3">
+                      <button 
+                        onClick={() => window.open('https://github.com/vp-27', '_blank')}
+                        className="bg-[#1C1C1E] p-2 rounded-full border border-[#3A3A3C] text-gray-400 hover:text-white hover:bg-[#2A2A2D] transition-colors" 
+                      >
+                        <Github className="w-4 h-4" />
+                      </button>
+                      <button 
+                        onClick={() => window.open('https://www.linkedin.com/in/vandan-patel-vp/', '_blank')}
+                        className="bg-[#1C1C1E] p-2 rounded-full border border-[#3A3A3C] text-gray-400 hover:text-white hover:bg-[#2A2A2D] transition-colors" 
+                      >
+                        <Linkedin className="w-4 h-4" />
+                      </button>
+                      <button 
+                        onClick={() => window.open('mailto:vrp77@scarletmail.rutgers.edu', '_blank')}
+                        className="bg-[#1C1C1E] p-2 rounded-full border border-[#3A3A3C] text-gray-400 hover:text-white hover:bg-[#2A2A2D] transition-colors" 
+                      >
+                        <Mail className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
 
                   {/* Profile Picture with hover effect */}
@@ -207,9 +258,11 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '', show
                   </div>
                 </div>
 
-                <p className="text-sm text-gray-400 leading-relaxed">
-                  {aboutData.bio}
-                </p>
+                <div className="pt-2">
+                  <p className="text-sm text-gray-400 leading-relaxed">
+                    {aboutData.bio}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -262,7 +315,13 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '', show
                             >
                               <div>
                                 {category.skills.map((skill) => (
-                                  <SkillItem key={skill.id} skill={skill} categoryIcon={category.icon} />
+                                  <SkillItem 
+                                    key={skill.id} 
+                                    skill={skill} 
+                                    categoryIcon={category.icon} 
+                                    onClick={() => onSkillClick?.(skill.name)}
+                                    isActive={searchQuery === skill.name}
+                                  />
                                 ))}
                               </div>
                             </motion.div>

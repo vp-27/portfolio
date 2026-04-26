@@ -71,12 +71,16 @@ export default function Dashboard() {
 
   // Handle search
   const handleSearch = (query: string) => {
-    setSearchQuery(query)
-    if (query) {
-      // Automatically scroll to skills section when searching
-      setTimeout(() => {
-        handleNavigate('skills')
-      }, 100)
+    if (searchQuery === query) {
+      setSearchQuery('')
+    } else {
+      setSearchQuery(query)
+      if (query) {
+        // Automatically scroll to skills section when searching
+        setTimeout(() => {
+          handleNavigate('skills')
+        }, 100)
+      }
     }
   }
 
@@ -178,7 +182,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <TopNav onNavigate={handleNavigate} onSearch={handleSearch} />
+      <TopNav onNavigate={handleNavigate} onSearch={handleSearch} searchQuery={searchQuery} />
 
       <div className="md:pt-14 pb-20 md:pb-8">
         <div className="max-w-7xl mx-auto md:px-4">
@@ -219,7 +223,7 @@ export default function Dashboard() {
 
               {/* About Me - Shown on mobile right under Experience Card */}
               <div className="lg:hidden px-4 md:px-4 mt-4 mb-6" data-section="about">
-                <AboutAndSkills skillCategories={mockSkillCategories} searchQuery={searchQuery} showOnlyAbout={true} />
+                <AboutAndSkills skillCategories={mockSkillCategories} searchQuery={searchQuery} showOnlyAbout={true} onSkillClick={handleSearch} />
               </div>
 
               {/* Portfolio Sections - Experience, Projects, Education, Certifications */}
@@ -236,16 +240,16 @@ export default function Dashboard() {
             </div>
 
             {/* Right Sidebar - Sticky on desktop */}
-            <div className="hidden lg:block lg:pr-4">
-              <div className="lg:sticky lg:top-[70px] lg:max-h-[calc(100vh-90px)] lg:overflow-y-auto lg:scrollbar-hide">
-                <AboutAndSkills skillCategories={mockSkillCategories} searchQuery={searchQuery} />
+              <div className="hidden lg:block lg:pr-4">
+                <div className="lg:sticky lg:top-[70px] max-h-[calc(100vh-70px)] overflow-y-auto no-scrollbar pb-8">
+                  <AboutAndSkills skillCategories={mockSkillCategories} searchQuery={searchQuery} onSkillClick={handleSearch} />
+                </div>
               </div>
-            </div>
           </div>
 
-          {/* Mobile Layout - Skills at bottom */}
+          {/* Skills Section (Mobile Only, Bottom) */}
           <div className="lg:hidden px-4 mt-8 mb-6" data-section="skills">
-            <AboutAndSkills skillCategories={mockSkillCategories} searchQuery={searchQuery} showOnlySkills={true} />
+            <AboutAndSkills skillCategories={mockSkillCategories} searchQuery={searchQuery} showOnlySkills={true} onSkillClick={handleSearch} />
           </div>
         </div>
       </div>

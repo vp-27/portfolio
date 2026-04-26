@@ -10,17 +10,16 @@ interface PortfolioHeaderProps {
 export default function PortfolioHeader({ portfolio, hoveredLabel }: PortfolioHeaderProps) {
   const isPositive = portfolio.todayReturn >= 0
   const rotatingTextRef = useRef<RotatingTextRef>(null)
-  const [currentText, setCurrentText] = useState<string>(
-    `$${portfolio.totalValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-  )
+  const [currentText, setCurrentText] = useState<string>("Vandan's Timeline")
+
   // Update text when hoveredLabel changes
   useEffect(() => {
     if (hoveredLabel) {
       setCurrentText(hoveredLabel)
     } else {
-      setCurrentText(`$${portfolio.totalValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`)
+      setCurrentText("Vandan's Timeline")
     }
-  }, [hoveredLabel, portfolio.totalValue])
+  }, [hoveredLabel])
 
   return (
     <div className="pt-4 pb-2 px-4 md:px-0">

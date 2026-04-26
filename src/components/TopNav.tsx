@@ -1,12 +1,13 @@
 import { useState, useRef, useEffect } from 'react'
-import { Search, FileText, Github, Linkedin, Mail, ChevronDown } from 'lucide-react'
+import { Search, FileText, ChevronDown } from 'lucide-react'
 
 interface TopNavProps {
   onNavigate?: (section: string) => void
   onSearch?: (query: string) => void
+  searchQuery?: string
 }
 
-export default function TopNav({ onNavigate, onSearch }: TopNavProps) {
+export default function TopNav({ onNavigate, onSearch, searchQuery = '' }: TopNavProps) {
   const [isResumeDropdownOpen, setIsResumeDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
@@ -73,6 +74,7 @@ export default function TopNav({ onNavigate, onSearch }: TopNavProps) {
               <input
                 type="text"
                 placeholder="Search skills, projects, experiences..."
+                value={searchQuery}
                 onChange={handleSearchChange}
                 className="w-full bg-[#1A1A1A] text-white placeholder-gray-500 pl-10 pr-4 py-2 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-gray-700"
               />
@@ -132,30 +134,6 @@ export default function TopNav({ onNavigate, onSearch }: TopNavProps) {
             </button>
           </div>
 
-          {/* Right Icons - Social Links */}
-          <div className="flex items-center gap-4 ml-4">
-            <button 
-              onClick={() => handleExternalLink('https://github.com/vp-27')}
-              className="bg-transparent text-gray-400 hover:text-rh-green transition-colors" 
-              aria-label="GitHub"
-            >
-              <Github className="w-5 h-5" />
-            </button>
-            <button 
-              onClick={() => handleExternalLink('https://www.linkedin.com/in/vandan-patel-vp/')}
-              className="bg-transparent text-gray-400 hover:text-rh-green transition-colors" 
-              aria-label="LinkedIn"
-            >
-              <Linkedin className="w-5 h-5" />
-            </button>
-            <button 
-              onClick={() => handleExternalLink('mailto:vrp77@scarletmail.rutgers.edu')}
-              className="bg-transparent text-gray-400 hover:text-rh-green transition-colors" 
-              aria-label="Email"
-            >
-              <Mail className="w-5 h-5" />
-            </button>
-          </div>
         </div>
       </div>
     </nav>
