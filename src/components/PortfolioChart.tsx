@@ -275,8 +275,8 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
             stroke={strokeColor}
             strokeWidth={2}
             fill="url(#colorValue)"
-            animationDuration={500}
-            isAnimationActive={true}
+            animationDuration={0}
+            isAnimationActive={false}
             dot={<CustomDot />}
             activeDot={(props: any) => {
               // Gold when hovering over a milestone, otherwise green

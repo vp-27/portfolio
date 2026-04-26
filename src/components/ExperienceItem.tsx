@@ -156,15 +156,12 @@ export default function ExperienceItem({ experience, isHighlighted, isLast = fal
               {/* Bullets */}
               <div className="space-y-3">
                 {experience.bullets.map((bullet, idx) => (
-                  <motion.p
+                  <p
                     key={idx}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: idx * 0.03 }}
                     className="text-sm text-gray-300 leading-relaxed pl-3 border-l-2 border-[#3A3A3C]"
                   >
                     {bullet}
-                  </motion.p>
+                  </p>
                 ))}
               </div>
             </div>

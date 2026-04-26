@@ -151,16 +151,9 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '', show
                             transition={{ duration: 0.25, ease: [0.4, 0.0, 0.2, 1] }}
                             className="overflow-hidden bg-black"
                           >
-                            <div className="flex flex-wrap gap-2 px-4 py-4">
-                              {category.skills.map((skill, idx) => (
-                                <motion.div
-                                  key={skill.id}
-                                  initial={{ opacity: 0, scale: 0.9 }}
-                                  animate={{ opacity: 1, scale: 1 }}
-                                  transition={{ delay: idx * 0.02 }}
-                                >
-                                  <SkillItem skill={skill} categoryIcon={category.icon} />
-                                </motion.div>
+                            <div>
+                              {category.skills.map((skill) => (
+                                <SkillItem key={skill.id} skill={skill} categoryIcon={category.icon} />
                               ))}
                             </div>
                           </motion.div>
@@ -267,16 +260,9 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '', show
                               transition={{ duration: 0.25, ease: [0.4, 0.0, 0.2, 1] }}
                               className="overflow-hidden bg-black"
                             >
-                              <div className="flex flex-wrap gap-2 px-4 py-4">
-                                {category.skills.map((skill, idx) => (
-                                  <motion.div
-                                    key={skill.id}
-                                    initial={{ opacity: 0, scale: 0.9 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    transition={{ delay: idx * 0.02 }}
-                                  >
-                                    <SkillItem skill={skill} categoryIcon={category.icon} />
-                                  </motion.div>
+                              <div>
+                                {category.skills.map((skill) => (
+                                  <SkillItem key={skill.id} skill={skill} categoryIcon={category.icon} />
                                 ))}
                               </div>
                             </motion.div>

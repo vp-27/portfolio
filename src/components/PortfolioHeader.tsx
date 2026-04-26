@@ -13,29 +13,14 @@ export default function PortfolioHeader({ portfolio, hoveredLabel }: PortfolioHe
   const [currentText, setCurrentText] = useState<string>(
     `$${portfolio.totalValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
   )
-  const [hasTransitioned, setHasTransitioned] = useState(false)
-
-  // Initial transition from dollar amount to Timeline after 2 seconds
+  // Update text when hoveredLabel changes
   useEffect(() => {
-    if (!hasTransitioned) {
-      const timer = setTimeout(() => {
-        setCurrentText("Vandan's Timeline")
-        setHasTransitioned(true)
-      }, 500)
-      return () => clearTimeout(timer)
+    if (hoveredLabel) {
+      setCurrentText(hoveredLabel)
+    } else {
+      setCurrentText(`$${portfolio.totalValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`)
     }
-  }, [hasTransitioned])
-
-  // Update text when hoveredLabel changes (only if we've already transitioned to Timeline)
-  useEffect(() => {
-    if (hasTransitioned) {
-      if (hoveredLabel) {
-        setCurrentText(hoveredLabel)
-      } else {
-        setCurrentText("Vandan's Timeline")
-      }
-    }
-  }, [hoveredLabel, hasTransitioned])
+  }, [hoveredLabel, portfolio.totalValue])
 
   return (
     <div className="pt-4 pb-2 px-4 md:px-0">
