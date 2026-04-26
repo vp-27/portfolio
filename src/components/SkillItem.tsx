@@ -19,10 +19,10 @@ export default function SkillItem({ skill, onClick, isActive }: SkillItemProps) 
         
         {/* Robinhood style chip */}
         <div className={`
-          flex items-center justify-center w-12 h-6 rounded-[4px] transition-colors
+          flex items-center justify-center w-12 h-6 rounded-[4px] transition-all duration-200
           ${isActive 
-            ? 'bg-[#FF5000] text-white' // Robinhood orange/red
-            : 'bg-[#00C805] text-white' // Robinhood green
+            ? 'bg-[#FF5000] text-white border border-transparent' // Active: Red/Orange
+            : 'bg-transparent border border-[#00C805] text-[#00C805] group-hover:bg-[#00C805] group-hover:text-black' // Resting: Transparent + Border -> Hover: Filled
           }
         `}>
           {isActive ? <X className="w-3.5 h-3.5 stroke-[3]" /> : <Search className="w-3.5 h-3.5 stroke-[3]" />}
