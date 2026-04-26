@@ -12,14 +12,14 @@ export default function SkillItem({ skill, onClick, isActive }: SkillItemProps) 
   return (
     <button 
       onClick={onClick}
-      className="w-full px-4 transition-colors focus:outline-none group block"
+      className="w-full px-4 transition-colors focus:outline-none group block cursor-default md:cursor-pointer"
     >
       <div className="py-3 border-b border-[#2D2D2D] flex items-center justify-between">
         <span className="text-sm font-medium text-left text-white">{skill.name}</span>
         
-        {/* Robinhood style chip */}
+        {/* Robinhood style chip - Desktop Only */}
         <div className={`
-          flex items-center justify-center w-12 h-6 rounded-[4px] transition-all duration-200
+          hidden md:flex items-center justify-center w-12 h-6 rounded-[4px] transition-all duration-200
           ${isActive 
             ? 'bg-[#FF5000] text-white border border-transparent' // Active: Red/Orange
             : 'bg-transparent border border-[#00C805] text-[#00C805] group-hover:bg-[#00C805] group-hover:text-black' // Resting: Transparent + Border -> Hover: Filled

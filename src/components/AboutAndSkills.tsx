@@ -9,6 +9,7 @@ interface AboutAndSkillsProps {
   searchQuery?: string
   showOnlyAbout?: boolean
   showOnlySkills?: boolean
+  showOnlyContact?: boolean
   onSkillClick?: (skillName: string) => void
   isContactHighlighted?: boolean
 }
@@ -18,6 +19,7 @@ interface AboutMeData {
   title: string
   location: string
   bio: string
+  avatar: string
 }
 
 const aboutData: AboutMeData = {
@@ -25,6 +27,7 @@ const aboutData: AboutMeData = {
   title: 'CS, Finance & Data Science @ Rutgers Honors College',
   location: 'New York Metro Area',
   bio: "I build software that bridges the gap between complex business logic and intuitive product design. I’m the type of engineer who will gladly go the extra mile today to build a tool that saves ten minutes tomorrow. My background lets me zoom out to understand system dynamics, and zoom in to execute the details using React, TypeScript, and Python. Ultimately, I care about shipping the best possible solution, letting the problem dictate the tools rather than the other way around.",
+  avatar: '/images/pfp_theme transparent.png'
 }
 
 // Emoji mapping for skill categories
@@ -47,7 +50,15 @@ const LinkedinIcon = ({ className }: { className?: string }) => (
   </svg>
 )
 
-export default function AboutAndSkills({ skillCategories, searchQuery = '', showOnlyAbout = false, showOnlySkills = false, onSkillClick, isContactHighlighted = false }: AboutAndSkillsProps) {
+export default function AboutAndSkills({ 
+  skillCategories, 
+  searchQuery = '', 
+  showOnlyAbout = false, 
+  showOnlySkills = false, 
+  showOnlyContact = false,
+  onSkillClick, 
+  isContactHighlighted = false 
+}: AboutAndSkillsProps) {
   const [expandedLists, setExpandedLists] = useState<Set<string>>(new Set())
   const [isHovered, setIsHovered] = useState(false)
 
@@ -69,183 +80,192 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '', show
     setExpandedLists(newExpanded)
   }
 
+  // Desktop Combined View
+  const isDesktopOnly = !showOnlyAbout && !showOnlySkills && !showOnlyContact
+
   return (
     <>
       {/* Desktop: Combined container */}
-      <div className="hidden lg:block bg-black rounded-lg border border-[#2D2D2D]" data-section="about">
+      <div className="hidden lg:block bg-black rounded-lg border border-[#2D2D2D]">
         {/* About Me Section */}
-        <div className="border-b border-[#2D2D2D]">
-          <div className="flex items-center border-b border-[#2D2D2D]">
-            <div className="flex-1 py-3 px-4 text-white font-bold text-left">
-              About Me
+        {(isDesktopOnly || showOnlyAbout) && (
+          <div className="border-b border-[#2D2D2D]" data-section="about">
+            <div className="flex items-center border-b border-[#2D2D2D]">
+              <div className="flex-1 py-3 px-4 text-white font-bold text-left">
+                About Me
+              </div>
             </div>
-          </div>
 
-          <div className="p-6 space-y-4">
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex-1">
-                <h3 className="text-xl font-medium mb-2 text-white">{aboutData.name}</h3>
-                <p className="text-sm text-gray-300 leading-relaxed">{aboutData.title}</p>
-                <div className="inline-flex items-center gap-2 px-1 pr-3 py-1 rounded-full bg-[#1C1C1E] border border-[#3A3A3C] text-xs mt-2">
-                  <div className="w-5 h-5 rounded-full overflow-hidden flex items-center justify-center">
-                    <img src="/images/tags/location.png" alt="" className="w-full h-full object-cover" />
+            <div className="p-6 space-y-4">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1">
+                  <h3 className="text-xl font-medium mb-2 text-white">{aboutData.name}</h3>
+                  <p className="text-sm text-gray-300 leading-relaxed">{aboutData.title}</p>
+                  <div className="inline-flex items-center gap-2 px-1 pr-3 py-1 rounded-full bg-[#1C1C1E] border border-[#3A3A3C] text-xs mt-2">
+                    <div className="w-5 h-5 rounded-full overflow-hidden flex items-center justify-center">
+                      <img src="/images/tags/location.png" alt="" className="w-full h-full object-cover" />
+                    </div>
+                    <span className="text-gray-300">{aboutData.location}</span>
                   </div>
-                  <span className="text-gray-300">{aboutData.location}</span>
+                </div>
+
+                {/* Profile Picture with hover effect */}
+                <div
+                  className="relative w-32 h-32 cursor-pointer flex-shrink-0 overflow-visible"
+                  onMouseEnter={() => setIsHovered(true)}
+                  onMouseLeave={() => setIsHovered(false)}
+                >
+                  <img
+                    src="/images/pfp_theme%20transparent.png"
+                    alt="Vandan Patel - Themed"
+                    className={`absolute -top-4 -right-4 w-40 h-40 object-contain transition-opacity duration-300 ${isHovered ? 'opacity-0' : 'opacity-100'}`}
+                  />
+                  <img
+                    src="/images/pfp_original.jpg"
+                    alt="Vandan Patel - Original"
+                    className={`absolute top-0 right-0 w-32 h-32 object-cover rounded-full transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+                  />
                 </div>
               </div>
 
-              {/* Profile Picture with hover effect */}
-              <div
-                className="relative w-32 h-32 cursor-pointer flex-shrink-0 overflow-visible"
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
-              >
-                <img
-                  src="/images/pfp_theme%20transparent.png"
-                  alt="Vandan Patel - Themed"
-                  className={`absolute -top-4 -right-4 w-40 h-40 object-contain transition-opacity duration-300 ${isHovered ? 'opacity-0' : 'opacity-100'}`}
-                />
-                <img
-                  src="/images/pfp_original.jpg"
-                  alt="Vandan Patel - Original"
-                  className={`absolute top-0 right-0 w-32 h-32 object-cover rounded-full transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
-                />
+              <div className="pt-4 border-t border-[#2D2D2D]">
+                <p className="text-sm text-gray-300 leading-relaxed">
+                  {aboutData.bio}
+                </p>
               </div>
             </div>
-
-            <div className="pt-4 border-t border-[#2D2D2D]">
-              <p className="text-sm text-gray-300 leading-relaxed">
-                {aboutData.bio}
-              </p>
-            </div>
           </div>
-        </div>
+        )}
 
         {/* Contact Me Section */}
-        <div 
-          className={`border-b border-[#2D2D2D] transition-colors duration-500 ${isContactHighlighted ? 'bg-[#FFD700]/5' : ''}`} 
-          data-section="contact"
-        >
-          <div className={`px-4 py-3 border-b border-[#2D2D2D] flex items-center justify-between ${isContactHighlighted ? 'border-[#FFD700]/50' : ''}`}>
-            <span className={`font-bold transition-colors ${isContactHighlighted ? 'text-[#FFD700]' : 'text-white'}`}>Contact Me</span>
+        {(isDesktopOnly || showOnlyContact) && (
+          <div 
+            className={`border-b border-[#2D2D2D] transition-colors duration-500 ${isContactHighlighted ? 'bg-[#FFD700]/5' : ''}`} 
+            data-section="contact"
+          >
+            <div className={`px-4 py-3 border-b border-[#2D2D2D] flex items-center justify-between ${isContactHighlighted ? 'border-[#FFD700]/50' : ''}`}>
+              <span className={`font-bold transition-colors ${isContactHighlighted ? 'text-[#FFD700]' : 'text-white'}`}>Contact Me</span>
+            </div>
+            <div>
+              <button 
+                onClick={() => window.open('https://github.com/vp-27', '_blank')}
+                className="w-full flex items-center justify-between px-4 py-3 bg-transparent hover:bg-[#1A1A1A] transition-colors focus:outline-none group border-b border-[#2D2D2D]"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-12 bg-[#1A1A1A] rounded-md flex items-center justify-center text-lg">
+                    <GithubIcon className="w-6 h-6 text-gray-400 group-hover:text-white transition-colors" />
+                  </div>
+                  <span className="text-white font-semibold">GitHub</span>
+                </div>
+                <div className="text-gray-500 group-hover:text-[#00C805] transition-colors">
+                  <ExternalLink className="w-5 h-5" />
+                </div>
+              </button>
+              <button 
+                onClick={() => window.open('https://www.linkedin.com/in/vandan-patel-vp/', '_blank')}
+                className="w-full flex items-center justify-between px-4 py-3 bg-transparent hover:bg-[#1A1A1A] transition-colors focus:outline-none group border-b border-[#2D2D2D]"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-12 bg-[#1A1A1A] rounded-md flex items-center justify-center text-lg">
+                    <LinkedinIcon className="w-6 h-6 text-gray-400 group-hover:text-[#0A66C2] transition-colors" />
+                  </div>
+                  <span className="text-white font-semibold">LinkedIn</span>
+                </div>
+                <div className="text-gray-500 group-hover:text-[#00C805] transition-colors">
+                  <ExternalLink className="w-5 h-5" />
+                </div>
+              </button>
+              <button 
+                onClick={() => window.open('mailto:vrp77@scarletmail.rutgers.edu', '_blank')}
+                className="w-full flex items-center justify-between px-4 py-3 bg-transparent hover:bg-[#1A1A1A] transition-colors focus:outline-none group"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-12 bg-[#1A1A1A] rounded-md flex items-center justify-center text-lg">
+                    <Mail className="w-6 h-6 text-gray-400 group-hover:text-[#EA4335] transition-colors" />
+                  </div>
+                  <span className="text-white font-semibold">Email</span>
+                </div>
+                <div className="text-gray-500 group-hover:text-[#00C805] transition-colors">
+                  <ExternalLink className="w-5 h-5" />
+                </div>
+              </button>
+            </div>
           </div>
-          <div>
-            <button 
-              onClick={() => window.open('https://github.com/vp-27', '_blank')}
-              className="w-full flex items-center justify-between px-4 py-3 bg-transparent hover:bg-[#1A1A1A] transition-colors focus:outline-none group border-b border-[#2D2D2D]"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-12 bg-[#1A1A1A] rounded-md flex items-center justify-center text-lg">
-                  <GithubIcon className="w-6 h-6 text-gray-400 group-hover:text-white transition-colors" />
-                </div>
-                <span className="text-white font-semibold">GitHub</span>
-              </div>
-              <div className="text-gray-500 group-hover:text-[#00C805] transition-colors">
-                <ExternalLink className="w-5 h-5" />
-              </div>
-            </button>
-            <button 
-              onClick={() => window.open('https://www.linkedin.com/in/vandan-patel-vp/', '_blank')}
-              className="w-full flex items-center justify-between px-4 py-3 bg-transparent hover:bg-[#1A1A1A] transition-colors focus:outline-none group border-b border-[#2D2D2D]"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-12 bg-[#1A1A1A] rounded-md flex items-center justify-center text-lg">
-                  <LinkedinIcon className="w-6 h-6 text-gray-400 group-hover:text-[#0A66C2] transition-colors" />
-                </div>
-                <span className="text-white font-semibold">LinkedIn</span>
-              </div>
-              <div className="text-gray-500 group-hover:text-[#00C805] transition-colors">
-                <ExternalLink className="w-5 h-5" />
-              </div>
-            </button>
-            <button 
-              onClick={() => window.open('mailto:vrp77@scarletmail.rutgers.edu', '_blank')}
-              className="w-full flex items-center justify-between px-4 py-3 bg-transparent hover:bg-[#1A1A1A] transition-colors focus:outline-none group"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-12 bg-[#1A1A1A] rounded-md flex items-center justify-center text-lg">
-                  <Mail className="w-6 h-6 text-gray-400 group-hover:text-[#EA4335] transition-colors" />
-                </div>
-                <span className="text-white font-semibold">Email</span>
-              </div>
-              <div className="text-gray-500 group-hover:text-[#00C805] transition-colors">
-                <ExternalLink className="w-5 h-5" />
-              </div>
-            </button>
-          </div>
-        </div>
+        )}
 
         {/* Skills Section */}
-        <div>
-          <div className="flex items-center border-b border-[#2D2D2D] px-4 py-3">
-            <span className="text-white font-bold">Skills</span>
-          </div>
-
+        {(isDesktopOnly || showOnlySkills) && (
           <div>
-            {filteredSkillCategories.length === 0 && searchQuery ? (
-              <p className="text-sm text-gray-400 text-center py-4 px-4">No skills match your search</p>
-            ) : (
-              <>
-                {filteredSkillCategories.map((category) => {
-                  const isExpanded = expandedLists.has(category.id)
+            <div className="flex items-center border-b border-[#2D2D2D] px-4 py-3">
+              <span className="text-white font-bold">Skills</span>
+            </div>
 
-                  return (
-                    <motion.div key={category.id} layout>
-                      <button
-                        onClick={() => toggleList(category.id)}
-                        className="w-full flex items-center justify-between px-4 py-3 bg-transparent hover:bg-[#1A1A1A] transition-colors focus:outline-none"
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-12 bg-[#1A1A1A] rounded-md flex items-center justify-center text-lg">
-                            {skillEmojis[category.icon] || '📦'}
-                          </div>
-                          <span className="text-white font-semibold">{category.name}</span>
-                        </div>
-                        <motion.div
-                          animate={{ rotate: isExpanded ? 90 : 0 }}
-                          transition={{ duration: 0.2 }}
-                          className="text-gray-400"
+            <div>
+              {filteredSkillCategories.length === 0 && searchQuery ? (
+                <p className="text-sm text-gray-400 text-center py-4 px-4">No skills match your search</p>
+              ) : (
+                <>
+                  {filteredSkillCategories.map((category) => {
+                    const isExpanded = expandedLists.has(category.id)
+
+                    return (
+                      <motion.div key={category.id} layout>
+                        <button
+                          onClick={() => toggleList(category.id)}
+                          className="w-full flex items-center justify-between px-4 py-3 bg-transparent hover:bg-[#1A1A1A] transition-colors focus:outline-none"
                         >
-                          <ChevronRight className="w-5 h-5" />
-                        </motion.div>
-                      </button>
-
-                      <AnimatePresence>
-                        {isExpanded && category.skills.length > 0 && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: 'auto', opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.25, ease: [0.4, 0.0, 0.2, 1] }}
-                            className="overflow-hidden bg-black"
-                          >
-                            <div>
-                              {category.skills.map((skill) => (
-                                <SkillItem 
-                                  key={skill.id} 
-                                  skill={skill} 
-                                  categoryIcon={category.icon} 
-                                  onClick={() => onSkillClick?.(skill.name)}
-                                  isActive={searchQuery === skill.name}
-                                />
-                              ))}
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-12 bg-[#1A1A1A] rounded-md flex items-center justify-center text-lg">
+                              {skillEmojis[category.icon] || '📦'}
                             </div>
+                            <span className="text-white font-semibold">{category.name}</span>
+                          </div>
+                          <motion.div
+                            animate={{ rotate: isExpanded ? 90 : 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="text-gray-400"
+                          >
+                            <ChevronRight className="w-5 h-5" />
                           </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </motion.div>
-                  )
-                })}
-              </>
-            )}
+                        </button>
+
+                        <AnimatePresence>
+                          {isExpanded && category.skills.length > 0 && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: 'auto', opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.25, ease: [0.4, 0.0, 0.2, 1] }}
+                              className="overflow-hidden bg-black"
+                            >
+                              <div>
+                                {category.skills.map((skill) => (
+                                  <SkillItem 
+                                    key={skill.id} 
+                                    skill={skill} 
+                                    categoryIcon={category.icon} 
+                                    onClick={() => onSkillClick?.(skill.name)}
+                                    isActive={searchQuery === skill.name}
+                                  />
+                                ))}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </motion.div>
+                    )
+                  })}
+                </>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Mobile: Separate cards */}
       <div className="lg:hidden space-y-6">
         {/* About Me Card */}
-        {!showOnlySkills && (
+        {showOnlyAbout && (
           <div data-section="about">
             <h2 className="text-2xl font-medium mb-3 text-left">About Me</h2>
             <div className="bg-[#0D0D0D] rounded-lg p-6">
@@ -282,57 +302,9 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '', show
                 </div>
 
                 <div className="pt-2">
-                  <p className="text-sm text-gray-400 leading-relaxed mb-6">
+                  <p className="text-sm text-gray-400 leading-relaxed">
                     {aboutData.bio}
                   </p>
-
-                  {/* Contact Me Section for Mobile */}
-                  <div 
-                    className={`border-t border-[#2D2D2D] -mx-6 transition-colors duration-500 ${isContactHighlighted ? 'bg-[#FFD700]/5' : ''}`} 
-                    data-section="contact"
-                  >
-                    <div className={`px-6 py-3 border-b border-[#2D2D2D] flex items-center justify-between bg-[#0D0D0D] ${isContactHighlighted ? 'border-[#FFD700]/50' : ''}`}>
-                      <span className={`font-bold text-sm transition-colors ${isContactHighlighted ? 'text-[#FFD700]' : 'text-white'}`}>Contact Me</span>
-                    </div>
-                    <div className="bg-black">
-                      <button 
-                        onClick={() => window.open('https://github.com/vp-27', '_blank')}
-                        className="w-full px-6 py-4 flex items-center justify-between active:bg-[#1A1A1A] transition-colors border-b border-[#2D2D2D]"
-                      >
-                        <div className="flex items-center gap-4">
-                          <div className="w-14 h-16 bg-[#1A1A1A] rounded-2xl flex items-center justify-center text-3xl flex-shrink-0">
-                            <GithubIcon className="w-8 h-8 text-gray-400" />
-                          </div>
-                          <span className="text-white font-semibold">GitHub</span>
-                        </div>
-                        <ExternalLink className="w-5 h-5 text-gray-500" />
-                      </button>
-                      <button 
-                        onClick={() => window.open('https://www.linkedin.com/in/vandan-patel-vp/', '_blank')}
-                        className="w-full px-6 py-4 flex items-center justify-between active:bg-[#1A1A1A] transition-colors border-b border-[#2D2D2D]"
-                      >
-                        <div className="flex items-center gap-4">
-                          <div className="w-14 h-16 bg-[#1A1A1A] rounded-2xl flex items-center justify-center text-3xl flex-shrink-0">
-                            <LinkedinIcon className="w-8 h-8 text-[#0A66C2]" />
-                          </div>
-                          <span className="text-white font-semibold">LinkedIn</span>
-                        </div>
-                        <ExternalLink className="w-5 h-5 text-gray-500" />
-                      </button>
-                      <button 
-                        onClick={() => window.open('mailto:vrp77@scarletmail.rutgers.edu', '_blank')}
-                        className="w-full px-6 py-4 flex items-center justify-between active:bg-[#1A1A1A] transition-colors"
-                      >
-                        <div className="flex items-center gap-4">
-                          <div className="w-14 h-16 bg-[#1A1A1A] rounded-2xl flex items-center justify-center text-3xl flex-shrink-0">
-                            <Mail className="w-8 h-8 text-[#EA4335]" />
-                          </div>
-                          <span className="text-white font-semibold">Email</span>
-                        </div>
-                        <ExternalLink className="w-5 h-5 text-gray-500" />
-                      </button>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -340,7 +312,7 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '', show
         )}
 
         {/* Skills Card */}
-        {!showOnlyAbout && (
+        {showOnlySkills && (
           <div data-section="skills">
             <h2 className="text-2xl font-medium mb-3 text-left">Skills</h2>
             <div className="bg-[#0D0D0D] rounded-lg border border-[#2D2D2D] overflow-hidden">
@@ -403,6 +375,57 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '', show
                   })}
                 </>
               )}
+            </div>
+          </div>
+        )}
+
+        {/* Contact Me Card */}
+        {showOnlyContact && (
+          <div data-section="contact">
+            <h2 className="text-2xl font-medium mb-3 text-left">Contact Me</h2>
+            <div className="bg-[#0D0D0D] rounded-lg border border-[#2D2D2D] overflow-hidden">
+              <div 
+                className={`transition-colors duration-500 ${isContactHighlighted ? 'bg-[#FFD700]/5' : ''}`} 
+              >
+                <div className="bg-black">
+                  <button 
+                    onClick={() => window.open('https://github.com/vp-27', '_blank')}
+                    className="w-full px-6 py-4 flex items-center justify-between active:bg-[#1A1A1A] transition-colors border-b border-[#2D2D2D]"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="w-14 h-16 bg-[#1A1A1A] rounded-2xl flex items-center justify-center text-3xl flex-shrink-0">
+                        <GithubIcon className="w-8 h-8 text-gray-400" />
+                      </div>
+                      <span className="text-white font-semibold">GitHub</span>
+                    </div>
+                    <ExternalLink className="w-5 h-5 text-gray-500" />
+                  </button>
+                  <button 
+                    onClick={() => window.open('https://www.linkedin.com/in/vandan-patel-vp/', '_blank')}
+                    className="w-full px-6 py-4 flex items-center justify-between active:bg-[#1A1A1A] transition-colors border-b border-[#2D2D2D]"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="w-14 h-16 bg-[#1A1A1A] rounded-2xl flex items-center justify-center text-3xl flex-shrink-0">
+                        <LinkedinIcon className="w-8 h-8 text-[#0A66C2]" />
+                      </div>
+                      <span className="text-white font-semibold">LinkedIn</span>
+                    </div>
+                    <ExternalLink className="w-5 h-5 text-gray-500" />
+                  </button>
+                  <button 
+                    onClick={() => window.open('mailto:vrp77@scarletmail.rutgers.edu', '_blank')}
+                    className="w-full px-6 py-4 flex items-center justify-between active:bg-[#1A1A1A] transition-colors"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="w-14 h-16 bg-[#1A1A1A] rounded-2xl flex items-center justify-center text-3xl flex-shrink-0">
+                        <Mail className="w-8 h-8 text-[#EA4335]" />
+                      </div>
+                      <span className="text-white font-semibold">Email</span>
+                    </div>
+                    <ExternalLink className="w-5 h-5 text-gray-500" />
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         )}

@@ -82,8 +82,8 @@ export default function Dashboard() {
       setSearchQuery('')
     } else {
       setSearchQuery(query)
-      if (query) {
-        // Automatically scroll to skills section when searching
+      if (query && window.innerWidth >= 768) {
+        // Automatically scroll to skills section when searching (Desktop only)
         setTimeout(() => {
           handleNavigate('skills')
         }, 100)
@@ -271,6 +271,17 @@ export default function Dashboard() {
               skillCategories={mockSkillCategories} 
               searchQuery={searchQuery} 
               showOnlySkills={true} 
+              onSkillClick={handleSearch} 
+              isContactHighlighted={isContactHighlighted}
+            />
+          </div>
+
+          {/* Contact Me Section (Mobile Only, Bottom) */}
+          <div className="lg:hidden px-4 mt-8 mb-6" data-section="contact">
+            <AboutAndSkills 
+              skillCategories={mockSkillCategories} 
+              searchQuery={searchQuery} 
+              showOnlyContact={true} 
               onSkillClick={handleSearch} 
               isContactHighlighted={isContactHighlighted}
             />
