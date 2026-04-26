@@ -151,16 +151,18 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '', show
                             transition={{ duration: 0.25, ease: [0.4, 0.0, 0.2, 1] }}
                             className="overflow-hidden bg-black"
                           >
-                            {category.skills.map((skill, idx) => (
-                              <motion.div
-                                key={skill.id}
-                                initial={{ opacity: 0, x: -10 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: idx * 0.02 }}
-                              >
-                                <SkillItem skill={skill} categoryIcon={category.icon} />
-                              </motion.div>
-                            ))}
+                            <div className="flex flex-wrap gap-2 px-4 py-4">
+                              {category.skills.map((skill, idx) => (
+                                <motion.div
+                                  key={skill.id}
+                                  initial={{ opacity: 0, scale: 0.9 }}
+                                  animate={{ opacity: 1, scale: 1 }}
+                                  transition={{ delay: idx * 0.02 }}
+                                >
+                                  <SkillItem skill={skill} categoryIcon={category.icon} />
+                                </motion.div>
+                              ))}
+                            </div>
                           </motion.div>
                         )}
                       </AnimatePresence>
@@ -265,16 +267,18 @@ export default function AboutAndSkills({ skillCategories, searchQuery = '', show
                               transition={{ duration: 0.25, ease: [0.4, 0.0, 0.2, 1] }}
                               className="overflow-hidden bg-black"
                             >
-                              {category.skills.map((skill, idx) => (
-                                <motion.div
-                                  key={skill.id}
-                                  initial={{ opacity: 0, x: -10 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  transition={{ delay: idx * 0.02 }}
-                                >
-                                  <SkillItem skill={skill} categoryIcon={category.icon} />
-                                </motion.div>
-                              ))}
+                              <div className="flex flex-wrap gap-2 px-4 py-4">
+                                {category.skills.map((skill, idx) => (
+                                  <motion.div
+                                    key={skill.id}
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ delay: idx * 0.02 }}
+                                  >
+                                    <SkillItem skill={skill} categoryIcon={category.icon} />
+                                  </motion.div>
+                                ))}
+                              </div>
                             </motion.div>
                           )}
                         </AnimatePresence>

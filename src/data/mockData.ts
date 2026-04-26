@@ -152,7 +152,7 @@ export const mockPortfolio: PortfolioData = {
 }
 
 // Generate career timeline chart data
-export const generateCareerTimelineData = (): ChartDataPoint[] => {
+const generateCareerTimelineData = (): ChartDataPoint[] => {
   const data: ChartDataPoint[] = []
 
   // Career milestones - values represent skill/experience PLATEAUS
@@ -378,10 +378,10 @@ export const filterTimelineData = (range: string): ChartDataPoint[] => {
   return filteredData
 }
 
-export const mockChartData = generateCareerTimelineData()
+const mockChartData = generateCareerTimelineData()
 
 // Keep old function for reference
-export const generateMockChartData = (): ChartDataPoint[] => {
+const generateMockChartData = (): ChartDataPoint[] => {
   const data: ChartDataPoint[] = []
   const startValue = mockPortfolio.totalValue - mockPortfolio.todayReturn
   const points = 78
@@ -436,6 +436,10 @@ export const mockSkills: Skill[] = [
   { id: 'ss3', name: 'Cross-Functional Leadership', proficiency: 90, yearsOfExperience: 2, category: 'soft' },
   { id: 'ss4', name: 'Stakeholder Management', proficiency: 87, yearsOfExperience: 2, category: 'soft' },
   { id: 'ss5', name: 'ETL Development', proficiency: 85, yearsOfExperience: 1, category: 'soft' },
+  { id: 'ss6', name: 'FastAPI', proficiency: 80, yearsOfExperience: 1, category: 'technical' },
+  { id: 'ss7', name: 'Supabase', proficiency: 85, yearsOfExperience: 1, category: 'tools' },
+  { id: 'ss8', name: 'TailwindCSS', proficiency: 90, yearsOfExperience: 2, category: 'tools' },
+  { id: 'ss9', name: 'MCP', proficiency: 80, yearsOfExperience: 1, category: 'technical' },
 ]
 
 export const mockSkillCategories: SkillCategory[] = [

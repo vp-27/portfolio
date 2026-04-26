@@ -50,32 +50,8 @@ export default function Dashboard() {
 
     // Use setTimeout to ensure DOM is ready
     setTimeout(() => {
-      // Find all matching sections and get the visible one
-      const allSectionElements = document.querySelectorAll(`[data-section="${section}"]`)
-      console.log('Found sections:', allSectionElements.length)
-
-      // Helper function to check if element or any ancestor is hidden
-      const isElementVisible = (element: Element): boolean => {
-        let current: Element | null = element
-        while (current && current !== document.body) {
-          const computed = window.getComputedStyle(current)
-          if (computed.display === 'none') {
-            return false
-          }
-          current = current.parentElement
-        }
-        return true
-      }
-
-      // Find the visible section (not hidden by Tailwind classes)
-      let sectionElement: Element | null = null
-      allSectionElements.forEach((el) => {
-        if (isElementVisible(el)) {
-          sectionElement = el
-          console.log('Found visible section')
-        }
-      })
-
+      // Find the first matching section
+      const sectionElement = document.querySelector(`[data-section="${section}"]`)
       console.log('Selected section element:', sectionElement)
 
       if (sectionElement) {
@@ -86,16 +62,9 @@ export default function Dashboard() {
         const pageOffset = window.pageYOffset
         const y = elementTop + pageOffset + yOffset
 
-        console.log('Mobile:', isMobile)
-        console.log('Section:', section)
-        console.log('Element top:', elementTop)
-        console.log('Page offset:', pageOffset)
-        console.log('Y offset:', yOffset)
-        console.log('Scrolling to Y:', y)
-
         window.scrollTo({ top: y, behavior: 'smooth' })
       } else {
-        console.log('No visible section element found!')
+        console.log('No section element found!')
       }
     }, 50)
   }
