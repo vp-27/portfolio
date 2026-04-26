@@ -132,6 +132,12 @@ export default function TopNav({ onNavigate, onSearch, searchQuery = '' }: TopNa
             >
               Education
             </button>
+            <button 
+              onClick={() => handleNavigate('contact')}
+              className="bg-transparent text-white text-sm font-bold hover:text-rh-green transition-colors"
+            >
+              Contact
+            </button>
           </div>
 
         </div>

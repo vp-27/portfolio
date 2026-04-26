@@ -12,7 +12,7 @@ export default function SkillItem({ skill, onClick, isActive }: SkillItemProps) 
   return (
     <button 
       onClick={onClick}
-      className="w-full px-4 hover:bg-[#1A1A1A] transition-colors focus:outline-none group block"
+      className="w-full px-4 transition-colors focus:outline-none group block"
     >
       <div className="py-3 border-b border-[#2D2D2D] flex items-center justify-between">
         <span className="text-sm font-medium text-left text-white">{skill.name}</span>

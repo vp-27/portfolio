@@ -14,6 +14,7 @@ export default function Dashboard() {
   const [highlightedItem, setHighlightedItem] = useState<string | null>(null)
   const [hoveredLabel, setHoveredLabel] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
+  const [isContactHighlighted, setIsContactHighlighted] = useState(false)
 
   // Milestone to Experience/Project mapping
   const milestoneMap = useMemo(() => ({
@@ -55,6 +56,12 @@ export default function Dashboard() {
       console.log('Selected section element:', sectionElement)
 
       if (sectionElement) {
+        // Trigger highlight for contact section
+        if (section === 'contact') {
+          setIsContactHighlighted(true)
+          setTimeout(() => setIsContactHighlighted(false), 2500)
+        }
+
         // Check if we're on mobile (no top nav) or desktop
         const isMobile = window.innerWidth < 768
         const yOffset = isMobile ? -20 : -70 // Less offset on mobile, more on desktop for fixed header
@@ -223,7 +230,13 @@ export default function Dashboard() {
 
               {/* About Me - Shown on mobile right under Experience Card */}
               <div className="lg:hidden px-4 md:px-4 mt-4 mb-6" data-section="about">
-                <AboutAndSkills skillCategories={mockSkillCategories} searchQuery={searchQuery} showOnlyAbout={true} onSkillClick={handleSearch} />
+                <AboutAndSkills 
+                  skillCategories={mockSkillCategories} 
+                  searchQuery={searchQuery} 
+                  showOnlyAbout={true} 
+                  onSkillClick={handleSearch} 
+                  isContactHighlighted={isContactHighlighted}
+                />
               </div>
 
               {/* Portfolio Sections - Experience, Projects, Education, Certifications */}
@@ -242,14 +255,25 @@ export default function Dashboard() {
             {/* Right Sidebar - Sticky on desktop */}
               <div className="hidden lg:block lg:pr-4">
                 <div className="lg:sticky lg:top-[70px] max-h-[calc(100vh-70px)] overflow-y-auto no-scrollbar pb-8">
-                  <AboutAndSkills skillCategories={mockSkillCategories} searchQuery={searchQuery} onSkillClick={handleSearch} />
+                  <AboutAndSkills 
+                    skillCategories={mockSkillCategories} 
+                    searchQuery={searchQuery} 
+                    onSkillClick={handleSearch} 
+                    isContactHighlighted={isContactHighlighted}
+                  />
                 </div>
               </div>
           </div>
 
           {/* Skills Section (Mobile Only, Bottom) */}
           <div className="lg:hidden px-4 mt-8 mb-6" data-section="skills">
-            <AboutAndSkills skillCategories={mockSkillCategories} searchQuery={searchQuery} showOnlySkills={true} onSkillClick={handleSearch} />
+            <AboutAndSkills 
+              skillCategories={mockSkillCategories} 
+              searchQuery={searchQuery} 
+              showOnlySkills={true} 
+              onSkillClick={handleSearch} 
+              isContactHighlighted={isContactHighlighted}
+            />
           </div>
         </div>
       </div>
