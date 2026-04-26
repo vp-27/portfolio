@@ -1,25 +1,25 @@
 import { useState, useEffect, useRef } from 'react'
 import RotatingText, { type RotatingTextRef } from './RotatingText'
-import type { PortfolioData } from '../types'
+import type { PortfolioData, ChartDataPoint } from '../types'
 
 interface PortfolioHeaderProps {
   portfolio: PortfolioData
-  hoveredLabel?: string | null
+  hoveredPoint?: ChartDataPoint | null
 }
 
-export default function PortfolioHeader({ portfolio, hoveredLabel }: PortfolioHeaderProps) {
+export default function PortfolioHeader({ portfolio, hoveredPoint }: PortfolioHeaderProps) {
   const isPositive = portfolio.todayReturn >= 0
   const rotatingTextRef = useRef<RotatingTextRef>(null)
   const [currentText, setCurrentText] = useState<string>("Vandan's Timeline")
 
-  // Update text when hoveredLabel changes
+  // Update text when hoveredPoint changes
   useEffect(() => {
-    if (hoveredLabel) {
-      setCurrentText(hoveredLabel)
+    if (hoveredPoint?.label) {
+      setCurrentText(hoveredPoint.label)
     } else {
       setCurrentText("Vandan's Timeline")
     }
-  }, [hoveredLabel])
+  }, [hoveredPoint])
 
   return (
     <div className="pt-4 pb-2 px-4 md:px-0">
@@ -41,19 +41,19 @@ export default function PortfolioHeader({ portfolio, hoveredLabel }: PortfolioHe
         />
       </div>
 
-      {/* Projects Growth */}
+      {/* Category Descriptor */}
       <div className={`flex items-center gap-2 text-sm ${isPositive ? 'text-[#00C805]' : 'text-[#FF5000]'}`}>
         <span className="flex items-center">
           <span className="mr-1">{isPositive ? '▲' : '▼'}</span>
-          Projects Growth
+          {hoveredPoint?.category || "Projects Growth"}
         </span>
       </div>
 
-      {/* Career Growth */}
+      {/* Time Descriptor */}
       <div className="flex items-center gap-2 text-sm mt-0.5 text-[#00C805]">
         <span className="flex items-center">
           <span className="mr-1">▲</span>
-          Career Growth
+          {hoveredPoint ? hoveredPoint.time : "Career Growth"}
         </span>
       </div>
     </div>

@@ -6,7 +6,7 @@ interface PortfolioChartProps {
   data: ChartDataPoint[]
   isPositive: boolean
   onPointClick?: (point: ChartDataPoint) => void
-  onPointHover?: (label: string | null) => void
+  onPointHover?: (point: ChartDataPoint | null) => void
   onScrubEnd?: () => void
 }
 
@@ -66,16 +66,19 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
 
       if (nearestMilestone && onPointHover) {
         // Snap to the nearest milestone instead of the current point
-        onPointHover(nearestMilestone.label ?? null)
+        onPointHover(nearestMilestone)
         // Update snapped index for cursor positioning
         const milestoneIndex = data.findIndex(p => p === nearestMilestone)
         setSnappedIndex(milestoneIndex)
       } else if (activePoint.label && onPointHover) {
         // Use the active point if it has a label
-        onPointHover(activePoint.label)
+        onPointHover(activePoint)
         const pointIndex = data.findIndex(p => p === activePoint)
         setSnappedIndex(pointIndex)
       } else {
+        if (onPointHover) {
+          onPointHover(activePoint)
+        }
         setSnappedIndex(null)
       }
     }
@@ -213,7 +216,7 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
       setArmedMilestoneIndex(selectedIndex)
       setSnappedIndex(selectedIndex)
       if (onPointHover) {
-        onPointHover(selectedPoint.label ?? null)
+        onPointHover(selectedPoint)
       }
       touchTapTimeRef.current = now
 

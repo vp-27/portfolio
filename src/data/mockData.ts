@@ -158,22 +158,22 @@ const generateCareerTimelineData = (): ChartDataPoint[] => {
   // Career milestones - values represent skill/experience PLATEAUS
   // Pattern: Gradual rise → SPIKE UP at achievement → SUSTAIN at new plateau → Continue building
   const milestones = [
-    { date: '2023-09', value: 15, label: 'Started Rutgers', type: 'start' },
+    { date: '2023-09', value: 15, label: 'Started Rutgers', type: 'start', category: 'Education' },
     { date: '2023-12', value: 20, label: null, type: 'learning' }, // Fall semester learning
     { date: '2024-01', value: 22, label: null, type: 'learning' }, // Continued learning
-    { date: '2024-03', value: 28, label: 'Bender Trust', type: 'project' }, // Project milestone
+    { date: '2024-03', value: 28, label: 'Bender Trust', type: 'competition', category: 'Competition' }, // Competition milestone
     { date: '2024-05', value: 35, label: null, type: 'learning' }, // Spring semester
-    { date: '2024-06', value: 42, label: 'OroGenie', type: 'project' }, // Major project
-    { date: '2024-07', value: 70, label: 'Kaktus Financial Ops', type: 'internship' }, // LEVEL UP - Floor 2
+    { date: '2024-06', value: 42, label: 'OroGenie', type: 'project', category: 'Project' }, // Major project
+    { date: '2024-07', value: 70, label: 'Kaktus Financial Ops', type: 'internship', category: 'Internship' }, // LEVEL UP - Floor 2
     { date: '2024-09', value: 71, label: null, type: 'sustain' }, // Sustain Floor 2 (kept skills)
-    { date: '2024-11', value: 73, label: 'Algo Trading Bot', type: 'project' }, // Building on Floor 2
+    { date: '2024-11', value: 73, label: 'Algo Trading Bot', type: 'project', category: 'Project' }, // Building on Floor 2
     { date: '2025-01', value: 75, label: null, type: 'learning' }, // Continued growth
-    { date: '2025-03', value: 80, label: 'Shark Tank Top 6', type: 'competition' }, // Competition boost
-    { date: '2025-05', value: 83, label: 'GrindSheet', type: 'project' }, // Project
-    { date: '2025-06', value: 85, label: 'Sunny Insurance', type: 'project' }, // Hackathon
-    { date: '2025-07', value: 95, label: 'Moweb Data Team', type: 'internship' }, // LEVEL UP - Floor 3
-    { date: '2025-09', value: 100, label: 'SEBS Data Analyst', type: 'internship' }, // LEVEL UP - Floor 4 (current)
-    { date: '2026-01', value: 105, label: 'Edgar Agent', type: 'project' }, // New Project
+    { date: '2025-03', value: 80, label: 'Shark Tank Top 6', type: 'competition', category: 'Competition' }, // Competition boost
+    { date: '2025-05', value: 83, label: 'GrindSheet', type: 'project', category: 'Project' }, // Project
+    { date: '2025-06', value: 85, label: 'Sunny Insurance', type: 'project', category: 'Hackathon' }, // Hackathon
+    { date: '2025-07', value: 95, label: 'Moweb Data Team', type: 'internship', category: 'Internship' }, // LEVEL UP - Floor 3
+    { date: '2025-09', value: 100, label: 'SEBS Data Analyst', type: 'internship', category: 'Internship' }, // LEVEL UP - Floor 4 (current)
+    { date: '2026-01', value: 105, label: 'Edgar Agent', type: 'project', category: 'Project' }, // New Project
   ]
 
   // Generate curve with step-change growth pattern
@@ -188,7 +188,8 @@ const generateCareerTimelineData = (): ChartDataPoint[] => {
       data.push({
         time: formatDate(current.date),
         value: current.value,
-        label: current.label || undefined
+        label: current.label || undefined,
+        category: (current as any).category || undefined
       })
     }
 
@@ -267,7 +268,8 @@ const generateCareerTimelineData = (): ChartDataPoint[] => {
   data.push({
     time: formatDate(lastMilestone.date),
     value: lastMilestone.value,
-    label: lastMilestone.label || undefined
+    label: lastMilestone.label || undefined,
+    category: (lastMilestone as any).category || undefined
   })
 
   // Continue from last milestone to current date (January 2026)
@@ -449,7 +451,7 @@ export const mockExperiences: Experience[] = [
   {
     id: '1',
     company: 'Rutgers School of Environmental and Biological Sciences',
-    position: 'Intern, Data Analyst (Automation & Infrastructure)',
+    position: 'Data Analyst Internship',
     location: 'New Brunswick, NJ',
     startDate: 'Sep 2025',
     endDate: 'Dec 2025',
@@ -463,7 +465,7 @@ export const mockExperiences: Experience[] = [
   {
     id: '2',
     company: 'Moweb Technologies',
-    position: 'Intern, Software Engineering (Data)',
+    position: 'Software Engineering Internship',
     location: 'Secaucus, NJ',
     startDate: 'Jul 2025',
     endDate: 'Aug 2025',
@@ -477,7 +479,7 @@ export const mockExperiences: Experience[] = [
   {
     id: '3',
     company: 'Kaktus Sportswear',
-    position: 'Financial Operations Intern',
+    position: 'Financial Operations Internship',
     location: 'Carlstadt, NJ',
     startDate: 'Jul 2024',
     endDate: 'Aug 2024',

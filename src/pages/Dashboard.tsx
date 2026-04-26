@@ -12,7 +12,7 @@ import type { ChartDataPoint } from '../types'
 export default function Dashboard() {
   const [timeRange, setTimeRange] = useState('ALL')
   const [highlightedItem, setHighlightedItem] = useState<string | null>(null)
-  const [hoveredLabel, setHoveredLabel] = useState<string | null>(null)
+  const [hoveredPoint, setHoveredPoint] = useState<ChartDataPoint | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [isContactHighlighted, setIsContactHighlighted] = useState(false)
 
@@ -35,8 +35,8 @@ export default function Dashboard() {
     return filterTimelineData(timeRange)
   }, [timeRange])
 
-  const handleChartPointHover = (label: string | null) => {
-    setHoveredLabel(label)
+  const handleChartPointHover = (point: ChartDataPoint | null) => {
+    setHoveredPoint(point)
   }
 
   // Get description for current time range
@@ -182,8 +182,8 @@ export default function Dashboard() {
     }
 
     // If we have a hovered label when interaction ends (lifts finger), navigate to it
-    if (hoveredLabel) {
-      navigateToItem(hoveredLabel)
+    if (hoveredPoint?.label) {
+      navigateToItem(hoveredPoint.label)
     }
   }
 
@@ -196,7 +196,7 @@ export default function Dashboard() {
           <div className="lg:grid lg:grid-cols-[1fr,400px] lg:gap-6">
             <div>
               <div className="md:px-4">
-                <PortfolioHeader portfolio={mockPortfolio} hoveredLabel={hoveredLabel} />
+                <PortfolioHeader portfolio={mockPortfolio} hoveredPoint={hoveredPoint} />
               </div>
               <div>
                 <PortfolioChart

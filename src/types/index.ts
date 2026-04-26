@@ -26,6 +26,7 @@ export interface ChartDataPoint {
   value: number
   label?: string
   experienceId?: string
+  category?: string
 }
 
 export interface Skill {
