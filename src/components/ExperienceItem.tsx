@@ -91,7 +91,7 @@ export default function ExperienceItem({ experience, isHighlighted, isLast = fal
             />
           </div>
         ) : (
-          <div className="flex-shrink-0 w-[72px] h-[72px] md:w-[80px] md:h-[80px] rounded-xl border-2 border-[#3A3A3C] bg-[#1C1C1E] flex items-center justify-center">
+          <div className="flex-shrink-0 w-[72px] h-[72px] md:w-[80px] md:h-[80px] rounded-xl border-2 border-[#3A3A3C] bg-[#1E2124] flex items-center justify-center">
             <span className="text-2xl md:text-3xl font-bold text-gray-400">
               {getInitials(experience.company)}
             </span>
@@ -146,7 +146,7 @@ export default function ExperienceItem({ experience, isHighlighted, isLast = fal
               </p>
 
               {/* Location info - Pill style with icon circle */}
-              <div className="inline-flex items-center gap-2 px-1 pr-3 py-1 rounded-full bg-[#1C1C1E] border border-[#3A3A3C] text-xs mb-3">
+              <div className="inline-flex items-center gap-2 px-1 pr-3 py-1 rounded-full bg-[#1E2124] border border-[#3A3A3C] text-xs mb-3">
                 <div className="w-5 h-5 rounded-full overflow-hidden flex items-center justify-center">
                   <img src="/images/tags/location.png" alt="" className="w-full h-full object-cover" />
                 </div>

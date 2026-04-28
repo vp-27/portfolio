@@ -41,7 +41,7 @@ export default function ProjectCard({ project, isHighlighted, disableLayoutAnima
       transition={disableLayoutAnimation ? undefined : { layout: { type: 'tween', ease: 'easeOut', duration: 0.22 } }}
       data-project-id={project.id}
       onClick={() => setIsExpanded(!isExpanded)}
-      className="bg-[#1C1C1E] rounded-2xl overflow-hidden cursor-pointer transition-colors duration-200 hover:bg-[#252528] relative"
+      className="bg-[#1E2124] rounded-2xl overflow-hidden cursor-pointer transition-colors duration-200 hover:bg-[#2A2D31] relative"
       style={{
         boxShadow: showGlow
           ? '0 0 25px rgba(201, 162, 39, 0.5), inset 0 0 25px rgba(201, 162, 39, 0.1)'

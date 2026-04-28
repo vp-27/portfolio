@@ -129,13 +129,13 @@ export default function PortfolioSections({ experiences, projects, education, ce
 
               {/* Location and Date - Pill style with icon circles */}
               <div className="flex items-center gap-2 text-xs flex-wrap">
-                <div className="inline-flex items-center gap-2 px-1 pr-3 py-1 rounded-full bg-[#1C1C1E] border border-[#3A3A3C]">
+                <div className="inline-flex items-center gap-2 px-1 pr-3 py-1 rounded-full bg-[#1E2124] border border-[#3A3A3C]">
                   <div className="w-5 h-5 rounded-full overflow-hidden flex items-center justify-center">
                     <img src="/images/tags/location.png" alt="" className="w-full h-full object-cover" />
                   </div>
                   <span className="text-gray-300">{edu.location}</span>
                 </div>
-                <div className="inline-flex items-center gap-2 px-1 pr-3 py-1 rounded-full bg-[#1C1C1E] border border-[#3A3A3C]">
+                <div className="inline-flex items-center gap-2 px-1 pr-3 py-1 rounded-full bg-[#1E2124] border border-[#3A3A3C]">
                   <div className="w-5 h-5 rounded-full overflow-hidden flex items-center justify-center">
                     <img src="/images/tags/calendar.png" alt="" className="w-full h-full object-cover" />
                   </div>

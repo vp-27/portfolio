@@ -45,7 +45,7 @@ export default function ProjectsPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05, layout: { type: 'tween', ease: 'easeOut', duration: 0.22 } }}
               onClick={() => toggleExpand(project.id)}
-              className="bg-[#1C1C1E] rounded-2xl overflow-hidden cursor-pointer hover:bg-[#252528] transition-colors"
+              className="bg-[#1E2124] rounded-2xl overflow-hidden cursor-pointer hover:bg-[#2A2D31] transition-colors"
             >
               {/* Card Header */}
               <div className="p-4">

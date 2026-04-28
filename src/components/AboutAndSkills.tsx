@@ -101,7 +101,7 @@ export default function AboutAndSkills({
                 <div className="flex-1">
                   <h3 className="text-xl font-medium mb-2 text-white">{aboutData.name}</h3>
                   <p className="text-sm text-gray-300 leading-relaxed">{aboutData.title}</p>
-                  <div className="inline-flex items-center gap-2 px-1 pr-3 py-1 rounded-full bg-[#1C1C1E] border border-[#3A3A3C] text-xs mt-2">
+                  <div className="inline-flex items-center gap-2 px-1 pr-3 py-1 rounded-full bg-[#1E2124] border border-[#3A3A3C] text-xs mt-2">
                     <div className="w-5 h-5 rounded-full overflow-hidden flex items-center justify-center">
                       <img src="/images/tags/location.png" alt="" className="w-full h-full object-cover" />
                     </div>
@@ -149,7 +149,7 @@ export default function AboutAndSkills({
             <div>
               <button 
                 onClick={() => window.open('https://github.com/vp-27', '_blank')}
-                className="w-full flex items-center justify-between px-4 py-3 bg-transparent hover:bg-[#1A1A1A] transition-colors focus:outline-none group border-b border-[#2D2D2D]"
+                className="w-full flex items-center justify-between px-4 py-3 bg-transparent hover:bg-[#2A2D31] transition-colors focus:outline-none group border-b border-[#2D2D2D]"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-12 bg-[#1A1A1A] rounded-md flex items-center justify-center text-lg">
@@ -163,7 +163,7 @@ export default function AboutAndSkills({
               </button>
               <button 
                 onClick={() => window.open('https://www.linkedin.com/in/vandan-patel-vp/', '_blank')}
-                className="w-full flex items-center justify-between px-4 py-3 bg-transparent hover:bg-[#1A1A1A] transition-colors focus:outline-none group border-b border-[#2D2D2D]"
+                className="w-full flex items-center justify-between px-4 py-3 bg-transparent hover:bg-[#2A2D31] transition-colors focus:outline-none group border-b border-[#2D2D2D]"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-12 bg-[#1A1A1A] rounded-md flex items-center justify-center text-lg">
@@ -177,7 +177,7 @@ export default function AboutAndSkills({
               </button>
               <button 
                 onClick={() => window.open('mailto:vrp77@scarletmail.rutgers.edu', '_blank')}
-                className="w-full flex items-center justify-between px-4 py-3 bg-transparent hover:bg-[#1A1A1A] transition-colors focus:outline-none group"
+                className="w-full flex items-center justify-between px-4 py-3 bg-transparent hover:bg-[#2A2D31] transition-colors focus:outline-none group"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-12 bg-[#1A1A1A] rounded-md flex items-center justify-center text-lg">
@@ -212,7 +212,7 @@ export default function AboutAndSkills({
                       <motion.div key={category.id} layout>
                         <button
                           onClick={() => toggleList(category.id)}
-                          className="w-full flex items-center justify-between px-4 py-3 bg-transparent hover:bg-[#1A1A1A] transition-colors focus:outline-none"
+                          className="w-full flex items-center justify-between px-4 py-3 bg-transparent hover:bg-[#2A2D31] transition-colors focus:outline-none"
                         >
                           <div className="flex items-center gap-3">
                             <div className="w-10 h-12 bg-[#1A1A1A] rounded-md flex items-center justify-center text-lg">
@@ -236,7 +236,7 @@ export default function AboutAndSkills({
                               animate={{ height: 'auto', opacity: 1 }}
                               exit={{ height: 0, opacity: 0 }}
                               transition={{ duration: 0.25, ease: [0.4, 0.0, 0.2, 1] }}
-                              className="overflow-hidden bg-black"
+                              className="overflow-hidden bg-transparent"
                             >
                               <div>
                                 {category.skills.map((skill) => (
@@ -268,13 +268,13 @@ export default function AboutAndSkills({
         {showOnlyAbout && (
           <div data-section="about">
             <h2 className="text-2xl font-medium mb-3 text-left">About Me</h2>
-            <div className="bg-[#0D0D0D] rounded-lg p-6">
+            <div className="bg-[#1E2124] rounded-lg p-6">
               <div className="space-y-4">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
                     <h3 className="text-base font-medium mb-1">{aboutData.name}</h3>
                     <p className="text-sm text-gray-400">{aboutData.title}</p>
-                    <div className="inline-flex items-center gap-2 px-1 pr-3 py-1 rounded-full bg-[#1C1C1E] border border-[#3A3A3C] text-xs mt-2">
+                    <div className="inline-flex items-center gap-2 px-1 pr-3 py-1 rounded-full bg-[#1E2124] border border-[#3A3A3C] text-xs mt-2">
                       <div className="w-5 h-5 rounded-full overflow-hidden flex items-center justify-center">
                         <img src="/images/tags/location.png" alt="" className="w-full h-full object-cover" />
                       </div>
@@ -315,7 +315,7 @@ export default function AboutAndSkills({
         {showOnlySkills && (
           <div data-section="skills">
             <h2 className="text-2xl font-medium mb-3 text-left">Skills</h2>
-            <div className="bg-[#0D0D0D] rounded-lg border border-[#2D2D2D] overflow-hidden">
+            <div className="bg-[#1E2124] rounded-lg border border-[#2D2D2D] overflow-hidden">
               {filteredSkillCategories.length === 0 && searchQuery ? (
                 <p className="text-sm text-gray-400 text-center py-4 px-4">No skills match your search</p>
               ) : (
@@ -327,7 +327,7 @@ export default function AboutAndSkills({
                       <motion.div key={category.id} layout>
                         <button
                           onClick={() => toggleList(category.id)}
-                          className="w-full flex items-center justify-between px-4 py-4 bg-transparent hover:bg-[#1A1A1A] transition-colors focus:outline-none"
+                          className="w-full flex items-center justify-between px-4 py-4 bg-transparent hover:bg-[#2A2D31] transition-colors focus:outline-none"
                         >
                           <div className="flex items-center gap-4">
                             <div className="w-14 h-16 bg-[#1A1A1A] rounded-2xl flex items-center justify-center text-3xl flex-shrink-0">
@@ -354,7 +354,7 @@ export default function AboutAndSkills({
                               animate={{ height: 'auto', opacity: 1 }}
                               exit={{ height: 0, opacity: 0 }}
                               transition={{ duration: 0.25, ease: [0.4, 0.0, 0.2, 1] }}
-                              className="overflow-hidden bg-black"
+                              className="overflow-hidden bg-transparent"
                             >
                               <div>
                                 {category.skills.map((skill) => (
@@ -383,11 +383,11 @@ export default function AboutAndSkills({
         {showOnlyContact && (
           <div data-section="contact">
             <h2 className="text-2xl font-medium mb-3 text-left">Contact Me</h2>
-            <div className="bg-[#0D0D0D] rounded-lg border border-[#2D2D2D] overflow-hidden">
+            <div className="bg-[#1E2124] rounded-lg border border-[#2D2D2D] overflow-hidden">
               <div 
                 className={`transition-colors duration-500 ${isContactHighlighted ? 'bg-[#FFD700]/5' : ''}`} 
               >
-                <div className="bg-black">
+                <div className="bg-transparent">
                   <button 
                     onClick={() => window.open('https://github.com/vp-27', '_blank')}
                     className="w-full px-6 py-4 flex items-center justify-between active:bg-[#1A1A1A] transition-colors border-b border-[#2D2D2D]"

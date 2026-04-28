@@ -65,10 +65,10 @@ export default function ProfilePage() {
         {/* Resume Section */}
         <div>
           <p className="text-gray-500 text-xs font-medium uppercase tracking-wide px-1 pb-2">Resume</p>
-          <div className="bg-[#1C1C1E] rounded-xl overflow-hidden">
+          <div className="bg-[#1E2124] rounded-xl overflow-hidden">
             <button
               onClick={() => handleResumeClick('Computer Science')}
-              className="w-full flex items-center justify-between px-4 py-4 hover:bg-[#252525] transition-colors border-b border-[#2C2C2E]"
+              className="w-full flex items-center justify-between px-4 py-4 hover:bg-[#2A2D31] transition-colors border-b border-[#2C2C2E]"
             >
               <div className="flex items-center gap-3.5">
                 <FileText className="w-6 h-6 text-[#00C805]" />
@@ -79,7 +79,7 @@ export default function ProfilePage() {
 
             <button
               onClick={() => handleResumeClick('Finance')}
-              className="w-full flex items-center justify-between px-4 py-4 hover:bg-[#252525] transition-colors"
+              className="w-full flex items-center justify-between px-4 py-4 hover:bg-[#2A2D31] transition-colors"
             >
               <div className="flex items-center gap-3.5">
                 <FileText className="w-6 h-6 text-[#C9A227]" />
@@ -93,10 +93,10 @@ export default function ProfilePage() {
         {/* Connect Section */}
         <div>
           <p className="text-gray-500 text-xs font-medium uppercase tracking-wide px-1 pb-2">Connect</p>
-          <div className="bg-[#1C1C1E] rounded-xl overflow-hidden">
+          <div className="bg-[#1E2124] rounded-xl overflow-hidden">
             <button
               onClick={() => handleExternalLink('https://github.com/vp-27')}
-              className="w-full flex items-center justify-between px-4 py-4 hover:bg-[#252525] transition-colors border-b border-[#2C2C2E]"
+              className="w-full flex items-center justify-between px-4 py-4 hover:bg-[#2A2D31] transition-colors border-b border-[#2C2C2E]"
             >
               <div className="flex items-center gap-3.5">
                 <GithubIcon className="w-6 h-6 text-white" />
@@ -107,7 +107,7 @@ export default function ProfilePage() {
 
             <button
               onClick={() => handleExternalLink('https://www.linkedin.com/in/vandan-patel-vp/')}
-              className="w-full flex items-center justify-between px-4 py-4 hover:bg-[#252525] transition-colors border-b border-[#2C2C2E]"
+              className="w-full flex items-center justify-between px-4 py-4 hover:bg-[#2A2D31] transition-colors border-b border-[#2C2C2E]"
             >
               <div className="flex items-center gap-3.5">
                 <LinkedinIcon className="w-6 h-6 text-[#0A66C2]" />
@@ -118,7 +118,7 @@ export default function ProfilePage() {
 
             <button
               onClick={() => handleExternalLink('mailto:vrp77@scarletmail.rutgers.edu')}
-              className="w-full flex items-center justify-between px-4 py-4 hover:bg-[#252525] transition-colors"
+              className="w-full flex items-center justify-between px-4 py-4 hover:bg-[#2A2D31] transition-colors"
             >
               <div className="flex items-center gap-3.5">
                 <Mail className="w-6 h-6 text-gray-400" />
