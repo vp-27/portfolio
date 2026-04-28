@@ -139,7 +139,7 @@ export default function ExperienceItem({ experience, isHighlighted, isLast = fal
             transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
             className="overflow-hidden relative z-10"
           >
-            <div className="pt-4 pl-[68px] md:pl-[80px] pr-2">
+            <div className="pt-4 px-2 pr-2">
               {/* Date on mobile */}
               <p className="text-xs text-gray-500 mb-2 sm:hidden">
                 {experience.startDate} – {experience.endDate}

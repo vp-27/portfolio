@@ -115,7 +115,7 @@ export default function ExperiencePage() {
                       transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
                       className="overflow-hidden"
                     >
-                      <div className="pt-4 pl-[68px] pr-2">
+                      <div className="pt-4 px-2 pr-2">
                         {/* Date on mobile */}
                         <p className="text-xs text-gray-500 mb-2 sm:hidden">
                           {exp.startDate} – {exp.endDate}
