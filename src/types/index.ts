@@ -53,6 +53,7 @@ export interface Experience {
   endDate: string
   logoUrl?: string
   bullets: string[]
+  technologies?: string[]
 }
 
 export interface Project {

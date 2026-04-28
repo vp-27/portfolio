@@ -6,7 +6,7 @@ import AboutAndSkills from '../components/AboutAndSkills'
 import BuyingPower from '../components/BuyingPower'
 import BottomNav from '../components/BottomNav'
 import PortfolioSections from '../components/PortfolioSections'
-import { mockPortfolio, filterTimelineData, mockSkillCategories, mockExperiences, mockProjects, mockEducation, mockCertifications } from '../data/mockData'
+import { portfolioSummary, filterTimelineData, skillCategories, professionalExperiences, portfolioProjects, portfolioEducation, portfolioCertifications } from '../data/portfolioData'
 import type { ChartDataPoint } from '../types'
 
 export default function Dashboard() {
@@ -196,12 +196,12 @@ export default function Dashboard() {
           <div className="lg:grid lg:grid-cols-[1fr,400px] lg:gap-6">
             <div>
               <div className="md:px-4">
-                <PortfolioHeader portfolio={mockPortfolio} hoveredPoint={hoveredPoint} />
+                <PortfolioHeader portfolio={portfolioSummary} hoveredPoint={hoveredPoint} />
               </div>
               <div>
                 <PortfolioChart
                   data={chartData}
-                  isPositive={mockPortfolio.todayReturn >= 0}
+                  isPositive={portfolioSummary.todayReturn >= 0}
                   onPointClick={handleChartPointClick}
                   onPointHover={handleChartPointHover}
                   onScrubEnd={handleScrubEnd}
@@ -231,7 +231,7 @@ export default function Dashboard() {
               {/* About Me - Shown on mobile right under Experience Card */}
               <div className="lg:hidden px-4 md:px-4 mt-4 mb-6" data-section="about">
                 <AboutAndSkills 
-                  skillCategories={mockSkillCategories} 
+                  skillCategories={skillCategories} 
                   searchQuery={searchQuery} 
                   showOnlyAbout={true} 
                   onSkillClick={handleSearch} 
@@ -242,10 +242,10 @@ export default function Dashboard() {
               {/* Portfolio Sections - Experience, Projects, Education, Certifications */}
               <div className="px-4 md:px-4">
                 <PortfolioSections
-                  experiences={mockExperiences}
-                  projects={mockProjects}
-                  education={mockEducation}
-                  certifications={mockCertifications}
+                  experiences={professionalExperiences}
+                  projects={portfolioProjects}
+                  education={portfolioEducation}
+                  certifications={portfolioCertifications}
                   highlightedItem={highlightedItem}
                   searchQuery={searchQuery}
                 />
@@ -256,7 +256,7 @@ export default function Dashboard() {
               <div className="hidden lg:block lg:pr-4">
                 <div className="lg:sticky lg:top-[70px] max-h-[calc(100vh-70px)] overflow-y-auto no-scrollbar pb-8">
                   <AboutAndSkills 
-                    skillCategories={mockSkillCategories} 
+                    skillCategories={skillCategories} 
                     searchQuery={searchQuery} 
                     onSkillClick={handleSearch} 
                     isContactHighlighted={isContactHighlighted}
@@ -268,7 +268,7 @@ export default function Dashboard() {
           {/* Skills Section (Mobile Only, Bottom) */}
           <div className="lg:hidden px-4 mt-8 mb-6" data-section="skills">
             <AboutAndSkills 
-              skillCategories={mockSkillCategories} 
+              skillCategories={skillCategories} 
               searchQuery={searchQuery} 
               showOnlySkills={true} 
               onSkillClick={handleSearch} 
@@ -279,7 +279,7 @@ export default function Dashboard() {
           {/* Contact Me Section (Mobile Only, Bottom) */}
           <div className="lg:hidden px-4 mt-8 mb-6" data-section="contact">
             <AboutAndSkills 
-              skillCategories={mockSkillCategories} 
+              skillCategories={skillCategories} 
               searchQuery={searchQuery} 
               showOnlyContact={true} 
               onSkillClick={handleSearch} 

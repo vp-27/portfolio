@@ -51,3 +51,10 @@ button:focus-visible {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+@layer components {
+  .tech-chip {
+    @apply px-2.5 py-1 text-[10px] md:text-[11px] font-bold rounded-md 
+           bg-[#2A2D31] text-gray-300 whitespace-nowrap;
+  }
+}

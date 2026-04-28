@@ -164,6 +164,17 @@ export default function ExperienceItem({ experience, isHighlighted, isLast = fal
                   </p>
                 ))}
               </div>
+
+              {/* Technologies */}
+              {experience.technologies && experience.technologies.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-4">
+                  {experience.technologies.map((tech, idx) => (
+                    <span key={idx} className="tech-chip">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
           </motion.div>
         )}

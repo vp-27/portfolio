@@ -9,7 +9,7 @@ const formatDate = (dateStr: string): string => {
 }
 
 
-export const mockStocks: Stock[] = [
+export const portfolioStocks: Stock[] = [
   {
     id: '1',
     symbol: 'SEBS',
@@ -142,7 +142,7 @@ export const mockStocks: Stock[] = [
   },
 ]
 
-export const mockPortfolio: PortfolioData = {
+export const portfolioSummary: PortfolioData = {
   totalValue: 5202.70, // Total "market value" of all experiences
   buyingPower: 394.00, // GPA * 100 = 3.94 * 100
   todayReturn: 84.16,
@@ -382,7 +382,7 @@ export const filterTimelineData = (range: string): ChartDataPoint[] => {
 
 
 // Skills Data for Portfolio Website
-export const mockSkills: Skill[] = [
+export const portfolioSkills: Skill[] = [
   // Technical Skills
   { id: 'ts1', name: 'Python', proficiency: 95, yearsOfExperience: 3, category: 'technical' },
   { id: 'ts2', name: 'SQL', proficiency: 90, yearsOfExperience: 3, category: 'technical' },
@@ -419,35 +419,35 @@ export const mockSkills: Skill[] = [
   { id: 'ss9', name: 'MCP', proficiency: 80, yearsOfExperience: 1, category: 'technical' },
 ]
 
-export const mockSkillCategories: SkillCategory[] = [
+export const skillCategories: SkillCategory[] = [
   {
     id: 'cat1',
     name: 'Technical Skills',
     icon: 'technical',
-    skills: mockSkills.filter(s => s.category === 'technical'),
+    skills: portfolioSkills.filter(s => s.category === 'technical'),
   },
   {
     id: 'cat2',
     name: 'Financial Skills',
     icon: 'financial',
-    skills: mockSkills.filter(s => s.category === 'financial'),
+    skills: portfolioSkills.filter(s => s.category === 'financial'),
   },
   {
     id: 'cat3',
     name: 'Tools & Platforms',
     icon: 'tools',
-    skills: mockSkills.filter(s => s.category === 'tools'),
+    skills: portfolioSkills.filter(s => s.category === 'tools'),
   },
   {
     id: 'cat4',
     name: 'Product & Leadership',
     icon: 'soft',
-    skills: mockSkills.filter(s => s.category === 'soft'),
+    skills: portfolioSkills.filter(s => s.category === 'soft'),
   },
 ]
 
 // Professional Experience Data
-export const mockExperiences: Experience[] = [
+export const professionalExperiences: Experience[] = [
   {
     id: '1',
     company: 'Rutgers School of Environmental and Biological Sciences',
@@ -461,6 +461,7 @@ export const mockExperiences: Experience[] = [
       'Re-architected backend workflows to replace legacy premium connectors with native solutions, reducing software licensing costs by 60% while preserving reliability and auditability',
       'Built real-time progress tracking and automated notification systems to improve transparency and shorten verification cycles by 35%, aligning system behavior with operational needs',
     ],
+    technologies: ['Power Automate', 'SharePoint', 'Data Validation', 'Process Automation'],
   },
   {
     id: '2',
@@ -475,6 +476,7 @@ export const mockExperiences: Experience[] = [
       'Refactored data models and optimized Snowflake warehouse usage to reduce query latency by 40% for client-facing analytics workloads',
       'Designed and integrated LLM-powered quality-check automation to assist with data reconciliation, reducing manual validation overhead and improving consistency across reporting datasets',
     ],
+    technologies: ['Python', 'dbt-core', 'Snowflake', 'SQL'],
   },
   {
     id: '3',
@@ -489,11 +491,12 @@ export const mockExperiences: Experience[] = [
       'Implemented month-end close process optimizations by implementing automated financial reconciliation, reducing processing time by 25% while eliminating manual errors and strengthening the accuracy of $300K+ monthly transaction reconciliations',
       'Investigated vendor payment fluctuations to bolster audit readiness and mitigate risks associated with financial discrepancies',
     ],
+    technologies: ['Excel', 'Financial Modeling', 'Process Optimization', 'Audit Readiness'],
   },
 ]
 
 // Projects Data
-export const mockProjects: Project[] = [
+export const portfolioProjects: Project[] = [
   {
     id: '7',
     name: 'Edgar Agent',
@@ -504,7 +507,7 @@ export const mockProjects: Project[] = [
       'Engineered an LLM-powered extraction pipeline to transform unstructured EDGAR HTML into structured financials (revenue, net income, fiscal year-end) with validation to prevent malformed outputs',
       'Built an MCP server exposing the service as a tool for autonomous agents, enabling standardized financial data access without manual scraping or bespoke parsers',
     ],
-    technologies: ['Python', 'FastAPI', 'x402', 'LLMs', 'MCP'],
+    technologies: ['Python', 'FastAPI', 'LLMs', 'MCP'],
     // imageUrl: '/images/edgarAgent.png',
     logoUrl: '/images/logoImages/edgarAgentClear.png',
   },
@@ -579,7 +582,7 @@ export const mockProjects: Project[] = [
       'Established a distributed data pipeline integrating Yahoo Finance and Webull APIs, enabling real-time market data aggregation',
       'Enhanced SQL-driven portfolio analytics, evaluating performance trends, asset allocation, and risk exposure to support risk-managed trading strategies and quantitative trading analysis',
     ],
-    technologies: ['React', 'Flask', 'WebSocket', 'SQL', 'Yahoo Finance API'],
+    technologies: ['React', 'Flask', 'WebSocket', 'SQL'],
     liveUrl: 'https://orogenie-frontend.onrender.com',
     githubUrl: 'https://github.com/vp-27/orogenie',
     imageUrl: '/images/orogenieShot.png',
@@ -601,7 +604,7 @@ export const mockProjects: Project[] = [
 ]
 
 // Education Data
-export const mockEducation: Education[] = [
+export const portfolioEducation: Education[] = [
   {
     id: '1',
     institution: 'Rutgers Business School',
@@ -620,7 +623,7 @@ export const mockEducation: Education[] = [
 ]
 
 // Certifications Data
-export const mockCertifications: Certification[] = [
+export const portfolioCertifications: Certification[] = [
   {
     id: '1',
     name: 'Data Build Tool Fundamentals',

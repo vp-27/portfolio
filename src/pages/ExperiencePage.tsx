@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import BottomNav from '../components/BottomNav'
-import { mockExperiences } from '../data/mockData'
+import { professionalExperiences } from '../data/portfolioData'
 
 // Get first letter for icon fallback
 const getInitials = (company: string) => {
@@ -40,7 +40,7 @@ export default function ExperiencePage() {
       {/* Experience List - Gray-tinted Prediction Markets style */}
       <div className="px-4 py-2">
         <div className="divide-y divide-[#2C2C2E]">
-          {mockExperiences.map((exp, index) => {
+          {professionalExperiences.map((exp, index) => {
             const isExpanded = expandedId === exp.id
             const isCurrent = exp.endDate.toLowerCase() === 'present'
 
@@ -140,6 +140,17 @@ export default function ExperiencePage() {
                             </p>
                           ))}
                         </div>
+
+                        {/* Technologies */}
+                        {exp.technologies && exp.technologies.length > 0 && (
+                          <div className="flex flex-wrap gap-2 mt-4">
+                            {exp.technologies.map((tech, idx) => (
+                              <span key={idx} className="tech-chip">
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     </motion.div>
                   )}

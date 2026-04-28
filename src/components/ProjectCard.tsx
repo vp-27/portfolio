@@ -82,7 +82,7 @@ export default function ProjectCard({ project, isHighlighted, disableLayoutAnima
                   {project.technologies.map((tech, idx) => (
                     <span
                       key={idx}
-                      className="px-2.5 py-0.5 text-[10px] md:text-[11px] font-semibold rounded-full bg-[#2A2A2D] text-gray-300 whitespace-nowrap"
+                      className="tech-chip"
                     >
                       {tech}
                     </span>

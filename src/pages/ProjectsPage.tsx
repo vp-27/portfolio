@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronLeft, ExternalLink, Github } from 'lucide-react'
 import BottomNav from '../components/BottomNav'
-import { mockProjects } from '../data/mockData'
+import { portfolioProjects } from '../data/portfolioData'
 
 export default function ProjectsPage() {
   const navigate = useNavigate()
@@ -34,7 +34,7 @@ export default function ProjectsPage() {
 
       {/* Projects List - Discover More Card Style */}
       <div className="px-4 py-2 space-y-3">
-        {mockProjects.map((project, index) => {
+        {portfolioProjects.map((project, index) => {
           const isExpanded = expandedId === project.id
 
           return (
@@ -65,7 +65,7 @@ export default function ProjectsPage() {
                         {project.technologies.map((tech, idx) => (
                           <span
                             key={idx}
-                            className="px-2.5 py-1 text-[10px] font-semibold rounded-full bg-[#2A2A2D] text-gray-300 whitespace-nowrap"
+                            className="tech-chip"
                           >
                             {tech}
                           </span>
