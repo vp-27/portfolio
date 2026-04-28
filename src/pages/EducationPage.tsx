@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { ChevronLeft } from 'lucide-react'
 import BottomNav from '../components/BottomNav'
-import { portfolioEducation, portfolioCertifications } from '../data/portfolioData'
+import { portfolioEducation } from '../data/portfolioData'
 
 export default function EducationPage() {
   const navigate = useNavigate()
@@ -97,7 +97,7 @@ export default function EducationPage() {
         <div>
           <h2 className="text-lg font-medium mb-4 text-gray-400">Certifications</h2>
           <div className="space-y-3">
-            {portfolioCertifications.map((cert, index) => (
+            {portfolioEducation.flatMap(edu => edu.certifications || []).map((cert, index) => (
               <motion.div
                 key={cert.id}
                 initial={{ opacity: 0, y: 20 }}

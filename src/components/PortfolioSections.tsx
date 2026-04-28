@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { ChevronRight } from 'lucide-react'
-import type { Experience, Project, Education, Certification } from '../types'
+import type { Experience, Project, Education, Certification, Interest } from '../types'
 import ExperienceItem from './ExperienceItem'
 import ProjectCard from './ProjectCard'
 
@@ -8,12 +8,12 @@ interface PortfolioSectionsProps {
   experiences: Experience[]
   projects: Project[]
   education: Education[]
-  certifications: Certification[]
+  education: Education[]
   highlightedItem?: string | null
   searchQuery?: string
 }
 
-export default function PortfolioSections({ experiences, projects, education, certifications, highlightedItem, searchQuery = '' }: PortfolioSectionsProps) {
+export default function PortfolioSections({ experiences, projects, education, highlightedItem, searchQuery = '' }: PortfolioSectionsProps) {
   // Filter function for search
   const matchesSearch = (text: string) => {
     if (!searchQuery) return true
@@ -159,45 +159,31 @@ export default function PortfolioSections({ experiences, projects, education, ce
                   </div>
                 </div>
               )}
+
+              {/* Certifications (Nested in Education) */}
+              {edu.certifications && edu.certifications.length > 0 && (
+                <div className="pt-3 mt-3">
+                  <div className="mb-2">
+                    <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Certifications</span>
+                  </div>
+                  <div className="space-y-2">
+                    {edu.certifications.map((cert) => (
+                      <div key={cert.id} className="flex items-start gap-2">
+                        <span className="text-[#00C805] mt-0.5 flex-shrink-0 text-[10px]">▸</span>
+                        <div className="flex flex-col">
+                          <span className="text-sm text-gray-300 leading-tight">{cert.name}</span>
+                          <span className="text-[11px] text-gray-500 mt-0.5">{cert.issuer}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </div>
       </div>
 
-      {/* Certifications Section */}
-      <div>
-        <div className="flex items-center">
-          <h2 className="text-2xl font-medium text-left">Certifications</h2>
-          <Link to="/education" className="lg:hidden flex items-center">
-            <ChevronRight className="w-5 h-5 text-gray-400" />
-          </Link>
-        </div>
-        <div className="hidden lg:block border-b border-[#2D2D2D] mt-2 mb-1" />
-        <div className="lg:hidden mb-3" />
-        <div>
-          {certifications.map((cert, index) => (
-            <div
-              key={cert.id}
-              className={`bg-transparent py-3 cursor-default ${index === certifications.length - 1 ? '' : 'border-b border-[#1E1E1E] lg:border-[#222]'}`}
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="font-medium text-white text-sm">{cert.name}</h3>
-                  <p className="text-xs text-gray-400 mt-0.5">{cert.issuer}</p>
-                </div>
-                {cert.date && (
-                  <div className="flex items-center gap-1 text-xs text-gray-500 flex-shrink-0">
-                    <div className="w-4 h-4 rounded-full overflow-hidden flex items-center justify-center">
-                      <img src="/images/tags/calendar.png" alt="" className="w-full h-full object-cover" />
-                    </div>
-                    <span>{cert.date}</span>
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
     </div>
   )
 }

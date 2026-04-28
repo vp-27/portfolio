@@ -6,7 +6,8 @@ import AboutAndSkills from '../components/AboutAndSkills'
 import BuyingPower from '../components/BuyingPower'
 import BottomNav from '../components/BottomNav'
 import PortfolioSections from '../components/PortfolioSections'
-import { portfolioSummary, filterTimelineData, skillCategories, professionalExperiences, portfolioProjects, portfolioEducation, portfolioCertifications } from '../data/portfolioData'
+import InterestsSection from '../components/InterestsSection'
+import { portfolioSummary, filterTimelineData, skillCategories, professionalExperiences, portfolioProjects, portfolioEducation, portfolioInterests } from '../data/portfolioData'
 import type { ChartDataPoint } from '../types'
 
 export default function Dashboard() {
@@ -245,10 +246,14 @@ export default function Dashboard() {
                   experiences={professionalExperiences}
                   projects={portfolioProjects}
                   education={portfolioEducation}
-                  certifications={portfolioCertifications}
                   highlightedItem={highlightedItem}
                   searchQuery={searchQuery}
                 />
+              </div>
+
+              {/* Interests Section - Desktop placement (below education in left column) */}
+              <div className="hidden lg:block px-4 md:px-4 mt-10">
+                <InterestsSection interests={portfolioInterests} />
               </div>
             </div>
 
@@ -285,6 +290,11 @@ export default function Dashboard() {
               onSkillClick={handleSearch} 
               isContactHighlighted={isContactHighlighted}
             />
+          </div>
+
+          {/* Interests Section (Mobile Only, Bottom) */}
+          <div className="lg:hidden px-4 mt-8 mb-12">
+            <InterestsSection interests={portfolioInterests} />
           </div>
         </div>
       </div>

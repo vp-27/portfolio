@@ -1,4 +1,4 @@
-import type { Stock, PortfolioData, ChartDataPoint, Skill, SkillCategory, Experience, Project, Education, Certification } from '../types'
+import type { Stock, PortfolioData, ChartDataPoint, Skill, SkillCategory, Experience, Project, Education, Certification, Interest } from '../types'
 
 // Helper function to format date from YYYY-MM to "Mon YYYY"
 const formatDate = (dateStr: string): string => {
@@ -619,19 +619,45 @@ export const portfolioEducation: Education[] = [
       'Rutgers Honors College',
       'Dean\'s List (All Semesters)',
     ],
+    certifications: [
+      {
+        id: '1',
+        name: 'Data Build Tool Fundamentals',
+        issuer: 'dbt Labs',
+      },
+      {
+        id: '2',
+        name: 'Bloomberg Market Concepts',
+        issuer: 'Bloomberg',
+      },
+    ]
   },
 ]
 
-// Certifications Data
-export const portfolioCertifications: Certification[] = [
+// Interests/Hobbies Data
+export const portfolioInterests: Interest[] = [
   {
     id: '1',
-    name: 'Data Build Tool Fundamentals',
-    issuer: 'dbt Labs',
+    name: 'Fitness & Weightlifting',
+    category: 'Lifestyle',
+    icon: '🏋️',
   },
   {
     id: '2',
-    name: 'Bloomberg Market Concepts',
-    issuer: 'Bloomberg',
+    name: 'Martial Arts (Taekwondo)',
+    category: 'Sport',
+    icon: '🥋',
+  },
+  {
+    id: '3',
+    name: 'Market Dynamics & History',
+    category: 'Interest',
+    icon: '📊',
+  },
+  {
+    id: '4',
+    name: 'Technological Philosophy',
+    category: 'Learning',
+    icon: '🧠',
   },
 ]

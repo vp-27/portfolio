@@ -78,6 +78,14 @@ export interface Education {
   graduationDate: string
   gpa: string
   honors: string[]
+  certifications?: Certification[]
+}
+
+export interface Interest {
+  id: string
+  name: string
+  category: string
+  icon: string
 }
 
 export interface Certification {
