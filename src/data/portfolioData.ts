@@ -1,4 +1,4 @@
-import type { Stock, PortfolioData, ChartDataPoint, Skill, SkillCategory, Experience, Project, Education, Certification, Interest } from '../types'
+import type { Stock, PortfolioData, ChartDataPoint, Skill, SkillCategory, Experience, Project, Education, Interest } from '../types'
 
 // Helper function to format date from YYYY-MM to "Mon YYYY"
 const formatDate = (dateStr: string): string => {

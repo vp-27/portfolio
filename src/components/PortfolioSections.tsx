@@ -1,13 +1,12 @@
 import { Link } from 'react-router-dom'
 import { ChevronRight } from 'lucide-react'
-import type { Experience, Project, Education, Certification, Interest } from '../types'
+import type { Experience, Project, Education } from '../types'
 import ExperienceItem from './ExperienceItem'
 import ProjectCard from './ProjectCard'
 
 interface PortfolioSectionsProps {
   experiences: Experience[]
   projects: Project[]
-  education: Education[]
   education: Education[]
   highlightedItem?: string | null
   searchQuery?: string

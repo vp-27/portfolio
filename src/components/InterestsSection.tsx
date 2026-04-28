@@ -1,10 +1,5 @@
-import type { Interest } from '../types'
 
-interface InterestsSectionProps {
-  interests: Interest[]
-}
-
-export default function InterestsSection({ interests }: InterestsSectionProps) {
+export default function InterestsSection() {
   return (
     <div data-section="interests">
       <div className="flex items-center">
