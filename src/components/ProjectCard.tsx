@@ -68,10 +68,10 @@ export default function ProjectCard({ project, isHighlighted, disableLayoutAnima
         <div className="flex items-center gap-3 md:gap-4">
           {/* Left side: Title, Subtitle, Tags */}
           <div className="flex-1 min-w-0">
-            <h3 className="font-bold text-white text-[17px] md:text-[19px] leading-tight mb-0.5">
+            <h3 className="font-bold text-white text-[17px] md:text-[19px] leading-tight mb-1.5">
               {project.name}
             </h3>
-            <p className="text-[13px] md:text-sm text-gray-400 mb-2 line-clamp-1">
+            <p className="text-[13px] md:text-sm text-gray-400 mb-3 leading-relaxed">
               {project.subtitle}
             </p>
 

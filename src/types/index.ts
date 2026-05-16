@@ -54,6 +54,7 @@ export interface Experience {
   logoUrl?: string
   bullets: string[]
   technologies?: string[]
+  brandColor?: string
 }
 
 export interface Project {

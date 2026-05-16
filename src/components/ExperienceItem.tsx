@@ -158,7 +158,8 @@ export default function ExperienceItem({ experience, isHighlighted, isLast = fal
                 {experience.bullets.map((bullet, idx) => (
                   <p
                     key={idx}
-                    className="text-sm text-gray-300 leading-relaxed pl-3 border-l-2 border-[#3A3A3C]"
+                    className="text-sm text-gray-300 leading-relaxed pl-3 border-l-2"
+                    style={{ borderColor: experience.brandColor || '#3A3A3C' }}
                   >
                     {bullet}
                   </p>

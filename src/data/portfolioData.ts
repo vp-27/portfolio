@@ -36,19 +36,7 @@ export const portfolioStocks: Stock[] = [
     totalReturn: 80.00,
     totalReturnPercent: 88.89, // 40% time reduction
   },
-  {
-    id: '3',
-    symbol: 'KAKTUS',
-    name: 'Kaktus Sportswear - Finance',
-    shares: 2,
-    averageCost: 50.00,
-    currentPrice: 62.50,
-    marketValue: 125.00,
-    todayReturn: 3.50,
-    todayReturnPercent: 2.88,
-    totalReturn: 25.00,
-    totalReturnPercent: 25.00, // 25% time reduction
-  },
+
   {
     id: '4',
     symbol: 'ALGOBOT',
@@ -114,19 +102,7 @@ export const portfolioStocks: Stock[] = [
     totalReturn: 43.00,
     totalReturnPercent: 10.00, // 43 data points
   },
-  {
-    id: '9',
-    symbol: 'BENDER',
-    name: 'Bender Trust - LIBOR Analysis',
-    shares: 5,
-    averageCost: 40.00,
-    currentPrice: 45.00,
-    marketValue: 225.00,
-    todayReturn: 3.75,
-    todayReturnPercent: 1.69,
-    totalReturn: 25.00,
-    totalReturnPercent: 12.50, // 5-year projections
-  },
+
   {
     id: '10',
     symbol: 'TKD',
@@ -143,11 +119,11 @@ export const portfolioStocks: Stock[] = [
 ]
 
 export const portfolioSummary: PortfolioData = {
-  totalValue: 5202.70, // Total "market value" of all experiences
+  totalValue: 4852.70, // Total "market value" of all experiences
   buyingPower: 394.00, // GPA * 100 = 3.94 * 100
-  todayReturn: 84.16,
+  todayReturn: 76.91,
   todayReturnPercent: 2.15,
-  totalReturn: 863.00, // Sum of all total returns
+  totalReturn: 813.00, // Sum of all total returns
   totalReturnPercent: 27.61, // Weighted average of improvements
 }
 
@@ -161,10 +137,9 @@ const generateCareerTimelineData = (): ChartDataPoint[] => {
     { date: '2023-09', value: 15, label: 'Started Rutgers', type: 'start', category: 'Education' },
     { date: '2023-12', value: 20, label: null, type: 'learning' }, // Fall semester learning
     { date: '2024-01', value: 22, label: null, type: 'learning' }, // Continued learning
-    { date: '2024-03', value: 28, label: 'Bender Trust', type: 'competition', category: 'Competition' }, // Competition milestone
+    { date: '2024-03', value: 28, label: null, type: 'learning' }, // Spring semester
     { date: '2024-05', value: 35, label: null, type: 'learning' }, // Spring semester
-    { date: '2024-06', value: 42, label: 'OroGenie', type: 'project', category: 'Project' }, // Major project
-    { date: '2024-07', value: 70, label: 'Kaktus Financial Ops', type: 'internship', category: 'Internship' }, // LEVEL UP - Floor 2
+    { date: '2024-07', value: 70, label: 'OroGenie Platform', type: 'project', category: 'Project' }, // LEVEL UP - Floor 2
     { date: '2024-09', value: 71, label: null, type: 'sustain' }, // Sustain Floor 2 (kept skills)
     { date: '2024-11', value: 73, label: 'Algo Trading Bot', type: 'project', category: 'Project' }, // Building on Floor 2
     { date: '2025-01', value: 75, label: null, type: 'learning' }, // Continued growth
@@ -449,6 +424,19 @@ export const skillCategories: SkillCategory[] = [
 // Professional Experience Data
 export const professionalExperiences: Experience[] = [
   {
+    id: 'amazon1',
+    company: 'Amazon | Supply Chain Optimization Technologies',
+    position: 'Incoming Operations Analyst Intern',
+    location: 'Bellevue, WA',
+    startDate: 'May 2026',
+    endDate: 'Aug 2026',
+    bullets: [
+      'Incoming intern within Supply Chain Optimization Technologies',
+    ],
+    technologies: ['Supply Chain', 'Operations Optimization'],
+    brandColor: '#FF9900',
+  },
+  {
     id: '1',
     company: 'Rutgers School of Environmental and Biological Sciences',
     position: 'Data Analyst Internship',
@@ -457,11 +445,11 @@ export const professionalExperiences: Experience[] = [
     endDate: 'Dec 2025',
     logoUrl: '/images/experience_images/rutgers.png',
     bullets: [
-      'Owned the design and implementation of internal automation systems to eliminate manual verification across 300+ facilities, translating stakeholder workflows into scalable data validation pipelines',
-      'Re-architected backend workflows to replace legacy premium connectors with native solutions, reducing software licensing costs by 60% while preserving reliability and auditability',
-      'Built real-time progress tracking and automated notification systems to improve transparency and shorten verification cycles by 35%, aligning system behavior with operational needs',
+      'Eliminated 40+ annual hours of manual verification across 300+ facility nodes by engineering automated workflow pipelines, resolving semi-annual cycles and eliminating data entry errors impacting facility management',
+      'Expedited data verification cycle by 35% by implementing real-time progress tracking and automated stakeholder notifications',
     ],
     technologies: ['Power Automate', 'SharePoint', 'Data Validation', 'Process Automation'],
+    brandColor: '#CC0033',
   },
   {
     id: '2',
@@ -472,26 +460,12 @@ export const professionalExperiences: Experience[] = [
     endDate: 'Aug 2025',
     logoUrl: '/images/experience_images/moweb.png',
     bullets: [
-      'Stabilized production ETL pipelines by introducing robust null-handling and data quality checks in dbt-core, reducing recurring failures from 20+ per week to under one',
-      'Refactored data models and optimized Snowflake warehouse usage to reduce query latency by 40% for client-facing analytics workloads',
-      'Designed and integrated LLM-powered quality-check automation to assist with data reconciliation, reducing manual validation overhead and improving consistency across reporting datasets',
+      'Developed ETL workflows in dbt-core and SQL, fixing null conflicts and reducing pipeline failures from 20+ weekly to <1',
+      'Re-architected data infrastructure from MySQL to Snowflake, cutting query latency by 40% through optimized data models',
+      'Directed LLM integration across team workflows, designing workshops that decreased manual reconciliation time by 30%',
     ],
     technologies: ['Python', 'dbt-core', 'Snowflake', 'SQL'],
-  },
-  {
-    id: '3',
-    company: 'Kaktus Sportswear',
-    position: 'Financial Operations Internship',
-    location: 'Carlstadt, NJ',
-    startDate: 'Jul 2024',
-    endDate: 'Aug 2024',
-    logoUrl: '/images/experience_images/kaktus.png',
-    bullets: [
-      'Initiated cost structure analysis of shipping and inventory purchases, identifying inefficiencies leading to 15% cost reduction',
-      'Implemented month-end close process optimizations by implementing automated financial reconciliation, reducing processing time by 25% while eliminating manual errors and strengthening the accuracy of $300K+ monthly transaction reconciliations',
-      'Investigated vendor payment fluctuations to bolster audit readiness and mitigate risks associated with financial discrepancies',
-    ],
-    technologies: ['Excel', 'Financial Modeling', 'Process Optimization', 'Audit Readiness'],
+    brandColor: '#0066CC',
   },
 ]
 
@@ -500,7 +474,7 @@ export const portfolioProjects: Project[] = [
   {
     id: '7',
     name: 'Edgar Agent',
-    subtitle: 'SEC 10-K API & MCP Server',
+    subtitle: 'Architected a pay-per-request API for SEC 10-K data with an LLM extraction pipeline and MCP server integration.',
     duration: 'Jan 2026 – Present',
     bullets: [
       'Architected a pay-per-request API for SEC 10-K filings, returning schema-validated financial data and risk factors via a gated quote/nonce flow with cryptographic signature verification',
@@ -514,7 +488,7 @@ export const portfolioProjects: Project[] = [
   {
     id: '1',
     name: 'Algorithmic Stock Trading',
-    subtitle: 'Self-Guided, Volatility & Price Action-Based Strategies',
+    subtitle: 'Structured a Python trading bot with dynamic position sizing, achieving consistent risk-adjusted returns through backtesting.',
     duration: 'Nov 2024 – Present',
     bullets: [
       'Structured algorithmic trading bot using Python and Alpaca API, back tested daily across 100+ simulations, optimizing execution for risk-adjusted performance and capital efficiency',
@@ -528,7 +502,7 @@ export const portfolioProjects: Project[] = [
   {
     id: '3',
     name: 'GrindSheet',
-    subtitle: 'Social Fitness Analytics PWA',
+    subtitle: 'Launched a fitness tracking PWA with a streamlined logging flow, later iterating to a native iOS app with HealthKit integration.',
     duration: 'May 2025 – Aug 2025',
     bullets: [
       'Built a consumer-facing fitness analytics product focused on low-friction logging and social motivation, translating UX constraints into scalable application architecture',
@@ -544,7 +518,7 @@ export const portfolioProjects: Project[] = [
   {
     id: '4',
     name: 'Sunny – Live Insurance Co-Pilot',
-    subtitle: 'Microsoft Hackathon',
+    subtitle: 'Built a streaming insurance risk engine and RAG-enabled LLM co-pilot, processing live data sources with sub-2-second response times.',
     duration: 'Jun 2025',
     bullets: [
       'Pitched a proof-of-concept real-time risk engine to Microsoft judges, processing 6+ live data sources to model dynamic quotes',
@@ -559,7 +533,7 @@ export const portfolioProjects: Project[] = [
   {
     id: '5',
     name: 'Rutgers Shark Tank – "PerkPal"',
-    subtitle: 'Startup Competition Finalist',
+    subtitle: 'Led a team to build a live proof-of-concept rewards aggregation platform, securing a top 6 finish in a startup competition.',
     duration: 'Mar 2025',
     bullets: [
       'Led a cross-functional team of 3 to top 6 finish (from 30+ teams) by effectively balancing business strategy with technical execution',
@@ -575,7 +549,7 @@ export const portfolioProjects: Project[] = [
   {
     id: '2',
     name: 'OroGenie',
-    subtitle: 'Market Data Aggregation & Trading Analytics Platform',
+    subtitle: 'Engineered a full-stack financial analytics platform with real-time market data aggregation and SQL-driven portfolio analytics.',
     duration: 'Jun 2024 – Aug 2024',
     bullets: [
       'Engineered full-stack financial analytics platform using React and Flask, executing 500+ real-time transactions via WebSocket',
@@ -588,19 +562,7 @@ export const portfolioProjects: Project[] = [
     imageUrl: '/images/orogenieShot.png',
     logoUrl: '/images/logoImages/orogenieClear.png',
   },
-  {
-    id: '6',
-    name: 'Bender Trust – LIBOR Analysis',
-    subtitle: 'Financial Modeling & Risk Assessment',
-    duration: 'Mar 2024 – May 2024',
-    bullets: [
-      'Developed comprehensive LIBOR transition analysis model projecting 5-year impact on trust portfolios',
-      'Built financial projections analyzing interest rate scenarios and their effects on $50M+ asset portfolio',
-      'Presented findings to trust committee, informing strategic decisions on interest rate hedge positioning',
-    ],
-    technologies: ['Excel', 'Financial Modeling', 'Bloomberg Terminal'],
-    logoUrl: '/images/logoImages/benderTrustClear.png',
-  },
+
 ]
 
 // Education Data
