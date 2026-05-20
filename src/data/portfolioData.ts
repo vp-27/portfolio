@@ -430,6 +430,7 @@ export const professionalExperiences: Experience[] = [
     location: 'Bellevue, WA',
     startDate: 'May 2026',
     endDate: 'Aug 2026',
+    logoUrl: '/images/experience_images/amazon.png',
     bullets: [
       'Incoming intern within Supply Chain Optimization Technologies',
     ],
