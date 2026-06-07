@@ -12,29 +12,57 @@ import type { ChartDataPoint } from '../types'
 
 export default function Dashboard() {
   const [timeRange, setTimeRange] = useState('ALL')
-  const [highlightedItem, setHighlightedItem] = useState<string | null>(null)
+  const [highlightedItem, setHighlightedItem] = useState<{ type: 'experience' | 'project' | 'education'; id: string } | null>(null)
   const [hoveredPoint, setHoveredPoint] = useState<ChartDataPoint | null>(null)
+  const [hoveredCardMilestone, setHoveredCardMilestone] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [isContactHighlighted, setIsContactHighlighted] = useState(false)
 
   // Milestone to Experience/Project mapping
   const milestoneMap = useMemo(() => ({
-    'Bender Trust': { type: 'project' as const, id: '6' },
-    'OroGenie': { type: 'project' as const, id: '2' },
-    'Kaktus Financial Ops': { type: 'experience' as const, id: '3' },
+    'OroGenie Platform': { type: 'project' as const, id: '2' },
     'Algo Trading Bot': { type: 'project' as const, id: '1' },
     'Shark Tank Top 6': { type: 'project' as const, id: '5' },
     'GrindSheet': { type: 'project' as const, id: '3' },
-    'Edgar Agent': { type: 'project' as const, id: '7' },
     'Sunny Insurance': { type: 'project' as const, id: '4' },
     'Moweb Data Team': { type: 'experience' as const, id: '2' },
     'SEBS Data Analyst': { type: 'experience' as const, id: '1' },
+    'Edgar Agent': { type: 'project' as const, id: '7' },
+    'Started Rutgers': { type: 'education' as const, id: '1' },
+    'Amazon SCOT': { type: 'experience' as const, id: 'amazon1' },
   }), [])
 
   // Filter chart data based on selected time range
   const chartData = useMemo(() => {
     return filterTimelineData(timeRange)
   }, [timeRange])
+
+  const hoveredChartItem = useMemo(() => {
+    if (!hoveredPoint?.label) return null
+    return milestoneMap[hoveredPoint.label as keyof typeof milestoneMap] || null
+  }, [hoveredPoint, milestoneMap])
+
+  const cardHoveredPoint = useMemo(() => {
+    if (!hoveredCardMilestone) return null
+    return chartData.find(pt => pt.label === hoveredCardMilestone) || null
+  }, [hoveredCardMilestone, chartData])
+
+  const activeHoveredPoint = hoveredPoint || cardHoveredPoint
+
+  const handleItemHover = (type: 'experience' | 'project' | 'education', id: string | null) => {
+    if (!id) {
+      setHoveredCardMilestone(null)
+      return
+    }
+    const entry = Object.entries(milestoneMap).find(
+      ([_, val]) => val.type === type && val.id === id
+    )
+    if (entry) {
+      setHoveredCardMilestone(entry[0])
+    } else {
+      setHoveredCardMilestone(null)
+    }
+  }
 
   const handleChartPointHover = (point: ChartDataPoint | null) => {
     setHoveredPoint(point)
@@ -106,10 +134,12 @@ export default function Dashboard() {
   }
 
   // Scroll to element by data attribute
-  const scrollToElement = (type: 'experience' | 'project', id: string) => {
+  const scrollToElement = (type: 'experience' | 'project' | 'education', id: string) => {
     const selector = type === 'experience'
       ? `[data-experience-id="${id}"]`
-      : `[data-project-id="${id}"]`
+      : type === 'project'
+      ? `[data-project-id="${id}"]`
+      : `[data-section="education"]`
 
     const allElements = document.querySelectorAll(selector)
 
@@ -136,38 +166,20 @@ export default function Dashboard() {
   const navigateToItem = (label: string) => {
     if (!label) return
 
-    // Map chart milestones to search terms for highlighting
-    const milestoneMapForHighlight: Record<string, string> = {
-      'Bender Trust': 'Bender',
-      'OroGenie': 'OroGenie',
-      'Kaktus Financial Ops': 'Kaktus',
-      'Algo Trading Bot': 'Algorithmic',
-      'Shark Tank Top 6': 'Shark Tank',
-      'GrindSheet': 'GrindSheet',
-      'Edgar Agent': 'Edgar',
-      'Sunny Insurance': 'Sunny',
-      'Moweb Data Team': 'Moweb',
-      'SEBS Data Analyst': 'Rutgers',
-    }
-
-    const searchTerm = milestoneMapForHighlight[label]
-    if (searchTerm) {
+    const mapping = milestoneMap[label as keyof typeof milestoneMap]
+    if (mapping) {
       // Set highlighted item to trigger glow animation
-      setHighlightedItem(searchTerm)
+      setHighlightedItem(mapping)
 
-      // Get the mapping for this milestone
-      const mapping = milestoneMap[label as keyof typeof milestoneMap]
-      if (mapping) {
-        // Scroll to the element
-        setTimeout(() => {
-          scrollToElement(mapping.type, mapping.id)
-        }, 50)
+      // Scroll to the element
+      setTimeout(() => {
+        scrollToElement(mapping.type, mapping.id)
+      }, 50)
 
-        // Clear highlight after animation completes
-        setTimeout(() => {
-          setHighlightedItem(null)
-        }, 9000)
-      }
+      // Clear highlight after animation completes
+      setTimeout(() => {
+        setHighlightedItem(null)
+      }, 9000)
     }
   }
 
@@ -197,7 +209,7 @@ export default function Dashboard() {
           <div className="lg:grid lg:grid-cols-[1fr,400px] lg:gap-6">
             <div>
               <div className="md:px-4">
-                <PortfolioHeader portfolio={portfolioSummary} hoveredPoint={hoveredPoint} />
+                <PortfolioHeader portfolio={portfolioSummary} hoveredPoint={activeHoveredPoint} />
               </div>
               <div>
                 <PortfolioChart
@@ -206,6 +218,7 @@ export default function Dashboard() {
                   onPointClick={handleChartPointClick}
                   onPointHover={handleChartPointHover}
                   onScrubEnd={handleScrubEnd}
+                  hoveredMilestoneLabel={hoveredCardMilestone}
                 />
               </div>
               <div className="px-4 md:px-4">
@@ -247,7 +260,9 @@ export default function Dashboard() {
                   projects={portfolioProjects}
                   education={portfolioEducation}
                   highlightedItem={highlightedItem}
+                  hoveredItem={hoveredChartItem}
                   searchQuery={searchQuery}
+                  onItemHover={handleItemHover}
                 />
               </div>
 

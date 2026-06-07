@@ -134,21 +134,22 @@ const generateCareerTimelineData = (): ChartDataPoint[] => {
   // Career milestones - values represent skill/experience PLATEAUS
   // Pattern: Gradual rise → SPIKE UP at achievement → SUSTAIN at new plateau → Continue building
   const milestones = [
-    { date: '2023-09', value: 15, label: 'Started Rutgers', type: 'start', category: 'Education' },
-    { date: '2023-12', value: 20, label: null, type: 'learning' }, // Fall semester learning
-    { date: '2024-01', value: 22, label: null, type: 'learning' }, // Continued learning
-    { date: '2024-03', value: 28, label: null, type: 'learning' }, // Spring semester
-    { date: '2024-05', value: 35, label: null, type: 'learning' }, // Spring semester
-    { date: '2024-07', value: 70, label: 'OroGenie Platform', type: 'project', category: 'Project' }, // LEVEL UP - Floor 2
-    { date: '2024-09', value: 71, label: null, type: 'sustain' }, // Sustain Floor 2 (kept skills)
-    { date: '2024-11', value: 73, label: 'Algo Trading Bot', type: 'project', category: 'Project' }, // Building on Floor 2
-    { date: '2025-01', value: 75, label: null, type: 'learning' }, // Continued growth
-    { date: '2025-03', value: 80, label: 'Shark Tank Top 6', type: 'competition', category: 'Competition' }, // Competition boost
-    { date: '2025-05', value: 83, label: 'GrindSheet', type: 'project', category: 'Project' }, // Project
-    { date: '2025-06', value: 85, label: 'Sunny Insurance', type: 'project', category: 'Hackathon' }, // Hackathon
-    { date: '2025-07', value: 95, label: 'Moweb Data Team', type: 'internship', category: 'Internship' }, // LEVEL UP - Floor 3
-    { date: '2025-09', value: 100, label: 'SEBS Data Analyst', type: 'internship', category: 'Internship' }, // LEVEL UP - Floor 4 (current)
-    { date: '2026-01', value: 105, label: 'Edgar Agent', type: 'project', category: 'Project' }, // New Project
+    { date: '2023-09', value: 20, label: 'Started Rutgers', type: 'start', category: 'Education' },
+    { date: '2023-12', value: 23, label: null, type: 'learning' }, // Fall semester learning
+    { date: '2024-01', value: 24, label: null, type: 'learning' }, // Continued learning
+    { date: '2024-03', value: 26, label: null, type: 'learning' }, // Spring semester
+    { date: '2024-05', value: 28, label: null, type: 'learning' }, // Spring semester
+    { date: '2024-07', value: 38, label: 'OroGenie Platform', type: 'project', category: 'Project' }, // LEVEL UP - Floor 2
+    { date: '2024-09', value: 39, label: null, type: 'sustain' }, // Sustain Floor 2 (kept skills)
+    { date: '2024-11', value: 44, label: 'Algo Trading Bot', type: 'project', category: 'Project' }, // Building on Floor 2
+    { date: '2025-01', value: 46, label: null, type: 'learning' }, // Continued growth
+    { date: '2025-03', value: 52, label: 'Shark Tank Top 6', type: 'competition', category: 'Competition' }, // Competition boost
+    { date: '2025-05', value: 57, label: 'GrindSheet', type: 'project', category: 'Project' }, // Project
+    { date: '2025-06', value: 62, label: 'Sunny Insurance', type: 'project', category: 'Hackathon' }, // Hackathon
+    { date: '2025-07', value: 87, label: 'Moweb Data Team', type: 'internship', category: 'Internship' }, // LEVEL UP - Floor 3
+    { date: '2025-09', value: 107, label: 'SEBS Data Analyst', type: 'internship', category: 'Internship' }, // LEVEL UP - Floor 4 (current)
+    { date: '2026-01', value: 114, label: 'Edgar Agent', type: 'project', category: 'Project' }, // New Project
+    { date: '2026-05', value: 142, label: 'Amazon SCOT', type: 'internship', category: 'Internship' }, // Incoming Internship
   ]
 
   // Generate curve with step-change growth pattern
@@ -247,10 +248,10 @@ const generateCareerTimelineData = (): ChartDataPoint[] => {
     category: (lastMilestone as any).category || undefined
   })
 
-  // Continue from last milestone to current date (January 2026)
+  // Continue from last milestone to current date (June 2026)
   const [lastYear, lastMonth] = lastMilestone.date.split('-').map(Number)
   const lastMilestoneDate = new Date(lastYear, lastMonth - 1)
-  const currentDate = new Date(2026, 0) // January 2026 (month is 0-indexed)
+  const currentDate = new Date(2026, 5) // June 2026 (month is 0-indexed)
 
   // Only add continuation if current date is after last milestone
   if (currentDate > lastMilestoneDate) {
@@ -288,33 +289,34 @@ const generateCareerTimelineData = (): ChartDataPoint[] => {
 // Filter timeline data by time range
 export const filterTimelineData = (range: string): ChartDataPoint[] => {
   const allData = generateCareerTimelineData()
+  const baseDate = new Date(2026, 5, 1) // June 1, 2026
 
   let startDate: Date
 
   switch (range) {
     case '1D':
-      // For career timeline with monthly data, show current month only
-      startDate = new Date(2025, 9, 1) // October 1, 2025
+      // Show current month
+      startDate = new Date(baseDate.getFullYear(), baseDate.getMonth(), 1)
       break
     case '1W':
-      // Show last 2 months for meaningful view
-      startDate = new Date(2025, 8, 1) // September 1, 2025
+      // Show last month to current
+      startDate = new Date(baseDate.getFullYear(), baseDate.getMonth() - 1, 1)
       break
     case '1M':
       // Last 1 month
-      startDate = new Date(2025, 8, 1) // September 1, 2025 (1 month back from Oct)
+      startDate = new Date(baseDate.getFullYear(), baseDate.getMonth() - 1, 1)
       break
     case '3M':
       // Last 3 months
-      startDate = new Date(2025, 6, 1) // July 1, 2025 (3 months back from Oct)
+      startDate = new Date(baseDate.getFullYear(), baseDate.getMonth() - 3, 1)
       break
     case 'YTD':
-      // Year to date (2025)
-      startDate = new Date(2025, 0, 1) // January 1, 2025
+      // Year to date (2026)
+      startDate = new Date(baseDate.getFullYear(), 0, 1)
       break
     case '1Y':
       // Last year
-      startDate = new Date(2024, 9, 1) // October 1, 2024
+      startDate = new Date(baseDate.getFullYear() - 1, baseDate.getMonth(), 1)
       break
     case 'ALL':
     default:

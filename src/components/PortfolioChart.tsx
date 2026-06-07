@@ -8,9 +8,10 @@ interface PortfolioChartProps {
   onPointClick?: (point: ChartDataPoint) => void
   onPointHover?: (point: ChartDataPoint | null) => void
   onScrubEnd?: () => void
+  hoveredMilestoneLabel?: string | null
 }
 
-export default function PortfolioChart({ data, isPositive, onPointClick, onPointHover, onScrubEnd }: PortfolioChartProps) {
+export default function PortfolioChart({ data, isPositive, onPointClick, onPointHover, onScrubEnd, hoveredMilestoneLabel }: PortfolioChartProps) {
   const strokeColor = isPositive ? '#00C805' : '#FF5000'
   const chartRef = useRef<HTMLDivElement>(null)
   const [snappedIndex, setSnappedIndex] = useState<number | null>(null)
@@ -23,6 +24,18 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
   // Snap threshold - distance in pixels to trigger snapping
   // Use larger threshold on touch devices for better UX
   const snapThreshold = typeof window !== 'undefined' && 'ontouchstart' in window ? 20 : 10
+
+  // Sync snappedIndex with external hoveredMilestoneLabel prop
+  useEffect(() => {
+    if (hoveredMilestoneLabel) {
+      const idx = data.findIndex(p => p.label === hoveredMilestoneLabel)
+      if (idx !== -1) {
+        setSnappedIndex(idx)
+        return
+      }
+    }
+    setSnappedIndex(null)
+  }, [hoveredMilestoneLabel, data])
 
   // Find the nearest milestone within snap threshold
   const findNearestMilestone = useCallback((event: any, chartData: any): ChartDataPoint | null => {
@@ -163,15 +176,45 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
       const dotRadius = isArmed ? 11 : isHovered ? 6 : 4
       const strokeWidth = isArmed ? 3 : isHovered ? 2 : 1.5
       return (
-        <circle
-          cx={cx}
-          cy={cy}
-          r={dotRadius}
-          fill={dotColor}
-          stroke="#000"
-          strokeWidth={strokeWidth}
-          className="cursor-pointer hover:r-6 transition-all duration-150"
-        />
+        <g>
+          <circle
+            cx={cx}
+            cy={cy}
+            r={dotRadius}
+            fill={dotColor}
+            stroke="#000"
+            strokeWidth={strokeWidth}
+            className="cursor-pointer hover:r-6 transition-all duration-150"
+          />
+          {(isHovered || isArmed) && (
+            <g className="pointer-events-none select-none">
+              <rect
+                x={cx - 22}
+                y={cy - 32}
+                width={44}
+                height={18}
+                rx={9}
+                fill="#C9A227"
+              />
+              <polygon
+                points={`${cx - 4},${cy - 14} ${cx + 4},${cy - 14} ${cx},${cy - 10}`}
+                fill="#C9A227"
+              />
+              <text
+                x={cx}
+                y={cy - 23}
+                textAnchor="middle"
+                dominantBaseline="central"
+                fill="#000"
+                fontSize="9px"
+                fontWeight="800"
+                fontFamily="system-ui, -apple-system, sans-serif"
+              >
+                VISIT
+              </text>
+            </g>
+          )}
+        </g>
       )
     }
     return null

@@ -6,7 +6,9 @@ import type { Experience } from '../types'
 interface ExperienceItemProps {
   experience: Experience
   isHighlighted?: boolean
+  isHovered?: boolean
   isLast?: boolean
+  onHover?: (isHovered: boolean) => void
 }
 
 // Get first letter for icon fallback
@@ -14,7 +16,7 @@ const getInitials = (company: string) => {
   return company.charAt(0).toUpperCase()
 }
 
-export default function ExperienceItem({ experience, isHighlighted, isLast = false }: ExperienceItemProps) {
+export default function ExperienceItem({ experience, isHighlighted, isHovered = false, isLast = false, onHover }: ExperienceItemProps) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [showGlow, setShowGlow] = useState(false)
   const itemRef = useRef<HTMLDivElement>(null)
@@ -47,22 +49,24 @@ export default function ExperienceItem({ experience, isHighlighted, isLast = fal
     <div
       ref={itemRef}
       data-experience-id={experience.id}
+      onMouseEnter={() => onHover?.(true)}
+      onMouseLeave={() => onHover?.(false)}
       className={`
         py-3 relative
         ${isLast ? '' : 'border-b border-[#2C2C2E]'}
         transition-all duration-300
       `}
       style={{
-        boxShadow: showGlow
+        boxShadow: showGlow || isHovered
           ? '0 0 20px rgba(201, 162, 39, 0.4), inset 0 0 20px rgba(201, 162, 39, 0.1)'
           : 'none',
-        borderRadius: showGlow ? '12px' : '0',
-        margin: showGlow ? '0 -8px' : '0',
-        padding: showGlow ? '12px 8px' : undefined,
+        borderRadius: showGlow || isHovered ? '12px' : '0',
+        margin: showGlow || isHovered ? '0 -8px' : '0',
+        padding: showGlow || isHovered ? '12px 8px' : undefined,
       }}
     >
       {/* Gold glow overlay */}
-      {showGlow && (
+      {(showGlow || isHovered) && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

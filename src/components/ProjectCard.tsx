@@ -6,10 +6,12 @@ import type { Project } from '../types'
 interface ProjectCardProps {
   project: Project
   isHighlighted?: boolean
+  isHovered?: boolean
   disableLayoutAnimation?: boolean
+  onHover?: (isHovered: boolean) => void
 }
 
-export default function ProjectCard({ project, isHighlighted, disableLayoutAnimation = false }: ProjectCardProps) {
+export default function ProjectCard({ project, isHighlighted, isHovered = false, disableLayoutAnimation = false, onHover }: ProjectCardProps) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [showGlow, setShowGlow] = useState(false)
   const wasHighlighted = useRef(false)
@@ -41,16 +43,18 @@ export default function ProjectCard({ project, isHighlighted, disableLayoutAnima
       transition={disableLayoutAnimation ? undefined : { layout: { type: 'tween', ease: 'easeOut', duration: 0.22 } }}
       data-project-id={project.id}
       onClick={() => setIsExpanded(!isExpanded)}
+      onMouseEnter={() => onHover?.(true)}
+      onMouseLeave={() => onHover?.(false)}
       className="bg-[#1E2124] rounded-2xl overflow-hidden cursor-pointer transition-colors duration-200 hover:bg-[#2A2D31] relative"
       style={{
-        boxShadow: showGlow
+        boxShadow: showGlow || isHovered
           ? '0 0 25px rgba(201, 162, 39, 0.5), inset 0 0 25px rgba(201, 162, 39, 0.1)'
           : 'none',
-        border: showGlow ? '1px solid rgba(201, 162, 39, 0.4)' : '1px solid transparent',
+        border: showGlow || isHovered ? '1px solid rgba(201, 162, 39, 0.4)' : '1px solid transparent',
       }}
     >
       {/* Gold glow overlay */}
-      {showGlow && (
+      {(showGlow || isHovered) && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
