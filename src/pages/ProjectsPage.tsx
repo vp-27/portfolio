@@ -18,7 +18,7 @@ export default function ProjectsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black text-white pb-20">
       {/* Header */}
       <div className="sticky top-0 bg-black/95 backdrop-blur-sm z-10">
         <div className="relative flex items-center justify-center px-4 py-4">

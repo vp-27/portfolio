@@ -38,12 +38,12 @@ export default function PortfolioSections({ experiences, projects, education, hi
     <div className="mt-10 space-y-8">
       {/* Professional Experience Section */}
       <div data-section="experience">
-        <div className="flex items-center">
-          <h2 className="text-2xl font-medium text-left">Professional Experience</h2>
-          <Link to="/experience" className="lg:hidden flex items-center">
-            <ChevronRight className="w-5 h-5 text-gray-400" />
-          </Link>
-        </div>
+        <Link to="/experience" className="inline-flex items-center group/header lg:pointer-events-none select-none">
+          <h2 className="text-2xl font-medium text-left text-white group-hover/header:text-[#00C805] lg:group-hover/header:text-white transition-colors flex items-center gap-1">
+            Professional Experience
+            <ChevronRight className="lg:hidden w-5 h-5 text-gray-400 group-hover/header:text-[#00C805] transition-colors mt-0.5" />
+          </h2>
+        </Link>
         <div className="hidden lg:block border-b border-[#2D2D2D] mt-2 mb-1" />
         <div className="lg:hidden mb-3" />
         {filteredExperiences.length === 0 && searchQuery ? (
@@ -70,12 +70,12 @@ export default function PortfolioSections({ experiences, projects, education, hi
 
       {/* Projects Section */}
       <div data-section="projects">
-        <div className="flex items-center">
-          <h2 className="text-2xl font-medium text-left">Projects</h2>
-          <Link to="/projects" className="lg:hidden flex items-center">
-            <ChevronRight className="w-5 h-5 text-gray-400" />
-          </Link>
-        </div>
+        <Link to="/projects" className="inline-flex items-center group/header lg:pointer-events-none select-none">
+          <h2 className="text-2xl font-medium text-left text-white group-hover/header:text-[#00C805] lg:group-hover/header:text-white transition-colors flex items-center gap-1">
+            Projects
+            <ChevronRight className="lg:hidden w-5 h-5 text-gray-400 group-hover/header:text-[#00C805] transition-colors mt-0.5" />
+          </h2>
+        </Link>
         <div className="hidden lg:block border-b border-[#2D2D2D] mt-2 mb-3" />
         <div className="lg:hidden mb-3" />
         {filteredProjects.length === 0 && searchQuery ? (
@@ -102,12 +102,12 @@ export default function PortfolioSections({ experiences, projects, education, hi
 
       {/* Education Section */}
       <div data-section="education">
-        <div className="flex items-center">
-          <h2 className="text-2xl font-medium text-left">Education</h2>
-          <Link to="/education" className="lg:hidden flex items-center">
-            <ChevronRight className="w-5 h-5 text-gray-400" />
-          </Link>
-        </div>
+        <Link to="/education" className="inline-flex items-center group/header lg:pointer-events-none select-none">
+          <h2 className="text-2xl font-medium text-left text-white group-hover/header:text-[#00C805] lg:group-hover/header:text-white transition-colors flex items-center gap-1">
+            Education
+            <ChevronRight className="lg:hidden w-5 h-5 text-gray-400 group-hover/header:text-[#00C805] transition-colors mt-0.5" />
+          </h2>
+        </Link>
         <div className="hidden lg:block border-b border-[#2D2D2D] mt-2 mb-1" />
         <div className="lg:hidden mb-3" />
         <div>
