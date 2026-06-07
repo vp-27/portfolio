@@ -175,6 +175,19 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
       const dotColor = isArmed || isHovered ? '#C9A227' : strokeColor
       const dotRadius = isArmed ? 11 : isHovered ? 6 : 4
       const strokeWidth = isArmed ? 3 : isHovered ? 2 : 1.5
+
+      // Calculate width and boundaries of the tooltip to prevent cutoff
+      const bubbleWidth = 44
+      const halfWidth = bubbleWidth / 2
+      const chartWidth = chartRef.current?.offsetWidth || 300
+      
+      // Clamp x coordinates to prevent clipping on the sides (left/right margins)
+      const rectX = Math.max(8, Math.min(chartWidth - bubbleWidth - 8, cx - halfWidth))
+      
+      // Determine if tooltip should be shown below the dot to prevent clipping at the top
+      // cy is close to the top if cy < 40
+      const showBelow = cy < 40
+
       return (
         <g>
           <circle
@@ -188,30 +201,61 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
           />
           {(isHovered || isArmed) && (
             <g className="pointer-events-none select-none">
-              <rect
-                x={cx - 22}
-                y={cy - 32}
-                width={44}
-                height={18}
-                rx={9}
-                fill="#C9A227"
-              />
-              <polygon
-                points={`${cx - 4},${cy - 14} ${cx + 4},${cy - 14} ${cx},${cy - 10}`}
-                fill="#C9A227"
-              />
-              <text
-                x={cx}
-                y={cy - 23}
-                textAnchor="middle"
-                dominantBaseline="central"
-                fill="#000"
-                fontSize="9px"
-                fontWeight="800"
-                fontFamily="system-ui, -apple-system, sans-serif"
-              >
-                VISIT
-              </text>
+              {showBelow ? (
+                <>
+                  <rect
+                    x={rectX}
+                    y={cy + 14}
+                    width={bubbleWidth}
+                    height={18}
+                    rx={9}
+                    fill="#C9A227"
+                  />
+                  <polygon
+                    points={`${cx - 4},${cy + 14} ${cx + 4},${cy + 14} ${cx},${cy + 10}`}
+                    fill="#C9A227"
+                  />
+                  <text
+                    x={rectX + halfWidth}
+                    y={cy + 23}
+                    textAnchor="middle"
+                    dominantBaseline="central"
+                    fill="#000"
+                    fontSize="9px"
+                    fontWeight="800"
+                    fontFamily="system-ui, -apple-system, sans-serif"
+                  >
+                    VISIT
+                  </text>
+                </>
+              ) : (
+                <>
+                  <rect
+                    x={rectX}
+                    y={cy - 32}
+                    width={bubbleWidth}
+                    height={18}
+                    rx={9}
+                    fill="#C9A227"
+                  />
+                  <polygon
+                    points={`${cx - 4},${cy - 14} ${cx + 4},${cy - 14} ${cx},${cy - 10}`}
+                    fill="#C9A227"
+                  />
+                  <text
+                    x={rectX + halfWidth}
+                    y={cy - 23}
+                    textAnchor="middle"
+                    dominantBaseline="central"
+                    fill="#000"
+                    fontSize="9px"
+                    fontWeight="800"
+                    fontFamily="system-ui, -apple-system, sans-serif"
+                  >
+                    VISIT
+                  </text>
+                </>
+              )}
             </g>
           )}
         </g>

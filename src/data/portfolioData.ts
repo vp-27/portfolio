@@ -134,22 +134,22 @@ const generateCareerTimelineData = (): ChartDataPoint[] => {
   // Career milestones - values represent skill/experience PLATEAUS
   // Pattern: Gradual rise → SPIKE UP at achievement → SUSTAIN at new plateau → Continue building
   const milestones = [
-    { date: '2023-09', value: 20, label: 'Started Rutgers', type: 'start', category: 'Education' },
-    { date: '2023-12', value: 23, label: null, type: 'learning' }, // Fall semester learning
-    { date: '2024-01', value: 24, label: null, type: 'learning' }, // Continued learning
-    { date: '2024-03', value: 26, label: null, type: 'learning' }, // Spring semester
-    { date: '2024-05', value: 28, label: null, type: 'learning' }, // Spring semester
-    { date: '2024-07', value: 38, label: 'OroGenie Platform', type: 'project', category: 'Project' }, // LEVEL UP - Floor 2
-    { date: '2024-09', value: 39, label: null, type: 'sustain' }, // Sustain Floor 2 (kept skills)
-    { date: '2024-11', value: 44, label: 'Algo Trading Bot', type: 'project', category: 'Project' }, // Building on Floor 2
-    { date: '2025-01', value: 46, label: null, type: 'learning' }, // Continued growth
-    { date: '2025-03', value: 52, label: 'Shark Tank Top 6', type: 'competition', category: 'Competition' }, // Competition boost
-    { date: '2025-05', value: 57, label: 'GrindSheet', type: 'project', category: 'Project' }, // Project
-    { date: '2025-06', value: 62, label: 'Sunny Insurance', type: 'project', category: 'Hackathon' }, // Hackathon
-    { date: '2025-07', value: 87, label: 'Moweb Data Team', type: 'internship', category: 'Internship' }, // LEVEL UP - Floor 3
-    { date: '2025-09', value: 107, label: 'SEBS Data Analyst', type: 'internship', category: 'Internship' }, // LEVEL UP - Floor 4 (current)
-    { date: '2026-01', value: 114, label: 'Edgar Agent', type: 'project', category: 'Project' }, // New Project
-    { date: '2026-05', value: 142, label: 'Amazon SCOT', type: 'internship', category: 'Internship' }, // Incoming Internship
+    { date: '2023-09', value: 30, label: 'Started Rutgers', type: 'start', category: 'Education' },
+    { date: '2023-12', value: 34, label: null, type: 'learning' }, // Fall semester learning
+    { date: '2024-01', value: 36, label: null, type: 'learning' }, // Continued learning
+    { date: '2024-03', value: 38, label: null, type: 'learning' }, // Spring semester
+    { date: '2024-05', value: 40, label: null, type: 'learning' }, // Spring semester
+    { date: '2024-07', value: 60, label: 'OroGenie Platform', type: 'project', category: 'Project' }, // LEVEL UP - Floor 2
+    { date: '2024-09', value: 62, label: null, type: 'sustain' }, // Sustain Floor 2 (kept skills)
+    { date: '2024-11', value: 72, label: 'Algo Trading Bot', type: 'project', category: 'Project' }, // Building on Floor 2
+    { date: '2025-01', value: 74, label: null, type: 'learning' }, // Continued growth
+    { date: '2025-03', value: 84, label: 'Shark Tank Top 6', type: 'competition', category: 'Competition' }, // Competition boost
+    { date: '2025-05', value: 92, label: 'GrindSheet', type: 'project', category: 'Project' }, // Project
+    { date: '2025-06', value: 98, label: 'Sunny Insurance', type: 'project', category: 'Hackathon' }, // Hackathon
+    { date: '2025-07', value: 125, label: 'Moweb Data Team', type: 'internship', category: 'Internship' }, // LEVEL UP - Floor 3
+    { date: '2025-09', value: 145, label: 'SEBS Data Analyst', type: 'internship', category: 'Internship' }, // LEVEL UP - Floor 4 (current)
+    { date: '2026-01', value: 155, label: 'Edgar Agent', type: 'project', category: 'Project' }, // New Project
+    { date: '2026-05', value: 185, label: 'Amazon SCOT', type: 'internship', category: 'Internship' }, // Incoming Internship
   ]
 
   // Generate curve with step-change growth pattern
