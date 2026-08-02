@@ -92,7 +92,40 @@ export function processAIQuery(query: string): AIQueryResult {
     }
   }
 
-  // 5. Rutgers / Education / Honors College
+  // 5. GrindSheet
+  if (q.includes('grindsheet') || q.includes('habit') || q.includes('workout') || q.includes('productivity')) {
+    return {
+      answer: "GrindSheet is an automated workout, habit tracking, and productivity dashboard built by Vandan in React and TypeScript.",
+      milestoneLabel: 'GrindSheet',
+      targetType: 'project',
+      targetId: '3',
+      suggestedChips: ['Tell me about OroGenie Platform', 'Tell me about Sunny Insurance', 'View CS Resume']
+    }
+  }
+
+  // 6. Sunny Insurance
+  if (q.includes('sunny') || q.includes('insurance')) {
+    return {
+      answer: "Sunny Insurance is a web application developed by Vandan for policy management, automated quote estimations, and customer workflows.",
+      milestoneLabel: 'Sunny Insurance',
+      targetType: 'project',
+      targetId: '4',
+      suggestedChips: ['Tell me about GrindSheet', 'Tell me about Amazon SCOT', 'View Skills']
+    }
+  }
+
+  // 7. Edgar Agent
+  if (q.includes('edgar') || q.includes('sec') || q.includes('10-k') || q.includes('filing')) {
+    return {
+      answer: "Edgar Agent is an AI-powered financial filing analyzer built by Vandan that parses SEC EDGAR filings for key investment metrics.",
+      milestoneLabel: 'Edgar Agent',
+      targetType: 'project',
+      targetId: '7',
+      suggestedChips: ['Tell me about Algo Trading Bot', 'View Finance Resume', 'Contact Vandan']
+    }
+  }
+
+  // 8. Rutgers / Education / Honors College
   if (q.includes('rutgers') || q.includes('education') || q.includes('gpa') || q.includes('college') || q.includes('degree') || q.includes('major') || q.includes('courses')) {
     return {
       answer: "Vandan attends Rutgers University - New Brunswick (Honors College), pursuing a triple focus in Computer Science, Finance, and Data Science.",
@@ -304,7 +337,19 @@ Answer the user's question concisely in 2-3 sentences, reflecting Vandan's quant
           let targetType: 'experience' | 'project' | 'education' | 'skills' | 'contact' | null = null
           let targetId: string | null = null
 
-          if (lowerAnswer.includes('amazon') || lowerQuery.includes('amazon') || lowerAnswer.includes('scot')) {
+          if (lowerAnswer.includes('grindsheet') || lowerQuery.includes('grindsheet')) {
+            milestoneLabel = 'GrindSheet'
+            targetType = 'project'
+            targetId = '3'
+          } else if (lowerAnswer.includes('sunny') || lowerQuery.includes('sunny')) {
+            milestoneLabel = 'Sunny Insurance'
+            targetType = 'project'
+            targetId = '4'
+          } else if (lowerAnswer.includes('edgar') || lowerQuery.includes('edgar')) {
+            milestoneLabel = 'Edgar Agent'
+            targetType = 'project'
+            targetId = '7'
+          } else if (lowerAnswer.includes('amazon') || lowerQuery.includes('amazon') || lowerAnswer.includes('scot')) {
             milestoneLabel = 'Amazon SCOT'
             targetType = 'experience'
             targetId = 'amazon1'
