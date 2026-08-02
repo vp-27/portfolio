@@ -52,18 +52,33 @@ export default function AIAnswerCard({ query, result, onChipClick, onAskCustom, 
         {result.answer}
       </p>
 
-      {/* Direct Action Link (e.g. Open Resume PDF, Email Vandan) */}
-      {result.actionUrl && (
-        <div className="mb-3">
-          <a
-            href={result.actionUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#00C805]/10 hover:bg-[#00C805]/20 border border-[#00C805]/40 text-xs text-[#00C805] font-semibold transition-colors"
-          >
-            <span>{result.actionLabel || 'Open Link'}</span>
-            <ExternalLink className="w-3.5 h-3.5" />
-          </a>
+      {/* Direct Action Links (e.g. Email, LinkedIn, GitHub, Resumes) */}
+      {((result.actionLinks && result.actionLinks.length > 0) || result.actionUrl) && (
+        <div className="flex flex-wrap gap-2 mb-3">
+          {result.actionLinks && result.actionLinks.length > 0 ? (
+            result.actionLinks.map((link, idx) => (
+              <a
+                key={idx}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#00C805]/10 hover:bg-[#00C805]/20 border border-[#00C805]/40 text-xs text-[#00C805] font-semibold transition-colors"
+              >
+                <span>{link.label}</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+            ))
+          ) : result.actionUrl ? (
+            <a
+              href={result.actionUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#00C805]/10 hover:bg-[#00C805]/20 border border-[#00C805]/40 text-xs text-[#00C805] font-semibold transition-colors"
+            >
+              <span>{result.actionLabel || 'Open Link'}</span>
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          ) : null}
         </div>
       )}
 
@@ -76,7 +91,7 @@ export default function AIAnswerCard({ query, result, onChipClick, onAskCustom, 
               onClick={() => onJumpToMilestone && onJumpToMilestone(label)}
               className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C9A227]/10 hover:bg-[#C9A227]/20 border border-[#C9A227]/40 text-xs text-[#C9A227] font-semibold transition-colors cursor-pointer"
             >
-              <span>Highlighted: {label}</span>
+              <span>Visit: {label}</span>
               <ArrowDown className="w-3 h-3 text-[#C9A227]" />
             </button>
           ))}

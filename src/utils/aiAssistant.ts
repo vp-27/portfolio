@@ -1,4 +1,9 @@
-import { professionalExperiences, portfolioProjects, portfolioEducation } from '../data/portfolioData'
+import { professionalExperiences, portfolioProjects, portfolioEducation, skillCategories, portfolioInterests } from '../data/portfolioData'
+
+export interface ActionLink {
+  label: string
+  url: string
+}
 
 export interface AIQueryResult {
   answer: string
@@ -8,6 +13,7 @@ export interface AIQueryResult {
   targetId: string | null
   actionUrl?: string
   actionLabel?: string
+  actionLinks?: ActionLink[]
   suggestedChips: string[]
 }
 
@@ -20,14 +26,20 @@ const defaultChips = [
 ]
 
 /**
- * Dynamically constructs site context directly from portfolioData.ts single source of truth.
- * No hardcoding required—updating portfolioData.ts automatically updates AI knowledge.
+ * Dynamically constructs complete site context directly from portfolioData.ts single source of truth.
+ * Covers About Me, Experiences, Projects, Education, Technical/Financial Skills, and Beyond the Terminal interests.
  */
 function getDynamicSiteContext(): string {
+  const bio = "Vandan Patel: Computer Science, Finance, and Data Science student at Rutgers Honors College (GPA 3.95). Incoming Operations Analyst Intern at Amazon SCOT (Supply Chain Optimization Technologies, Bellevue WA, Summer 2026). Quantitative builder creating FinTech tools, trading bots, and data pipelines."
+  
   const exps = professionalExperiences.map(e => `${e.company} (${e.position}, ${e.startDate}-${e.endDate}): ${e.bullets.join('; ')}`).join('\n')
   const projs = portfolioProjects.map(p => `${p.name} (${p.subtitle}): ${p.bullets.join('; ')}`).join('\n')
   const edu = portfolioEducation.map(ed => `${ed.institution} (${ed.degrees.join(', ')}, GPA ${ed.gpa}): ${ed.honors.join('; ')}`).join('\n')
-  return `Professional Experiences:\n${exps}\n\nProjects:\n${projs}\n\nEducation:\n${edu}`
+  
+  const skills = skillCategories.map(cat => `${cat.name}: ${cat.skills.map(s => s.name).join(', ')}`).join('\n')
+  const interests = portfolioInterests.map(i => `${i.name} (${i.category})`).join(', ')
+
+  return `About Me:\n${bio}\n\nProfessional Experiences:\n${exps}\n\nProjects:\n${projs}\n\nEducation & Honors:\n${edu}\n\nTechnical, Financial & Tool Skills:\n${skills}\n\nBeyond the Terminal (Interests & Hobbies):\n${interests}`
 }
 
 export function isNaturalLanguageQuery(query: string): boolean {
@@ -195,14 +207,32 @@ export function processAIQuery(query: string): AIQueryResult {
   }
 
   // 10. Contact / Socials / LinkedIn / GitHub / Email
-  if (q.includes('contact') || q.includes('email') || q.includes('linkedin') || q.includes('github') || q.includes('reach') || q.includes('hire')) {
+  if (q.includes('contact') || q.includes('email') || q.includes('linkedin') || q.includes('github') || q.includes('reach') || q.includes('social') || q.includes('connect') || q.includes('hire')) {
+    const actionLinks: ActionLink[] = []
+
+    if (q.includes('linkedin')) {
+      actionLinks.push({ label: 'LinkedIn Profile', url: 'https://linkedin.com/in/vandan-patel-vp' })
+    }
+    if (q.includes('github')) {
+      actionLinks.push({ label: 'GitHub Repository', url: 'https://github.com/vp-27' })
+    }
+    if (q.includes('email') || q.includes('contact') || q.includes('reach')) {
+      actionLinks.push({ label: 'Send Email to Vandan', url: 'mailto:vrp77@scarletmail.rutgers.edu' })
+    }
+    if (actionLinks.length === 0) {
+      actionLinks.push(
+        { label: 'Send Email', url: 'mailto:vrp77@scarletmail.rutgers.edu' },
+        { label: 'LinkedIn Profile', url: 'https://linkedin.com/in/vandan-patel-vp' },
+        { label: 'GitHub Profile', url: 'https://github.com/vp-27' }
+      )
+    }
+
     return {
-      answer: "You can reach Vandan via email at vrp77@scarletmail.rutgers.edu, connect on LinkedIn at linkedin.com/in/vandan-patel-vp, or check out his code at github.com/vp-27.",
+      answer: "You can connect with Vandan via email at vrp77@scarletmail.rutgers.edu, view his professional network on LinkedIn, or inspect his open-source software projects on GitHub.",
       milestoneLabel: null,
       targetType: 'contact',
       targetId: null,
-      actionUrl: 'mailto:vrp77@scarletmail.rutgers.edu',
-      actionLabel: 'Send Email to Vandan',
+      actionLinks,
       suggestedChips: ['View CS Resume', 'View Finance Resume', 'Tell me about Amazon SCOT']
     }
   }
@@ -380,12 +410,32 @@ Instructions:
 
           const uniqueLabels = Array.from(new Set(foundLabels))
 
+          // Extract ALL action links mentioned in query or response (LinkedIn, GitHub, Email, Resumes)
+          const actionLinks: ActionLink[] = []
+
+          if (lowerAnswer.includes('linkedin') || lowerQuery.includes('linkedin')) {
+            actionLinks.push({ label: 'LinkedIn Profile', url: 'https://linkedin.com/in/vandan-patel-vp' })
+          }
+          if (lowerAnswer.includes('github') || lowerQuery.includes('github')) {
+            actionLinks.push({ label: 'GitHub Profile', url: 'https://github.com/vp-27' })
+          }
+          if (lowerAnswer.includes('email') || lowerAnswer.includes('mailto') || lowerQuery.includes('email') || lowerQuery.includes('contact') || lowerQuery.includes('reach')) {
+            actionLinks.push({ label: 'Send Email to Vandan', url: 'mailto:vrp77@scarletmail.rutgers.edu' })
+          }
+          if (lowerQuery.includes('cs resume')) {
+            actionLinks.push({ label: 'Open CS Resume (PDF)', url: '/resumes/Vandan_Patel_CS.pdf' })
+          }
+          if (lowerQuery.includes('finance resume')) {
+            actionLinks.push({ label: 'Open Finance Resume (PDF)', url: '/resumes/Vandan_Patel_Finance.pdf' })
+          }
+
           return {
             answer: cleanAnswer,
             milestoneLabel: uniqueLabels.length > 0 ? uniqueLabels[0] : null,
             milestoneLabels: uniqueLabels,
             targetType: uniqueLabels.length > 0 ? 'experience' : null,
             targetId: null,
+            actionLinks: actionLinks.length > 0 ? actionLinks : undefined,
             suggestedChips: generateDynamicChips(query, cleanAnswer)
           }
         }
