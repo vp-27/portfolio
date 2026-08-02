@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Sparkles, X, ArrowRight, ArrowDown } from 'lucide-react'
+import { Sparkles, X, ArrowRight, ArrowDown, ExternalLink } from 'lucide-react'
 import type { AIQueryResult } from '../utils/aiAssistant'
 
 interface AIAnswerCardProps {
@@ -44,6 +44,21 @@ export default function AIAnswerCard({ query, result, onChipClick, onAskCustom, 
       <p className="text-sm text-gray-200 leading-relaxed font-normal mb-3">
         {result.answer}
       </p>
+
+      {/* Direct Action Link (e.g. Open Resume PDF, Email Vandan) */}
+      {result.actionUrl && (
+        <div className="mb-3">
+          <a
+            href={result.actionUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#00C805]/10 hover:bg-[#00C805]/20 border border-[#00C805]/40 text-xs text-[#00C805] font-semibold transition-colors"
+          >
+            <span>{result.actionLabel || 'Open Link'}</span>
+            <ExternalLink className="w-3.5 h-3.5" />
+          </a>
+        </div>
+      )}
 
       {/* Action / Highlighted Status Badge with 1-Tap Jump */}
       {result.milestoneLabel && (

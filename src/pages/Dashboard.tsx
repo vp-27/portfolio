@@ -9,7 +9,7 @@ import PortfolioSections from '../components/PortfolioSections'
 import InterestsSection from '../components/InterestsSection'
 import AIAnswerCard from '../components/AIAnswerCard'
 import RobinhoodAILoader from '../components/RobinhoodAILoader'
-import { processAIQuery, type AIQueryResult } from '../utils/aiAssistant'
+import { processAIQueryAsync, type AIQueryResult } from '../utils/aiAssistant'
 import { portfolioSummary, filterTimelineData, skillCategories, professionalExperiences, portfolioProjects, portfolioEducation } from '../data/portfolioData'
 import type { ChartDataPoint } from '../types'
 
@@ -125,8 +125,8 @@ export default function Dashboard() {
     setAIResult(null)
 
     // Robinhood V-Shape Dot Matrix Loader plays for ~1.1s
-    aiTimerRef.current = window.setTimeout(() => {
-      const res = processAIQuery(q)
+    aiTimerRef.current = window.setTimeout(async () => {
+      const res = await processAIQueryAsync(q)
       setAIResult(res)
       setIsAILoading(false)
 
@@ -136,6 +136,13 @@ export default function Dashboard() {
           setHighlightedItem(mapping)
           setHoveredCardMilestone(res.milestoneLabel)
         }
+      } else if (res.targetType === 'resume_cs') {
+        window.open('/resumes/Vandan_Patel_CS.pdf', '_blank')
+      } else if (res.targetType === 'resume_finance') {
+        window.open('/resumes/Vandan_Patel_Finance.pdf', '_blank')
+      } else if (res.targetType === 'contact') {
+        setIsContactHighlighted(true)
+        setTimeout(() => setIsContactHighlighted(false), 3500)
       }
     }, 1100)
   }

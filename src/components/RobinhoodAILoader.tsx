@@ -20,7 +20,8 @@ export default function RobinhoodAILoader({ onComplete }: RobinhoodAILoaderProps
 
     const render = (now: number) => {
       const elapsed = now - startTime
-      const progress = Math.min(elapsed / duration, 1)
+      // Continuous repeating outward wave sweep
+      const progress = (elapsed % duration) / duration
 
       const width = canvas.width
       const height = canvas.height
@@ -79,11 +80,7 @@ export default function RobinhoodAILoader({ onComplete }: RobinhoodAILoaderProps
         }
       }
 
-      if (progress < 1) {
-        animationFrameId = requestAnimationFrame(render)
-      } else {
-        if (onComplete) onComplete()
-      }
+      animationFrameId = requestAnimationFrame(render)
     }
 
     // Handle resizing canvas
