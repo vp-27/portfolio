@@ -1,6 +1,7 @@
 import { Area, AreaChart, ResponsiveContainer, YAxis, Tooltip } from 'recharts'
 import { useRef, useCallback, useEffect, useState } from 'react'
 import type { ChartDataPoint } from '../types'
+import RobinhoodAILoader from './RobinhoodAILoader'
 
 interface PortfolioChartProps {
   data: ChartDataPoint[]
@@ -9,9 +10,10 @@ interface PortfolioChartProps {
   onPointHover?: (point: ChartDataPoint | null) => void
   onScrubEnd?: () => void
   hoveredMilestoneLabel?: string | null
+  isAILoading?: boolean
 }
 
-export default function PortfolioChart({ data, isPositive, onPointClick, onPointHover, onScrubEnd, hoveredMilestoneLabel }: PortfolioChartProps) {
+export default function PortfolioChart({ data, isPositive, onPointClick, onPointHover, onScrubEnd, hoveredMilestoneLabel, isAILoading = false }: PortfolioChartProps) {
   const strokeColor = isPositive ? '#00C805' : '#FF5000'
   const chartRef = useRef<HTMLDivElement>(null)
   const [snappedIndex, setSnappedIndex] = useState<number | null>(null)

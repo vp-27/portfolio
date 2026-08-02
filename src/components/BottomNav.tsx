@@ -24,9 +24,10 @@ const ChartIcon = ({ className, strokeWidth = 2 }: { className?: string; strokeW
 interface BottomNavProps {
   searchQuery?: string
   onSearch?: (query: string) => void
+  onAISubmit?: (query?: string) => void
 }
 
-export default function BottomNav({ searchQuery = '', onSearch }: BottomNavProps) {
+export default function BottomNav({ searchQuery = '', onSearch, onAISubmit }: BottomNavProps) {
   const navigate = useNavigate()
   const location = useLocation()
   const [isSearchOpen, setIsSearchOpen] = useState(false)
@@ -38,6 +39,13 @@ export default function BottomNav({ searchQuery = '', onSearch }: BottomNavProps
     setLocalQuery(val)
     if (onSearch) {
       onSearch(val)
+    }
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && onAISubmit) {
+      onAISubmit(localQuery)
+      setIsSearchOpen(false)
     }
   }
 
@@ -75,9 +83,10 @@ export default function BottomNav({ searchQuery = '', onSearch }: BottomNavProps
               <input
                 type="text"
                 autoFocus
-                placeholder="Search skills, projects, experience..."
+                placeholder="Search or ask anything..."
                 value={localQuery}
                 onChange={(e) => handleQueryChange(e.target.value)}
+                onKeyDown={handleKeyDown}
                 className="w-full bg-transparent text-white text-[16px] placeholder-gray-500 focus:outline-none"
               />
               {localQuery ? (
@@ -99,17 +108,21 @@ export default function BottomNav({ searchQuery = '', onSearch }: BottomNavProps
               )}
             </div>
 
-            {/* Quick Skill Tags */}
+            {/* Quick Skill & AI Tags */}
             <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar mt-2.5 pt-1">
               <span className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold mr-1 flex-shrink-0">
-                Quick Filters:
+                Ask AI / Filter:
               </span>
-              {quickChips.map((chip) => {
+              {['Amazon SCOT', 'Algo Trading', 'Why CS & Finance?', 'OroGenie', 'Rutgers', 'Python'].map((chip) => {
                 const isSelected = localQuery.toLowerCase() === chip.toLowerCase()
                 return (
                   <button
                     key={chip}
-                    onClick={() => handleChipClick(chip)}
+                    onClick={() => {
+                      handleChipClick(chip)
+                      if (onAISubmit) onAISubmit(chip)
+                      setIsSearchOpen(false)
+                    }}
                     className={`px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-colors ${
                       isSelected
                         ? 'bg-[#00C805] text-black font-bold'

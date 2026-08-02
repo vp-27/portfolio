@@ -3,6 +3,7 @@ import { ChevronRight } from 'lucide-react'
 import type { Experience, Project, Education } from '../types'
 import ExperienceItem from './ExperienceItem'
 import ProjectCard from './ProjectCard'
+import { isNaturalLanguageQuery } from '../utils/aiAssistant'
 
 interface PortfolioSectionsProps {
   experiences: Experience[]
@@ -18,6 +19,7 @@ export default function PortfolioSections({ experiences, projects, education, hi
   // Filter function for search
   const matchesSearch = (text: string) => {
     if (!searchQuery) return true
+    if (isNaturalLanguageQuery(searchQuery)) return true
     return text.toLowerCase().includes(searchQuery.toLowerCase())
   }
 

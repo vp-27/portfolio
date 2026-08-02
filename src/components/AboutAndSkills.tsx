@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronRight, Mail, ExternalLink } from 'lucide-react'
 import type { SkillCategory } from '../types'
 import SkillItem from './SkillItem'
+import { isNaturalLanguageQuery } from '../utils/aiAssistant'
 
 interface AboutAndSkillsProps {
   skillCategories: SkillCategory[]
@@ -66,7 +67,7 @@ export default function AboutAndSkills({
   const filteredSkillCategories = skillCategories.map(category => ({
     ...category,
     skills: category.skills.filter(skill =>
-      !searchQuery || skill.name.toLowerCase().includes(searchQuery.toLowerCase())
+      !searchQuery || isNaturalLanguageQuery(searchQuery) || skill.name.toLowerCase().includes(searchQuery.toLowerCase())
     )
   })).filter(category => category.skills.length > 0)
 

@@ -4,10 +4,11 @@ import { Search, FileText, ChevronDown } from 'lucide-react'
 interface TopNavProps {
   onNavigate?: (section: string) => void
   onSearch?: (query: string) => void
+  onAISubmit?: (query?: string) => void
   searchQuery?: string
 }
 
-export default function TopNav({ onNavigate, onSearch, searchQuery = '' }: TopNavProps) {
+export default function TopNav({ onNavigate, onSearch, onAISubmit, searchQuery = '' }: TopNavProps) {
   const [isResumeDropdownOpen, setIsResumeDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
@@ -20,6 +21,12 @@ export default function TopNav({ onNavigate, onSearch, searchQuery = '' }: TopNa
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (onSearch) {
       onSearch(e.target.value)
+    }
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && onAISubmit) {
+      onAISubmit(searchQuery)
     }
   }
 
@@ -70,9 +77,10 @@ export default function TopNav({ onNavigate, onSearch, searchQuery = '' }: TopNa
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
               <input
                 type="text"
-                placeholder="Search skills, projects, experiences..."
+                placeholder="Search or ask anything..."
                 value={searchQuery}
                 onChange={handleSearchChange}
+                onKeyDown={handleKeyDown}
                 className="w-full bg-[#1A1A1A] text-white placeholder-gray-500 pl-10 pr-4 py-2 rounded-md text-[16px] md:text-sm focus:outline-none focus:ring-1 focus:ring-gray-700"
               />
             </div>

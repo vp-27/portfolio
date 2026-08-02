@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useRef } from 'react'
 import TopNav from '../components/TopNav'
 import PortfolioHeader from '../components/PortfolioHeader'
 import PortfolioChart from '../components/PortfolioChart'
@@ -7,6 +7,9 @@ import BuyingPower from '../components/BuyingPower'
 import BottomNav from '../components/BottomNav'
 import PortfolioSections from '../components/PortfolioSections'
 import InterestsSection from '../components/InterestsSection'
+import AIAnswerCard from '../components/AIAnswerCard'
+import RobinhoodAILoader from '../components/RobinhoodAILoader'
+import { isNaturalLanguageQuery, processAIQuery, type AIQueryResult } from '../utils/aiAssistant'
 import { portfolioSummary, filterTimelineData, skillCategories, professionalExperiences, portfolioProjects, portfolioEducation } from '../data/portfolioData'
 import type { ChartDataPoint } from '../types'
 
@@ -17,6 +20,9 @@ export default function Dashboard() {
   const [hoveredCardMilestone, setHoveredCardMilestone] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [isContactHighlighted, setIsContactHighlighted] = useState(false)
+  const [isAILoading, setIsAILoading] = useState(false)
+  const [aiResult, setAIResult] = useState<AIQueryResult | null>(null)
+  const aiTimerRef = useRef<number | null>(null)
 
   // Milestone to Experience/Project mapping
   const milestoneMap = useMemo(() => ({
@@ -105,18 +111,53 @@ export default function Dashboard() {
     }, 50)
   }
 
-  // Handle search
-  const handleSearch = (query: string) => {
-    if (searchQuery === query) {
-      setSearchQuery('')
-    } else {
-      setSearchQuery(query)
-      if (query && window.innerWidth >= 768) {
-        // Automatically scroll to skills section when searching (Desktop only)
-        setTimeout(() => {
-          handleNavigate('skills')
-        }, 100)
+  // Execute AI processing on Enter key or Chip click
+  const handleAISubmit = (queryToSubmit?: string) => {
+    const q = queryToSubmit || searchQuery
+    if (!q) return
+
+    if (aiTimerRef.current) {
+      clearTimeout(aiTimerRef.current)
+    }
+
+    setSearchQuery(q)
+    setIsAILoading(true)
+    setAIResult(null)
+
+    // Robinhood V-Shape Dot Matrix Loader plays for ~1.1s
+    aiTimerRef.current = window.setTimeout(() => {
+      const res = processAIQuery(q)
+      setAIResult(res)
+      setIsAILoading(false)
+
+      if (res.milestoneLabel) {
+        navigateToItem(res.milestoneLabel)
+      } else if (res.targetType) {
+        handleNavigate(res.targetType)
       }
+    }, 1100)
+  }
+
+  // Handle live search typing
+  const handleSearch = (query: string) => {
+    if (!query) {
+      setSearchQuery('')
+      setAIResult(null)
+      setIsAILoading(false)
+      return
+    }
+
+    setSearchQuery(query)
+
+    // If query was cleared or shortened, reset AI answer card so page list shows live results
+    if (aiResult && !query.toLowerCase().includes(aiResult.answer.slice(0, 10).toLowerCase())) {
+      setAIResult(null)
+    }
+
+    if (window.innerWidth >= 768) {
+      setTimeout(() => {
+        handleNavigate('skills')
+      }, 100)
     }
   }
 
@@ -168,8 +209,9 @@ export default function Dashboard() {
 
     const mapping = milestoneMap[label as keyof typeof milestoneMap]
     if (mapping) {
-      // Set highlighted item to trigger glow animation
+      // Set highlighted item on card & set milestone on chart in Gold!
       setHighlightedItem(mapping)
+      setHoveredCardMilestone(label)
 
       // Scroll to the element
       setTimeout(() => {
@@ -179,6 +221,7 @@ export default function Dashboard() {
       // Clear highlight after animation completes
       setTimeout(() => {
         setHighlightedItem(null)
+        setHoveredCardMilestone(null)
       }, 9000)
     }
   }
@@ -202,7 +245,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <TopNav onNavigate={handleNavigate} onSearch={handleSearch} searchQuery={searchQuery} />
+      <TopNav onNavigate={handleNavigate} onSearch={handleSearch} onAISubmit={handleAISubmit} searchQuery={searchQuery} />
 
       <div className="md:pt-14 pb-20 md:pb-8">
         <div className="max-w-7xl mx-auto md:px-4">
@@ -219,6 +262,7 @@ export default function Dashboard() {
                   onPointHover={handleChartPointHover}
                   onScrubEnd={handleScrubEnd}
                   hoveredMilestoneLabel={hoveredCardMilestone}
+                  isAILoading={isAILoading}
                 />
               </div>
               <div className="px-4 md:px-4">
@@ -239,7 +283,18 @@ export default function Dashboard() {
               </div>
 
               <div className="px-4 md:px-4">
-                <BuyingPower />
+                {isAILoading ? (
+                  <RobinhoodAILoader />
+                ) : aiResult ? (
+                  <AIAnswerCard
+                    query={searchQuery}
+                    result={aiResult}
+                    onChipClick={(chip) => handleAISubmit(chip)}
+                    onClose={() => setAIResult(null)}
+                  />
+                ) : (
+                  <BuyingPower />
+                )}
               </div>
 
               {/* About Me (with integrated Contact links) - Shown on mobile right under Buying Power */}
@@ -302,7 +357,7 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-      <BottomNav searchQuery={searchQuery} onSearch={handleSearch} />
+      <BottomNav searchQuery={searchQuery} onSearch={handleSearch} onAISubmit={handleAISubmit} />
     </div>
   )
 }
