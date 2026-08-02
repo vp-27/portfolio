@@ -60,7 +60,7 @@ export function isNaturalLanguageQuery(query: string): boolean {
 export function processAIQuery(query: string): AIQueryResult {
   const q = query.toLowerCase().trim()
 
-  // 1. Resumes
+  // 1. CS Resume Direct Action Shortcut
   if (q.includes('cs resume') || q.includes('computer science resume') || q.includes('swe resume') || q.includes('tech resume')) {
     return {
       answer: "Vandan's Computer Science Resume highlights his software engineering experience (React, TypeScript, Python, C++, SQL), algorithms, data engineering, and scalable web apps.",
@@ -73,7 +73,8 @@ export function processAIQuery(query: string): AIQueryResult {
     }
   }
 
-  if (q.includes('finance resume') || q.includes('quant resume') || q.includes('banking resume') || (q.includes('resume') && !q.includes('cs'))) {
+  // 2. Finance Resume Direct Action Shortcut
+  if (q.includes('finance resume') || q.includes('quant resume') || q.includes('banking resume')) {
     return {
       answer: "Vandan's Finance Resume details his quantitative modeling, financial analysis, algorithmic trading bot, gemstone valuation platform (OroGenie), and SCOT operations background.",
       milestoneLabel: null,
@@ -85,129 +86,8 @@ export function processAIQuery(query: string): AIQueryResult {
     }
   }
 
-  // 2. Amazon SCOT / Supply Chain
-  if (q.includes('amazon') || q.includes('scot') || q.includes('supply chain') || q.includes('operations analyst')) {
-    return {
-      answer: "Vandan is an incoming Operations Analyst Intern at Amazon | Supply Chain Optimization Technologies (SCOT) for Summer 2026. He works on optimizing large-scale logistics and inventory dynamics at the intersection of tech and data science.",
-      milestoneLabel: 'Amazon SCOT',
-      targetType: 'experience',
-      targetId: 'amazon1',
-      suggestedChips: ['What tech stack does he use?', 'Tell me about Algo Trading Bot', 'View Finance Resume']
-    }
-  }
-
-  // 3. Algo Trading Bot / Quant / Trading
-  if (q.includes('trading') || q.includes('algo') || q.includes('bot') || q.includes('quant') || q.includes('stock') || q.includes('crypto')) {
-    return {
-      answer: "Vandan built an Algorithmic Trading Bot utilizing Python, backtesting frameworks, and technical indicators (RMA, MACD, Bollinger Bands) to execute automated market strategy testing.",
-      milestoneLabel: 'Algo Trading Bot',
-      targetType: 'project',
-      targetId: '1',
-      suggestedChips: ['Show OroGenie Platform', 'What are his financial skills?', 'Tell me about Amazon SCOT']
-    }
-  }
-
-  // 4. OroGenie / FinTech / Gemstone
-  if (q.includes('orogenie') || q.includes('gemstone') || q.includes('pricing') || q.includes('shark tank')) {
-    return {
-      answer: "OroGenie is a FinTech gemstone valuation and market insights platform built by Vandan, which placed in the Top 6 at Rutgers Shark Tank pitch competitions.",
-      milestoneLabel: 'OroGenie Platform',
-      targetType: 'project',
-      targetId: '2',
-      suggestedChips: ['Tell me about GrindSheet', 'What CS tools does he know?', 'Where did he intern?']
-    }
-  }
-
-  // 5. GrindSheet
-  if (q.includes('grindsheet') || q.includes('habit') || q.includes('workout') || q.includes('productivity')) {
-    return {
-      answer: "GrindSheet is an automated workout, habit tracking, and productivity dashboard built by Vandan in React and TypeScript.",
-      milestoneLabel: 'GrindSheet',
-      targetType: 'project',
-      targetId: '3',
-      suggestedChips: ['Tell me about OroGenie Platform', 'Tell me about Sunny Insurance', 'View CS Resume']
-    }
-  }
-
-  // 6. Sunny Insurance
-  if (q.includes('sunny') || q.includes('insurance')) {
-    return {
-      answer: "Sunny Insurance is a web application developed by Vandan for policy management, automated quote estimations, and customer workflows.",
-      milestoneLabel: 'Sunny Insurance',
-      targetType: 'project',
-      targetId: '4',
-      suggestedChips: ['Tell me about GrindSheet', 'Tell me about Amazon SCOT', 'View Skills']
-    }
-  }
-
-  // 7. Edgar Agent
-  if (q.includes('edgar') || q.includes('sec') || q.includes('10-k') || q.includes('filing')) {
-    return {
-      answer: "Edgar Agent is an AI-powered financial filing analyzer built by Vandan that parses SEC EDGAR filings for key investment metrics.",
-      milestoneLabel: 'Edgar Agent',
-      targetType: 'project',
-      targetId: '7',
-      suggestedChips: ['Tell me about Algo Trading Bot', 'View Finance Resume', 'Contact Vandan']
-    }
-  }
-
-  // 8. Rutgers / Education / Honors College
-  if (q.includes('rutgers') || q.includes('education') || q.includes('gpa') || q.includes('college') || q.includes('degree') || q.includes('major') || q.includes('courses')) {
-    return {
-      answer: "Vandan attends Rutgers University - New Brunswick (Honors College), pursuing a triple focus in Computer Science, Finance, and Data Science.",
-      milestoneLabel: 'Started Rutgers',
-      targetType: 'education',
-      targetId: '1',
-      suggestedChips: ['What are his technical skills?', 'Tell me about Moweb', 'View CS Resume']
-    }
-  }
-
-  // 6. Moweb Technologies
-  if (q.includes('moweb') || q.includes('software engineering intern') || q.includes('swe intern')) {
-    return {
-      answer: "Vandan worked as a Software Engineering Intern at Moweb Technologies, developing responsive web interfaces, optimizing API workflows, and working with React & TypeScript.",
-      milestoneLabel: 'Moweb Data Team',
-      targetType: 'experience',
-      targetId: '2',
-      suggestedChips: ['Tell me about SEBS Data Analyst', 'What projects has he built?', 'Contact Vandan']
-    }
-  }
-
-  // 7. SEBS Data Analyst
-  if (q.includes('sebs') || q.includes('data analyst') || q.includes('environmental')) {
-    return {
-      answer: "At Rutgers SEBS, Vandan worked as a Data Analyst Intern automating data processing pipelines, handling statistical modeling, and visualizing datasets.",
-      milestoneLabel: 'SEBS Data Analyst',
-      targetType: 'experience',
-      targetId: '1',
-      suggestedChips: ['What programming languages does he use?', 'Tell me about Amazon SCOT', 'View Skills']
-    }
-  }
-
-  // 8. Why CS & Finance? / Background / Philosophy
-  if (q.includes('why') || q.includes('background') || q.includes('philosophy') || q.includes('builder')) {
-    return {
-      answer: "Vandan works at the intersection of finance, data science, and software engineering. He designs tools that save time tomorrow while understanding macro system dynamics and micro code implementation details.",
-      milestoneLabel: null,
-      targetType: 'skills',
-      targetId: null,
-      suggestedChips: ['What technical skills does he have?', 'Tell me about Algo Trading Bot', 'Contact Vandan']
-    }
-  }
-
-  // 9. Technical Skills / Languages / Frameworks
-  if (q.includes('skill') || q.includes('python') || q.includes('react') || q.includes('typescript') || q.includes('sql') || q.includes('c++') || q.includes('stack')) {
-    return {
-      answer: "Vandan's technical stack includes React, TypeScript, Python, SQL, C++, Git, Docker, and AWS, complemented by strong financial modeling and quantitative analytics skills.",
-      milestoneLabel: null,
-      targetType: 'skills',
-      targetId: null,
-      suggestedChips: ['View CS Resume', 'View Finance Resume', 'Tell me about OroGenie']
-    }
-  }
-
-  // 10. Contact / Socials / LinkedIn / GitHub / Email
-  if (q.includes('contact') || q.includes('email') || q.includes('linkedin') || q.includes('github') || q.includes('reach') || q.includes('social') || q.includes('connect') || q.includes('hire')) {
+  // 3. Direct Contact Links Shortcut (Email, LinkedIn, GitHub)
+  if (q === 'contact' || q === 'email' || q === 'linkedin' || q === 'github' || q === 'contact vandan' || q === 'reach vandan') {
     const actionLinks: ActionLink[] = []
 
     if (q.includes('linkedin')) {
@@ -216,7 +96,7 @@ export function processAIQuery(query: string): AIQueryResult {
     if (q.includes('github')) {
       actionLinks.push({ label: 'GitHub Repository', url: 'https://github.com/vp-27' })
     }
-    if (q.includes('email') || q.includes('contact') || q.includes('reach')) {
+    if (q.includes('email') || q === 'contact' || q.includes('reach')) {
       actionLinks.push({ label: 'Send Email to Vandan', url: 'mailto:vrp77@scarletmail.rutgers.edu' })
     }
     if (actionLinks.length === 0) {
@@ -237,9 +117,9 @@ export function processAIQuery(query: string): AIQueryResult {
     }
   }
 
-  // 11. Generic / Open-ended Intelligent Persona Response
+  // Fallback for processAIQuery: returns empty answer to signify that async Gemini AI should generate the full response
   return {
-    answer: `Vandan Patel is a CS, Finance & Data Science student at Rutgers Honors College (Incoming Operations Analyst @ Amazon SCOT). He specializes in quantitative tools, full-stack software development, and financial market platforms.`,
+    answer: '',
     milestoneLabel: null,
     targetType: null,
     targetId: null,
