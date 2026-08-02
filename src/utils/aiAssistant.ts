@@ -1,5 +1,3 @@
-import { professionalExperiences, portfolioProjects, portfolioEducation, skillCategories } from '../data/portfolioData'
-
 export interface AIQueryResult {
   answer: string
   milestoneLabel: string | null

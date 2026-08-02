@@ -33,8 +33,6 @@ export default function BottomNav({ searchQuery = '', onSearch, onAISubmit }: Bo
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [localQuery, setLocalQuery] = useState(searchQuery)
 
-  const quickChips = ['React', 'TypeScript', 'Python', 'Finance', 'Amazon', 'SQL']
-
   const handleQueryChange = (val: string) => {
     setLocalQuery(val)
     if (onSearch) {

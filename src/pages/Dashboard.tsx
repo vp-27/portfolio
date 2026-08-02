@@ -9,7 +9,7 @@ import PortfolioSections from '../components/PortfolioSections'
 import InterestsSection from '../components/InterestsSection'
 import AIAnswerCard from '../components/AIAnswerCard'
 import RobinhoodAILoader from '../components/RobinhoodAILoader'
-import { isNaturalLanguageQuery, processAIQuery, type AIQueryResult } from '../utils/aiAssistant'
+import { processAIQuery, type AIQueryResult } from '../utils/aiAssistant'
 import { portfolioSummary, filterTimelineData, skillCategories, professionalExperiences, portfolioProjects, portfolioEducation } from '../data/portfolioData'
 import type { ChartDataPoint } from '../types'
 
@@ -163,19 +163,6 @@ export default function Dashboard() {
     }
   }
 
-  // Helper to check if element is visible (not hidden by responsive classes)
-  const isElementVisible = (element: Element): boolean => {
-    let current: Element | null = element
-    while (current && current !== document.body) {
-      const computed = window.getComputedStyle(current)
-      if (computed.display === 'none') {
-        return false
-      }
-      current = current.parentElement
-    }
-    return true
-  }
-
   // Scroll to element using native scrollIntoView
   const scrollToElement = (type: 'experience' | 'project' | 'education', id: string) => {
     const selector = type === 'experience'
@@ -247,7 +234,6 @@ export default function Dashboard() {
                   onPointHover={handleChartPointHover}
                   onScrubEnd={handleScrubEnd}
                   hoveredMilestoneLabel={hoveredCardMilestone}
-                  isAILoading={isAILoading}
                 />
               </div>
               <div className="px-4 md:px-4">
