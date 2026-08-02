@@ -176,7 +176,7 @@ export default function Dashboard() {
     return true
   }
 
-  // Scroll to element by data attribute
+  // Scroll to element using native scrollIntoView
   const scrollToElement = (type: 'experience' | 'project' | 'education', id: string) => {
     const selector = type === 'experience'
       ? `[data-experience-id="${id}"]`
@@ -184,24 +184,9 @@ export default function Dashboard() {
       ? `[data-project-id="${id}"]`
       : `[data-section="education"]`
 
-    const allElements = document.querySelectorAll(selector)
-
-    // Find the visible element (in case there are duplicates for mobile/desktop)
-    let targetElement: Element | null = null
-    allElements.forEach((el) => {
-      if (isElementVisible(el)) {
-        targetElement = el
-      }
-    })
-
+    const targetElement = document.querySelector(selector)
     if (targetElement) {
-      const isMobile = window.innerWidth < 768
-      const yOffset = isMobile ? -80 : -100 // Account for header
-      const elementTop = (targetElement as HTMLElement).getBoundingClientRect().top
-      const pageOffset = window.pageYOffset
-      const y = elementTop + pageOffset + yOffset
-
-      window.scrollTo({ top: y, behavior: 'smooth' })
+      targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
     }
   }
 
@@ -211,11 +196,9 @@ export default function Dashboard() {
 
     const mapping = milestoneMap[label as keyof typeof milestoneMap]
     if (mapping) {
-      // Set highlighted item on card & set milestone on chart in Gold!
       setHighlightedItem(mapping)
       setHoveredCardMilestone(label)
 
-      // Scroll to the element
       setTimeout(() => {
         scrollToElement(mapping.type, mapping.id)
       }, 50)
