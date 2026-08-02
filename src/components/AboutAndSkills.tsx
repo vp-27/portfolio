@@ -26,7 +26,7 @@ const aboutData: AboutMeData = {
   name: 'Vandan Patel',
   title: 'CS, Finance & Data Science @ Rutgers Honors College',
   location: 'New York Metro Area',
-  bio: "I build software that bridges the gap between complex business logic and intuitive product design. I’m the type of engineer who will gladly go the extra mile today to build a tool that saves ten minutes tomorrow. My background lets me zoom out to understand system dynamics, and zoom in to execute the details using React, TypeScript, and Python. Ultimately, I care about shipping the best possible solution, letting the problem dictate the tools rather than the other way around.",
+  bio: "I design and build solutions at the intersection of finance, data science, and technology. I’m the type of builder who will gladly go the extra mile today to build a tool that saves ten minutes tomorrow. My background lets me zoom out to understand system dynamics, and zoom in to execute the details using React, TypeScript, and Python. Ultimately, I care about shipping the best possible solution, letting the problem dictate the tools rather than the other way around.",
   avatar: '/images/pfp_theme transparent.png'
 }
 
