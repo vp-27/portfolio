@@ -62,10 +62,10 @@ export default function AIAnswerCard({ query, result, onChipClick, onAskCustom, 
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#00C805]/10 hover:bg-[#00C805]/20 border border-[#00C805]/40 text-xs text-[#00C805] font-semibold transition-colors"
+                className="group inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#00C805]/10 border border-[#00C805] text-xs text-[#00C805] font-semibold hover:bg-[#00C805] hover:text-black hover:border-transparent transition-all duration-200 cursor-pointer shadow-[0_0_8px_rgba(0,200,5,0.15)]"
               >
                 <span>{link.label}</span>
-                <ExternalLink className="w-3.5 h-3.5" />
+                <ExternalLink className="w-3.5 h-3.5 text-[#00C805] group-hover:text-black transition-colors" />
               </a>
             ))
           ) : result.actionUrl ? (
@@ -73,10 +73,10 @@ export default function AIAnswerCard({ query, result, onChipClick, onAskCustom, 
               href={result.actionUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#00C805]/10 hover:bg-[#00C805]/20 border border-[#00C805]/40 text-xs text-[#00C805] font-semibold transition-colors"
+              className="group inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#00C805]/10 border border-[#00C805] text-xs text-[#00C805] font-semibold hover:bg-[#00C805] hover:text-black hover:border-transparent transition-all duration-200 cursor-pointer shadow-[0_0_8px_rgba(0,200,5,0.15)]"
             >
               <span>{result.actionLabel || 'Open Link'}</span>
-              <ExternalLink className="w-3.5 h-3.5" />
+              <ExternalLink className="w-3.5 h-3.5 text-[#00C805] group-hover:text-black transition-colors" />
             </a>
           ) : null}
         </div>
@@ -89,10 +89,10 @@ export default function AIAnswerCard({ query, result, onChipClick, onAskCustom, 
             <button
               key={idx}
               onClick={() => onJumpToMilestone && onJumpToMilestone(label)}
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C9A227]/10 hover:bg-[#C9A227]/20 border border-[#C9A227]/40 text-xs text-[#C9A227] font-semibold transition-colors cursor-pointer"
+              className="group inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C9A227]/10 border border-[#C9A227] text-xs text-[#C9A227] font-semibold hover:bg-[#C9A227] hover:text-black hover:border-transparent transition-all duration-200 cursor-pointer shadow-[0_0_8px_rgba(201,162,39,0.15)]"
             >
               <span>Visit: {label}</span>
-              <ArrowDown className="w-3 h-3 text-[#C9A227]" />
+              <ArrowDown className="w-3 h-3 text-[#C9A227] group-hover:text-black transition-colors" />
             </button>
           ))}
         </div>
@@ -109,10 +109,10 @@ export default function AIAnswerCard({ query, result, onChipClick, onAskCustom, 
               <button
                 key={idx}
                 onClick={() => onChipClick(chip)}
-                className="flex items-center gap-1 px-3 py-1 rounded-full bg-[#1E2124] hover:bg-[#2A2D31] active:bg-[#333333] border border-[#2D2D2D] text-xs text-gray-300 transition-colors"
+                className="group flex items-center gap-1 px-3 py-1 rounded-full bg-[#181B1D] border border-[#3E4247] text-xs text-gray-200 font-normal hover:bg-[#00C805] hover:text-black hover:border-transparent transition-all duration-200 cursor-pointer"
               >
                 <span>{chip}</span>
-                <ArrowRight className="w-3 h-3 text-gray-500" />
+                <ArrowRight className="w-3 h-3 text-gray-400 group-hover:text-black transition-colors" />
               </button>
             ))}
             <button
@@ -127,7 +127,7 @@ export default function AIAnswerCard({ query, result, onChipClick, onAskCustom, 
                   }
                 }
               }}
-              className="flex items-center gap-1 px-3 py-1 rounded-full bg-[#00C805]/10 hover:bg-[#00C805]/20 border border-[#00C805]/40 text-xs text-[#00C805] font-medium transition-colors"
+              className="group flex items-center gap-1 px-3 py-1 rounded-full bg-[#00C805]/10 border border-[#00C805] text-xs text-[#00C805] font-semibold hover:bg-[#00C805] hover:text-black hover:border-transparent transition-all duration-200 cursor-pointer shadow-[0_0_8px_rgba(0,200,5,0.15)]"
             >
               <span>Type custom question...</span>
             </button>
