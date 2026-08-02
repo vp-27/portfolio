@@ -242,7 +242,7 @@ export default function Dashboard() {
                 <BuyingPower />
               </div>
 
-              {/* About Me - Shown on mobile right under Experience Card */}
+              {/* About Me (with integrated Contact links) - Shown on mobile right under Buying Power */}
               <div className="lg:hidden px-4 md:px-4 mt-4 mb-6" data-section="about">
                 <AboutAndSkills 
                   skillCategories={skillCategories} 
@@ -296,24 +296,13 @@ export default function Dashboard() {
             />
           </div>
 
-          {/* Contact Me Section (Mobile Only, Bottom) */}
-          <div className="lg:hidden px-4 mt-8 mb-6" data-section="contact">
-            <AboutAndSkills 
-              skillCategories={skillCategories} 
-              searchQuery={searchQuery} 
-              showOnlyContact={true} 
-              onSkillClick={handleSearch} 
-              isContactHighlighted={isContactHighlighted}
-            />
-          </div>
-
           {/* Interests Section (Mobile Only, Bottom) */}
-          <div className="lg:hidden px-4 mt-8 mb-12">
+          <div className="lg:hidden px-4 mt-4 mb-12">
             <InterestsSection />
           </div>
         </div>
       </div>
-      <BottomNav />
+      <BottomNav searchQuery={searchQuery} onSearch={handleSearch} />
     </div>
   )
 }

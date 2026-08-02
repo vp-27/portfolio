@@ -306,6 +306,31 @@ export default function AboutAndSkills({
                     {aboutData.bio}
                   </p>
                 </div>
+
+                {/* Integrated Contact Row for Mobile */}
+                <div className="flex items-center gap-2 pt-4 border-t border-[#2C2C2E]" data-section="contact">
+                  <button
+                    onClick={() => window.open('https://github.com/vp-27', '_blank')}
+                    className="flex-1 flex items-center justify-center gap-2 py-2 px-3 bg-[#1A1A1A] hover:bg-[#2A2A2A] active:bg-[#333333] border border-[#2D2D2D] rounded-xl text-xs font-medium text-white transition-colors"
+                  >
+                    <GithubIcon className="w-4 h-4 text-gray-300" />
+                    <span>GitHub</span>
+                  </button>
+                  <button
+                    onClick={() => window.open('https://www.linkedin.com/in/vandan-patel-vp/', '_blank')}
+                    className="flex-1 flex items-center justify-center gap-2 py-2 px-3 bg-[#1A1A1A] hover:bg-[#2A2A2A] active:bg-[#333333] border border-[#2D2D2D] rounded-xl text-xs font-medium text-white transition-colors"
+                  >
+                    <LinkedinIcon className="w-4 h-4 text-[#0A66C2]" />
+                    <span>LinkedIn</span>
+                  </button>
+                  <button
+                    onClick={() => window.open('mailto:vrp77@scarletmail.rutgers.edu', '_blank')}
+                    className="flex-1 flex items-center justify-center gap-2 py-2 px-3 bg-[#1A1A1A] hover:bg-[#2A2A2A] active:bg-[#333333] border border-[#2D2D2D] rounded-xl text-xs font-medium text-white transition-colors"
+                  >
+                    <Mail className="w-4 h-4 text-[#EA4335]" />
+                    <span>Email</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
