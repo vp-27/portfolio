@@ -73,7 +73,7 @@ export default function TopNav({ onNavigate, onSearch, searchQuery = '' }: TopNa
                 placeholder="Search skills, projects, experiences..."
                 value={searchQuery}
                 onChange={handleSearchChange}
-                className="w-full bg-[#1A1A1A] text-white placeholder-gray-500 pl-10 pr-4 py-2 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-gray-700"
+                className="w-full bg-[#1A1A1A] text-white placeholder-gray-500 pl-10 pr-4 py-2 rounded-md text-[16px] md:text-sm focus:outline-none focus:ring-1 focus:ring-gray-700"
               />
             </div>
           </div>

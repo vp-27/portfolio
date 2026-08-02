@@ -64,13 +64,13 @@ export default function BottomNav({ searchQuery = '', onSearch }: BottomNavProps
       <AnimatePresence>
         {isSearchOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 15, scale: 0.95 }}
+            initial={{ opacity: 0, y: -15, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 15, scale: 0.95 }}
+            exit={{ opacity: 0, y: -15, scale: 0.95 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
-            className="fixed bottom-[68px] left-3 right-3 z-50 bg-[#121212]/95 backdrop-blur-md border border-[#2D2D2D] rounded-2xl p-3 shadow-2xl md:hidden"
+            className="fixed top-3 left-3 right-3 z-50 bg-[#121212]/95 backdrop-blur-md border border-[#2D2D2D] rounded-2xl p-3 shadow-2xl md:hidden"
           >
-            <div className="flex items-center gap-2 bg-[#1E1E1E] rounded-xl px-3 py-2 border border-[#2A2A2A]">
+            <div className="flex items-center gap-2 bg-[#1E1E1E] rounded-xl px-3 py-2.5 border border-[#2A2A2A]">
               <Search className="w-4 h-4 text-gray-400 flex-shrink-0" />
               <input
                 type="text"
@@ -78,7 +78,7 @@ export default function BottomNav({ searchQuery = '', onSearch }: BottomNavProps
                 placeholder="Search skills, projects, experience..."
                 value={localQuery}
                 onChange={(e) => handleQueryChange(e.target.value)}
-                className="w-full bg-transparent text-white text-sm placeholder-gray-500 focus:outline-none"
+                className="w-full bg-transparent text-white text-[16px] placeholder-gray-500 focus:outline-none"
               />
               {localQuery ? (
                 <button
