@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Sparkles, X, ArrowRight } from 'lucide-react'
+import { Sparkles, X, ArrowRight, ArrowDown } from 'lucide-react'
 import type { AIQueryResult } from '../utils/aiAssistant'
 
 interface AIAnswerCardProps {
@@ -7,10 +7,11 @@ interface AIAnswerCardProps {
   result: AIQueryResult
   onChipClick: (chip: string) => void
   onAskCustom?: () => void
+  onJumpToMilestone?: () => void
   onClose: () => void
 }
 
-export default function AIAnswerCard({ query, result, onChipClick, onAskCustom, onClose }: AIAnswerCardProps) {
+export default function AIAnswerCard({ query, result, onChipClick, onAskCustom, onJumpToMilestone, onClose }: AIAnswerCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: -5 }}
@@ -44,11 +45,15 @@ export default function AIAnswerCard({ query, result, onChipClick, onAskCustom, 
         {result.answer}
       </p>
 
-      {/* Action / Highlighted Status Badge */}
+      {/* Action / Highlighted Status Badge with 1-Tap Jump */}
       {result.milestoneLabel && (
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C9A227]/10 border border-[#C9A227]/40 text-xs text-[#C9A227] font-semibold mb-3">
-          <span>Highlighted on Timeline: {result.milestoneLabel}</span>
-        </div>
+        <button
+          onClick={onJumpToMilestone}
+          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C9A227]/10 hover:bg-[#C9A227]/20 border border-[#C9A227]/40 text-xs text-[#C9A227] font-semibold mb-3 transition-colors cursor-pointer"
+        >
+          <span>Highlighted: {result.milestoneLabel}</span>
+          <ArrowDown className="w-3 h-3 text-[#C9A227]" />
+        </button>
       )}
 
       {/* Suggested Follow-up Chips */}

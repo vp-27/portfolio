@@ -131,9 +131,11 @@ export default function Dashboard() {
       setIsAILoading(false)
 
       if (res.milestoneLabel) {
-        navigateToItem(res.milestoneLabel)
-      } else if (res.targetType) {
-        handleNavigate(res.targetType)
+        const mapping = milestoneMap[res.milestoneLabel as keyof typeof milestoneMap]
+        if (mapping) {
+          setHighlightedItem(mapping)
+          setHoveredCardMilestone(res.milestoneLabel)
+        }
       }
     }, 1100)
   }
@@ -290,6 +292,7 @@ export default function Dashboard() {
                     query={searchQuery}
                     result={aiResult}
                     onChipClick={(chip) => handleAISubmit(chip)}
+                    onJumpToMilestone={() => aiResult.milestoneLabel && navigateToItem(aiResult.milestoneLabel)}
                     onClose={() => setAIResult(null)}
                   />
                 ) : (
