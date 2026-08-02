@@ -268,7 +268,7 @@ export default function Dashboard() {
                     query={searchQuery}
                     result={aiResult}
                     onChipClick={(chip) => handleAISubmit(chip)}
-                    onJumpToMilestone={() => aiResult.milestoneLabel && navigateToItem(aiResult.milestoneLabel)}
+                    onJumpToMilestone={(lbl) => navigateToItem(lbl || aiResult.milestoneLabel || '')}
                     onClose={() => setAIResult(null)}
                   />
                 ) : (

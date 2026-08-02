@@ -7,11 +7,18 @@ interface AIAnswerCardProps {
   result: AIQueryResult
   onChipClick: (chip: string) => void
   onAskCustom?: () => void
-  onJumpToMilestone?: () => void
+  onJumpToMilestone?: (label?: string) => void
   onClose: () => void
 }
 
 export default function AIAnswerCard({ query, result, onChipClick, onAskCustom, onJumpToMilestone, onClose }: AIAnswerCardProps) {
+  // Collect all milestone labels (either milestoneLabels array or single milestoneLabel)
+  const labelsToRender = result.milestoneLabels && result.milestoneLabels.length > 0
+    ? result.milestoneLabels
+    : result.milestoneLabel
+    ? [result.milestoneLabel]
+    : []
+
   return (
     <motion.div
       initial={{ opacity: 0, y: -5 }}
@@ -60,15 +67,20 @@ export default function AIAnswerCard({ query, result, onChipClick, onAskCustom, 
         </div>
       )}
 
-      {/* Action / Highlighted Status Badge with 1-Tap Jump */}
-      {result.milestoneLabel && (
-        <button
-          onClick={onJumpToMilestone}
-          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C9A227]/10 hover:bg-[#C9A227]/20 border border-[#C9A227]/40 text-xs text-[#C9A227] font-semibold mb-3 transition-colors cursor-pointer"
-        >
-          <span>Highlighted: {result.milestoneLabel}</span>
-          <ArrowDown className="w-3 h-3 text-[#C9A227]" />
-        </button>
+      {/* Action / Highlighted Status Badges with 1-Tap Jump */}
+      {labelsToRender.length > 0 && (
+        <div className="flex flex-wrap gap-1.5 mb-3">
+          {labelsToRender.map((label, idx) => (
+            <button
+              key={idx}
+              onClick={() => onJumpToMilestone && onJumpToMilestone(label)}
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C9A227]/10 hover:bg-[#C9A227]/20 border border-[#C9A227]/40 text-xs text-[#C9A227] font-semibold transition-colors cursor-pointer"
+            >
+              <span>Highlighted: {label}</span>
+              <ArrowDown className="w-3 h-3 text-[#C9A227]" />
+            </button>
+          ))}
+        </div>
       )}
 
       {/* Suggested Follow-up Chips */}

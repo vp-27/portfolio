@@ -1,6 +1,9 @@
+import { professionalExperiences, portfolioProjects, portfolioEducation } from '../data/portfolioData'
+
 export interface AIQueryResult {
   answer: string
   milestoneLabel: string | null
+  milestoneLabels?: string[]
   targetType: 'experience' | 'project' | 'education' | 'skills' | 'contact' | 'resume_cs' | 'resume_finance' | null
   targetId: string | null
   actionUrl?: string
@@ -15,6 +18,17 @@ const defaultChips = [
   'View CS Resume',
   'View Finance Resume'
 ]
+
+/**
+ * Dynamically constructs site context directly from portfolioData.ts single source of truth.
+ * No hardcoding required—updating portfolioData.ts automatically updates AI knowledge.
+ */
+function getDynamicSiteContext(): string {
+  const exps = professionalExperiences.map(e => `${e.company} (${e.position}, ${e.startDate}-${e.endDate}): ${e.bullets.join('; ')}`).join('\n')
+  const projs = portfolioProjects.map(p => `${p.name} (${p.subtitle}): ${p.bullets.join('; ')}`).join('\n')
+  const edu = portfolioEducation.map(ed => `${ed.institution} (${ed.degrees.join(', ')}, GPA ${ed.gpa}): ${ed.honors.join('; ')}`).join('\n')
+  return `Professional Experiences:\n${exps}\n\nProjects:\n${projs}\n\nEducation:\n${edu}`
+}
 
 export function isNaturalLanguageQuery(query: string): boolean {
   const trimmed = query.trim().toLowerCase()
@@ -273,8 +287,8 @@ function generateDynamicChips(query: string, text: string): string[] {
 /**
  * Async AI query processor:
  * Checks grounded local matches first. If no specific portfolio match is found,
- * it queries the Google Gemini API (gemini-flash-lite-latest) via VITE_GEMINI_API_KEY.
- * It automatically extracts matching milestone labels & generates dynamic follow-up chips!
+ * it queries the Google Gemini API (gemini-flash-lite-latest) with dynamic site context.
+ * It extracts matching milestone labels (or multiple if applicable) & generates dynamic follow-up chips!
  */
 export async function processAIQueryAsync(query: string): Promise<AIQueryResult> {
   const localRes = processAIQuery(query)
@@ -303,10 +317,13 @@ export async function processAIQueryAsync(query: string): Promise<AIQueryResult>
             parts: [
               {
                 text: `You are Vortex AI, the personal portfolio intelligence assistant for Vandan Patel. 
-Vandan is a Computer Science, Finance, and Data Science student at Rutgers Honors College.
-He is an incoming Operations Analyst Intern at Amazon SCOT (Supply Chain Optimization Technologies) for Summer 2026.
-He builds quantitative trading bots (Python, MACD, Bollinger Bands) and FinTech platforms (OroGenie, Top 6 Rutgers Shark Tank).
-Answer the user's question concisely in 2-3 sentences, reflecting Vandan's quantitative and engineering perspective.`
+Use the following live website context to answer questions accurately with specific metrics, facts, and technologies:
+${getDynamicSiteContext()}
+
+Instructions:
+1. Answer the user's question concisely in 2-3 sentences.
+2. Use exact numbers, metrics, and technical facts from Vandan's website context whenever relevant.
+3. Be professional, quantitative, and direct.`
               }
             ]
           },
@@ -317,8 +334,8 @@ Answer the user's question concisely in 2-3 sentences, reflecting Vandan's quant
             }
           ],
           generationConfig: {
-            temperature: 0.5,
-            maxOutputTokens: 150
+            temperature: 0.4,
+            maxOutputTokens: 160
           }
         })
       })
@@ -333,53 +350,42 @@ Answer the user's question concisely in 2-3 sentences, reflecting Vandan's quant
           const lowerAnswer = cleanAnswer.toLowerCase()
           const lowerQuery = query.toLowerCase()
 
-          let milestoneLabel: string | null = null
-          let targetType: 'experience' | 'project' | 'education' | 'skills' | 'contact' | null = null
-          let targetId: string | null = null
+          // Detect ALL relevant milestone labels mentioned in answer or query
+          const foundLabels: string[] = []
 
-          if (lowerAnswer.includes('grindsheet') || lowerQuery.includes('grindsheet')) {
-            milestoneLabel = 'GrindSheet'
-            targetType = 'project'
-            targetId = '3'
-          } else if (lowerAnswer.includes('sunny') || lowerQuery.includes('sunny')) {
-            milestoneLabel = 'Sunny Insurance'
-            targetType = 'project'
-            targetId = '4'
-          } else if (lowerAnswer.includes('edgar') || lowerQuery.includes('edgar')) {
-            milestoneLabel = 'Edgar Agent'
-            targetType = 'project'
-            targetId = '7'
-          } else if (lowerAnswer.includes('amazon') || lowerQuery.includes('amazon') || lowerAnswer.includes('scot')) {
-            milestoneLabel = 'Amazon SCOT'
-            targetType = 'experience'
-            targetId = 'amazon1'
-          } else if (lowerAnswer.includes('trading') || lowerAnswer.includes('quant') || lowerAnswer.includes('algo')) {
-            milestoneLabel = 'Algo Trading Bot'
-            targetType = 'project'
-            targetId = '1'
-          } else if (lowerAnswer.includes('orogenie') || lowerAnswer.includes('gemstone') || lowerAnswer.includes('shark tank')) {
-            milestoneLabel = 'OroGenie Platform'
-            targetType = 'project'
-            targetId = '2'
-          } else if (lowerAnswer.includes('moweb')) {
-            milestoneLabel = 'Moweb Data Team'
-            targetType = 'experience'
-            targetId = '2'
-          } else if (lowerAnswer.includes('sebs')) {
-            milestoneLabel = 'SEBS Data Analyst'
-            targetType = 'experience'
-            targetId = '1'
-          } else if (lowerAnswer.includes('rutgers')) {
-            milestoneLabel = 'Started Rutgers'
-            targetType = 'education'
-            targetId = '1'
+          if (lowerAnswer.includes('amazon') || lowerQuery.includes('amazon') || lowerAnswer.includes('scot')) {
+            foundLabels.push('Amazon SCOT')
           }
+          if (lowerAnswer.includes('trading') || lowerAnswer.includes('quant') || lowerAnswer.includes('algo')) {
+            foundLabels.push('Algo Trading Bot')
+          }
+          if (lowerAnswer.includes('orogenie') || lowerAnswer.includes('gemstone') || lowerAnswer.includes('shark tank')) {
+            foundLabels.push('OroGenie Platform')
+          }
+          if (lowerAnswer.includes('grindsheet') || lowerQuery.includes('grindsheet')) {
+            foundLabels.push('GrindSheet')
+          }
+          if (lowerAnswer.includes('edgar') || lowerQuery.includes('edgar')) {
+            foundLabels.push('Edgar Agent')
+          }
+          if (lowerAnswer.includes('moweb')) {
+            foundLabels.push('Moweb Data Team')
+          }
+          if (lowerAnswer.includes('sebs')) {
+            foundLabels.push('SEBS Data Analyst')
+          }
+          if (lowerAnswer.includes('rutgers')) {
+            foundLabels.push('Started Rutgers')
+          }
+
+          const uniqueLabels = Array.from(new Set(foundLabels))
 
           return {
             answer: cleanAnswer,
-            milestoneLabel,
-            targetType,
-            targetId,
+            milestoneLabel: uniqueLabels.length > 0 ? uniqueLabels[0] : null,
+            milestoneLabels: uniqueLabels,
+            targetType: uniqueLabels.length > 0 ? 'experience' : null,
+            targetId: null,
             suggestedChips: generateDynamicChips(query, cleanAnswer)
           }
         }
