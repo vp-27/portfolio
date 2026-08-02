@@ -31,6 +31,7 @@ const defaultChips = [
  */
 function getDynamicSiteContext(): string {
   const bio = "Vandan Patel: Computer Science, Finance, and Data Science student at Rutgers Honors College (GPA 3.95). Incoming Operations Analyst Intern at Amazon SCOT (Supply Chain Optimization Technologies, Bellevue WA, Summer 2026). Quantitative builder creating FinTech tools, trading bots, and data pipelines."
+  const contact = "Direct Contact & Social Links: Email: vrp77@scarletmail.rutgers.edu, LinkedIn: https://linkedin.com/in/vandan-patel-vp, GitHub: https://github.com/vp-27"
   
   const exps = professionalExperiences.map(e => `${e.company} (${e.position}, ${e.startDate}-${e.endDate}): ${e.bullets.join('; ')}`).join('\n')
   const projs = portfolioProjects.map(p => `${p.name} (${p.subtitle}): ${p.bullets.join('; ')}`).join('\n')
@@ -39,7 +40,7 @@ function getDynamicSiteContext(): string {
   const skills = skillCategories.map(cat => `${cat.name}: ${cat.skills.map(s => s.name).join(', ')}`).join('\n')
   const interests = portfolioInterests.map(i => `${i.name} (${i.category})`).join(', ')
 
-  return `About Me:\n${bio}\n\nProfessional Experiences:\n${exps}\n\nProjects:\n${projs}\n\nEducation & Honors:\n${edu}\n\nTechnical, Financial & Tool Skills:\n${skills}\n\nBeyond the Terminal (Interests & Hobbies):\n${interests}`
+  return `About Me:\n${bio}\n\nContact Details:\n${contact}\n\nProfessional Experiences:\n${exps}\n\nProjects:\n${projs}\n\nEducation & Honors:\n${edu}\n\nTechnical, Financial & Tool Skills:\n${skills}\n\nBeyond the Terminal (Interests & Hobbies):\n${interests}`
 }
 
 export function isNaturalLanguageQuery(query: string): boolean {
@@ -87,7 +88,7 @@ export function processAIQuery(query: string): AIQueryResult {
   }
 
   // 3. Direct Contact Links Shortcut (Email, LinkedIn, GitHub)
-  if (q === 'contact' || q === 'email' || q === 'linkedin' || q === 'github' || q === 'contact vandan' || q === 'reach vandan') {
+  if (q.includes('contact') || q.includes('email') || q.includes('linkedin') || q.includes('github') || q.includes('reach') || q.includes('touch') || q.includes('message') || q.includes('hire')) {
     const actionLinks: ActionLink[] = []
 
     if (q.includes('linkedin')) {
@@ -96,7 +97,7 @@ export function processAIQuery(query: string): AIQueryResult {
     if (q.includes('github')) {
       actionLinks.push({ label: 'GitHub Repository', url: 'https://github.com/vp-27' })
     }
-    if (q.includes('email') || q === 'contact' || q.includes('reach')) {
+    if (q.includes('email') || q.includes('contact') || q.includes('reach') || q.includes('touch')) {
       actionLinks.push({ label: 'Send Email to Vandan', url: 'mailto:vrp77@scarletmail.rutgers.edu' })
     }
     if (actionLinks.length === 0) {

@@ -268,6 +268,18 @@ export default function Dashboard() {
                     query={searchQuery}
                     result={aiResult}
                     onChipClick={(chip) => handleAISubmit(chip)}
+                    onAskCustom={() => {
+                      setAIResult(null)
+                      setSearchQuery('')
+                      window.dispatchEvent(new CustomEvent('open-mobile-search'))
+                      setTimeout(() => {
+                        const input = document.querySelector('input[type="text"]') as HTMLInputElement
+                        if (input) {
+                          input.focus()
+                          input.select()
+                        }
+                      }, 100)
+                    }}
                     onJumpToMilestone={(lbl) => navigateToItem(lbl || aiResult.milestoneLabel || '')}
                     onClose={() => setAIResult(null)}
                   />

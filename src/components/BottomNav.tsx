@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { BriefcaseIcon, FolderIcon, UserIcon } from '@heroicons/react/24/solid'
 import { Search, X } from 'lucide-react'
 import { useNavigate, useLocation } from 'react-router-dom'
@@ -32,6 +32,20 @@ export default function BottomNav({ searchQuery = '', onSearch, onAISubmit }: Bo
   const location = useLocation()
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [localQuery, setLocalQuery] = useState(searchQuery)
+
+  useEffect(() => {
+    const handleOpenSearch = () => {
+      setIsSearchOpen(true)
+      setTimeout(() => {
+        const input = document.querySelector('input[type="text"]') as HTMLInputElement
+        if (input) {
+          input.focus()
+        }
+      }, 150)
+    }
+    window.addEventListener('open-mobile-search', handleOpenSearch)
+    return () => window.removeEventListener('open-mobile-search', handleOpenSearch)
+  }, [])
 
   const handleQueryChange = (val: string) => {
     setLocalQuery(val)
