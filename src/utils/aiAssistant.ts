@@ -1,4 +1,4 @@
-import { professionalExperiences, portfolioProjects, portfolioEducation, skillCategories, portfolioInterests } from '../data/portfolioData'
+import { professionalExperiences, portfolioProjects, portfolioEducation, skillCategories, portfolioInterests, portfolioStocks, portfolioSummary } from '../data/portfolioData'
 
 export interface ActionLink {
   label: string
@@ -27,20 +27,30 @@ const defaultChips = [
 
 /**
  * Dynamically constructs complete site context directly from portfolioData.ts single source of truth.
- * Covers About Me, Experiences, Projects, Education, Technical/Financial Skills, and Beyond the Terminal interests.
+ * Covers About Me, Portfolio Metrics, Experiences, Projects (with live & GitHub URLs), Education, Skills, and Interests.
  */
 function getDynamicSiteContext(): string {
   const bio = "Vandan Patel: Computer Science, Finance, and Data Science student at Rutgers Honors College (GPA 3.95). Incoming Operations Analyst Intern at Amazon SCOT (Supply Chain Optimization Technologies, Bellevue WA, Summer 2026). Quantitative builder creating FinTech tools, trading bots, and data pipelines."
   const contact = "Direct Contact & Social Links: Email: vrp77@scarletmail.rutgers.edu, LinkedIn: https://linkedin.com/in/vandan-patel-vp, GitHub: https://github.com/vp-27"
   
+  const stocks = portfolioStocks.map(s => `${s.name} (${s.symbol}): Value $${s.marketValue.toFixed(2)}, Return +${s.totalReturnPercent}%`).join('\n')
+  const summary = `Total Portfolio Value: $${portfolioSummary.totalValue.toFixed(2)}, Buying Power: $${portfolioSummary.buyingPower.toFixed(2)} (GPA 3.95 equivalent), Overall Return: +${portfolioSummary.totalReturnPercent}%`
+
   const exps = professionalExperiences.map(e => `${e.company} (${e.position}, ${e.startDate}-${e.endDate}): ${e.bullets.join('; ')}`).join('\n')
-  const projs = portfolioProjects.map(p => `${p.name} (${p.subtitle}): ${p.bullets.join('; ')}`).join('\n')
-  const edu = portfolioEducation.map(ed => `${ed.institution} (${ed.degrees.join(', ')}, GPA ${ed.gpa}): ${ed.honors.join('; ')}`).join('\n')
   
+  const projs = portfolioProjects.map(p => {
+    const links: string[] = []
+    if (p.liveUrl) links.push(`Live Demo: ${p.liveUrl}`)
+    if (p.githubUrl) links.push(`GitHub Code: ${p.githubUrl}`)
+    const linkStr = links.length > 0 ? ` [${links.join(' | ')}]` : ''
+    return `${p.name} (${p.subtitle})${linkStr}: ${p.bullets.join('; ')}`
+  }).join('\n')
+
+  const edu = portfolioEducation.map(ed => `${ed.institution} (${ed.degrees.join(', ')}, GPA ${ed.gpa}): ${ed.honors.join('; ')}`).join('\n')
   const skills = skillCategories.map(cat => `${cat.name}: ${cat.skills.map(s => s.name).join(', ')}`).join('\n')
   const interests = portfolioInterests.map(i => `${i.name} (${i.category})`).join(', ')
 
-  return `About Me:\n${bio}\n\nContact Details:\n${contact}\n\nProfessional Experiences:\n${exps}\n\nProjects:\n${projs}\n\nEducation & Honors:\n${edu}\n\nTechnical, Financial & Tool Skills:\n${skills}\n\nBeyond the Terminal (Interests & Hobbies):\n${interests}`
+  return `About Me:\n${bio}\n\nContact Details:\n${contact}\n\nRobinhood Portfolio & Watchlist Metrics:\n${summary}\n${stocks}\n\nProfessional Experiences:\n${exps}\n\nProjects:\n${projs}\n\nEducation & Honors:\n${edu}\n\nTechnical, Financial & Tool Skills:\n${skills}\n\nBeyond the Terminal (Interests & Hobbies):\n${interests}`
 }
 
 export function isNaturalLanguageQuery(query: string): boolean {
@@ -291,14 +301,33 @@ Instructions:
 
           const uniqueLabels = Array.from(new Set(foundLabels))
 
-          // Extract ALL action links mentioned in query or response (LinkedIn, GitHub, Email, Resumes)
+          // Extract ALL action links mentioned in query or response (LinkedIn, GitHub, Email, Resumes, Project Demos)
           const actionLinks: ActionLink[] = []
+
+          // Dynamic project action links (Live Demos & GitHub Repos)
+          portfolioProjects.forEach(proj => {
+            const projNameLower = proj.name.toLowerCase()
+            const firstWord = proj.name.split(' ')[0]
+            const isMatch = lowerAnswer.includes(projNameLower) || lowerQuery.includes(projNameLower) || 
+              (firstWord.length > 3 && (lowerAnswer.includes(firstWord.toLowerCase()) || lowerQuery.includes(firstWord.toLowerCase())))
+            
+            if (isMatch) {
+              if (proj.liveUrl) {
+                actionLinks.push({ label: `Live Demo (${firstWord})`, url: proj.liveUrl })
+              }
+              if (proj.githubUrl) {
+                actionLinks.push({ label: `GitHub Code (${firstWord})`, url: proj.githubUrl })
+              }
+            }
+          })
 
           if (lowerAnswer.includes('linkedin') || lowerQuery.includes('linkedin')) {
             actionLinks.push({ label: 'LinkedIn Profile', url: 'https://linkedin.com/in/vandan-patel-vp' })
           }
           if (lowerAnswer.includes('github') || lowerQuery.includes('github')) {
-            actionLinks.push({ label: 'GitHub Profile', url: 'https://github.com/vp-27' })
+            if (!actionLinks.some(l => l.url === 'https://github.com/vp-27')) {
+              actionLinks.push({ label: 'GitHub Profile', url: 'https://github.com/vp-27' })
+            }
           }
           if (lowerAnswer.includes('email') || lowerAnswer.includes('mailto') || lowerQuery.includes('email') || lowerQuery.includes('contact') || lowerQuery.includes('reach')) {
             actionLinks.push({ label: 'Send Email to Vandan', url: 'mailto:vrp77@scarletmail.rutgers.edu' })
