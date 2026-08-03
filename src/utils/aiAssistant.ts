@@ -1,4 +1,4 @@
-import { professionalExperiences, portfolioProjects, portfolioEducation, skillCategories, portfolioInterests, portfolioStocks, portfolioSummary } from '../data/portfolioData'
+import { professionalExperiences, portfolioProjects, portfolioEducation, skillCategories, portfolioInterests, portfolioStocks } from '../data/portfolioData'
 
 export interface ActionLink {
   label: string
@@ -27,15 +27,13 @@ const defaultChips = [
 
 /**
  * Dynamically constructs complete site context directly from portfolioData.ts single source of truth.
- * Covers About Me, Portfolio Metrics, Experiences, Projects (with live & GitHub URLs), Education, Skills, and Interests.
+ * Covers About Me, Experiences, Projects (with live & GitHub URLs), Education, Skills, Interests, and Watchlist Items.
  */
 function getDynamicSiteContext(): string {
   const bio = "Vandan Patel: Computer Science, Finance, and Data Science student at Rutgers Honors College (GPA 3.95). Incoming Operations Analyst Intern at Amazon SCOT (Supply Chain Optimization Technologies, Bellevue WA, Summer 2026). Quantitative builder creating FinTech tools, trading bots, and data pipelines."
   const contact = "Direct Contact & Social Links: Email: vrp77@scarletmail.rutgers.edu, LinkedIn: https://linkedin.com/in/vandan-patel-vp, GitHub: https://github.com/vp-27"
   
-  const stocks = portfolioStocks.map(s => `${s.name} (${s.symbol}): Value $${s.marketValue.toFixed(2)}, Return +${s.totalReturnPercent}%`).join('\n')
-  const summary = `Total Portfolio Value: $${portfolioSummary.totalValue.toFixed(2)}, Buying Power: $${portfolioSummary.buyingPower.toFixed(2)} (GPA 3.95 equivalent), Overall Return: +${portfolioSummary.totalReturnPercent}%`
-
+  const stocks = portfolioStocks.map(s => `${s.name} (${s.symbol}): Impact/Return ${s.totalReturnPercent}%`).join('\n')
   const exps = professionalExperiences.map(e => `${e.company} (${e.position}, ${e.startDate}-${e.endDate}): ${e.bullets.join('; ')}`).join('\n')
   
   const projs = portfolioProjects.map(p => {
@@ -50,7 +48,7 @@ function getDynamicSiteContext(): string {
   const skills = skillCategories.map(cat => `${cat.name}: ${cat.skills.map(s => s.name).join(', ')}`).join('\n')
   const interests = portfolioInterests.map(i => `${i.name} (${i.category})`).join(', ')
 
-  return `About Me:\n${bio}\n\nContact Details:\n${contact}\n\nRobinhood Portfolio & Watchlist Metrics:\n${summary}\n${stocks}\n\nProfessional Experiences:\n${exps}\n\nProjects:\n${projs}\n\nEducation & Honors:\n${edu}\n\nTechnical, Financial & Tool Skills:\n${skills}\n\nBeyond the Terminal (Interests & Hobbies):\n${interests}`
+  return `About Me:\n${bio}\n\nContact Details:\n${contact}\n\nRobinhood Watchlist Items & Impact Percentages:\n${stocks}\n\nProfessional Experiences:\n${exps}\n\nProjects:\n${projs}\n\nEducation & Honors:\n${edu}\n\nTechnical, Financial & Tool Skills:\n${skills}\n\nBeyond the Terminal (Interests & Hobbies):\n${interests}`
 }
 
 export function isNaturalLanguageQuery(query: string): boolean {
