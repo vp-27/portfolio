@@ -106,7 +106,7 @@ export default function RobinhoodAILoader({ onComplete }: RobinhoodAILoaderProps
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="relative w-full h-[76px] my-2 bg-black rounded-xl overflow-hidden border border-[#00C805]/40 shadow-[0_0_20px_rgba(0,200,5,0.25)]"
+      className="relative w-full h-[76px] my-2 overflow-hidden"
     >
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
     </motion.div>
