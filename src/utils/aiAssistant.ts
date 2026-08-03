@@ -242,7 +242,9 @@ ${getDynamicSiteContext()}
 Instructions:
 1. Answer the user's question concisely in 2-3 sentences.
 2. Use exact numbers, metrics, and technical facts from Vandan's website context whenever relevant.
-3. Be professional, quantitative, and direct.`
+3. Be professional, quantitative, and direct.
+4. Provide 3 creative, engaging, and highly relevant follow-up questions that a recruiter or visitor would want to ask next based on your answer.
+5. Return your response strictly as valid JSON with keys: "answer" (string) and "suggestedChips" (array of 3 question strings).`
               }
             ]
           },
@@ -254,7 +256,8 @@ Instructions:
           ],
           generationConfig: {
             temperature: 0.4,
-            maxOutputTokens: 160
+            maxOutputTokens: 250,
+            response_mime_type: 'application/json'
           }
         })
       })
@@ -263,9 +266,28 @@ Instructions:
 
       if (response.ok) {
         const data = await response.json()
-        const aiText = data.candidates?.[0]?.content?.parts?.[0]?.text
-        if (aiText && aiText.trim()) {
-          const cleanAnswer = aiText.trim()
+        const rawAiText = data.candidates?.[0]?.content?.parts?.[0]?.text
+        if (rawAiText && rawAiText.trim()) {
+          let cleanAnswer = ''
+          let dynamicChips: string[] = []
+
+          try {
+            const parsed = JSON.parse(rawAiText)
+            cleanAnswer = parsed.answer || ''
+            if (Array.isArray(parsed.suggestedChips) && parsed.suggestedChips.length > 0) {
+              dynamicChips = parsed.suggestedChips.map((c: string) => String(c).trim()).filter(Boolean)
+            }
+          } catch {
+            cleanAnswer = rawAiText.trim()
+          }
+
+          if (!cleanAnswer) {
+            cleanAnswer = rawAiText.trim()
+          }
+
+          if (dynamicChips.length === 0) {
+            dynamicChips = generateDynamicChips(query, cleanAnswer)
+          }
           const lowerAnswer = cleanAnswer.toLowerCase()
           const lowerQuery = query.toLowerCase()
 
@@ -319,8 +341,26 @@ Instructions:
             }
           })
 
+          // Dynamic resume action links (Triggers ONLY when query or answer explicitly pertains to resumes)
+          const isCSResumeReq = lowerQuery.includes('cs resume') || lowerQuery.includes('swe resume') || lowerQuery.includes('tech resume') || lowerQuery.includes('cs cv') || lowerAnswer.includes('cs resume')
+          const isFinanceResumeReq = lowerQuery.includes('finance resume') || lowerQuery.includes('quant resume') || lowerQuery.includes('banking resume') || lowerQuery.includes('finance cv') || lowerAnswer.includes('finance resume')
+          const isGenericResumeReq = lowerQuery.includes('resume') || lowerQuery.includes('cv')
+
+          if (isCSResumeReq || (isGenericResumeReq && !isFinanceResumeReq)) {
+            if (!actionLinks.some(l => l.url.includes('Vandan_Patel_CS.pdf'))) {
+              actionLinks.push({ label: 'Open CS Resume (PDF)', url: '/resumes/Vandan_Patel_CS.pdf' })
+            }
+          }
+          if (isFinanceResumeReq || (isGenericResumeReq && !isCSResumeReq)) {
+            if (!actionLinks.some(l => l.url.includes('Vandan_Patel_Finance.pdf'))) {
+              actionLinks.push({ label: 'Open Finance Resume (PDF)', url: '/resumes/Vandan_Patel_Finance.pdf' })
+            }
+          }
+
           if (lowerAnswer.includes('linkedin') || lowerQuery.includes('linkedin')) {
-            actionLinks.push({ label: 'LinkedIn Profile', url: 'https://linkedin.com/in/vandan-patel-vp' })
+            if (!actionLinks.some(l => l.url.includes('linkedin.com'))) {
+              actionLinks.push({ label: 'LinkedIn Profile', url: 'https://linkedin.com/in/vandan-patel-vp' })
+            }
           }
           if (lowerAnswer.includes('github') || lowerQuery.includes('github')) {
             if (!actionLinks.some(l => l.url === 'https://github.com/vp-27')) {
@@ -328,14 +368,15 @@ Instructions:
             }
           }
           if (lowerAnswer.includes('email') || lowerAnswer.includes('mailto') || lowerQuery.includes('email') || lowerQuery.includes('contact') || lowerQuery.includes('reach')) {
-            actionLinks.push({ label: 'Send Email to Vandan', url: 'mailto:vrp77@scarletmail.rutgers.edu' })
+            if (!actionLinks.some(l => l.url.includes('mailto:'))) {
+              actionLinks.push({ label: 'Send Email to Vandan', url: 'mailto:vrp77@scarletmail.rutgers.edu' })
+            }
           }
-          if (lowerQuery.includes('cs resume')) {
-            actionLinks.push({ label: 'Open CS Resume (PDF)', url: '/resumes/Vandan_Patel_CS.pdf' })
-          }
-          if (lowerQuery.includes('finance resume')) {
-            actionLinks.push({ label: 'Open Finance Resume (PDF)', url: '/resumes/Vandan_Patel_Finance.pdf' })
-          }
+
+          // Sanitize follow-up chips to exclude action-link commands so chips stay 100% question-focused
+          const actionPhrases = ['view cs resume', 'view finance resume', 'open cs resume', 'open finance resume', 'contact vandan', 'send email']
+          const sanitizedChips = (dynamicChips.length > 0 ? dynamicChips : generateDynamicChips(query, cleanAnswer))
+            .filter(chip => !actionPhrases.some(phrase => chip.toLowerCase().includes(phrase)))
 
           return {
             answer: cleanAnswer,
@@ -344,7 +385,7 @@ Instructions:
             targetType: uniqueLabels.length > 0 ? 'experience' : null,
             targetId: null,
             actionLinks: actionLinks.length > 0 ? actionLinks : undefined,
-            suggestedChips: generateDynamicChips(query, cleanAnswer)
+            suggestedChips: sanitizedChips
           }
         }
       }
