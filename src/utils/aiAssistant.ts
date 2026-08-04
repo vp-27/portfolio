@@ -291,31 +291,37 @@ Instructions:
           const lowerAnswer = cleanAnswer.toLowerCase()
           const lowerQuery = query.toLowerCase()
 
-          // Detect ALL relevant milestone labels mentioned in answer or query
+          // Detect ALL relevant milestone labels mentioned in answer or query (using precise matching)
           const foundLabels: string[] = []
 
           if (lowerAnswer.includes('amazon') || lowerQuery.includes('amazon') || lowerAnswer.includes('scot')) {
             foundLabels.push('Amazon SCOT')
           }
-          if (lowerAnswer.includes('trading') || lowerAnswer.includes('quant') || lowerAnswer.includes('algo')) {
+          if (lowerQuery.includes('trading bot') || lowerQuery.includes('algo trading') || lowerAnswer.includes('alpaca api') || lowerAnswer.includes('algorithmic trading bot')) {
             foundLabels.push('Algo Trading Bot')
           }
-          if (lowerAnswer.includes('orogenie') || lowerAnswer.includes('gemstone') || lowerAnswer.includes('shark tank')) {
+          if (lowerAnswer.includes('orogenie') || lowerQuery.includes('orogenie') || lowerAnswer.includes('gemstone valuation')) {
             foundLabels.push('OroGenie Platform')
+          }
+          if (lowerAnswer.includes('perkpal') || lowerQuery.includes('perkpal') || lowerQuery.includes('shark tank')) {
+            foundLabels.push('Shark Tank Top 6')
           }
           if (lowerAnswer.includes('grindsheet') || lowerQuery.includes('grindsheet')) {
             foundLabels.push('GrindSheet')
           }
-          if (lowerAnswer.includes('edgar') || lowerQuery.includes('edgar')) {
+          if (lowerAnswer.includes('sunny insurance') || lowerQuery.includes('sunny')) {
+            foundLabels.push('Sunny Insurance')
+          }
+          if (lowerAnswer.includes('edgar agent') || lowerQuery.includes('edgar')) {
             foundLabels.push('Edgar Agent')
           }
-          if (lowerAnswer.includes('moweb')) {
+          if (lowerAnswer.includes('moweb') || lowerQuery.includes('moweb')) {
             foundLabels.push('Moweb Data Team')
           }
-          if (lowerAnswer.includes('sebs')) {
+          if (lowerAnswer.includes('sebs data analyst') || lowerQuery.includes('sebs')) {
             foundLabels.push('SEBS Data Analyst')
           }
-          if (lowerAnswer.includes('rutgers')) {
+          if (lowerQuery.includes('education') || lowerQuery.includes('rutgers') || lowerQuery.includes('gpa') || lowerQuery.includes('degree') || lowerAnswer.includes('started rutgers')) {
             foundLabels.push('Started Rutgers')
           }
 
@@ -324,19 +330,27 @@ Instructions:
           // Extract ALL action links mentioned in query or response (LinkedIn, GitHub, Email, Resumes, Project Demos)
           const actionLinks: ActionLink[] = []
 
-          // Dynamic project action links (Live Demos & GitHub Repos)
-          portfolioProjects.forEach(proj => {
-            const projNameLower = proj.name.toLowerCase()
-            const firstWord = proj.name.split(' ')[0]
-            const isMatch = lowerAnswer.includes(projNameLower) || lowerQuery.includes(projNameLower) || 
-              (firstWord.length > 3 && (lowerAnswer.includes(firstWord.toLowerCase()) || lowerQuery.includes(firstWord.toLowerCase())))
-            
+          // Dynamic project action links (Live Demos & GitHub Repos with explicit project keyword matching)
+          const projectKeywordMap: { id: string; keywords: string[]; label: string }[] = [
+            { id: '7', keywords: ['edgar', 'edgar agent', '10-k'], label: 'Edgar Agent' },
+            { id: '1', keywords: ['algo trading', 'algorithmic trading', 'trading bot', 'alpaca'], label: 'Algo Trading' },
+            { id: '3', keywords: ['grindsheet'], label: 'GrindSheet' },
+            { id: '4', keywords: ['sunny', 'insurance co-pilot', 'insurance copilot'], label: 'Sunny Insurance' },
+            { id: '5', keywords: ['perkpal', 'shark tank', 'perkopoly'], label: 'PerkPal' },
+            { id: '2', keywords: ['orogenie', 'gemstone'], label: 'OroGenie' },
+          ]
+
+          projectKeywordMap.forEach(item => {
+            const isMatch = item.keywords.some(kw => lowerAnswer.includes(kw) || lowerQuery.includes(kw))
             if (isMatch) {
-              if (proj.liveUrl) {
-                actionLinks.push({ label: `Live Demo (${firstWord})`, url: proj.liveUrl })
-              }
-              if (proj.githubUrl) {
-                actionLinks.push({ label: `GitHub Code (${firstWord})`, url: proj.githubUrl })
+              const proj = portfolioProjects.find(p => p.id === item.id)
+              if (proj) {
+                if (proj.liveUrl) {
+                  actionLinks.push({ label: `Live Demo (${item.label})`, url: proj.liveUrl })
+                }
+                if (proj.githubUrl) {
+                  actionLinks.push({ label: `GitHub Code (${item.label})`, url: proj.githubUrl })
+                }
               }
             }
           })
