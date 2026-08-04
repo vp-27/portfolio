@@ -293,6 +293,7 @@ export default function Dashboard() {
                 <AboutAndSkills 
                   skillCategories={skillCategories} 
                   searchQuery={searchQuery} 
+                  hasAIResult={!!aiResult}
                   showOnlyAbout={true} 
                   onSkillClick={handleSearch} 
                   isContactHighlighted={isContactHighlighted}
@@ -308,6 +309,7 @@ export default function Dashboard() {
                   highlightedItem={highlightedItem}
                   hoveredItem={hoveredChartItem}
                   searchQuery={searchQuery}
+                  hasAIResult={!!aiResult}
                   onItemHover={handleItemHover}
                 />
               </div>
@@ -324,6 +326,7 @@ export default function Dashboard() {
                   <AboutAndSkills 
                     skillCategories={skillCategories} 
                     searchQuery={searchQuery} 
+                    hasAIResult={!!aiResult}
                     onSkillClick={handleSearch} 
                     isContactHighlighted={isContactHighlighted}
                   />
@@ -336,6 +339,7 @@ export default function Dashboard() {
             <AboutAndSkills 
               skillCategories={skillCategories} 
               searchQuery={searchQuery} 
+              hasAIResult={!!aiResult}
               showOnlySkills={true} 
               onSkillClick={handleSearch} 
               isContactHighlighted={isContactHighlighted}

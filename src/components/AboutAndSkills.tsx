@@ -8,6 +8,7 @@ import { isNaturalLanguageQuery } from '../utils/aiAssistant'
 interface AboutAndSkillsProps {
   skillCategories: SkillCategory[]
   searchQuery?: string
+  hasAIResult?: boolean
   showOnlyAbout?: boolean
   showOnlySkills?: boolean
   showOnlyContact?: boolean
@@ -54,6 +55,7 @@ const LinkedinIcon = ({ className }: { className?: string }) => (
 export default function AboutAndSkills({ 
   skillCategories, 
   searchQuery = '', 
+  hasAIResult = false,
   showOnlyAbout = false, 
   showOnlySkills = false, 
   showOnlyContact = false,
@@ -64,12 +66,17 @@ export default function AboutAndSkills({
   const [isHovered, setIsHovered] = useState(false)
 
   // Filter skills based on search query
-  const filteredSkillCategories = skillCategories.map(category => ({
+  const matchedSkillCategories = skillCategories.map(category => ({
     ...category,
     skills: category.skills.filter(skill =>
       !searchQuery || isNaturalLanguageQuery(searchQuery) || skill.name.toLowerCase().includes(searchQuery.toLowerCase())
     )
   })).filter(category => category.skills.length > 0)
+
+  // Fallback: If 0 skill categories match, OR if an AI result is active, show all skill categories
+  const filteredSkillCategories = (matchedSkillCategories.length === 0 || hasAIResult)
+    ? skillCategories
+    : matchedSkillCategories
 
   const toggleList = (listId: string) => {
     const newExpanded = new Set(expandedLists)

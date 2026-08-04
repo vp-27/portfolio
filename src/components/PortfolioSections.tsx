@@ -12,10 +12,11 @@ interface PortfolioSectionsProps {
   highlightedItem?: { type: 'experience' | 'project' | 'education'; id: string } | null
   hoveredItem?: { type: 'experience' | 'project' | 'education'; id: string } | null
   searchQuery?: string
+  hasAIResult?: boolean
   onItemHover?: (type: 'experience' | 'project' | 'education', id: string | null) => void
 }
 
-export default function PortfolioSections({ experiences, projects, education, highlightedItem, hoveredItem, searchQuery = '', onItemHover }: PortfolioSectionsProps) {
+export default function PortfolioSections({ experiences, projects, education, highlightedItem, hoveredItem, searchQuery = '', hasAIResult = false, onItemHover }: PortfolioSectionsProps) {
   // Filter function for search
   const matchesSearch = (text: string) => {
     if (!searchQuery) return true
@@ -23,18 +24,25 @@ export default function PortfolioSections({ experiences, projects, education, hi
     return text.toLowerCase().includes(searchQuery.toLowerCase())
   }
 
-  const filteredExperiences = experiences.filter(exp =>
+  const matchedExperiences = experiences.filter(exp =>
     matchesSearch(exp.position) ||
     matchesSearch(exp.company) ||
     exp.bullets.some(b => matchesSearch(b))
   )
 
-  const filteredProjects = projects.filter(proj =>
+  const matchedProjects = projects.filter(proj =>
     matchesSearch(proj.name) ||
     matchesSearch(proj.subtitle) ||
     proj.bullets.some(b => matchesSearch(b)) ||
     (proj.technologies && proj.technologies.some(t => matchesSearch(t)))
   )
+
+  // Fallback: If 0 items match the search query across both sections, OR if an AI result is active, show all items
+  const noMatchesFound = matchedExperiences.length === 0 && matchedProjects.length === 0
+  const shouldShowAll = noMatchesFound || hasAIResult || isNaturalLanguageQuery(searchQuery)
+
+  const filteredExperiences = shouldShowAll ? experiences : matchedExperiences
+  const filteredProjects = shouldShowAll ? projects : matchedProjects
 
   return (
     <div className="mt-10 space-y-8">
