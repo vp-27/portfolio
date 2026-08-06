@@ -30,7 +30,7 @@ const defaultChips = [
  * Covers About Me, Experiences, Projects (with live & GitHub URLs), Education, Skills, Interests, and Watchlist Items.
  */
 function getDynamicSiteContext(): string {
-  const bio = "Vandan Patel: Computer Science, Finance, and Data Science student at Rutgers Honors College (GPA 3.95). Incoming Operations Analyst Intern at Amazon SCOT (Supply Chain Optimization Technologies, Bellevue WA, Summer 2026). Quantitative builder creating FinTech tools, trading bots, and data pipelines."
+  const bio = "Vandan Patel: Computer Science, Finance, and Data Science student at Rutgers Honors College (GPA 3.95). Financial Analyst Intern at Amazon SCOT (Supply Chain Optimization Technologies, Bellevue WA). Quantitative builder creating FinTech tools, agentic platforms, trading bots, and data pipelines."
   const contact = "Direct Contact & Social Links: Email: vrp77@scarletmail.rutgers.edu, LinkedIn: https://linkedin.com/in/vandan-patel-vp, GitHub: https://github.com/vp-27"
   
   const stocks = portfolioStocks.map(s => `${s.name} (${s.symbol}): Impact/Return ${s.totalReturnPercent}%`).join('\n')

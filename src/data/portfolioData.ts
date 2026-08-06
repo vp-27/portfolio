@@ -427,16 +427,20 @@ export const skillCategories: SkillCategory[] = [
 export const professionalExperiences: Experience[] = [
   {
     id: 'amazon1',
-    company: 'Amazon | Supply Chain Optimization Technologies',
-    position: 'Incoming Operations Analyst Intern',
+    company: 'Amazon | Supply Chain Optimization Technologies (SCOT)',
+    position: 'Financial Analyst Intern',
     location: 'Bellevue, WA',
     startDate: 'May 2026',
     endDate: 'Aug 2026',
     logoUrl: '/images/experience_images/amazon.png',
     bullets: [
-      'Incoming intern within Supply Chain Optimization Technologies',
+      'Built a variance attribution framework and forecast model for a major liquidation cost line, back-tested across a 24-month window with documented error metrics — subsequently becoming a top 0.2% user of Amazon\'s internal agentic platform and contributing production code to it.',
+      'Shipped a fix to the platform\'s session-titling feature after catching a quota-bypass vulnerability in my own code during review: passed 96% automated review, adversarially tested the fix to uncover a cold-cache edge case, and redesigned to a fail-closed, two-layer gate backed by 40 targeted tests.',
+      'Reviewed a Principal TPM\'s code change, flagged a non-blocking issue, and proposed an alternative architectural approach that was adopted and shipped to production.',
+      'Pioneered a multi-team finance knowledgebase system from concept to a director-sponsored initiative as the sole junior representative alongside finance managers; shipped backend replacing obsolete wikis (0-of-7 accurate baseline) and collapsed a two-service design into one to eliminate adoption friction.',
+      'Engineered a dependency-free spreadsheet compute engine enabling AI agents to safely edit financial models headlessly, verified with 99.86% formula correctness and byte-exact round-tripping.'
     ],
-    technologies: ['Supply Chain', 'Operations Optimization'],
+    technologies: ['Financial Modeling', 'Variance Attribution', 'Agentic AI', 'System Design', 'Code Review', 'Python'],
     brandColor: '#FF9900',
   },
   {
