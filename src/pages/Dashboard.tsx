@@ -284,7 +284,10 @@ export default function Dashboard() {
                     onClose={() => setAIResult(null)}
                   />
                 ) : (
-                  <BuyingPower />
+                  <BuyingPower
+                    activeMilestone={activeHoveredPoint?.label || null}
+                    onJumpToMilestone={(label) => navigateToItem(label)}
+                  />
                 )}
               </div>
 

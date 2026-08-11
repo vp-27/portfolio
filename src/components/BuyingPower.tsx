@@ -1,8 +1,13 @@
-import { MousePointerClick } from 'lucide-react'
+import { MousePointerClick, ArrowUpRight } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
-export default function BuyingPower() {
+interface BuyingPowerProps {
+  activeMilestone?: string | null
+  onJumpToMilestone?: (label: string) => void
+}
+
+export default function BuyingPower({ activeMilestone, onJumpToMilestone }: BuyingPowerProps) {
   const [hasSeenTimelineHint, setHasSeenTimelineHint] = useState(() => {
     return sessionStorage.getItem('bpTimelineSeen') === '1'
   })
@@ -16,21 +21,60 @@ export default function BuyingPower() {
   }, [hasSeenTimelineHint])
 
   return (
-    <div className="py-3 border-b border-[#2D2D2D]">
+    <div className="py-2.5 border-b border-[#2D2D2D]">
       <motion.div
         initial={hasSeenTimelineHint ? false : { opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.2 }}
-        className="w-full flex items-center justify-between py-2 px-2"
+        className="w-full"
       >
-        <div className="flex items-center gap-2">
-          <span className="text-white text-sm">Timeline</span>
-          <MousePointerClick className="w-4 h-4 text-gray-500" />
+        {/* Desktop View: Completely static, zero jumping/bouncing */}
+        <div className="hidden md:flex w-full items-center justify-between py-1 px-2">
+          <div className="flex items-center gap-2">
+            <span className="text-white text-sm">Timeline</span>
+            <MousePointerClick className="w-4 h-4 text-gray-500" />
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-white font-medium text-sm">Tap milestones to explore</span>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="text-white font-medium text-sm">Tap milestones to explore</span>
+
+        {/* Mobile View: Dynamic with active milestone and tap-friendly Visit button */}
+        <div className="flex md:hidden w-full items-center justify-between min-h-[36px] px-2">
+          <div className="flex items-center gap-2 min-w-0 pr-2">
+            <span className="text-white text-sm font-medium shrink-0">Timeline</span>
+            {activeMilestone ? (
+              <div className="flex items-center gap-1.5 min-w-0">
+                <span className="text-gray-500 text-xs shrink-0">•</span>
+                <span className="text-[#C9A227] text-xs font-semibold truncate">
+                  {activeMilestone}
+                </span>
+              </div>
+            ) : (
+              <MousePointerClick className="w-4 h-4 text-gray-500 shrink-0" />
+            )}
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0">
+            {activeMilestone ? (
+              <button
+                type="button"
+                onClick={() => onJumpToMilestone && onJumpToMilestone(activeMilestone)}
+                className="flex items-center gap-1.5 px-3 py-1 bg-[#C9A227] active:bg-[#d8ae2c] active:scale-95 text-black font-bold text-xs rounded-full transition-all shadow-md shadow-[#C9A227]/20"
+              >
+                <span>Visit</span>
+                <ArrowUpRight className="w-3.5 h-3.5 stroke-[2.5]" />
+              </button>
+            ) : (
+              <span className="text-gray-400 font-medium text-xs">
+                Tap milestones to explore
+              </span>
+            )}
+          </div>
         </div>
       </motion.div>
     </div>
   )
 }
+
+

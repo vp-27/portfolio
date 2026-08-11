@@ -19,11 +19,25 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
   const touchTapTimeRef = useRef(0)
   const armResetTimerRef = useRef<number | null>(null)
 
-  const isTouchDevice = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0)
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return window.innerWidth < 768 || 'ontouchstart' in window || navigator.maxTouchPoints > 0
+  })
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window || (navigator.maxTouchPoints > 0 && window.innerWidth < 1024))
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  const isTouchDevice = isMobile
 
   // Snap threshold - distance in pixels to trigger snapping
   // Use larger threshold on touch devices for better UX
-  const snapThreshold = typeof window !== 'undefined' && 'ontouchstart' in window ? 20 : 10
+  const snapThreshold = isMobile ? 20 : 10
 
   // Sync snappedIndex with external hoveredMilestoneLabel prop
   useEffect(() => {
@@ -173,10 +187,10 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
       const isHovered = snappedIndex === index
       const isArmed = armedMilestoneIndex === index
       const dotColor = isArmed || isHovered ? '#C9A227' : strokeColor
-      const dotRadius = isArmed ? 11 : isHovered ? 6 : 4
-      const strokeWidth = isArmed ? 3 : isHovered ? 2 : 1.5
+      const dotRadius = isArmed ? 8 : isHovered ? 6 : 4
+      const strokeWidth = isArmed ? 2.5 : isHovered ? 2 : 1.5
 
-      // Calculate width and boundaries of the tooltip to prevent cutoff
+      // Calculate width and boundaries of the tooltip to prevent cutoff on desktop
       const bubbleWidth = 44
       const halfWidth = bubbleWidth / 2
       const chartWidth = chartRef.current?.offsetWidth || 300
@@ -185,11 +199,20 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
       const rectX = Math.max(8, Math.min(chartWidth - bubbleWidth - 8, cx - halfWidth))
       
       // Determine if tooltip should be shown below the dot to prevent clipping at the top
-      // cy is close to the top if cy < 40
       const showBelow = cy < 40
 
       return (
         <g>
+          {(isHovered || isArmed) && (
+            <circle
+              cx={cx}
+              cy={cy}
+              r={dotRadius + 5}
+              fill="#C9A227"
+              fillOpacity={0.25}
+              className="pointer-events-none"
+            />
+          )}
           <circle
             cx={cx}
             cy={cy}
@@ -199,8 +222,9 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
             strokeWidth={strokeWidth}
             className="cursor-pointer hover:r-6 transition-all duration-150"
           />
-          {(isHovered || isArmed) && (
-            <g className="pointer-events-none select-none">
+          {/* On desktop non-touch devices, show the classic VISIT floating tooltip on hover */}
+          {!isMobile && (isHovered || isArmed) && (
+            <g className="pointer-events-none select-none hidden md:block">
               {showBelow ? (
                 <>
                   <rect
