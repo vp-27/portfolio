@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Search, FileText, ChevronDown } from 'lucide-react'
+import { Search, FileText, ChevronDown, X } from 'lucide-react'
 
 interface TopNavProps {
   onNavigate?: (section: string) => void
@@ -81,8 +81,18 @@ export default function TopNav({ onNavigate, onSearch, onAISubmit, searchQuery =
                 value={searchQuery}
                 onChange={handleSearchChange}
                 onKeyDown={handleKeyDown}
-                className="w-full bg-[#1A1A1A] text-white placeholder-gray-500 pl-10 pr-4 py-2 rounded-md text-[16px] md:text-sm focus:outline-none focus:ring-1 focus:ring-gray-700"
+                className="w-full bg-[#1A1A1A] text-white placeholder-gray-500 pl-10 pr-9 py-2 rounded-md text-[16px] md:text-sm focus:outline-none focus:ring-1 focus:ring-gray-700"
               />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => onSearch?.('')}
+                  className="absolute right-2.5 top-1/2 transform -translate-y-1/2 p-1 text-gray-400 hover:text-white transition-colors"
+                  aria-label="Clear search"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
             </div>
           </div>
 

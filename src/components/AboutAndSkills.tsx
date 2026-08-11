@@ -214,7 +214,7 @@ export default function AboutAndSkills({
               ) : (
                 <>
                   {filteredSkillCategories.map((category) => {
-                    const isExpanded = expandedLists.has(category.id)
+                    const isExpanded = expandedLists.has(category.id) || (!!searchQuery && !isNaturalLanguageQuery(searchQuery))
 
                     return (
                       <motion.div key={category.id} layout>
@@ -247,15 +247,24 @@ export default function AboutAndSkills({
                               className="overflow-hidden bg-transparent"
                             >
                               <div>
-                                {category.skills.map((skill) => (
-                                  <SkillItem 
-                                    key={skill.id} 
-                                    skill={skill} 
-                                    categoryIcon={category.icon} 
-                                    onClick={() => onSkillClick?.(skill.name)}
-                                    isActive={searchQuery === skill.name}
-                                  />
-                                ))}
+                                {category.skills.map((skill) => {
+                                  const isSkillActive = !!searchQuery && searchQuery.toLowerCase() === skill.name.toLowerCase()
+                                  return (
+                                    <SkillItem 
+                                      key={skill.id} 
+                                      skill={skill} 
+                                      categoryIcon={category.icon} 
+                                      onClick={() => {
+                                        if (isSkillActive) {
+                                          onSkillClick?.('')
+                                        } else {
+                                          onSkillClick?.(skill.name)
+                                        }
+                                      }}
+                                      isActive={isSkillActive}
+                                    />
+                                  )
+                                })}
                               </div>
                             </motion.div>
                           )}
@@ -348,27 +357,27 @@ export default function AboutAndSkills({
         {showOnlySkills && (
           <div data-section="skills">
             <h2 className="text-2xl font-medium mb-3 text-left">Skills</h2>
-            <div className="bg-[#1E2124] rounded-lg border border-[#2D2D2D] overflow-hidden">
+            <div className="bg-transparent overflow-hidden">
               {filteredSkillCategories.length === 0 && searchQuery ? (
                 <p className="text-sm text-gray-400 text-center py-4 px-4">No skills match your search</p>
               ) : (
                 <>
                   {filteredSkillCategories.map((category) => {
-                    const isExpanded = expandedLists.has(category.id)
+                    const isExpanded = expandedLists.has(category.id) || (!!searchQuery && !isNaturalLanguageQuery(searchQuery))
 
                     return (
                       <motion.div key={category.id} layout>
                         <button
                           onClick={() => toggleList(category.id)}
-                          className="w-full flex items-center justify-between px-4 py-4 bg-transparent hover:bg-[#2A2D31] transition-colors focus:outline-none"
+                          className="w-full flex items-center justify-between py-3.5 border-b border-[#2D2D2D] bg-transparent active:bg-[#1A1A1A] transition-colors focus:outline-none"
                         >
-                          <div className="flex items-center gap-4">
-                            <div className="w-14 h-16 bg-[#1A1A1A] rounded-2xl flex items-center justify-center text-3xl flex-shrink-0">
+                          <div className="flex items-center gap-3.5">
+                            <div className="w-10 h-12 bg-[#1A1A1A] rounded-md flex items-center justify-center text-lg flex-shrink-0">
                               {skillEmojis[category.icon] || '📦'}
                             </div>
                             <div className="flex flex-col items-start">
                               <span className="text-white text-base font-semibold">{category.name}</span>
-                              <span className="text-gray-500 text-sm">{category.skills.length} {category.skills.length === 1 ? 'item' : 'items'}</span>
+                              <span className="text-gray-500 text-xs">{category.skills.length} {category.skills.length === 1 ? 'item' : 'items'}</span>
                             </div>
                           </div>
                           <motion.div
@@ -390,15 +399,24 @@ export default function AboutAndSkills({
                               className="overflow-hidden bg-transparent"
                             >
                               <div>
-                                {category.skills.map((skill) => (
-                                  <SkillItem 
-                                    key={skill.id} 
-                                    skill={skill} 
-                                    categoryIcon={category.icon} 
-                                    onClick={() => onSkillClick?.(skill.name)}
-                                    isActive={searchQuery === skill.name}
-                                  />
-                                ))}
+                                {category.skills.map((skill) => {
+                                  const isSkillActive = !!searchQuery && searchQuery.toLowerCase() === skill.name.toLowerCase()
+                                  return (
+                                    <SkillItem 
+                                      key={skill.id} 
+                                      skill={skill} 
+                                      categoryIcon={category.icon} 
+                                      onClick={() => {
+                                        if (isSkillActive) {
+                                          onSkillClick?.('')
+                                        } else {
+                                          onSkillClick?.(skill.name)
+                                        }
+                                      }}
+                                      isActive={isSkillActive}
+                                    />
+                                  )
+                                })}
                               </div>
                             </motion.div>
                           )}

@@ -162,11 +162,17 @@ export default function Dashboard() {
     if (aiResult && !query.toLowerCase().includes(aiResult.answer.slice(0, 10).toLowerCase())) {
       setAIResult(null)
     }
+  }
 
-    if (window.innerWidth >= 768) {
-      setTimeout(() => {
-        handleNavigate('skills')
-      }, 100)
+  // Handle clicking a skill chip (toggle selection if active, otherwise set filter)
+  const handleSkillClick = (skillName: string) => {
+    if (!skillName || (searchQuery && searchQuery.toLowerCase() === skillName.toLowerCase())) {
+      handleSearch('')
+    } else {
+      handleSearch(skillName)
+      if (window.innerWidth < 768) {
+        window.dispatchEvent(new CustomEvent('open-mobile-search', { detail: { query: skillName } }))
+      }
     }
   }
 
@@ -298,7 +304,7 @@ export default function Dashboard() {
                   searchQuery={searchQuery} 
                   hasAIResult={!!aiResult}
                   showOnlyAbout={true} 
-                  onSkillClick={handleSearch} 
+                  onSkillClick={handleSkillClick} 
                   isContactHighlighted={isContactHighlighted}
                 />
               </div>
@@ -330,7 +336,7 @@ export default function Dashboard() {
                     skillCategories={skillCategories} 
                     searchQuery={searchQuery} 
                     hasAIResult={!!aiResult}
-                    onSkillClick={handleSearch} 
+                    onSkillClick={handleSkillClick} 
                     isContactHighlighted={isContactHighlighted}
                   />
                 </div>
@@ -344,7 +350,7 @@ export default function Dashboard() {
               searchQuery={searchQuery} 
               hasAIResult={!!aiResult}
               showOnlySkills={true} 
-              onSkillClick={handleSearch} 
+              onSkillClick={handleSkillClick} 
               isContactHighlighted={isContactHighlighted}
             />
           </div>

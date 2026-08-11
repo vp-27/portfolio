@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { BriefcaseIcon, FolderIcon, UserIcon } from '@heroicons/react/24/solid'
 import { Search, X } from 'lucide-react'
 import { useNavigate, useLocation } from 'react-router-dom'
@@ -32,20 +32,31 @@ export default function BottomNav({ searchQuery = '', onSearch, onAISubmit }: Bo
   const location = useLocation()
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [localQuery, setLocalQuery] = useState(searchQuery)
+  const searchInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    const handleOpenSearch = () => {
+    setLocalQuery(searchQuery)
+  }, [searchQuery])
+
+  useEffect(() => {
+    const handleOpenSearch = (e?: Event) => {
+      const customEvent = e as CustomEvent<{ query?: string }>
+      if (customEvent?.detail?.query !== undefined) {
+        setLocalQuery(customEvent.detail.query)
+        if (onSearch) {
+          onSearch(customEvent.detail.query)
+        }
+      }
       setIsSearchOpen(true)
       setTimeout(() => {
-        const input = document.querySelector('input[type="text"]') as HTMLInputElement
-        if (input) {
-          input.focus()
+        if (searchInputRef.current) {
+          searchInputRef.current.focus()
         }
       }, 150)
     }
-    window.addEventListener('open-mobile-search', handleOpenSearch)
-    return () => window.removeEventListener('open-mobile-search', handleOpenSearch)
-  }, [])
+    window.addEventListener('open-mobile-search', handleOpenSearch as EventListener)
+    return () => window.removeEventListener('open-mobile-search', handleOpenSearch as EventListener)
+  }, [onSearch])
 
   const handleQueryChange = (val: string) => {
     setLocalQuery(val)
@@ -93,6 +104,7 @@ export default function BottomNav({ searchQuery = '', onSearch, onAISubmit }: Bo
             <div className="flex items-center gap-2 bg-[#1E1E1E] rounded-xl px-3 py-2.5 border border-[#2A2A2A]">
               <Search className="w-4 h-4 text-gray-400 flex-shrink-0" />
               <input
+                ref={searchInputRef}
                 type="text"
                 autoFocus
                 placeholder="Search or ask anything..."
