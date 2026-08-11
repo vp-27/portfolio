@@ -1,4 +1,4 @@
-import { MousePointerClick, ArrowUpRight } from 'lucide-react'
+import { MousePointerClick, ArrowDown } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
@@ -63,7 +63,7 @@ export default function BuyingPower({ activeMilestone, onJumpToMilestone }: Buyi
                 className="flex items-center gap-1.5 px-3 py-1 bg-[#C9A227] active:bg-[#d8ae2c] active:scale-95 text-black font-bold text-xs rounded-full transition-all shadow-md shadow-[#C9A227]/20"
               >
                 <span>Visit</span>
-                <ArrowUpRight className="w-3.5 h-3.5 stroke-[2.5]" />
+                <ArrowDown className="w-3.5 h-3.5 stroke-[2.5]" />
               </button>
             ) : (
               <span className="text-gray-400 font-medium text-xs">
