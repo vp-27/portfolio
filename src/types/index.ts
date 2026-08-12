@@ -14,7 +14,6 @@ export interface Stock {
 
 export interface PortfolioData {
   totalValue: number
-  buyingPower: number
   todayReturn: number
   todayReturnPercent: number
   totalReturn: number

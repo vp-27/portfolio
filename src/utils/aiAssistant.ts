@@ -19,7 +19,7 @@ export interface AIQueryResult {
 
 const defaultChips = [
   'Tell me about Amazon SCOT',
-  'What trading bots has he built?',
+  'Tell me about GALE',
   'Why CS and Finance?',
   'View CS Resume',
   'View Finance Resume'
@@ -30,7 +30,7 @@ const defaultChips = [
  * Covers About Me, Experiences, Projects (with live & GitHub URLs), Education, Skills, Interests, and Watchlist Items.
  */
 function getDynamicSiteContext(): string {
-  const bio = "Vandan Patel: Computer Science, Finance, and Data Science student at Rutgers Honors College (GPA 3.95). Financial Analyst Intern at Amazon SCOT (Supply Chain Optimization Technologies, Bellevue WA). Quantitative builder creating FinTech tools, agentic platforms, trading bots, and data pipelines."
+  const bio = "Vandan Patel: Computer Science, Finance, and Data Science student at Rutgers Honors College (GPA 3.96, Phi Beta Kappa). Financial Analyst Intern at Amazon SCOT (Supply Chain Optimization Technologies, Bellevue WA). Quantitative builder creating FinTech tools, agentic platforms, trading bots, and data pipelines."
   const contact = "Direct Contact & Social Links: Email: vrp77@scarletmail.rutgers.edu, LinkedIn: https://linkedin.com/in/vandan-patel-vp, GitHub: https://github.com/vp-27"
   
   const stocks = portfolioStocks.map(s => `${s.name} (${s.symbol}): Impact/Return ${s.totalReturnPercent}%`).join('\n')
@@ -72,7 +72,7 @@ export function processAIQuery(query: string): AIQueryResult {
   // 1. CS Resume Direct Action Shortcut
   if (q.includes('cs resume') || q.includes('computer science resume') || q.includes('swe resume') || q.includes('tech resume')) {
     return {
-      answer: "Vandan's Computer Science Resume highlights his software engineering experience (React, TypeScript, Python, C++, SQL), algorithms, data engineering, and scalable web apps.",
+      answer: "Vandan's Computer Science Resume highlights his software engineering experience (React, TypeScript, Python, FastAPI, SQL, dbt-core), AI agent platform engineering at Amazon SCOT, custom pub/sub algorithms (GALE), and SEC 10-K API tools.",
       milestoneLabel: null,
       targetType: 'resume_cs',
       targetId: null,
@@ -85,7 +85,7 @@ export function processAIQuery(query: string): AIQueryResult {
   // 2. Finance Resume Direct Action Shortcut
   if (q.includes('finance resume') || q.includes('quant resume') || q.includes('banking resume')) {
     return {
-      answer: "Vandan's Finance Resume details his quantitative modeling, financial analysis, algorithmic trading bot, gemstone valuation platform (OroGenie), and SCOT operations background.",
+      answer: "Vandan's Finance Resume details his financial analysis & P&L liquidation variance attribution at Amazon SCOT, SEC 10-K extraction API, algorithmic trading bot, and investment analysis competitions (Bender Trust LIBOR).",
       milestoneLabel: null,
       targetType: 'resume_finance',
       targetId: null,
@@ -142,9 +142,9 @@ export function processAIQuery(query: string): AIQueryResult {
 function synthesizePersonaAnswer(query: string): AIQueryResult {
   const q = query.toLowerCase()
 
-  if (q.includes('quant') || q.includes('math') || q.includes('calculus') || q.includes('model') || q.includes('alpha')) {
+  if (q.includes('quant') || q.includes('math') || q.includes('model') || q.includes('alpha') || q.includes('trading')) {
     return {
-      answer: "Vandan approaches quantitative modeling by combining technical market indicators (MACD, Bollinger Bands, RMA) with automated software execution. He leverages Python and data science frameworks to backtest market hypotheses and optimize risk-adjusted strategies.",
+      answer: "Vandan approaches quantitative modeling by combining technical market indicators with automated software execution. He leverages Python, Alpaca API, and financial modeling to backtest market hypotheses and optimize risk-adjusted strategies.",
       milestoneLabel: 'Algo Trading Bot',
       targetType: 'project',
       targetId: '1',
@@ -154,17 +154,17 @@ function synthesizePersonaAnswer(query: string): AIQueryResult {
 
   if (q.includes('code') || q.includes('developer') || q.includes('tech') || q.includes('build') || q.includes('stack')) {
     return {
-      answer: "Vandan is a builder who designs tools that automate complex workflows. His core technical stack includes React, TypeScript, Python, SQL, C++, and Docker, emphasizing high-performance UX and clean system architecture.",
+      answer: "Vandan is a builder who designs high-impact tools that automate complex workflows. His technical stack includes Python, Java, JavaScript/TypeScript, React, FastAPI, dbt-core, Supabase, Snowflake, and MCP, emphasizing high performance and clean architecture.",
       milestoneLabel: null,
       targetType: 'skills',
       targetId: null,
-      suggestedChips: ['View CS Resume', 'Tell me about Moweb', 'What projects has he built?']
+      suggestedChips: ['View CS Resume', 'Tell me about GALE', 'What projects has he built?']
     }
   }
 
   if (q.includes('hire') || q.includes('role') || q.includes('intern') || q.includes('future') || q.includes('career') || q.includes('job')) {
     return {
-      answer: "Vandan is an incoming Operations Analyst Intern at Amazon SCOT (Supply Chain Optimization Technologies) for Summer 2026. He is positioning for high-impact roles across Software Engineering (SWE), Quantitative Analytics, and FinTech.",
+      answer: "Vandan is a Financial Analyst Intern at Amazon SCOT (Supply Chain Optimization Technologies) for Summer 2026. He is positioning for high-impact roles across Software Engineering (SWE), Quantitative Analytics, and FinTech.",
       milestoneLabel: 'Amazon SCOT',
       targetType: 'experience',
       targetId: 'amazon1',
@@ -173,7 +173,7 @@ function synthesizePersonaAnswer(query: string): AIQueryResult {
   }
 
   return {
-    answer: `Vandan Patel is a CS, Finance & Data Science student at Rutgers Honors College (Incoming Operations Analyst @ Amazon SCOT). He specializes in quantitative tools, full-stack software development, and financial market platforms.`,
+    answer: `Vandan Patel is a CS, Finance & Data Science student at Rutgers Honors College (GPA 3.96, Phi Beta Kappa, Financial Analyst Intern @ Amazon SCOT). He specializes in quantitative tools, full-stack software development, and AI agent platforms.`,
     milestoneLabel: null,
     targetType: null,
     targetId: null,
@@ -188,12 +188,12 @@ function generateDynamicChips(query: string, text: string): string[] {
   const combined = (query + ' ' + text).toLowerCase()
 
   if (combined.includes('amazon') || combined.includes('scot') || combined.includes('supply chain')) {
-    return ['What tech stack does he use?', 'Tell me about Algo Trading Bot', 'View CS Resume']
+    return ['What tech stack does he use?', 'Tell me about GALE', 'View CS Resume']
   }
   if (combined.includes('trading') || combined.includes('quant') || combined.includes('bot')) {
-    return ['Show OroGenie Platform', 'View Finance Resume', 'Tell me about Amazon SCOT']
+    return ['Tell me about Edgar Agent', 'View Finance Resume', 'Tell me about Amazon SCOT']
   }
-  if (combined.includes('orogenie') || combined.includes('gemstone') || combined.includes('shark tank')) {
+  if (combined.includes('gale') || combined.includes('edgar') || combined.includes('shark tank')) {
     return ['Tell me about GrindSheet', 'View CS Resume', 'Contact Vandan']
   }
   if (combined.includes('rutgers') || combined.includes('education') || combined.includes('gpa')) {
@@ -300,8 +300,8 @@ Instructions:
           if (lowerQuery.includes('trading bot') || lowerQuery.includes('algo trading') || lowerAnswer.includes('alpaca api') || lowerAnswer.includes('algorithmic trading bot')) {
             foundLabels.push('Algo Trading Bot')
           }
-          if (lowerAnswer.includes('orogenie') || lowerQuery.includes('orogenie') || lowerAnswer.includes('gemstone valuation')) {
-            foundLabels.push('OroGenie Platform')
+          if (lowerAnswer.includes('gale') || lowerQuery.includes('gale') || lowerAnswer.includes('gamified algorithmic')) {
+            foundLabels.push('GALE Engine')
           }
           if (lowerAnswer.includes('perkpal') || lowerQuery.includes('perkpal') || lowerQuery.includes('shark tank')) {
             foundLabels.push('Shark Tank Top 6')
@@ -309,14 +309,11 @@ Instructions:
           if (lowerAnswer.includes('grindsheet') || lowerQuery.includes('grindsheet')) {
             foundLabels.push('GrindSheet')
           }
-          if (lowerAnswer.includes('sunny insurance') || lowerQuery.includes('sunny')) {
-            foundLabels.push('Sunny Insurance')
-          }
           if (lowerAnswer.includes('edgar agent') || lowerQuery.includes('edgar')) {
             foundLabels.push('Edgar Agent')
           }
           if (lowerAnswer.includes('moweb') || lowerQuery.includes('moweb')) {
-            foundLabels.push('Moweb Data Team')
+            foundLabels.push('Moweb Technologies')
           }
           if (lowerAnswer.includes('sebs data analyst') || lowerQuery.includes('sebs')) {
             foundLabels.push('SEBS Data Analyst')
@@ -332,12 +329,11 @@ Instructions:
 
           // Dynamic project action links (Live Demos & GitHub Repos with explicit project keyword matching)
           const projectKeywordMap: { id: string; keywords: string[]; label: string }[] = [
+            { id: 'gale', keywords: ['gale', 'gamified algorithmic learning engine', 'algorithm practice'], label: 'GALE Engine' },
             { id: '7', keywords: ['edgar', 'edgar agent', '10-k'], label: 'Edgar Agent' },
             { id: '1', keywords: ['algo trading', 'algorithmic trading', 'trading bot', 'alpaca'], label: 'Algo Trading' },
-            { id: '3', keywords: ['grindsheet'], label: 'GrindSheet' },
-            { id: '4', keywords: ['sunny', 'insurance co-pilot', 'insurance copilot'], label: 'Sunny Insurance' },
+            { id: '3', keywords: ['grindsheet', 'healthkit', 'swiftui'], label: 'GrindSheet' },
             { id: '5', keywords: ['perkpal', 'shark tank', 'perkopoly'], label: 'PerkPal' },
-            { id: '2', keywords: ['orogenie', 'gemstone'], label: 'OroGenie' },
           ]
 
           projectKeywordMap.forEach(item => {

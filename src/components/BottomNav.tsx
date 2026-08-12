@@ -137,7 +137,7 @@ export default function BottomNav({ searchQuery = '', onSearch, onAISubmit }: Bo
               <span className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold mr-1 flex-shrink-0">
                 Ask AI / Filter:
               </span>
-              {['Amazon SCOT', 'Algo Trading', 'Why CS & Finance?', 'OroGenie', 'Rutgers', 'Python'].map((chip) => {
+              {['Amazon SCOT', 'GALE Engine', 'Algo Trading', 'Why CS & Finance?', 'Rutgers', 'Python'].map((chip) => {
                 const isSelected = localQuery.toLowerCase() === chip.toLowerCase()
                 return (
                   <button

@@ -8,8 +8,46 @@ const formatDate = (dateStr: string): string => {
   return `${monthName} ${year}`
 }
 
-
 export const portfolioStocks: Stock[] = [
+  {
+    id: 'amazon1',
+    symbol: 'AMZN',
+    name: 'Amazon SCOT - Financial Analyst Intern',
+    shares: 10,
+    averageCost: 150.00,
+    currentPrice: 285.00,
+    marketValue: 2850.00,
+    todayReturn: 45.00,
+    todayReturnPercent: 1.61,
+    totalReturn: 1350.00,
+    totalReturnPercent: 90.00, // 5,700x speedup, 99.86% fidelity
+  },
+  {
+    id: 'gale',
+    symbol: 'GALE',
+    name: 'GALE - Gamified Learning Engine',
+    shares: 25,
+    averageCost: 30.00,
+    currentPrice: 58.00,
+    marketValue: 1450.00,
+    todayReturn: 24.50,
+    todayReturnPercent: 1.72,
+    totalReturn: 700.00,
+    totalReturnPercent: 93.33, // 18 algorithm categories, multi-model LLM
+  },
+  {
+    id: '7',
+    symbol: 'EDGAR',
+    name: 'Edgar Agent - SEC 10-K API',
+    shares: 40,
+    averageCost: 15.00,
+    currentPrice: 34.00,
+    marketValue: 1360.00,
+    todayReturn: 19.20,
+    todayReturnPercent: 1.43,
+    totalReturn: 760.00,
+    totalReturnPercent: 126.67, // sub-second RAG latency
+  },
   {
     id: '1',
     symbol: 'SEBS',
@@ -21,12 +59,12 @@ export const portfolioStocks: Stock[] = [
     todayReturn: 12.00,
     todayReturnPercent: 5.26,
     totalReturn: 140.00,
-    totalReturnPercent: 140.00, // 60% cost reduction
+    totalReturnPercent: 140.00, // 60% licensing cost reduction
   },
   {
     id: '2',
     symbol: 'MOWEB',
-    name: 'Moweb Technologies - Data Team',
+    name: 'Moweb Technologies - SWE / Data Intern',
     shares: 2,
     averageCost: 45.00,
     currentPrice: 85.00,
@@ -34,132 +72,81 @@ export const portfolioStocks: Stock[] = [
     todayReturn: 8.00,
     todayReturnPercent: 4.94,
     totalReturn: 80.00,
-    totalReturnPercent: 88.89, // 40% time reduction
+    totalReturnPercent: 88.89, // 40% query latency cut
   },
-
   {
-    id: '4',
+    id: '3',
+    symbol: 'GRIND',
+    name: 'GrindSheet - SwiftUI HealthKit Tracker',
+    shares: 15,
+    averageCost: 20.00,
+    currentPrice: 40.00,
+    marketValue: 600.00,
+    todayReturn: 12.00,
+    todayReturnPercent: 2.04,
+    totalReturn: 300.00,
+    totalReturnPercent: 100.00, // HealthKit 10+ metrics sync
+  },
+  {
+    id: 'algo',
     symbol: 'ALGOBOT',
-    name: 'Algorithmic Trading Bot',
+    name: 'Algorithmic Stock Trading Bot',
     shares: 100,
     averageCost: 9.00,
-    currentPrice: 9.90,
-    marketValue: 990.00,
-    todayReturn: 17.00,
-    todayReturnPercent: 1.75,
-    totalReturn: 90.00,
-    totalReturnPercent: 10.00, // 10% returns
+    currentPrice: 11.80,
+    marketValue: 1180.00,
+    todayReturn: 18.00,
+    todayReturnPercent: 1.55,
+    totalReturn: 280.00,
+    totalReturnPercent: 31.11, // Sharpe 1.7, 10% paper return
   },
   {
     id: '5',
-    symbol: 'OROGEN',
-    name: 'OroGenie - Trading Platform',
-    shares: 500,
-    averageCost: 1.00,
-    currentPrice: 1.20,
-    marketValue: 600.00,
-    todayReturn: 10.00,
-    todayReturnPercent: 1.69,
-    totalReturn: 100.00,
-    totalReturnPercent: 20.00, // 500+ transactions
-  },
-  {
-    id: '6',
     symbol: 'SHARK',
     name: 'Rutgers Shark Tank - PerkPal',
     shares: 3,
     averageCost: 70.00,
-    currentPrice: 100.00,
-    marketValue: 300.00,
-    todayReturn: 6.00,
+    currentPrice: 105.00,
+    marketValue: 315.00,
+    todayReturn: 6.30,
     todayReturnPercent: 2.04,
-    totalReturn: 90.00,
-    totalReturnPercent: 42.86, // Top 6 finish
-  },
-  {
-    id: '7',
-    symbol: 'GRIND',
-    name: 'GrindSheet - Fitness PWA',
-    shares: 15,
-    averageCost: 20.00,
-    currentPrice: 32.00,
-    marketValue: 480.00,
-    todayReturn: 9.60,
-    todayReturnPercent: 2.04,
-    totalReturn: 180.00,
-    totalReturnPercent: 60.00, // 60% input time reduction
-  },
-  {
-    id: '8',
-    symbol: 'SUNNY',
-    name: 'Sunny - Insurance Co-Pilot',
-    shares: 43,
-    averageCost: 10.00,
-    currentPrice: 11.00,
-    marketValue: 473.00,
-    todayReturn: 8.46,
-    todayReturnPercent: 1.82,
-    totalReturn: 43.00,
-    totalReturnPercent: 10.00, // 43 data points
-  },
-
-  {
-    id: '10',
-    symbol: 'TKD',
-    name: 'Jang Star Taekwondo - Instructor',
-    shares: 30,
-    averageCost: 10.00,
-    currentPrice: 13.00,
-    marketValue: 390.00,
-    todayReturn: 5.85,
-    todayReturnPercent: 1.52,
-    totalReturn: 90.00,
-    totalReturnPercent: 30.00, // 30% acquisition increase
+    totalReturn: 105.00,
+    totalReturnPercent: 50.00, // Top 6 finish
   },
 ]
 
 export const portfolioSummary: PortfolioData = {
-  totalValue: 4852.70, // Total "market value" of all experiences
-  buyingPower: 394.00, // GPA * 100 = 3.94 * 100
-  todayReturn: 76.91,
-  todayReturnPercent: 2.15,
-  totalReturn: 813.00, // Sum of all total returns
-  totalReturnPercent: 27.61, // Weighted average of improvements
+  totalValue: 8165.00,
+  todayReturn: 145.00,
+  todayReturnPercent: 1.81,
+  totalReturn: 3715.00,
+  totalReturnPercent: 83.48,
 }
 
 // Generate career timeline chart data
 const generateCareerTimelineData = (): ChartDataPoint[] => {
   const data: ChartDataPoint[] = []
 
-  // Career milestones - values represent skill/experience PLATEAUS
-  // Pattern: Gradual rise → SPIKE UP at achievement → SUSTAIN at new plateau → Continue building
   const milestones = [
     { date: '2023-09', value: 30, label: 'Started Rutgers', type: 'start', category: 'Education' },
-    { date: '2023-12', value: 34, label: null, type: 'learning' }, // Fall semester learning
-    { date: '2024-01', value: 36, label: null, type: 'learning' }, // Continued learning
-    { date: '2024-03', value: 38, label: null, type: 'learning' }, // Spring semester
-    { date: '2024-05', value: 40, label: null, type: 'learning' }, // Spring semester
-    { date: '2024-07', value: 60, label: 'OroGenie Platform', type: 'project', category: 'Project' }, // LEVEL UP - Floor 2
-    { date: '2024-09', value: 62, label: null, type: 'sustain' }, // Sustain Floor 2 (kept skills)
-    { date: '2024-11', value: 72, label: 'Algo Trading Bot', type: 'project', category: 'Project' }, // Building on Floor 2
-    { date: '2025-01', value: 74, label: null, type: 'learning' }, // Continued growth
-    { date: '2025-03', value: 84, label: 'Shark Tank Top 6', type: 'competition', category: 'Competition' }, // Competition boost
-    { date: '2025-05', value: 92, label: 'GrindSheet', type: 'project', category: 'Project' }, // Project
-    { date: '2025-06', value: 98, label: 'Sunny Insurance', type: 'project', category: 'Hackathon' }, // Hackathon
-    { date: '2025-07', value: 125, label: 'Moweb Data Team', type: 'internship', category: 'Internship' }, // LEVEL UP - Floor 3
-    { date: '2025-09', value: 145, label: 'SEBS Data Analyst', type: 'internship', category: 'Internship' }, // LEVEL UP - Floor 4 (current)
-    { date: '2026-01', value: 155, label: 'Edgar Agent', type: 'project', category: 'Project' }, // New Project
-    { date: '2026-05', value: 185, label: 'Amazon SCOT', type: 'internship', category: 'Internship' }, // Incoming Internship
+    { date: '2023-12', value: 34, label: null, type: 'learning' },
+    { date: '2024-05', value: 40, label: null, type: 'learning' },
+    { date: '2024-11', value: 65, label: 'Algo Trading Bot', type: 'project', category: 'Project' },
+    { date: '2025-03', value: 82, label: 'Shark Tank Top 6', type: 'competition', category: 'Competition' },
+    { date: '2025-05', value: 98, label: 'GrindSheet', type: 'project', category: 'Project' },
+    { date: '2025-07', value: 125, label: 'Moweb Technologies', type: 'internship', category: 'Internship' },
+    { date: '2025-09', value: 145, label: 'SEBS Data Analyst', type: 'internship', category: 'Internship' },
+    { date: '2025-12', value: 168, label: 'Edgar Agent', type: 'project', category: 'Project' },
+    { date: '2026-04', value: 190, label: 'GALE Engine', type: 'project', category: 'Project' },
+    { date: '2026-05', value: 220, label: 'Amazon SCOT', type: 'internship', category: 'Internship' },
   ]
 
-  // Generate curve with step-change growth pattern
   for (let i = 0; i < milestones.length - 1; i++) {
     const current = milestones[i]
     const next = milestones[i + 1]
     const steps = 14
     const valueDiff = next.value - current.value
 
-    // Add the current milestone point with its dot
     if (i === 0 || current.label) {
       data.push({
         time: formatDate(current.date),
@@ -169,77 +156,64 @@ const generateCareerTimelineData = (): ChartDataPoint[] => {
       })
     }
 
-    // Generate journey TO the next milestone
     for (let j = 1; j < steps; j++) {
       const progress = j / steps
       const baseValue = current.value + valueDiff * progress
       let value = baseValue
 
       if (next.type === 'internship') {
-        // Journey TO internship: steady rise, then SHARP SPIKE UP to new plateau
         if (progress < 0.7) {
-          // Pre-internship: steady upward build
           const steadyGrowth = progress * Math.abs(valueDiff) * 0.2
           const noise = (Math.random() - 0.5) * 1.8
           value = current.value + steadyGrowth + noise
         } else {
-          // SPIKE UP phase - reaching new floor
           const spike = Math.pow((progress - 0.7) / 0.3, 2.8)
           const totalRise = Math.abs(valueDiff)
           value = current.value + (totalRise * 0.2) + (totalRise * 0.8 * spike) + (Math.random() - 0.3) * 1.5
         }
       } else if (next.type === 'sustain') {
-        // SUSTAIN phase: stay at elevated level with small fluctuations
-        // This is the plateau after an internship - you MAINTAIN the skills
         const flatFluctuation = Math.sin(progress * Math.PI * 4) * Math.abs(valueDiff) * 0.4
         const noise = (Math.random() - 0.5) * 1.5
         value = baseValue + flatFluctuation + noise
       } else if (next.type === 'project') {
-        // Journey TO project: steady upward growth on current plateau
         const growth = Math.sin(progress * Math.PI) * Math.abs(valueDiff) * 0.2
         const noise = (Math.random() - 0.5) * 2.0
         value = baseValue + growth + noise
       } else if (next.type === 'competition') {
-        // Journey TO competition: build then boost at result
         if (progress < 0.65) {
           const steady = Math.sin(progress * Math.PI * 1.2) * Math.abs(valueDiff) * 0.18
           const noise = (Math.random() - 0.5) * 1.8
           value = baseValue + steady + noise
         } else {
-          // Boost from competition success
           const boost = Math.pow((progress - 0.65) / 0.35, 2.2)
           value = current.value + Math.abs(valueDiff) * 0.3 + (Math.abs(valueDiff) * 0.7 * boost) + (Math.random() - 0.35) * 1.5
         }
       } else if (next.type === 'learning') {
-        // Learning phase: steady upward growth (coursework, skills building)
         const learning = Math.sin(progress * Math.PI) * Math.abs(valueDiff) * 0.18
         const noise = (Math.random() - 0.5) * 1.8
         value = baseValue + learning + noise
       } else {
-        // Default: moderate steady growth
         const wave = Math.sin(progress * Math.PI * 1.5) * Math.abs(valueDiff) * 0.18
         const noise = (Math.random() - 0.5) * 1.8
         value = baseValue + wave + noise
       }
 
-      // Add small realistic volatility (NOT crashes, just normal fluctuation)
       if (Math.random() < 0.11 && j > 2 && j < steps - 2) {
-        value -= (Math.random() * 2.0 + 0.3) // Small dips
+        value -= (Math.random() * 2.0 + 0.3)
       }
 
       if (Math.random() < 0.09 && j > 2 && j < steps - 2) {
-        value += (Math.random() * 2.0 + 0.3) // Small spikes
+        value += (Math.random() * 2.0 + 0.3)
       }
 
       data.push({
         time: formatDate(current.date),
-        value: Math.max(current.value - 2, Math.min(next.value + 1, value)), // Tight bounds - no big drops
+        value: Math.max(current.value - 2, Math.min(next.value + 1, value)),
         label: undefined
       })
     }
   }
 
-  // Add final milestone
   const lastMilestone = milestones[milestones.length - 1]
   data.push({
     time: formatDate(lastMilestone.date),
@@ -248,28 +222,23 @@ const generateCareerTimelineData = (): ChartDataPoint[] => {
     category: (lastMilestone as any).category || undefined
   })
 
-  // Continue from last milestone to current date (June 2026)
   const [lastYear, lastMonth] = lastMilestone.date.split('-').map(Number)
   const lastMilestoneDate = new Date(lastYear, lastMonth - 1)
-  const currentDate = new Date(2026, 5) // June 2026 (month is 0-indexed)
+  const currentDate = new Date(2026, 7)
 
-  // Only add continuation if current date is after last milestone
   if (currentDate > lastMilestoneDate) {
     const monthsDiff = (currentDate.getFullYear() - lastMilestoneDate.getFullYear()) * 12 +
       (currentDate.getMonth() - lastMilestoneDate.getMonth())
 
-    // Generate points from last milestone to current date
-    const steps = 14 // points per month
+    const steps = 14
     for (let month = 1; month <= monthsDiff; month++) {
       const nextDate = new Date(lastMilestoneDate)
       nextDate.setMonth(lastMilestoneDate.getMonth() + month)
       const dateStr = `${nextDate.getFullYear()}-${String(nextDate.getMonth() + 1).padStart(2, '0')}`
 
-      // Generate intermediate points for this month
       for (let j = 1; j <= steps; j++) {
         const progress = j / steps
-        // Sustain at current level with small growth and fluctuations
-        const smallGrowth = 0.3 * progress // Very small upward trend
+        const smallGrowth = 0.3 * progress
         const fluctuation = Math.sin(progress * Math.PI * 3) * 1.5
         const noise = (Math.random() - 0.5) * 1.8
         const value = lastMilestone.value + smallGrowth + fluctuation + noise
@@ -286,66 +255,53 @@ const generateCareerTimelineData = (): ChartDataPoint[] => {
   return data
 }
 
-// Filter timeline data by time range
 export const filterTimelineData = (range: string): ChartDataPoint[] => {
   const allData = generateCareerTimelineData()
-  const baseDate = new Date(2026, 5, 1) // June 1, 2026
+  const baseDate = new Date(2026, 7, 1)
 
   let startDate: Date
 
   switch (range) {
     case '1D':
-      // Show current month
       startDate = new Date(baseDate.getFullYear(), baseDate.getMonth(), 1)
       break
     case '1W':
-      // Show last month to current
       startDate = new Date(baseDate.getFullYear(), baseDate.getMonth() - 1, 1)
       break
     case '1M':
-      // Last 1 month
       startDate = new Date(baseDate.getFullYear(), baseDate.getMonth() - 1, 1)
       break
     case '3M':
-      // Last 3 months
       startDate = new Date(baseDate.getFullYear(), baseDate.getMonth() - 3, 1)
       break
     case 'YTD':
-      // Year to date (2026)
       startDate = new Date(baseDate.getFullYear(), 0, 1)
       break
     case '1Y':
-      // Last year
       startDate = new Date(baseDate.getFullYear() - 1, baseDate.getMonth(), 1)
       break
     case 'ALL':
     default:
-      // All time (from college start)
       return allData
   }
 
-  // Filter data points based on date
-  // Parse "Mon YYYY" format properly for mobile compatibility
   const monthMap: { [key: string]: number } = {
     'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
     'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
   }
 
   const filteredData = allData.filter(point => {
-    // point.time format is "Mon YYYY" (e.g., "Sep 2023")
     const [monthStr, yearStr] = point.time.split(' ')
     const pointDate = new Date(parseInt(yearStr), monthMap[monthStr] || 0, 1)
     return pointDate >= startDate
   })
 
-  // Reverse fill: if we have fewer than 2 points, add points from before the range
   const MIN_POINTS = 2
   if (filteredData.length < MIN_POINTS) {
     const pointsNeeded = MIN_POINTS - filteredData.length
     const earliestFilteredIndex = allData.findIndex(point => point === filteredData[0])
 
     if (earliestFilteredIndex > 0) {
-      // Add points from before the filtered range
       const pointsToAdd = allData.slice(
         Math.max(0, earliestFilteredIndex - pointsNeeded),
         earliestFilteredIndex
@@ -357,43 +313,46 @@ export const filterTimelineData = (range: string): ChartDataPoint[] => {
   return filteredData
 }
 
-
 // Skills Data for Portfolio Website
 export const portfolioSkills: Skill[] = [
   // Technical Skills
   { id: 'ts1', name: 'Python', proficiency: 95, yearsOfExperience: 3, category: 'technical' },
-  { id: 'ts2', name: 'SQL', proficiency: 90, yearsOfExperience: 3, category: 'technical' },
-  { id: 'ts3', name: 'JavaScript/TypeScript', proficiency: 88, yearsOfExperience: 2, category: 'technical' },
-  { id: 'ts4', name: 'React', proficiency: 90, yearsOfExperience: 2, category: 'technical' },
-  { id: 'ts5', name: 'Flask', proficiency: 85, yearsOfExperience: 2, category: 'technical' },
-  { id: 'ts6', name: 'dbt-core', proficiency: 82, yearsOfExperience: 1, category: 'technical' },
+  { id: 'ts2', name: 'SQL', proficiency: 92, yearsOfExperience: 3, category: 'technical' },
+  { id: 'ts3', name: 'JavaScript/TypeScript', proficiency: 90, yearsOfExperience: 2, category: 'technical' },
+  { id: 'ts4', name: 'Java', proficiency: 85, yearsOfExperience: 2, category: 'technical' },
+  { id: 'ts5', name: 'FastAPI', proficiency: 90, yearsOfExperience: 2, category: 'technical' },
+  { id: 'ts6', name: 'Flask', proficiency: 85, yearsOfExperience: 2, category: 'technical' },
+  { id: 'ts7', name: 'React', proficiency: 92, yearsOfExperience: 2, category: 'technical' },
+  { id: 'ts8', name: 'Node.js / Vite', proficiency: 88, yearsOfExperience: 2, category: 'technical' },
+  { id: 'ts9', name: 'MCP (Model Context Protocol)', proficiency: 92, yearsOfExperience: 1, category: 'technical' },
+  { id: 'ts10', name: 'OpenAI / Anthropic APIs', proficiency: 90, yearsOfExperience: 2, category: 'technical' },
+  { id: 'ts11', name: 'AWS Bedrock', proficiency: 84, yearsOfExperience: 1, category: 'technical' },
 
   // Financial Skills
-  { id: 'fs1', name: 'Financial Modeling', proficiency: 92, yearsOfExperience: 2, category: 'financial' },
-  { id: 'fs2', name: 'Valuation (DCF)', proficiency: 88, yearsOfExperience: 2, category: 'financial' },
-  { id: 'fs3', name: 'Risk Management', proficiency: 85, yearsOfExperience: 2, category: 'financial' },
-  { id: 'fs4', name: 'Financial Statement Analysis', proficiency: 90, yearsOfExperience: 2, category: 'financial' },
-  { id: 'fs5', name: 'Algorithmic Trading', proficiency: 88, yearsOfExperience: 1, category: 'financial' },
-  { id: 'fs6', name: 'Portfolio Analytics', proficiency: 87, yearsOfExperience: 1, category: 'financial' },
+  { id: 'fs1', name: 'Financial Modeling', proficiency: 95, yearsOfExperience: 2, category: 'financial' },
+  { id: 'fs2', name: 'Valuation (DCF, Comps)', proficiency: 90, yearsOfExperience: 2, category: 'financial' },
+  { id: 'fs3', name: 'Financial Statement Analysis', proficiency: 92, yearsOfExperience: 2, category: 'financial' },
+  { id: 'fs4', name: 'P&L Variance Attribution', proficiency: 94, yearsOfExperience: 1, category: 'financial' },
+  { id: 'fs5', name: 'Risk Management', proficiency: 88, yearsOfExperience: 2, category: 'financial' },
+  { id: 'fs6', name: 'Algorithmic Trading', proficiency: 90, yearsOfExperience: 2, category: 'financial' },
 
   // Tools & Platforms
-  { id: 'tl1', name: 'Bloomberg Terminal', proficiency: 85, yearsOfExperience: 2, category: 'tools' },
-  { id: 'tl2', name: 'Microsoft Excel', proficiency: 95, yearsOfExperience: 3, category: 'tools' },
-  { id: 'tl3', name: 'Power Automate', proficiency: 90, yearsOfExperience: 1, category: 'tools' },
-  { id: 'tl4', name: 'SharePoint', proficiency: 85, yearsOfExperience: 1, category: 'tools' },
-  { id: 'tl5', name: 'Git/GitHub', proficiency: 88, yearsOfExperience: 2, category: 'tools' },
-  { id: 'tl6', name: 'Alpaca API', proficiency: 82, yearsOfExperience: 1, category: 'tools' },
+  { id: 'tl1', name: 'dbt-core', proficiency: 88, yearsOfExperience: 1, category: 'tools' },
+  { id: 'tl2', name: 'Snowflake', proficiency: 86, yearsOfExperience: 1, category: 'tools' },
+  { id: 'tl3', name: 'PostgreSQL & Supabase', proficiency: 88, yearsOfExperience: 2, category: 'tools' },
+  { id: 'tl4', name: 'Docker', proficiency: 82, yearsOfExperience: 1, category: 'tools' },
+  { id: 'tl5', name: 'AWS (EC2, S3)', proficiency: 84, yearsOfExperience: 1, category: 'tools' },
+  { id: 'tl6', name: 'Git & CI/CD', proficiency: 90, yearsOfExperience: 3, category: 'tools' },
+  { id: 'tl7', name: 'Bloomberg Terminal', proficiency: 88, yearsOfExperience: 2, category: 'tools' },
+  { id: 'tl8', name: 'Microsoft Suite (Excel, PPT)', proficiency: 96, yearsOfExperience: 3, category: 'tools' },
+  { id: 'tl9', name: 'Claude Code', proficiency: 92, yearsOfExperience: 1, category: 'tools' },
 
-  // Product & Leadership Skills
-  { id: 'ss1', name: 'Product Strategy', proficiency: 88, yearsOfExperience: 2, category: 'soft' },
-  { id: 'ss2', name: 'User Research', proficiency: 85, yearsOfExperience: 1, category: 'soft' },
-  { id: 'ss3', name: 'Cross-Functional Leadership', proficiency: 90, yearsOfExperience: 2, category: 'soft' },
-  { id: 'ss4', name: 'Stakeholder Management', proficiency: 87, yearsOfExperience: 2, category: 'soft' },
-  { id: 'ss5', name: 'ETL Development', proficiency: 85, yearsOfExperience: 1, category: 'soft' },
-  { id: 'ss6', name: 'FastAPI', proficiency: 80, yearsOfExperience: 1, category: 'technical' },
-  { id: 'ss7', name: 'Supabase', proficiency: 85, yearsOfExperience: 1, category: 'tools' },
-  { id: 'ss8', name: 'TailwindCSS', proficiency: 90, yearsOfExperience: 2, category: 'tools' },
-  { id: 'ss9', name: 'MCP', proficiency: 80, yearsOfExperience: 1, category: 'technical' },
+  // Product & Leadership
+  { id: 'ss1', name: 'System Architecture', proficiency: 90, yearsOfExperience: 2, category: 'soft' },
+  { id: 'ss2', name: 'Cross-Functional Leadership', proficiency: 92, yearsOfExperience: 2, category: 'soft' },
+  { id: 'ss3', name: 'Stakeholder Management', proficiency: 88, yearsOfExperience: 2, category: 'soft' },
+  { id: 'ss4', name: 'Agent Orchestration', proficiency: 90, yearsOfExperience: 1, category: 'soft' },
+  { id: 'ss5', name: 'ETL Pipeline Design', proficiency: 88, yearsOfExperience: 1, category: 'soft' },
 ]
 
 export const skillCategories: SkillCategory[] = [
@@ -434,26 +393,29 @@ export const professionalExperiences: Experience[] = [
     endDate: 'Aug 2026',
     logoUrl: '/images/experience_images/amazon.png',
     bullets: [
-      'Built a variance attribution framework and forecast model for a major liquidation cost line, back-tested across a 24-month window with documented error metrics — subsequently becoming a top 0.2% user of Amazon\'s internal agentic platform and contributing production code to it.',
-      'Shipped a fix to the platform\'s session-titling feature after catching a quota-bypass vulnerability in my own code during review: passed 96% automated review, adversarially tested the fix to uncover a cold-cache edge case, and redesigned to a fail-closed, two-layer gate backed by 40 targeted tests.',
-      'Reviewed a Principal TPM\'s code change, flagged a non-blocking issue, and proposed an alternative architectural approach that was adopted and shipped to production.',
-      'Pioneered a multi-team finance knowledgebase system from concept to a director-sponsored initiative as the sole junior representative alongside finance managers; shipped backend replacing obsolete wikis (0-of-7 accurate baseline) and collapsed a two-service design into one to eliminate adoption friction.',
-      'Engineered a dependency-free spreadsheet compute engine enabling AI agents to safely edit financial models headlessly, verified with 99.86% formula correctness and byte-exact round-tripping.'
+      'Built P&L variance attribution decomposing volatile $15M+/month liquidation costs into algorithmic vs manual drivers, explaining MoM/YoY swings and establishing the first tie-out to published close totals.',
+      'Identified 31% of volume executing outside the controlled system and a multimillion-dollar definition gap driving unreconciled variance through an audit of 12K+ records, with findings adopted into senior leadership\'s close narrative.',
+      'Rebuilt a session auto-titling feature for Amazon\'s internal AI agent platform (30,000+ users) behind a two-layer fail-closed gate after a security review found revoked users could bypass usage limits.',
+      'Reworked an auto-triggered chat flow into an opt-in starter experience, preventing unnecessary runs for users restarting after crashes, uncovering five latent bugs and adding regression tests that reproduced failures in the original implementation.',
+      'Built headless Excel compute engine with a custom formula evaluator and dependency graph, exposing workbook data through MCP for rapid LLM access while achieving 99.86% output fidelity and a 5,700× speedup on its primary aggregation workload.',
+      'Represented a finance team in director-sponsored cross-team knowledgebase initiative as primary technical contributor; prototyped an org-wide knowledge system with directory crawler, REST API, and two MCP servers, narrowing to a single-team pilot after identifying team-specific data requirements.',
+      'Redesigned the UI and information architecture of an internal AI platform without a dedicated design team, implementing and documenting a substantially restructured experience that its creators requested to evaluate for broader adoption.',
+      'Developed monthly forecast for backlog of inventory flagged for liquidation, establishing a first forward-looking view where none existed, back-tested over a 24-month window with documented error metrics.'
     ],
-    technologies: ['Financial Modeling', 'Variance Attribution', 'Agentic AI', 'System Design', 'Code Review', 'Python'],
+    technologies: ['Financial Modeling', 'Variance Attribution', 'Agentic AI', 'MCP', 'Headless Excel Engine', 'Python', 'System Architecture'],
     brandColor: '#FF9900',
   },
   {
     id: '1',
-    company: 'Rutgers School of Environmental and Biological Sciences',
-    position: 'Data Analyst Internship',
+    company: 'Rutgers SEBS, Infrastructure & Facilities Planning',
+    position: 'Data Analyst Intern',
     location: 'New Brunswick, NJ',
     startDate: 'Sep 2025',
     endDate: 'Dec 2025',
     logoUrl: '/images/experience_images/rutgers.png',
     bullets: [
-      'Eliminated 40+ annual hours of manual verification across 300+ facility nodes by engineering automated workflow pipelines, resolving semi-annual cycles and eliminating data entry errors impacting facility management',
-      'Expedited data verification cycle by 35% by implementing real-time progress tracking and automated stakeholder notifications',
+      'Engineered automated verification workflow for 300+ building portfolio, eliminating 40+ hours of annual manual work and enabling a shift from an annual to semi-annual audit cycle.',
+      'Designed real-time tracking dashboard with automated stakeholder notifications, re-architecting workflow to native SharePoint, cutting licensing costs 60% and verification cycle 35% with zero loss in reliability.',
     ],
     technologies: ['Power Automate', 'SharePoint', 'Data Validation', 'Process Automation'],
     brandColor: '#CC0033',
@@ -461,17 +423,17 @@ export const professionalExperiences: Experience[] = [
   {
     id: '2',
     company: 'Moweb Technologies',
-    position: 'Software Engineering Internship',
+    position: 'Software Engineering / Data Engineer Intern',
     location: 'Secaucus, NJ',
     startDate: 'Jul 2025',
     endDate: 'Aug 2025',
     logoUrl: '/images/experience_images/moweb.png',
     bullets: [
-      'Developed ETL workflows in dbt-core and SQL, fixing null conflicts and reducing pipeline failures from 20+ weekly to <1',
-      'Re-architected data infrastructure from MySQL to Snowflake, cutting query latency by 40% through optimized data models',
-      'Directed LLM integration across team workflows, designing workshops that decreased manual reconciliation time by 30%',
+      'Developed ETL workflows in dbt-core and SQL, fixing null conflicts and reducing pipeline failures from 20+ weekly to <1.',
+      'Re-architected data infrastructure from MySQL to Snowflake, cutting query latency by 40% through optimized data models.',
+      'Delivered optimized financial metric extraction for client reporting, reducing processing times by 40% for real-time analysis, and directed LLM integration across team workflows, designing workshops that decreased manual reconciliation time by 30%.',
     ],
-    technologies: ['Python', 'dbt-core', 'Snowflake', 'SQL'],
+    technologies: ['Python', 'dbt-core', 'Snowflake', 'SQL', 'LLM Integration'],
     brandColor: '#0066CC',
   },
 ]
@@ -479,114 +441,89 @@ export const professionalExperiences: Experience[] = [
 // Projects Data
 export const portfolioProjects: Project[] = [
   {
-    id: '7',
-    name: 'Edgar Agent',
-    subtitle: 'Architected a pay-per-request API for SEC 10-K data with an LLM extraction pipeline and MCP server integration.',
-    duration: 'Jan 2026 – Present',
+    id: 'gale',
+    name: 'GALE (Gamified Algorithmic Learning Engine)',
+    subtitle: 'Launched a dependency-free algorithm-practice platform in vanilla JavaScript with custom pub/sub state store and multi-model LLM grading pipeline.',
+    duration: 'Apr 2026 – Present',
     bullets: [
-      'Architected a pay-per-request API for SEC 10-K filings, returning schema-validated financial data and risk factors via a gated quote/nonce flow with cryptographic signature verification',
-      'Engineered an LLM-powered extraction pipeline to transform unstructured EDGAR HTML into structured financials (revenue, net income, fiscal year-end) with validation to prevent malformed outputs',
-      'Built an MCP server exposing the service as a tool for autonomous agents, enabling standardized financial data access without manual scraping or bespoke parsers',
+      'Launched dependency-free algorithm-practice platform in vanilla JavaScript with a custom pub/sub state store and Elo-based adaptive difficulty across 18 algorithmic categories',
+      'Engineered a multi-model LLM grading pipeline with regex-based fast paths and automatic model fallback, plus an adversarial audit system for contested answers',
     ],
-    technologies: ['Python', 'FastAPI', 'LLMs', 'MCP'],
-    // imageUrl: '/images/edgarAgent.png',
-    logoUrl: '/images/logoImages/edgarAgentClear.png',
+    technologies: ['Vanilla JavaScript', 'Gemini API', 'Pub/Sub State Store', 'Elo Engine', 'LLMs'],
+    logoUrl: '/images/logoImages/galeClear.png',
   },
   {
-    id: '1',
-    name: 'Algorithmic Stock Trading',
-    subtitle: 'Structured a Python trading bot with dynamic position sizing, achieving consistent risk-adjusted returns through backtesting.',
-    duration: 'Nov 2024 – Present',
+    id: '7',
+    name: 'Edgar Agent',
+    subtitle: 'Designed a pay-per-request API for SEC 10-K filings with cryptographic signature verification and schema-constrained LLM extraction.',
+    duration: 'Dec 2025 – Jan 2026',
     bullets: [
-      'Structured algorithmic trading bot using Python and Alpaca API, back tested daily across 100+ simulations, optimizing execution for risk-adjusted performance and capital efficiency',
-      'Strategized risk-adjusted execution through dynamic position sizing and stop-loss optimization, sustaining a consistent 10% return in paper trading while minimizing volatility exposure per day for 5 consecutive days',
-      'Synthesized trade signals by analyzing historical volatility trends and intraday price action, achieving a Sharpe ratio of 1.7',
+      'Designed a pay-per-request API for SEC 10-K data with cryptographic signature verification, implementing a quote-sign-extract flow for gated access',
+      'Built a schema-constrained LLM extraction pipeline using targeted text windows over full-document RAG, preserving financial table structure while extracting structured data from SEC filings',
+      'Implemented 1-hour in-memory cache, reducing repeat-query latency from 30 seconds to sub-second; abstracted core platform into MCP server enabling on-demand access to full filing universe for institutional research',
     ],
-    technologies: ['Python', 'Alpaca API', 'Pandas', 'NumPy'],
-    imageUrl: '/images/algostocktrading.png',
-    logoUrl: '/images/logoImages/algoStockTradingClear.png',
+    technologies: ['Python', 'FastAPI', 'MCP', 'LLMs', 'SEC EDGAR'],
+    logoUrl: '/images/logoImages/edgarAgentClear.png',
   },
   {
     id: '3',
     name: 'GrindSheet',
-    subtitle: 'Launched a fitness tracking PWA with a streamlined logging flow, later iterating to a native iOS app with HealthKit integration.',
-    duration: 'May 2025 – Aug 2025',
+    subtitle: 'Built a SwiftUI fitness tracker integrating HealthKit across 10+ metrics with Supabase authentication and cross-device sync.',
+    duration: 'May 2025 – Sep 2025',
     bullets: [
-      'Built a consumer-facing fitness analytics product focused on low-friction logging and social motivation, translating UX constraints into scalable application architecture',
-      'Designed a multi-factor scoring system to rank workouts and detect personal records, balancing fairness, engagement, and computational efficiency',
-      'Implemented real-time synchronization and offline-first behavior using Supabase WebSockets and optimized client-side state management, reducing query overhead by 80%',
+      'Built a SwiftUI fitness tracker integrating HealthKit across 10+ metrics with Supabase authentication and cross-device sync',
+      'Implemented de-duplication using logs as the source of truth and Apple Watch workouts only when no matching logs existed',
     ],
-    technologies: ['React', 'TypeScript', 'Supabase', 'TailwindCSS'],
+    technologies: ['Swift', 'SwiftUI', 'HealthKit', 'Supabase', 'Apple Watch'],
     githubUrl: 'https://github.com/vp-27/grindsheet',
-    imageUrl: '/images/grindsheetUsage.png',
     logoUrl: '/images/logoImages/grindsheetClear.png',
     isMobileApp: true,
   },
   {
-    id: '4',
-    name: 'Sunny – Live Insurance Co-Pilot',
-    subtitle: 'Built a streaming insurance risk engine and RAG-enabled LLM co-pilot, processing live data sources with sub-2-second response times.',
-    duration: 'Jun 2025',
+    id: '1',
+    name: 'Algorithmic Stock Trading',
+    subtitle: 'Constructed a Python Alpaca trading bot executing 100+ transactions via volatility and price action signals with dynamic position sizing.',
+    duration: 'Nov 2024 – Jul 2025',
     bullets: [
-      'Pitched a proof-of-concept real-time risk engine to Microsoft judges, processing 6+ live data sources to model dynamic quotes',
-      'Designed streaming pipeline with Pathway to analyze 43+ data points, balancing technical feasibility and accuracy',
-      'Built an LLM co-pilot on a FastAPI backend to serve personalized recommendations with natural language explanations',
+      'Constructed Python Alpaca trading bot executing 100+ transactions via volatility and price action signals with dynamic sizing and stop-loss sustaining 10% paper return and Sharpe 1.7 while minimizing daily volatility',
+      'Synthesized trade signals by analyzing historical volatility trends and intraday price action, backtested daily across 100+ simulations',
     ],
-    technologies: ['FastAPI', 'LLM', 'Pathway', 'Python'],
-    liveUrl: 'https://insurance2-u4ew.onrender.com/',
-    githubUrl: 'https://github.com/vp-27/insurance2',
-    logoUrl: '/images/logoImages/sunnyClear.png',
+    technologies: ['Python', 'Alpaca API', 'Pandas', 'NumPy', 'Risk Analytics'],
+    imageUrl: '/images/algostocktrading.png',
+    logoUrl: '/images/logoImages/algoStockTradingClear.png',
   },
   {
     id: '5',
     name: 'Rutgers Shark Tank – "PerkPal"',
-    subtitle: 'Led a team to build a live proof-of-concept rewards aggregation platform, securing a top 6 finish in a startup competition.',
+    subtitle: 'Led cross-functional team of 3 to top-6 finish in university-wide competition, building live React rewards platform with Selenium automation.',
     duration: 'Mar 2025',
     bullets: [
-      'Led a cross-functional team of 3 to top 6 finish (from 30+ teams) by effectively balancing business strategy with technical execution',
-      'Developed business case for rewards consolidation platform identifying $2.4B+ opportunity in fragmented loyalty programs, while building live proof-of-concept demo in React and Selenium',
-      'Presented venture pitch to investor panel, securing finalist recognition for platform\'s scalability and technical innovation',
+      'Led a cross-functional team of 3 to a top-6 finish among 30+ competing teams, defining the product\'s technical architecture and business case identifying $2.4B+ opportunity in fragmented loyalty programs',
+      'Developed a live React rewards-aggregation platform with Selenium automation and presented the solution to an investor panel',
     ],
-    technologies: ['React', 'Selenium', 'Python'],
+    technologies: ['React', 'Selenium', 'Python', 'Financial Modeling'],
     liveUrl: 'https://perkpal.vercel.app/',
     githubUrl: 'https://github.com/vp-27/perkopoly',
     imageUrl: '/images/perkpal.png',
     logoUrl: '/images/logoImages/perkPalClear.png',
   },
-  {
-    id: '2',
-    name: 'OroGenie',
-    subtitle: 'Engineered a full-stack financial analytics platform with real-time market data aggregation and SQL-driven portfolio analytics.',
-    duration: 'Jun 2024 – Aug 2024',
-    bullets: [
-      'Engineered full-stack financial analytics platform using React and Flask, executing 500+ real-time transactions via WebSocket',
-      'Established a distributed data pipeline integrating Yahoo Finance and Webull APIs, enabling real-time market data aggregation',
-      'Enhanced SQL-driven portfolio analytics, evaluating performance trends, asset allocation, and risk exposure to support risk-managed trading strategies and quantitative trading analysis',
-    ],
-    technologies: ['React', 'Flask', 'WebSocket', 'SQL'],
-    liveUrl: 'https://orogenie-frontend.onrender.com',
-    githubUrl: 'https://github.com/vp-27/orogenie',
-    imageUrl: '/images/orogenieShot.png',
-    logoUrl: '/images/logoImages/orogenieClear.png',
-  },
-
 ]
 
 // Education Data
 export const portfolioEducation: Education[] = [
   {
     id: '1',
-    institution: 'Rutgers Business School',
+    institution: 'Rutgers University–New Brunswick / Rutgers Business School',
     degrees: [
-      'Bachelor of Science in Finance and Computer Science',
-      'Bachelor of Arts in Data Science',
+      'B.S. Computer Science | B.S. Finance | B.A. Data Science',
     ],
     location: 'New Brunswick, NJ',
     graduationDate: 'May 2027',
-    gpa: '3.95',
+    gpa: '3.96',
     honors: [
       'Rutgers Honors College',
       'Dean\'s List (All Semesters)',
+      'Phi Beta Kappa (Junior Year)',
     ],
     certifications: [
       {
@@ -607,26 +544,50 @@ export const portfolioEducation: Education[] = [
 export const portfolioInterests: Interest[] = [
   {
     id: '1',
-    name: 'Fitness & Weightlifting',
-    category: 'Lifestyle',
-    icon: '🏋️',
+    name: 'Quantitative Finance Club',
+    category: 'Activity',
+    icon: '📈',
   },
   {
     id: '2',
-    name: 'Martial Arts (Taekwondo)',
-    category: 'Sport',
-    icon: '🥋',
+    name: 'Rutgers Mobile App Development Club',
+    category: 'Activity',
+    icon: '📱',
   },
   {
     id: '3',
-    name: 'Market Dynamics & History',
+    name: 'Rutgers Gujarati Student Association',
+    category: 'Activity',
+    icon: '🤝',
+  },
+  {
+    id: '4',
+    name: 'Options Trading',
     category: 'Interest',
     icon: '📊',
   },
   {
-    id: '4',
-    name: 'Technological Philosophy',
-    category: 'Learning',
-    icon: '🧠',
+    id: '5',
+    name: 'Mountain Biking',
+    category: 'Interest',
+    icon: '🚴',
+  },
+  {
+    id: '6',
+    name: 'Cars',
+    category: 'Interest',
+    icon: '🏎️',
+  },
+  {
+    id: '7',
+    name: 'Poker',
+    category: 'Interest',
+    icon: '♠️',
+  },
+  {
+    id: '8',
+    name: 'Legos',
+    category: 'Interest',
+    icon: '🧱',
   },
 ]

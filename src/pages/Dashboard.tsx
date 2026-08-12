@@ -26,14 +26,13 @@ export default function Dashboard() {
 
   // Milestone to Experience/Project mapping
   const milestoneMap = useMemo(() => ({
-    'OroGenie Platform': { type: 'project' as const, id: '2' },
     'Algo Trading Bot': { type: 'project' as const, id: '1' },
     'Shark Tank Top 6': { type: 'project' as const, id: '5' },
     'GrindSheet': { type: 'project' as const, id: '3' },
-    'Sunny Insurance': { type: 'project' as const, id: '4' },
-    'Moweb Data Team': { type: 'experience' as const, id: '2' },
+    'Moweb Technologies': { type: 'experience' as const, id: '2' },
     'SEBS Data Analyst': { type: 'experience' as const, id: '1' },
     'Edgar Agent': { type: 'project' as const, id: '7' },
+    'GALE Engine': { type: 'project' as const, id: 'gale' },
     'Started Rutgers': { type: 'education' as const, id: '1' },
     'Amazon SCOT': { type: 'experience' as const, id: 'amazon1' },
   }), [])
