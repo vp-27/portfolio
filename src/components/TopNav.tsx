@@ -72,7 +72,7 @@ export default function TopNav({ onNavigate, onSearch, onAISubmit, searchQuery =
           </div>
 
           {/* Search Bar */}
-          <div className="flex-1 max-w-md mx-6">
+          <div className="flex-1 max-w-xs md:max-w-sm lg:max-w-md mx-3 lg:mx-6">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
               <input
@@ -97,15 +97,15 @@ export default function TopNav({ onNavigate, onSearch, onAISubmit, searchQuery =
           </div>
 
           {/* Navigation Links */}
-          <div className="hidden lg:flex items-center gap-6 mr-8">
+          <div className="hidden md:flex items-center gap-3 lg:gap-6 md:mr-2 lg:mr-8">
             <div className="relative" ref={dropdownRef}>
               <button 
                 onClick={() => setIsResumeDropdownOpen(!isResumeDropdownOpen)}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-[#C4F000] text-black rounded-full text-sm font-medium hover:bg-[#b3e000] transition-colors"
+                className="flex items-center gap-1.5 px-2.5 lg:px-3 py-1.5 bg-[#C4F000] text-black rounded-full text-xs lg:text-sm font-medium hover:bg-[#b3e000] transition-colors"
               >
-                <FileText className="w-4 h-4" />
+                <FileText className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
                 Resume
-                <ChevronDown className="w-3.5 h-3.5" />
+                <ChevronDown className="w-3 h-3 lg:w-3.5 lg:h-3.5" />
               </button>
               
               {/* Dropdown Menu */}
@@ -131,25 +131,25 @@ export default function TopNav({ onNavigate, onSearch, onAISubmit, searchQuery =
             </div>
             <button 
               onClick={() => handleNavigate('experience')}
-              className="bg-transparent text-white text-sm font-bold hover:text-rh-green transition-colors"
+              className="bg-transparent text-white text-xs lg:text-sm font-bold hover:text-rh-green transition-colors"
             >
               Experience
             </button>
             <button 
               onClick={() => handleNavigate('projects')}
-              className="bg-transparent text-white text-sm font-bold hover:text-rh-green transition-colors"
+              className="bg-transparent text-white text-xs lg:text-sm font-bold hover:text-rh-green transition-colors"
             >
               Projects
             </button>
             <button 
               onClick={() => handleNavigate('education')}
-              className="bg-transparent text-white text-sm font-bold hover:text-rh-green transition-colors"
+              className="bg-transparent text-white text-xs lg:text-sm font-bold hover:text-rh-green transition-colors"
             >
               Education
             </button>
             <button 
               onClick={() => handleNavigate('contact')}
-              className="bg-transparent text-white text-sm font-bold hover:text-rh-green transition-colors"
+              className="bg-transparent text-white text-xs lg:text-sm font-bold hover:text-rh-green transition-colors"
             >
               Contact
             </button>

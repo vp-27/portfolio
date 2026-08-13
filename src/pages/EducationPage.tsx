@@ -16,10 +16,11 @@ export default function EducationPage() {
     <div className="min-h-screen bg-black text-white pb-20">
       {/* Header */}
       <div className="sticky top-0 bg-black/95 backdrop-blur-sm z-10">
-        <div className="relative flex items-center justify-center px-4 py-4">
+        <div className="relative flex items-center justify-center px-4 py-4 max-w-2xl mx-auto">
           <button
             onClick={() => navigate(-1)}
             className="absolute left-4 p-1 hover:bg-[#1A1A1A] rounded-full transition-colors"
+            aria-label="Go back"
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
@@ -27,7 +28,7 @@ export default function EducationPage() {
         </div>
       </div>
 
-      <div className="px-4 py-4 space-y-8">
+      <div className="px-4 py-4 space-y-8 max-w-2xl mx-auto">
         {/* Education Section */}
         <div>
           <h2 className="text-lg font-medium mb-4 text-gray-400">Degrees</h2>

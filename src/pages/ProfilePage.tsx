@@ -39,7 +39,7 @@ export default function ProfilePage() {
     <div className="min-h-screen bg-black text-white pb-20">
       {/* Header */}
       <div className="sticky top-0 bg-black/95 backdrop-blur-sm z-10">
-        <div className="relative flex items-center justify-center px-4 py-4">
+        <div className="relative flex items-center justify-center px-4 py-4 max-w-2xl mx-auto">
           <button 
             onClick={() => navigate(-1)}
             className="absolute left-4 p-1 hover:bg-[#1A1A1A] rounded-full transition-colors"
@@ -51,7 +51,7 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      <div className="px-4 py-4 space-y-6">
+      <div className="px-4 py-4 space-y-6 max-w-2xl mx-auto">
         {/* Profile Avatar & Name */}
         <div className="flex flex-col items-center pt-2 pb-4">
           <img 

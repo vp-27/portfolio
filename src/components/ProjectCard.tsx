@@ -99,19 +99,19 @@ export default function ProjectCard({ project, isHighlighted, isHovered = false,
           </div>
 
           {/* Right side: Large Logo */}
-          <div className="flex-shrink-0 w-[90px] h-[90px] md:w-[110px] md:h-[110px] flex items-center justify-center">
+          <div className="flex-shrink-0 w-[105px] h-[105px] sm:w-[120px] sm:h-[120px] md:w-[135px] md:h-[135px] flex items-center justify-center">
             {project.logoUrl ? (
               <img
                 src={project.logoUrl}
                 alt={`${project.name} logo`}
-                className="w-[130%] h-[130%] object-contain"
+                className="w-full h-full object-contain"
                 onError={(e) => {
                   e.currentTarget.style.display = 'none'
                 }}
               />
             ) : (
-              <div className="w-full h-full rounded-xl bg-[#00C805]/20 flex items-center justify-center">
-                <span className="text-3xl font-bold text-[#00C805]">
+              <div className="w-full h-full rounded-2xl bg-[#00C805]/20 flex items-center justify-center">
+                <span className="text-4xl md:text-5xl font-bold text-[#00C805]">
                   {project.name.charAt(0)}
                 </span>
               </div>
