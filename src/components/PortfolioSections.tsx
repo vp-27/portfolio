@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { ChevronRight } from 'lucide-react'
 import type { Experience, Project, Education } from '../types'
@@ -17,6 +18,19 @@ interface PortfolioSectionsProps {
 }
 
 export default function PortfolioSections({ experiences, projects, education, highlightedItem, hoveredItem, searchQuery = '', hasAIResult = false, onItemHover }: PortfolioSectionsProps) {
+  const [expandedExperienceId, setExpandedExperienceId] = useState<string | null>(null)
+  const [expandedProjectId, setExpandedProjectId] = useState<string | null>(null)
+
+  // Sync expanded card with highlighted item from milestone visit
+  useEffect(() => {
+    if (highlightedItem) {
+      if (highlightedItem.type === 'experience') {
+        setExpandedExperienceId(highlightedItem.id)
+      } else if (highlightedItem.type === 'project') {
+        setExpandedProjectId(highlightedItem.id)
+      }
+    }
+  }, [highlightedItem])
   // Filter function for search
   const matchesSearch = (text: string) => {
     if (!searchQuery) return true
@@ -69,6 +83,8 @@ export default function PortfolioSections({ experiences, projects, education, hi
                   experience={exp}
                   isHighlighted={isHighlighted}
                   isHovered={isHovered}
+                  isExpanded={expandedExperienceId === exp.id}
+                  onToggle={() => setExpandedExperienceId((curr) => curr === exp.id ? null : exp.id)}
                   isLast={index === filteredExperiences.length - 1}
                   onHover={(hoverActive) => onItemHover?.('experience', hoverActive ? exp.id : null)}
                 />
@@ -101,6 +117,8 @@ export default function PortfolioSections({ experiences, projects, education, hi
                   project={project}
                   isHighlighted={isHighlighted}
                   isHovered={isHovered}
+                  isExpanded={expandedProjectId === project.id}
+                  onToggle={() => setExpandedProjectId((curr) => curr === project.id ? null : project.id)}
                   disableLayoutAnimation
                   onHover={(hoverActive) => onItemHover?.('project', hoverActive ? project.id : null)}
                 />
@@ -129,6 +147,7 @@ export default function PortfolioSections({ experiences, projects, education, hi
             return (
               <div
                 key={edu.id}
+                data-education-id={edu.id}
                 onMouseEnter={() => onItemHover?.('education', edu.id)}
                 onMouseLeave={() => onItemHover?.('education', null)}
                 className={`

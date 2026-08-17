@@ -9,6 +9,7 @@ import PortfolioSections from '../components/PortfolioSections'
 import InterestsSection from '../components/InterestsSection'
 import AIAnswerCard from '../components/AIAnswerCard'
 import RobinhoodAILoader from '../components/RobinhoodAILoader'
+import FluidBlobTransition, { type BlobFlightData } from '../components/FluidBlobTransition'
 import { processAIQueryAsync, type AIQueryResult } from '../utils/aiAssistant'
 import { portfolioSummary, filterTimelineData, skillCategories, professionalExperiences, portfolioProjects, portfolioEducation } from '../data/portfolioData'
 import type { ChartDataPoint } from '../types'
@@ -22,6 +23,7 @@ export default function Dashboard() {
   const [isContactHighlighted, setIsContactHighlighted] = useState(false)
   const [isAILoading, setIsAILoading] = useState(false)
   const [aiResult, setAIResult] = useState<AIQueryResult | null>(null)
+  const [blobFlight, setBlobFlight] = useState<BlobFlightData | null>(null)
   const aiTimerRef = useRef<number | null>(null)
 
   // Milestone to Experience/Project mapping
@@ -175,60 +177,98 @@ export default function Dashboard() {
     }
   }
 
-  // Scroll to element using native scrollIntoView
+  // Scroll to element using exact page offset with header clearance
   const scrollToElement = (type: 'experience' | 'project' | 'education', id: string) => {
     const selector = type === 'experience'
       ? `[data-experience-id="${id}"]`
       : type === 'project'
       ? `[data-project-id="${id}"]`
-      : `[data-section="education"]`
+      : `[data-education-id="${id}"], [data-section="education"]`
 
-    const targetElement = document.querySelector(selector)
+    const targetElement = document.querySelector(selector) as HTMLElement | null
     if (targetElement) {
-      targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      const isMobile = window.innerWidth < 768
+      const headerOffset = isMobile ? 65 : 85
+      const elementRect = targetElement.getBoundingClientRect()
+      const targetY = window.pageYOffset + elementRect.top - headerOffset
+      window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' })
     }
   }
 
+  const lastNavTimeRef = useRef<number>(0)
+
   // Common navigation logic for clicks and scrubs
-  const navigateToItem = (label: string) => {
+  const navigateToItem = (label: string, origin?: { x: number; y: number }) => {
     if (!label) return
+
+    const now = Date.now()
+    if (now - lastNavTimeRef.current < 750) {
+      return
+    }
+    lastNavTimeRef.current = now
+
+    // Clear sticky hover states
+    setHoveredPoint(null)
+    setHoveredCardMilestone(null)
 
     const mapping = milestoneMap[label as keyof typeof milestoneMap]
     if (mapping) {
-      setHighlightedItem(mapping)
-      setHoveredCardMilestone(label)
+      const selector = mapping.type === 'experience'
+        ? `[data-experience-id="${mapping.id}"]`
+        : mapping.type === 'project'
+        ? `[data-project-id="${mapping.id}"]`
+        : `[data-education-id="${mapping.id}"]`
 
+      const isMobile = window.innerWidth < 768
+      const startX = origin?.x ?? (window.innerWidth / 2)
+      const startY = origin?.y ?? (isMobile ? 220 : 250)
+
+      // Launch flying gold blob transition
+      setBlobFlight({
+        id: `${now}-${label}`,
+        startX,
+        startY,
+        targetSelector: selector,
+        label,
+      })
+
+      // Kick off synchronized smooth scroll
       setTimeout(() => {
         scrollToElement(mapping.type, mapping.id)
-      }, 50)
-
-      // Clear highlight after animation completes
-      setTimeout(() => {
-        setHighlightedItem(null)
-        setHoveredCardMilestone(null)
-      }, 9000)
+      }, 30)
     }
   }
 
-  const handleChartPointClick = (point: ChartDataPoint) => {
+  const handleBlobImpact = (flightData: BlobFlightData) => {
+    const mapping = milestoneMap[flightData.label as keyof typeof milestoneMap]
+    if (mapping) {
+      // Trigger card expansion and pulse
+      setHighlightedItem(mapping)
+
+      // Clear highlight state cleanly after expansion without locking hover
+      setTimeout(() => {
+        setHighlightedItem((curr) => (curr?.id === mapping.id ? null : curr))
+      }, 2000)
+    }
+  }
+
+  const handleChartPointClick = (point: ChartDataPoint, origin?: { x: number; y: number }) => {
     if (point.label) {
-      navigateToItem(point.label)
+      navigateToItem(point.label, origin)
     }
   }
 
   const handleScrubEnd = () => {
-    if (window.innerWidth < 768) {
-      return
-    }
-
-    // If we have a hovered label when interaction ends (lifts finger), navigate to it
-    if (hoveredPoint?.label) {
-      navigateToItem(hoveredPoint.label)
-    }
+    // Only scrub visual state, do not trigger automatic jumps on mouse leave
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black text-white relative">
+      <FluidBlobTransition
+        flight={blobFlight}
+        onImpact={handleBlobImpact}
+        onComplete={() => setBlobFlight(null)}
+      />
       <TopNav onNavigate={handleNavigate} onSearch={handleSearch} onAISubmit={handleAISubmit} searchQuery={searchQuery} />
 
       <div className="md:pt-14 pb-20 md:pb-8">
@@ -285,13 +325,13 @@ export default function Dashboard() {
                         }
                       }, 100)
                     }}
-                    onJumpToMilestone={(lbl) => navigateToItem(lbl || aiResult.milestoneLabel || '')}
+                    onJumpToMilestone={(lbl, origin) => navigateToItem(lbl || aiResult.milestoneLabel || '', origin)}
                     onClose={() => setAIResult(null)}
                   />
                 ) : (
                   <BuyingPower
                     activeMilestone={activeHoveredPoint?.label || null}
-                    onJumpToMilestone={(label) => navigateToItem(label)}
+                    onJumpToMilestone={(label, origin) => navigateToItem(label, origin)}
                   />
                 )}
               </div>

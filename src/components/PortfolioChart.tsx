@@ -5,7 +5,7 @@ import type { ChartDataPoint } from '../types'
 interface PortfolioChartProps {
   data: ChartDataPoint[]
   isPositive: boolean
-  onPointClick?: (point: ChartDataPoint) => void
+  onPointClick?: (point: ChartDataPoint, origin?: { x: number; y: number }) => void
   onPointHover?: (point: ChartDataPoint | null) => void
   onScrubEnd?: () => void
   hoveredMilestoneLabel?: string | null
@@ -305,8 +305,27 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
         return
       }
 
+      const calculateOrigin = () => {
+        if (event && (event.clientX || event.pageX || event.nativeEvent?.clientX)) {
+          return {
+            x: event.clientX || event.pageX || event.nativeEvent?.clientX,
+            y: event.clientY || event.pageY || event.nativeEvent?.clientY,
+          }
+        }
+        if (chartRef.current && selectedIndex >= 0) {
+          const rect = chartRef.current.getBoundingClientRect()
+          const xPos = rect.left + 10 + (selectedIndex / (data.length - 1)) * (rect.width - 20)
+          return { x: xPos, y: rect.top + rect.height * 0.4 }
+        }
+        return undefined
+      }
+
       if (!isTouchDevice) {
-        onPointClick(selectedPoint)
+        setSnappedIndex(null)
+        if (onPointHover) {
+          onPointHover(null)
+        }
+        onPointClick(selectedPoint, calculateOrigin())
         return
       }
 
@@ -315,12 +334,16 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
 
       if (isSecondTapSameMilestone) {
         setArmedMilestoneIndex(null)
+        setSnappedIndex(null)
+        if (onPointHover) {
+          onPointHover(null)
+        }
         touchTapTimeRef.current = 0
         if (armResetTimerRef.current !== null) {
           window.clearTimeout(armResetTimerRef.current)
           armResetTimerRef.current = null
         }
-        onPointClick(selectedPoint)
+        onPointClick(selectedPoint, calculateOrigin())
         return
       }
 

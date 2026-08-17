@@ -7,7 +7,7 @@ interface AIAnswerCardProps {
   result: AIQueryResult
   onChipClick: (chip: string) => void
   onAskCustom?: () => void
-  onJumpToMilestone?: (label?: string) => void
+  onJumpToMilestone?: (label?: string, origin?: { x: number; y: number }) => void
   onClose: () => void
 }
 
@@ -88,7 +88,11 @@ export default function AIAnswerCard({ query, result, onChipClick, onAskCustom, 
           {labelsToRender.map((label, idx) => (
             <button
               key={idx}
-              onClick={() => onJumpToMilestone && onJumpToMilestone(label)}
+              onClick={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect()
+                const origin = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }
+                onJumpToMilestone && onJumpToMilestone(label, origin)
+              }}
               className="group inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C9A227]/10 border border-[#C9A227] text-xs text-[#C9A227] font-semibold hover:bg-[#C9A227] hover:text-black hover:border-transparent transition-all duration-200 cursor-pointer shadow-[0_0_8px_rgba(201,162,39,0.15)]"
             >
               <span>Visit: {label}</span>

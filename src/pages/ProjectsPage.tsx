@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { ChevronLeft } from 'lucide-react'
 import BottomNav from '../components/BottomNav'
 import ProjectCard from '../components/ProjectCard'
@@ -7,6 +7,7 @@ import { portfolioProjects } from '../data/portfolioData'
 
 export default function ProjectsPage() {
   const navigate = useNavigate()
+  const [expandedId, setExpandedId] = useState<string | null>(null)
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
@@ -34,6 +35,8 @@ export default function ProjectsPage() {
           <ProjectCard
             key={project.id}
             project={project}
+            isExpanded={expandedId === project.id}
+            onToggle={() => setExpandedId((curr) => curr === project.id ? null : project.id)}
             disableLayoutAnimation
           />
         ))}

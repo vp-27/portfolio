@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { ChevronLeft } from 'lucide-react'
 import BottomNav from '../components/BottomNav'
 import ExperienceItem from '../components/ExperienceItem'
@@ -7,6 +7,7 @@ import { professionalExperiences } from '../data/portfolioData'
 
 export default function ExperiencePage() {
   const navigate = useNavigate()
+  const [expandedId, setExpandedId] = useState<string | null>(null)
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
@@ -35,6 +36,8 @@ export default function ExperiencePage() {
             <ExperienceItem
               key={exp.id}
               experience={exp}
+              isExpanded={expandedId === exp.id}
+              onToggle={() => setExpandedId((curr) => curr === exp.id ? null : exp.id)}
               isLast={index === professionalExperiences.length - 1}
             />
           ))}

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 
 interface BuyingPowerProps {
   activeMilestone?: string | null
-  onJumpToMilestone?: (label: string) => void
+  onJumpToMilestone?: (label: string, origin?: { x: number; y: number }) => void
 }
 
 export default function BuyingPower({ activeMilestone, onJumpToMilestone }: BuyingPowerProps) {
@@ -59,7 +59,11 @@ export default function BuyingPower({ activeMilestone, onJumpToMilestone }: Buyi
             {activeMilestone ? (
               <button
                 type="button"
-                onClick={() => onJumpToMilestone && onJumpToMilestone(activeMilestone)}
+                onClick={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect()
+                  const origin = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }
+                  onJumpToMilestone && onJumpToMilestone(activeMilestone, origin)
+                }}
                 className="flex items-center gap-1.5 px-3 py-1 bg-[#C9A227] active:bg-[#d8ae2c] active:scale-95 text-black font-bold text-xs rounded-full transition-all shadow-md shadow-[#C9A227]/20"
               >
                 <span>Visit</span>

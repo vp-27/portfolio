@@ -7,6 +7,8 @@ interface ExperienceItemProps {
   experience: Experience
   isHighlighted?: boolean
   isHovered?: boolean
+  isExpanded?: boolean
+  onToggle?: () => void
   isLast?: boolean
   onHover?: (isHovered: boolean) => void
 }
@@ -16,34 +18,46 @@ const getInitials = (company: string) => {
   return company.charAt(0).toUpperCase()
 }
 
-export default function ExperienceItem({ experience, isHighlighted, isHovered = false, isLast = false, onHover }: ExperienceItemProps) {
-  const [isExpanded, setIsExpanded] = useState(false)
+export default function ExperienceItem({
+  experience,
+  isHighlighted,
+  isHovered = false,
+  isExpanded: controlledExpanded,
+  onToggle,
+  isLast = false,
+  onHover,
+}: ExperienceItemProps) {
+  const [localExpanded, setLocalExpanded] = useState(false)
   const [showGlow, setShowGlow] = useState(false)
   const itemRef = useRef<HTMLDivElement>(null)
-  const wasHighlighted = useRef(false)
+
+  const isExpanded = controlledExpanded !== undefined ? controlledExpanded : localExpanded
+
+  const handleToggle = () => {
+    if (onToggle) {
+      onToggle()
+    } else {
+      setLocalExpanded(!localExpanded)
+    }
+  }
 
   // Determine if this is a current position
   const isCurrent = experience.endDate.toLowerCase() === 'present'
 
   // Auto-expand and show gold glow when highlighted
-  // Auto-collapse when another item becomes highlighted
   useEffect(() => {
     if (isHighlighted) {
-      wasHighlighted.current = true
-      setIsExpanded(true)
+      if (controlledExpanded === undefined) {
+        setLocalExpanded(true)
+      }
       setShowGlow(true)
-      // Remove glow after animation completes
+      // Crisp 700ms gold glow pulse
       const timer = setTimeout(() => {
         setShowGlow(false)
-      }, 1500)
+      }, 700)
       return () => clearTimeout(timer)
-    } else if (wasHighlighted.current) {
-      // This card was previously highlighted but now something else is
-      // Collapse it to keep UI clean
-      wasHighlighted.current = false
-      setIsExpanded(false)
     }
-  }, [isHighlighted])
+  }, [isHighlighted, controlledExpanded])
 
   return (
     <div
@@ -82,7 +96,7 @@ export default function ExperienceItem({ experience, isHighlighted, isHovered = 
 
       {/* List Row - Always Visible */}
       <button
-        onClick={() => setIsExpanded(!isExpanded)}
+        onClick={handleToggle}
         className="w-full flex items-center gap-3 md:gap-4 text-left hover:bg-[#1A1A1A] rounded-xl transition-colors p-2 -m-2 focus:outline-none relative z-10"
       >
         {/* Logo or Fallback Icon */}
