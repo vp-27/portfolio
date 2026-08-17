@@ -58,3 +58,19 @@ button:focus-visible {
            bg-[#2A2D31] text-gray-300 whitespace-nowrap;
   }
 }
+
+/* Milestone Hover: Turn cursor into pointer ONLY when hovering/snapping to gold milestone dots */
+.chart-milestone-hover,
+.chart-milestone-hover .recharts-surface,
+.chart-milestone-hover .recharts-surface *,
+.chart-milestone-hover .recharts-wrapper {
+  cursor: pointer !important;
+}
+
+/* Default Timeline Scrubbing: standard default arrow cursor */
+.chart-timeline-scrub,
+.chart-timeline-scrub .recharts-surface,
+.chart-timeline-scrub .recharts-surface *,
+.chart-timeline-scrub .recharts-wrapper {
+  cursor: default !important;
+}

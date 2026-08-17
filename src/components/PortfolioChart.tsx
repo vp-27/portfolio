@@ -202,7 +202,7 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
       const showBelow = cy < 40
 
       return (
-        <g>
+        <g className="cursor-pointer" style={{ cursor: 'pointer' }}>
           {(isHovered || isArmed) && (
             <circle
               cx={cx}
@@ -210,7 +210,7 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
               r={dotRadius + 5}
               fill="#C9A227"
               fillOpacity={0.25}
-              className="pointer-events-none"
+              style={{ cursor: 'pointer' }}
             />
           )}
           <circle
@@ -220,6 +220,7 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
             fill={dotColor}
             stroke="#000"
             strokeWidth={strokeWidth}
+            style={{ cursor: 'pointer' }}
             className="cursor-pointer hover:r-6 transition-all duration-150"
           />
           {/* On desktop non-touch devices, show the classic VISIT floating tooltip on hover */}
@@ -376,11 +377,13 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
     }
   }
 
+  const isMilestoneActive = (snappedIndex !== null && data[snappedIndex]?.label != null) || armedMilestoneIndex !== null
+
   return (
     <div
       ref={chartRef}
-      className="w-full h-64 md:h-64 cursor-pointer"
-      style={{ touchAction: 'pan-y' }}
+      className={`w-full h-64 md:h-64 ${isMilestoneActive ? 'chart-milestone-hover cursor-pointer' : 'chart-timeline-scrub cursor-default'}`}
+      style={{ touchAction: 'pan-y', cursor: isMilestoneActive ? 'pointer' : 'default' }}
       onMouseUp={handleInteractionEnd}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
@@ -392,6 +395,7 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
           onClick={handleClick}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
+          style={{ cursor: isMilestoneActive ? 'pointer' : 'default' }}
         >
           <defs>
             <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
@@ -415,6 +419,7 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
             animationDuration={0}
             isAnimationActive={false}
             dot={<CustomDot />}
+            style={{ cursor: isMilestoneActive ? 'pointer' : 'default' }}
             activeDot={(props: any) => {
               // Gold when hovering over a milestone, otherwise green
               const isHovered = snappedIndex !== null && props.payload.label
