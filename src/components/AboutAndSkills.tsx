@@ -119,20 +119,23 @@ export default function AboutAndSkills({
 
                 {/* Profile Picture with hover effect */}
                 <div
-                  className="relative w-32 h-32 cursor-pointer flex-shrink-0 overflow-visible"
+                  className="relative w-32 h-32 cursor-pointer flex-shrink-0 overflow-visible group select-none"
                   onMouseEnter={() => setIsHovered(true)}
                   onMouseLeave={() => setIsHovered(false)}
+                  onClick={() => setIsHovered(prev => !prev)}
                 >
                   <img
                     src="/images/pfp_theme%20transparent.png"
                     alt="Vandan Patel - Themed"
-                    className={`absolute -top-4 -right-4 w-40 h-40 object-contain transition-opacity duration-300 ${isHovered ? 'opacity-0' : 'opacity-100'}`}
+                    className={`absolute -top-4 -right-4 w-40 h-40 object-contain transition-all duration-300 pointer-events-none ${isHovered ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}
                   />
-                  <img
-                    src="/images/pfp_original.jpg"
-                    alt="Vandan Patel - Original"
-                    className={`absolute top-0 right-0 w-32 h-32 object-cover rounded-full transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
-                  />
+                  <div className={`absolute top-0 right-0 w-32 h-32 rounded-full overflow-hidden transition-all duration-300 border border-white/10 ${isHovered ? 'opacity-100 scale-100 shadow-lg shadow-black/50 ring-1 ring-white/20' : 'opacity-0 scale-95'}`}>
+                    <img
+                      src="/images/pfp_original.jpg"
+                      alt="Vandan Patel - Original"
+                      className="w-full h-full object-cover scale-125 translate-x-2 -translate-y-2"
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -320,20 +323,23 @@ export default function AboutAndSkills({
 
                   {/* Profile Picture with hover effect */}
                   <div
-                    className="relative w-28 h-28 cursor-pointer flex-shrink-0 overflow-visible"
+                    className="relative w-28 h-28 cursor-pointer flex-shrink-0 overflow-visible group select-none"
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
+                    onClick={() => setIsHovered(prev => !prev)}
                   >
                     <img
                       src="/images/pfp_theme%20transparent.png"
                       alt="Vandan Patel - Themed"
-                      className={`absolute -top-3 -right-3 w-36 h-36 object-contain transition-opacity duration-300 ${isHovered ? 'opacity-0' : 'opacity-100'}`}
+                      className={`absolute -top-3 -right-3 w-36 h-36 object-contain transition-all duration-300 pointer-events-none ${isHovered ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}
                     />
-                    <img
-                      src="/images/pfp_original.jpg"
-                      alt="Vandan Patel - Original"
-                      className={`absolute top-0 right-0 w-28 h-28 object-cover rounded-full transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
-                    />
+                    <div className={`absolute top-0 right-0 w-28 h-28 rounded-full overflow-hidden transition-all duration-300 border border-white/10 ${isHovered ? 'opacity-100 scale-100 shadow-lg shadow-black/50 ring-1 ring-white/20' : 'opacity-0 scale-95'}`}>
+                      <img
+                        src="/images/pfp_original.jpg"
+                        alt="Vandan Patel - Original"
+                        className="w-full h-full object-cover scale-125 translate-x-1.5 -translate-y-1.5"
+                      />
+                    </div>
                   </div>
                 </div>
 
