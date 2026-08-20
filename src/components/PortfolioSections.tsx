@@ -15,11 +15,13 @@ interface PortfolioSectionsProps {
   searchQuery?: string
   hasAIResult?: boolean
   onItemHover?: (type: 'experience' | 'project' | 'education', id: string | null) => void
+  onClearHighlight?: () => void
 }
 
-export default function PortfolioSections({ experiences, projects, education, highlightedItem, hoveredItem, searchQuery = '', hasAIResult = false, onItemHover }: PortfolioSectionsProps) {
+export default function PortfolioSections({ experiences, projects, education, highlightedItem, hoveredItem, searchQuery = '', hasAIResult = false, onItemHover, onClearHighlight }: PortfolioSectionsProps) {
   const [expandedExperienceId, setExpandedExperienceId] = useState<string | null>(null)
   const [expandedProjectId, setExpandedProjectId] = useState<string | null>(null)
+  const [eduGlowId, setEduGlowId] = useState<string | null>(null)
 
   // Sync expanded card with highlighted item from milestone visit
   useEffect(() => {
@@ -28,7 +30,15 @@ export default function PortfolioSections({ experiences, projects, education, hi
         setExpandedExperienceId(highlightedItem.id)
       } else if (highlightedItem.type === 'project') {
         setExpandedProjectId(highlightedItem.id)
+      } else if (highlightedItem.type === 'education') {
+        setEduGlowId(highlightedItem.id)
+        const timer = setTimeout(() => {
+          setEduGlowId(null)
+        }, 700)
+        return () => clearTimeout(timer)
       }
+    } else {
+      setEduGlowId(null)
     }
   }, [highlightedItem])
   // Filter function for search
@@ -84,7 +94,15 @@ export default function PortfolioSections({ experiences, projects, education, hi
                   isHighlighted={isHighlighted}
                   isHovered={isHovered}
                   isExpanded={expandedExperienceId === exp.id}
-                  onToggle={() => setExpandedExperienceId((curr) => curr === exp.id ? null : exp.id)}
+                  onToggle={() => {
+                    setExpandedExperienceId((curr) => {
+                      if (curr === exp.id) {
+                        onClearHighlight?.()
+                        return null
+                      }
+                      return exp.id
+                    })
+                  }}
                   isLast={index === filteredExperiences.length - 1}
                   onHover={(hoverActive) => onItemHover?.('experience', hoverActive ? exp.id : null)}
                 />
@@ -118,7 +136,15 @@ export default function PortfolioSections({ experiences, projects, education, hi
                   isHighlighted={isHighlighted}
                   isHovered={isHovered}
                   isExpanded={expandedProjectId === project.id}
-                  onToggle={() => setExpandedProjectId((curr) => curr === project.id ? null : project.id)}
+                  onToggle={() => {
+                    setExpandedProjectId((curr) => {
+                      if (curr === project.id) {
+                        onClearHighlight?.()
+                        return null
+                      }
+                      return project.id
+                    })
+                  }}
                   disableLayoutAnimation
                   onHover={(hoverActive) => onItemHover?.('project', hoverActive ? project.id : null)}
                 />
@@ -140,16 +166,23 @@ export default function PortfolioSections({ experiences, projects, education, hi
         <div className="lg:hidden mb-3" />
         <div>
           {education.map((edu, index) => {
-            const isEduHighlighted = !!(highlightedItem && highlightedItem.type === 'education' && edu.id === highlightedItem.id)
             const isEduHovered = !!(hoveredItem && hoveredItem.type === 'education' && edu.id === hoveredItem.id)
-            const showGlow = isEduHighlighted || isEduHovered
+            const showGlow = eduGlowId === edu.id || isEduHovered
 
             return (
               <div
                 key={edu.id}
                 data-education-id={edu.id}
-                onMouseEnter={() => onItemHover?.('education', edu.id)}
-                onMouseLeave={() => onItemHover?.('education', null)}
+                onMouseEnter={() => {
+                  if (typeof window !== 'undefined' && window.matchMedia('(hover: hover)').matches) {
+                    onItemHover?.('education', edu.id)
+                  }
+                }}
+                onMouseLeave={() => {
+                  if (typeof window !== 'undefined' && window.matchMedia('(hover: hover)').matches) {
+                    onItemHover?.('education', null)
+                  }
+                }}
                 className={`
                   py-4 px-2 relative transition-all duration-300
                   ${index === education.length - 1 ? '' : 'border-b border-[#1E1E1E] lg:border-[#222]'}

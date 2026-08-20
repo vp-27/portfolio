@@ -49,6 +49,7 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
       }
     }
     setSnappedIndex(null)
+    setArmedMilestoneIndex(null)
   }, [hoveredMilestoneLabel, data])
 
   // Find the nearest milestone within snap threshold

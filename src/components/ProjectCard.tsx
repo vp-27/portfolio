@@ -29,6 +29,9 @@ export default function ProjectCard({
   const isExpanded = controlledExpanded !== undefined ? controlledExpanded : localExpanded
 
   const handleCardClick = () => {
+    if (isExpanded) {
+      setShowGlow(false)
+    }
     if (onToggle) {
       onToggle()
     } else {
@@ -48,8 +51,10 @@ export default function ProjectCard({
         setShowGlow(false)
       }, 700)
       return () => clearTimeout(timer)
+    } else {
+      setShowGlow(false)
     }
-  }, [isHighlighted, controlledExpanded])
+  }, [isHighlighted])
 
   return (
     <motion.div
@@ -57,8 +62,16 @@ export default function ProjectCard({
       transition={disableLayoutAnimation ? undefined : { layout: { type: 'tween', ease: 'easeOut', duration: 0.22 } }}
       data-project-id={project.id}
       onClick={handleCardClick}
-      onMouseEnter={() => onHover?.(true)}
-      onMouseLeave={() => onHover?.(false)}
+      onMouseEnter={() => {
+        if (typeof window !== 'undefined' && window.matchMedia('(hover: hover)').matches) {
+          onHover?.(true)
+        }
+      }}
+      onMouseLeave={() => {
+        if (typeof window !== 'undefined' && window.matchMedia('(hover: hover)').matches) {
+          onHover?.(false)
+        }
+      }}
       className="bg-[#1E2124] rounded-2xl overflow-hidden cursor-pointer transition-colors duration-200 hover:bg-[#2A2D31] relative"
       style={{
         boxShadow: showGlow || isHovered

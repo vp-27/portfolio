@@ -136,6 +136,9 @@ export default function Dashboard() {
         if (mapping) {
           setHighlightedItem(mapping)
           setHoveredCardMilestone(res.milestoneLabel)
+          setTimeout(() => {
+            setHighlightedItem((curr) => (curr?.id === mapping.id ? null : curr))
+          }, 2000)
         }
       } else if (res.targetType === 'resume_cs') {
         window.open('/resumes/Vandan_Patel_CS.pdf', '_blank')
@@ -154,6 +157,9 @@ export default function Dashboard() {
       setSearchQuery('')
       setAIResult(null)
       setIsAILoading(false)
+      setHighlightedItem(null)
+      setHoveredCardMilestone(null)
+      setHoveredPoint(null)
       return
     }
 
@@ -326,7 +332,12 @@ export default function Dashboard() {
                       }, 100)
                     }}
                     onJumpToMilestone={(lbl, origin) => navigateToItem(lbl || aiResult.milestoneLabel || '', origin)}
-                    onClose={() => setAIResult(null)}
+                    onClose={() => {
+                      setAIResult(null)
+                      setHighlightedItem(null)
+                      setHoveredCardMilestone(null)
+                      setHoveredPoint(null)
+                    }}
                   />
                 ) : (
                   <BuyingPower
@@ -359,6 +370,7 @@ export default function Dashboard() {
                   searchQuery={searchQuery}
                   hasAIResult={!!aiResult}
                   onItemHover={handleItemHover}
+                  onClearHighlight={() => setHighlightedItem(null)}
                 />
               </div>
 

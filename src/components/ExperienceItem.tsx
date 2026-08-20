@@ -34,6 +34,9 @@ export default function ExperienceItem({
   const isExpanded = controlledExpanded !== undefined ? controlledExpanded : localExpanded
 
   const handleToggle = () => {
+    if (isExpanded) {
+      setShowGlow(false)
+    }
     if (onToggle) {
       onToggle()
     } else {
@@ -56,15 +59,25 @@ export default function ExperienceItem({
         setShowGlow(false)
       }, 700)
       return () => clearTimeout(timer)
+    } else {
+      setShowGlow(false)
     }
-  }, [isHighlighted, controlledExpanded])
+  }, [isHighlighted])
 
   return (
     <div
       ref={itemRef}
       data-experience-id={experience.id}
-      onMouseEnter={() => onHover?.(true)}
-      onMouseLeave={() => onHover?.(false)}
+      onMouseEnter={() => {
+        if (typeof window !== 'undefined' && window.matchMedia('(hover: hover)').matches) {
+          onHover?.(true)
+        }
+      }}
+      onMouseLeave={() => {
+        if (typeof window !== 'undefined' && window.matchMedia('(hover: hover)').matches) {
+          onHover?.(false)
+        }
+      }}
       className={`
         py-3 relative
         ${isLast ? '' : 'border-b border-[#2C2C2E]'}
