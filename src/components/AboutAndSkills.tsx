@@ -148,11 +148,30 @@ export default function AboutAndSkills({
         {/* Contact Me Section */}
         {(isDesktopOnly || showOnlyContact) && (
           <div 
-            className={`border-b border-[#2D2D2D] transition-colors duration-500 ${isContactHighlighted ? 'bg-[#FFD700]/5' : ''}`} 
+            className="border-b transition-all duration-500 relative" 
             data-section="contact"
+            style={{
+              boxShadow: isContactHighlighted
+                ? '0 0 24px rgba(201, 162, 39, 0.35), inset 0 0 20px rgba(201, 162, 39, 0.08)'
+                : 'none',
+              borderColor: isContactHighlighted ? 'rgba(201, 162, 39, 0.4)' : '#2D2D2D',
+              backgroundColor: isContactHighlighted ? 'rgba(201, 162, 39, 0.04)' : 'transparent',
+            }}
           >
-            <div className={`px-4 py-3 border-b border-[#2D2D2D] flex items-center justify-between ${isContactHighlighted ? 'border-[#FFD700]/50' : ''}`}>
-              <span className={`font-bold transition-colors ${isContactHighlighted ? 'text-[#FFD700]' : 'text-white'}`}>Contact Me</span>
+            <div 
+              className="px-4 py-3 border-b flex items-center justify-between transition-colors duration-500"
+              style={{
+                borderColor: isContactHighlighted ? 'rgba(201, 162, 39, 0.3)' : '#2D2D2D',
+              }}
+            >
+              <span 
+                className="font-bold transition-colors duration-500"
+                style={{
+                  color: isContactHighlighted ? '#C9A227' : '#ffffff',
+                }}
+              >
+                Contact Me
+              </span>
             </div>
             <div>
               <button 
@@ -325,7 +344,17 @@ export default function AboutAndSkills({
                 </div>
 
                 {/* Integrated Contact Row for Mobile */}
-                <div className="flex items-center gap-2 pt-4 border-t border-[#2C2C2E]" data-section="contact">
+                <div 
+                  className="flex items-center gap-2 pt-4 border-t transition-all duration-500 rounded-xl p-2 -mx-2" 
+                  data-section="contact"
+                  style={{
+                    boxShadow: isContactHighlighted
+                      ? '0 0 20px rgba(201, 162, 39, 0.35), inset 0 0 16px rgba(201, 162, 39, 0.08)'
+                      : 'none',
+                    borderColor: isContactHighlighted ? 'rgba(201, 162, 39, 0.4)' : '#2C2C2E',
+                    backgroundColor: isContactHighlighted ? 'rgba(201, 162, 39, 0.06)' : 'transparent',
+                  }}
+                >
                   <button
                     onClick={() => window.open('https://github.com/vp-27', '_blank')}
                     className="flex-1 flex items-center justify-center gap-2 py-2 px-3 bg-[#1A1A1A] hover:bg-[#2A2A2A] active:bg-[#333333] border border-[#2D2D2D] rounded-xl text-xs font-medium text-white transition-colors"
@@ -433,10 +462,28 @@ export default function AboutAndSkills({
         {/* Contact Me Card */}
         {showOnlyContact && (
           <div data-section="contact">
-            <h2 className="text-2xl font-medium mb-3 text-left">Contact Me</h2>
-            <div className="bg-[#1E2124] rounded-lg border border-[#2D2D2D] overflow-hidden">
+            <h2 
+              className="text-2xl font-medium mb-3 text-left transition-colors duration-500"
+              style={{
+                color: isContactHighlighted ? '#C9A227' : '#ffffff',
+              }}
+            >
+              Contact Me
+            </h2>
+            <div 
+              className="bg-[#1E2124] rounded-lg border overflow-hidden transition-all duration-500"
+              style={{
+                boxShadow: isContactHighlighted
+                  ? '0 0 24px rgba(201, 162, 39, 0.35), inset 0 0 20px rgba(201, 162, 39, 0.08)'
+                  : 'none',
+                borderColor: isContactHighlighted ? 'rgba(201, 162, 39, 0.4)' : '#2D2D2D',
+              }}
+            >
               <div 
-                className={`transition-colors duration-500 ${isContactHighlighted ? 'bg-[#FFD700]/5' : ''}`} 
+                className="transition-colors duration-500"
+                style={{
+                  backgroundColor: isContactHighlighted ? 'rgba(201, 162, 39, 0.04)' : 'transparent',
+                }}
               >
                 <div className="bg-transparent">
                   <button 
