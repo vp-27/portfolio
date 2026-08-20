@@ -166,7 +166,7 @@ export default function ProjectCard({
                     e.stopPropagation()
                     window.open(project.githubUrl, '_blank')
                   }}
-                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#1E2228] hover:bg-[#2A2E35] border border-[#32363F] text-white text-[11px] font-semibold transition-colors active:scale-95"
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#2C3036] hover:bg-[#383E47] border border-[#444A56] text-white text-[11px] font-semibold transition-colors active:scale-95 shadow-sm"
                 >
                   <Github className="w-3.5 h-3.5" />
                   Code
@@ -234,7 +234,7 @@ export default function ProjectCard({
                       e.stopPropagation()
                       window.open(project.githubUrl, '_blank')
                     }}
-                    className="flex items-center justify-center gap-2 px-5 py-2.5 bg-[#1E2228] hover:bg-[#2A2E35] border border-[#32363F] text-white text-xs font-semibold rounded-full transition-all active:scale-95 flex-1"
+                    className="flex items-center justify-center gap-2 px-5 py-2.5 bg-[#2C3036] hover:bg-[#383E47] border border-[#444A56] text-white text-xs font-semibold rounded-full transition-all active:scale-95 flex-1"
                   >
                     <Github className="w-4 h-4" />
                     View Code
