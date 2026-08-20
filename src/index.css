@@ -54,8 +54,9 @@ button:focus-visible {
 
 @layer components {
   .tech-chip {
-    @apply px-2.5 py-1 text-[10px] md:text-[11px] font-bold rounded-md 
-           bg-[#2A2D31] text-gray-300 whitespace-nowrap;
+    @apply px-3.5 py-1 text-[11px] md:text-xs font-medium rounded-full 
+           bg-[#1E2228] text-white border border-[#32363F] whitespace-nowrap
+           transition-colors duration-150;
   }
 }
 

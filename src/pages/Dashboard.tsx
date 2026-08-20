@@ -302,7 +302,7 @@ export default function Dashboard() {
                       onClick={() => setTimeRange(range)}
                       className={`px-2.5 py-1 rounded-lg font-bold ${timeRange === range
                         ? 'bg-[#00C805] text-black'
-                        : 'bg-transparent text-gray-400 hover:text-white hover:bg-[#1A1A1A]'
+                        : 'bg-transparent text-[#00C805] hover:bg-[#00C805]/10'
                         } transition-colors`}
                     >
                       {range}

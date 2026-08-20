@@ -95,19 +95,19 @@ export default function ProjectCard({
       )}
 
       {/* Card Header - Always Visible */}
-      <div className="p-3 md:p-4 relative z-10">
+      <div className="p-4 md:p-5 relative z-10">
         <div className="flex items-center gap-3 md:gap-4">
           {/* Left side: Title, Subtitle, Tags */}
           <div className="flex-1 min-w-0">
             <h3 className="font-bold text-white text-[17px] md:text-[19px] leading-tight mb-1.5">
               {project.name}
             </h3>
-            <p className="text-[13px] md:text-sm text-gray-400 mb-3 leading-relaxed">
+            <p className="text-[13px] md:text-sm text-gray-400 mb-3.5 leading-relaxed">
               {project.subtitle}
             </p>
 
             {/* Tech Tags Row */}
-            <div className="flex items-center gap-2 flex-wrap mb-3">
+            <div className="flex items-center gap-2 flex-wrap mb-1">
               {project.technologies && project.technologies.length > 0 && (
                 <>
                   {project.technologies.map((tech, idx) => (
@@ -121,8 +121,6 @@ export default function ProjectCard({
                 </>
               )}
             </div>
-
-
           </div>
 
           {/* Right side: Large Logo */}
@@ -131,7 +129,7 @@ export default function ProjectCard({
               <img
                 src={project.logoUrl}
                 alt={`${project.name} logo`}
-                className="w-full h-full object-contain"
+                className="w-full h-full object-contain drop-shadow-md"
                 onError={(e) => {
                   e.currentTarget.style.display = 'none'
                 }}
@@ -147,9 +145,9 @@ export default function ProjectCard({
         </div>
 
         {/* Action Row: More (Left) + Buttons (Right) */}
-        <div className="flex items-center justify-between mt-3">
+        <div className="flex items-center justify-between mt-3.5 pt-1">
           {/* Expand indicator */}
-          <div className="flex items-center gap-1 text-gray-400 text-[13px] font-medium">
+          <div className="flex items-center gap-1.5 text-gray-400 hover:text-white text-[13px] font-medium transition-colors">
             <motion.div
               animate={{ rotate: isExpanded ? 180 : 0 }}
               transition={{ duration: 0.2 }}
@@ -168,9 +166,9 @@ export default function ProjectCard({
                     e.stopPropagation()
                     window.open(project.githubUrl, '_blank')
                   }}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#2A2A2D] hover:bg-[#3A3A3C] text-white text-[10px] font-medium transition-colors active:scale-95"
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#1E2228] hover:bg-[#2A2E35] border border-[#32363F] text-white text-[11px] font-semibold transition-colors active:scale-95"
                 >
-                  <Github className="w-3 h-3" />
+                  <Github className="w-3.5 h-3.5" />
                   Code
                 </button>
               )}
@@ -180,9 +178,9 @@ export default function ProjectCard({
                     e.stopPropagation()
                     window.open(project.liveUrl, '_blank')
                   }}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#00C805] hover:bg-[#00E676] text-black text-[10px] font-bold transition-colors active:scale-95"
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#00C805] hover:bg-[#00E676] text-black text-[11px] font-bold transition-colors active:scale-95"
                 >
-                  <ExternalLink className="w-3 h-3" />
+                  <ExternalLink className="w-3.5 h-3.5" />
                   Visit
                 </button>
               )}
@@ -201,7 +199,7 @@ export default function ProjectCard({
             transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
             className="overflow-hidden relative z-10"
           >
-            <div className="px-3 md:px-4 pb-3 md:pb-4">
+            <div className="px-4 md:px-5 pb-4 md:pb-5">
               {/* Duration */}
               <p className="text-xs text-gray-500 mb-3">{project.duration}</p>
 
@@ -229,16 +227,16 @@ export default function ProjectCard({
               </div>
 
               {/* Action Buttons - Full width in expanded */}
-              <div className="flex gap-2 pt-3 border-t border-[#2C2C2E]">
+              <div className="flex gap-2.5 pt-3.5 border-t border-[#2C2C2E]">
                 {project.githubUrl && (
                   <button
                     onClick={(e) => {
                       e.stopPropagation()
                       window.open(project.githubUrl, '_blank')
                     }}
-                    className="flex items-center justify-center gap-2 px-5 py-2.5 bg-[#2A2A2D] hover:bg-[#3A3A3C] text-white text-xs font-semibold rounded-lg transition-all active:scale-95 flex-1"
+                    className="flex items-center justify-center gap-2 px-5 py-2.5 bg-[#1E2228] hover:bg-[#2A2E35] border border-[#32363F] text-white text-xs font-semibold rounded-full transition-all active:scale-95 flex-1"
                   >
-                    <Github className="w-3.5 h-3.5" />
+                    <Github className="w-4 h-4" />
                     View Code
                   </button>
                 )}
@@ -248,9 +246,9 @@ export default function ProjectCard({
                       e.stopPropagation()
                       window.open(project.liveUrl, '_blank')
                     }}
-                    className="flex items-center justify-center gap-2 px-5 py-2.5 bg-[#00C805] hover:bg-[#00E676] text-black text-xs font-semibold rounded-lg transition-all active:scale-95 flex-1"
+                    className="flex items-center justify-center gap-2 px-5 py-2.5 bg-[#00C805] hover:bg-[#00E676] text-black text-xs font-bold rounded-full transition-all active:scale-95 flex-1"
                   >
-                    <ExternalLink className="w-3.5 h-3.5" />
+                    <ExternalLink className="w-4 h-4" />
                     Visit Site
                   </button>
                 )}
