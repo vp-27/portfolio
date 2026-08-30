@@ -30,7 +30,7 @@ const defaultChips = [
  * Covers About Me, Experiences, Projects (with live & GitHub URLs), Education, Skills, Interests, and Watchlist Items.
  */
 function getDynamicSiteContext(): string {
-  const bio = "Vandan Patel: Computer Science, Finance, and Data Science student at Rutgers Honors College (GPA 3.96, Phi Beta Kappa). Financial Analyst Intern at Amazon SCOT (Supply Chain Optimization Technologies, Bellevue WA). Quantitative builder creating FinTech tools, agentic platforms, trading bots, and data pipelines."
+  const bio = "Vandan Patel: Computer Science, Finance, and Data Science student at Rutgers Honors College (GPA 3.96, Phi Beta Kappa, Expected Graduation: May 2027). Financial Analyst Intern at Amazon SCOT (Supply Chain Optimization Technologies, Bellevue WA). Quantitative builder creating FinTech tools, agentic platforms, trading bots, and data pipelines."
   const contact = "Direct Contact & Social Links: Email: vrp77@scarletmail.rutgers.edu, LinkedIn: https://linkedin.com/in/vandan-patel-vp, GitHub: https://github.com/vp-27"
   
   const stocks = portfolioStocks.map(s => `${s.name} (${s.symbol}): Impact/Return ${s.totalReturnPercent}%`).join('\n')
@@ -44,7 +44,12 @@ function getDynamicSiteContext(): string {
     return `${p.name} (${p.subtitle})${linkStr}: ${p.bullets.join('; ')}`
   }).join('\n')
 
-  const edu = portfolioEducation.map(ed => `${ed.institution} (${ed.degrees.join(', ')}, GPA ${ed.gpa}): ${ed.honors.join('; ')}`).join('\n')
+  const edu = portfolioEducation.map(ed => {
+    const certs = ed.certifications && ed.certifications.length > 0
+      ? ` | Certifications: ${ed.certifications.map(c => `${c.name} (${c.issuer})`).join(', ')}`
+      : ''
+    return `${ed.institution} (${ed.degrees.join(', ')}, Expected Graduation: ${ed.graduationDate}, Location: ${ed.location}, GPA ${ed.gpa}): Honors: ${ed.honors.join('; ')}${certs}`
+  }).join('\n')
   const skills = skillCategories.map(cat => `${cat.name}: ${cat.skills.map(s => s.name).join(', ')}`).join('\n')
   const interests = portfolioInterests.map(i => `${i.name} (${i.category})`).join(', ')
 
@@ -172,8 +177,18 @@ function synthesizePersonaAnswer(query: string): AIQueryResult {
     }
   }
 
+  if (q.includes('graduat') || q.includes('degree') || q.includes('rutgers') || q.includes('education') || q.includes('college') || q.includes('gpa') || q.includes('major')) {
+    return {
+      answer: "Vandan Patel is pursuing a triple major in Computer Science (B.S.), Finance (B.S.), and Data Science (B.A.) at Rutgers Honors College (GPA 3.96, Dean's List, Phi Beta Kappa) with an expected graduation date of May 2027.",
+      milestoneLabel: 'Started Rutgers',
+      targetType: 'education',
+      targetId: '1',
+      suggestedChips: ['View CS Resume', 'View Finance Resume', 'Tell me about Amazon SCOT']
+    }
+  }
+
   return {
-    answer: `Vandan Patel is a CS, Finance & Data Science student at Rutgers Honors College (GPA 3.96, Phi Beta Kappa, Financial Analyst Intern @ Amazon SCOT). He specializes in quantitative tools, full-stack software development, and AI agent platforms.`,
+    answer: `Vandan Patel is a CS, Finance & Data Science student at Rutgers Honors College (GPA 3.96, Phi Beta Kappa, Expected Graduation: May 2027, Financial Analyst Intern @ Amazon SCOT). He specializes in quantitative tools, full-stack software development, and AI agent platforms.`,
     milestoneLabel: null,
     targetType: null,
     targetId: null,
@@ -196,7 +211,7 @@ function generateDynamicChips(query: string, text: string): string[] {
   if (combined.includes('gale') || combined.includes('edgar') || combined.includes('shark tank')) {
     return ['Tell me about GrindSheet', 'View CS Resume', 'Contact Vandan']
   }
-  if (combined.includes('rutgers') || combined.includes('education') || combined.includes('gpa')) {
+  if (combined.includes('rutgers') || combined.includes('education') || combined.includes('gpa') || combined.includes('graduat')) {
     return ['Tell me about Amazon SCOT', 'What programming languages does he use?', 'View Finance Resume']
   }
 
@@ -318,7 +333,7 @@ Instructions:
           if (lowerAnswer.includes('sebs data analyst') || lowerQuery.includes('sebs')) {
             foundLabels.push('SEBS Data Analyst')
           }
-          if (lowerQuery.includes('education') || lowerQuery.includes('rutgers') || lowerQuery.includes('gpa') || lowerQuery.includes('degree') || lowerAnswer.includes('started rutgers')) {
+          if (lowerQuery.includes('education') || lowerQuery.includes('rutgers') || lowerQuery.includes('gpa') || lowerQuery.includes('degree') || lowerQuery.includes('graduat') || lowerQuery.includes('grad') || lowerQuery.includes('major') || lowerAnswer.includes('started rutgers') || lowerAnswer.includes('rutgers') || lowerAnswer.includes('may 2027')) {
             foundLabels.push('Started Rutgers')
           }
 
