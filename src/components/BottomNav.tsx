@@ -54,9 +54,20 @@ export default function BottomNav({ searchQuery = '', onSearch, onAISubmit }: Bo
         }
       }, 150)
     }
-    window.addEventListener('open-mobile-search', handleOpenSearch as EventListener)
-    return () => window.removeEventListener('open-mobile-search', handleOpenSearch as EventListener)
-  }, [onSearch])
+      window.addEventListener('open-mobile-search', handleOpenSearch as EventListener)
+      return () => window.removeEventListener('open-mobile-search', handleOpenSearch as EventListener)
+    }, [onSearch])
+
+    // Close search on Escape key
+    useEffect(() => {
+      const handleGlobalKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape' && isSearchOpen) {
+          setIsSearchOpen(false)
+        }
+      }
+      window.addEventListener('keydown', handleGlobalKeyDown)
+      return () => window.removeEventListener('keydown', handleGlobalKeyDown)
+    }, [isSearchOpen])
 
   const handleQueryChange = (val: string) => {
     setLocalQuery(val)

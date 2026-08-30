@@ -11,6 +11,9 @@ interface TopNavProps {
 export default function TopNav({ onNavigate, onSearch, onAISubmit, searchQuery = '' }: TopNavProps) {
   const [isResumeDropdownOpen, setIsResumeDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const searchInputRef = useRef<HTMLInputElement>(null)
+
+  const isMac = typeof window !== 'undefined' && /Mac|iPod|iPhone|iPad/.test(navigator.userAgent)
 
   const handleNavigate = (section: string) => {
     if (onNavigate) {
@@ -51,6 +54,30 @@ export default function TopNav({ onNavigate, onSearch, onAISubmit, searchQuery =
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
+  // Global Cmd+K / Ctrl+K and '/' shortcut to focus search
+  useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      const isCmdK = (e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k'
+      const target = e.target as HTMLElement | null
+      const isInput = target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)
+      const isSlash = e.key === '/' && !isInput
+
+      if (isCmdK || isSlash) {
+        e.preventDefault()
+        if (window.innerWidth >= 768 && searchInputRef.current) {
+          searchInputRef.current.focus()
+          searchInputRef.current.select()
+        } else {
+          window.dispatchEvent(new CustomEvent('open-mobile-search', { detail: { query: searchQuery } }))
+        }
+      } else if (e.key === 'Escape' && document.activeElement === searchInputRef.current) {
+        searchInputRef.current?.blur()
+      }
+    }
+
+    window.addEventListener('keydown', handleGlobalKeyDown)
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown)
+  }, [searchQuery])
 
   return (
     <nav className="hidden md:flex fixed top-0 left-0 right-0 bg-black border-b border-gray-900 z-50">
@@ -76,14 +103,15 @@ export default function TopNav({ onNavigate, onSearch, onAISubmit, searchQuery =
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
               <input
+                ref={searchInputRef}
                 type="text"
                 placeholder="Search or ask anything..."
                 value={searchQuery}
                 onChange={handleSearchChange}
                 onKeyDown={handleKeyDown}
-                className="w-full bg-[#1A1A1A] text-white placeholder-gray-500 pl-10 pr-9 py-2 rounded-md text-[16px] md:text-sm focus:outline-none focus:ring-1 focus:ring-gray-700"
+                className="w-full bg-[#1A1A1A] text-white placeholder-gray-500 pl-10 pr-14 py-2 rounded-md text-[16px] md:text-sm focus:outline-none focus:ring-1 focus:ring-gray-700"
               />
-              {searchQuery && (
+              {searchQuery ? (
                 <button
                   type="button"
                   onClick={() => onSearch?.('')}
@@ -92,6 +120,12 @@ export default function TopNav({ onNavigate, onSearch, onAISubmit, searchQuery =
                 >
                   <X className="w-4 h-4" />
                 </button>
+              ) : (
+                <div className="absolute right-2.5 top-1/2 transform -translate-y-1/2 hidden lg:flex items-center pointer-events-none select-none">
+                  <kbd className="px-1.5 py-0.5 text-[10px] font-medium text-gray-400 bg-[#262626] border border-gray-800 rounded">
+                    {isMac ? '⌘K' : 'Ctrl K'}
+                  </kbd>
+                </div>
               )}
             </div>
           </div>
