@@ -450,6 +450,7 @@ export const portfolioProjects: Project[] = [
       'Engineered a multi-model LLM grading pipeline with regex-based fast paths and automatic model fallback, plus an adversarial audit system for contested answers',
     ],
     technologies: ['Vanilla JavaScript', 'Gemini API', 'Pub/Sub State Store', 'Elo Engine', 'LLMs'],
+    liveUrl: 'https://vtch-game.vercel.app/',
     logoUrl: '/images/logoImages/galeClear.png',
   },
   {
