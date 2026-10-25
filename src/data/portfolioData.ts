@@ -504,7 +504,7 @@ export const portfolioProjects: Project[] = [
     ],
     technologies: ['React', 'Selenium', 'Python', 'Financial Modeling'],
     liveUrl: 'https://perkpal.vercel.app/',
-    githubUrl: 'https://github.com/vp-27/perkopoly',
+    githubUrl: 'https://github.com/vp-27/PerkPal',
     imageUrl: '/images/perkpal.png',
     logoUrl: '/images/logoImages/perkPalClear.png',
   },

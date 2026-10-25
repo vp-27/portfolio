@@ -232,7 +232,8 @@ function synthesizePersonaAnswer(query: string): AIQueryResult {
       targetType: 'project',
       targetId: '5',
       actionLinks: [
-        { label: 'Live Demo (PerkPal)', url: 'https://perkpal.app' }
+        { label: 'Live Demo (PerkPal)', url: 'https://perkpal.vercel.app/' },
+        { label: 'GitHub Code (PerkPal)', url: 'https://github.com/vp-27/PerkPal' }
       ],
       suggestedChips: ['Tell me about GALE', 'View CS Resume', 'Tell me about Amazon SCOT']
     }

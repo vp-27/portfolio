@@ -53,8 +53,8 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
   }, [hoveredMilestoneLabel, data])
 
   // Find the nearest milestone within snap threshold
-  const findNearestMilestone = useCallback((event: any, chartData: any): ChartDataPoint | null => {
-    if (!event || !chartData || !chartData.chartX || !chartData.chartY) {
+  const findNearestMilestone = useCallback((_event: any, chartData: any): ChartDataPoint | null => {
+    if (!chartData || typeof chartData.chartX !== 'number') {
       return null
     }
 
@@ -66,12 +66,16 @@ export default function PortfolioChart({ data, isPositive, onPointClick, onPoint
     let nearestPoint = null
     let minDistance = snapThreshold
 
-    // Calculate distances to all milestone points
+    const chartWidth = chartRef.current?.offsetWidth || 1
+    const marginLeft = 10
+    const marginRight = 10
+    const availableWidth = Math.max(1, chartWidth - marginLeft - marginRight)
+    const totalPoints = data.length > 1 ? data.length - 1 : 1
+
+    // Calculate distances to all milestone points with accurate margin offsets
     milestones.forEach((milestone) => {
-      // Approximate the x position based on data distribution
       const dataIndex = data.findIndex(p => p === milestone)
-      const chartWidth = chartRef.current?.offsetWidth || 1
-      const xPosition = (dataIndex / (data.length - 1)) * chartWidth
+      const xPosition = marginLeft + (dataIndex / totalPoints) * availableWidth
 
       // Simple distance calculation (primarily horizontal for timeline)
       const distance = Math.abs(chartX - xPosition)
