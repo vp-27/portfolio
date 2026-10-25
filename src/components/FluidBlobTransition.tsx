@@ -29,9 +29,19 @@ interface SparkleTrail {
   id: number
 }
 
-export default function FluidBlobTransition({ flight, onImpact, onComplete }: FluidBlobTransitionProps) {
+export default function FluidBlobTransition({
+  flight,
+  onImpact,
+  onComplete,
+}: FluidBlobTransitionProps) {
   const [phase, setPhase] = useState<'idle' | 'flying' | 'impact'>('idle')
-  const [blobPos, setBlobPos] = useState<{ x: number; y: number; rotate: number; scale: number; morph: string }>({
+  const [blobPos, setBlobPos] = useState<{
+    x: number
+    y: number
+    rotate: number
+    scale: number
+    morph: string
+  }>({
     x: 0,
     y: 0,
     rotate: 0,
@@ -96,7 +106,8 @@ export default function FluidBlobTransition({ flight, onImpact, onComplete }: Fl
       if (targetEl) {
         const rect = targetEl.getBoundingClientRect()
         // Anchor to the top-left icon / title area of the card
-        targetX = rect.left + (isMobile ? Math.min(rect.width * 0.25, 60) : Math.min(rect.width * 0.2, 75))
+        targetX =
+          rect.left + (isMobile ? Math.min(rect.width * 0.25, 60) : Math.min(rect.width * 0.2, 75))
         targetY = rect.top + Math.min(rect.height * 0.35, 38)
       }
 
@@ -136,7 +147,9 @@ export default function FluidBlobTransition({ flight, onImpact, onComplete }: Fl
         let finalImpactY = targetY
         if (finalTargetEl) {
           const finalRect = finalTargetEl.getBoundingClientRect()
-          finalImpactX = finalRect.left + (isMobile ? Math.min(finalRect.width * 0.25, 60) : Math.min(finalRect.width * 0.2, 75))
+          finalImpactX =
+            finalRect.left +
+            (isMobile ? Math.min(finalRect.width * 0.25, 60) : Math.min(finalRect.width * 0.2, 75))
           finalImpactY = finalRect.top + Math.min(finalRect.height * 0.35, 38)
         }
 
@@ -165,7 +178,7 @@ export default function FluidBlobTransition({ flight, onImpact, onComplete }: Fl
       cancelAnimationFrame(rafId)
       if (completeTimeoutId) clearTimeout(completeTimeoutId)
     }
-  }, [flight?.id])
+  }, [flight])
 
   if (!flight || phase === 'idle') return null
 
@@ -176,8 +189,8 @@ export default function FluidBlobTransition({ flight, onImpact, onComplete }: Fl
           <>
             {/* Trailing sparkle particles */}
             {trail.map((point, idx) => {
-              const trailOpacity = (idx + 1) / trail.length * 0.6
-              const trailScale = (idx + 1) / trail.length * 0.7
+              const trailOpacity = ((idx + 1) / trail.length) * 0.6
+              const trailScale = ((idx + 1) / trail.length) * 0.7
               return (
                 <div
                   key={`trail-${point.id}-${idx}`}
@@ -210,9 +223,7 @@ export default function FluidBlobTransition({ flight, onImpact, onComplete }: Fl
                 }}
               />
               {/* Ambient radial halo */}
-              <div
-                className="absolute inset-[-8px] rounded-full bg-[#C9A227]/30 blur-md pointer-events-none"
-              />
+              <div className="absolute inset-[-8px] rounded-full bg-[#C9A227]/30 blur-md pointer-events-none" />
             </div>
           </>
         )}

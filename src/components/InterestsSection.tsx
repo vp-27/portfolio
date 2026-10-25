@@ -3,7 +3,7 @@ export default function InterestsSection() {
   return (
     <div data-section="interests">
       <div className="flex items-center">
-        <h2 className="text-2xl font-medium text-left">Beyond the Terminal</h2>
+        <h2 className="text-[22px] sm:text-2xl font-medium text-left">Beyond the Terminal</h2>
       </div>
       <div className="hidden lg:block border-b border-[#2D2D2D] mt-2 mb-4" />
       <div className="lg:hidden mb-3" />

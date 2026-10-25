@@ -21,7 +21,10 @@ export default function BuyingPower({ activeMilestone, onJumpToMilestone }: Buyi
   }, [hasSeenTimelineHint])
 
   return (
-    <div className="py-2.5 border-b border-[#2D2D2D]">
+    <div
+      title="Illustrative chronology of career milestones; the vertical scale is symbolic."
+      className="py-2.5 border-b border-[#2D2D2D]"
+    >
       <motion.div
         initial={hasSeenTimelineHint ? false : { opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -31,11 +34,11 @@ export default function BuyingPower({ activeMilestone, onJumpToMilestone }: Buyi
         {/* Desktop View: Completely static, zero jumping/bouncing */}
         <div className="hidden md:flex w-full items-center justify-between py-1 px-2">
           <div className="flex items-center gap-2">
-            <span className="text-white text-sm">Timeline</span>
+            <span className="text-white text-sm">Career timeline</span>
             <MousePointerClick className="w-4 h-4 text-gray-500" />
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-white font-medium text-sm">Tap milestones to explore</span>
+            <span className="text-white font-medium text-sm">Explore career milestones</span>
           </div>
         </div>
 
@@ -62,7 +65,7 @@ export default function BuyingPower({ activeMilestone, onJumpToMilestone }: Buyi
                 onClick={(e) => {
                   const rect = e.currentTarget.getBoundingClientRect()
                   const origin = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }
-                  onJumpToMilestone && onJumpToMilestone(activeMilestone, origin)
+                  onJumpToMilestone?.(activeMilestone, origin)
                 }}
                 className="flex items-center gap-1.5 px-3 py-1 bg-[#C9A227] active:bg-[#d8ae2c] active:scale-95 text-black font-bold text-xs rounded-full transition-all shadow-md shadow-[#C9A227]/20"
               >
@@ -70,9 +73,7 @@ export default function BuyingPower({ activeMilestone, onJumpToMilestone }: Buyi
                 <ArrowDown className="w-3.5 h-3.5 stroke-[2.5]" />
               </button>
             ) : (
-              <span className="text-gray-400 font-medium text-xs">
-                Tap milestones to explore
-              </span>
+              <span className="text-gray-400 font-medium text-xs">Explore career milestones</span>
             )}
           </div>
         </div>
@@ -80,5 +81,3 @@ export default function BuyingPower({ activeMilestone, onJumpToMilestone }: Buyi
     </div>
   )
 }
-
-

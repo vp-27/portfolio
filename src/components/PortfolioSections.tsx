@@ -4,7 +4,7 @@ import { ChevronRight } from 'lucide-react'
 import type { Experience, Project, Education } from '../types'
 import ExperienceItem from './ExperienceItem'
 import ProjectCard from './ProjectCard'
-import { isNaturalLanguageQuery } from '../utils/aiAssistant'
+import { searchPortfolio } from '../utils/portfolioSearch'
 
 interface PortfolioSectionsProps {
   experiences: Experience[]
@@ -13,12 +13,20 @@ interface PortfolioSectionsProps {
   highlightedItem?: { type: 'experience' | 'project' | 'education'; id: string } | null
   hoveredItem?: { type: 'experience' | 'project' | 'education'; id: string } | null
   searchQuery?: string
-  hasAIResult?: boolean
   onItemHover?: (type: 'experience' | 'project' | 'education', id: string | null) => void
   onClearHighlight?: () => void
 }
 
-export default function PortfolioSections({ experiences, projects, education, highlightedItem, hoveredItem, searchQuery = '', hasAIResult = false, onItemHover, onClearHighlight }: PortfolioSectionsProps) {
+export default function PortfolioSections({
+  experiences,
+  projects,
+  education,
+  highlightedItem,
+  hoveredItem,
+  searchQuery = '',
+  onItemHover,
+  onClearHighlight,
+}: PortfolioSectionsProps) {
   const [expandedExperienceId, setExpandedExperienceId] = useState<string | null>(null)
   const [expandedProjectId, setExpandedProjectId] = useState<string | null>(null)
   const [eduGlowId, setEduGlowId] = useState<string | null>(null)
@@ -41,39 +49,18 @@ export default function PortfolioSections({ experiences, projects, education, hi
       setEduGlowId(null)
     }
   }, [highlightedItem])
-  // Filter function for search
-  const matchesSearch = (text: string) => {
-    if (!searchQuery) return true
-    if (isNaturalLanguageQuery(searchQuery)) return true
-    return text.toLowerCase().includes(searchQuery.toLowerCase())
-  }
-
-  const matchedExperiences = experiences.filter(exp =>
-    matchesSearch(exp.position) ||
-    matchesSearch(exp.company) ||
-    exp.bullets.some(b => matchesSearch(b))
-  )
-
-  const matchedProjects = projects.filter(proj =>
-    matchesSearch(proj.name) ||
-    matchesSearch(proj.subtitle) ||
-    proj.bullets.some(b => matchesSearch(b)) ||
-    (proj.technologies && proj.technologies.some(t => matchesSearch(t)))
-  )
-
-  // Fallback: If 0 items match the search query across both sections, OR if an AI result is active, show all items
-  const noMatchesFound = matchedExperiences.length === 0 && matchedProjects.length === 0
-  const shouldShowAll = noMatchesFound || hasAIResult || isNaturalLanguageQuery(searchQuery)
-
-  const filteredExperiences = shouldShowAll ? experiences : matchedExperiences
-  const filteredProjects = shouldShowAll ? projects : matchedProjects
+  const matches = searchPortfolio(searchQuery, experiences, projects)
+  const matchedExperiences = matches.experiences
+  const matchedProjects = matches.projects
+  const filteredExperiences = matchedExperiences
+  const filteredProjects = matchedProjects
 
   return (
-    <div className="mt-10 space-y-8">
+    <div className={`${searchQuery.trim() ? 'mt-6' : 'mt-10'} space-y-8`}>
       {/* Professional Experience Section */}
-      <div data-section="experience">
-        <Link to="/experience" className="inline-flex items-center group/header lg:pointer-events-none select-none">
-          <h2 className="text-2xl font-medium text-left text-white group-hover/header:text-[#00C805] lg:group-hover/header:text-white transition-colors flex items-center gap-1">
+      <div data-section="experience" hidden={matches.active && filteredExperiences.length === 0}>
+        <Link to="/experience" className="inline-flex items-center group/header select-none">
+          <h2 className="text-[22px] sm:text-2xl font-medium text-left text-white group-hover/header:text-[#00C805] lg:group-hover/header:text-white transition-colors flex items-center gap-1">
             Professional Experience
             <ChevronRight className="lg:hidden w-5 h-5 text-gray-400 group-hover/header:text-[#00C805] transition-colors mt-0.5" />
           </h2>
@@ -85,8 +72,16 @@ export default function PortfolioSections({ experiences, projects, education, hi
         ) : (
           <div>
             {filteredExperiences.map((exp, index) => {
-              const isHighlighted = !!(highlightedItem && highlightedItem.type === 'experience' && exp.id === highlightedItem.id)
-              const isHovered = !!(hoveredItem && hoveredItem.type === 'experience' && exp.id === hoveredItem.id)
+              const isHighlighted = !!(
+                highlightedItem &&
+                highlightedItem.type === 'experience' &&
+                exp.id === highlightedItem.id
+              )
+              const isHovered = !!(
+                hoveredItem &&
+                hoveredItem.type === 'experience' &&
+                exp.id === hoveredItem.id
+              )
               return (
                 <ExperienceItem
                   key={exp.id}
@@ -104,7 +99,9 @@ export default function PortfolioSections({ experiences, projects, education, hi
                     })
                   }}
                   isLast={index === filteredExperiences.length - 1}
-                  onHover={(hoverActive) => onItemHover?.('experience', hoverActive ? exp.id : null)}
+                  onHover={(hoverActive) =>
+                    onItemHover?.('experience', hoverActive ? exp.id : null)
+                  }
                 />
               )
             })}
@@ -113,9 +110,9 @@ export default function PortfolioSections({ experiences, projects, education, hi
       </div>
 
       {/* Projects Section */}
-      <div data-section="projects">
-        <Link to="/projects" className="inline-flex items-center group/header lg:pointer-events-none select-none">
-          <h2 className="text-2xl font-medium text-left text-white group-hover/header:text-[#00C805] lg:group-hover/header:text-white transition-colors flex items-center gap-1">
+      <div data-section="projects" hidden={matches.active && filteredProjects.length === 0}>
+        <Link to="/projects" className="inline-flex items-center group/header select-none">
+          <h2 className="text-[22px] sm:text-2xl font-medium text-left text-white group-hover/header:text-[#00C805] lg:group-hover/header:text-white transition-colors flex items-center gap-1">
             Projects
             <ChevronRight className="lg:hidden w-5 h-5 text-gray-400 group-hover/header:text-[#00C805] transition-colors mt-0.5" />
           </h2>
@@ -127,8 +124,16 @@ export default function PortfolioSections({ experiences, projects, education, hi
         ) : (
           <div className="space-y-3">
             {filteredProjects.map((project) => {
-              const isHighlighted = !!(highlightedItem && highlightedItem.type === 'project' && project.id === highlightedItem.id)
-              const isHovered = !!(hoveredItem && hoveredItem.type === 'project' && project.id === hoveredItem.id)
+              const isHighlighted = !!(
+                highlightedItem &&
+                highlightedItem.type === 'project' &&
+                project.id === highlightedItem.id
+              )
+              const isHovered = !!(
+                hoveredItem &&
+                hoveredItem.type === 'project' &&
+                project.id === hoveredItem.id
+              )
               return (
                 <ProjectCard
                   key={project.id}
@@ -146,7 +151,9 @@ export default function PortfolioSections({ experiences, projects, education, hi
                     })
                   }}
                   disableLayoutAnimation
-                  onHover={(hoverActive) => onItemHover?.('project', hoverActive ? project.id : null)}
+                  onHover={(hoverActive) =>
+                    onItemHover?.('project', hoverActive ? project.id : null)
+                  }
                 />
               )
             })}
@@ -155,9 +162,9 @@ export default function PortfolioSections({ experiences, projects, education, hi
       </div>
 
       {/* Education Section */}
-      <div data-section="education">
-        <Link to="/education" className="inline-flex items-center group/header lg:pointer-events-none select-none">
-          <h2 className="text-2xl font-medium text-left text-white group-hover/header:text-[#00C805] lg:group-hover/header:text-white transition-colors flex items-center gap-1">
+      <div data-section="education" hidden={matches.active}>
+        <Link to="/education" className="inline-flex items-center group/header select-none">
+          <h2 className="text-[22px] sm:text-2xl font-medium text-left text-white group-hover/header:text-[#00C805] lg:group-hover/header:text-white transition-colors flex items-center gap-1">
             Education
             <ChevronRight className="lg:hidden w-5 h-5 text-gray-400 group-hover/header:text-[#00C805] transition-colors mt-0.5" />
           </h2>
@@ -166,7 +173,11 @@ export default function PortfolioSections({ experiences, projects, education, hi
         <div className="lg:hidden mb-3" />
         <div>
           {education.map((edu, index) => {
-            const isEduHovered = !!(hoveredItem && hoveredItem.type === 'education' && edu.id === hoveredItem.id)
+            const isEduHovered = !!(
+              hoveredItem &&
+              hoveredItem.type === 'education' &&
+              edu.id === hoveredItem.id
+            )
             const showGlow = eduGlowId === edu.id || isEduHovered
 
             return (
@@ -174,12 +185,18 @@ export default function PortfolioSections({ experiences, projects, education, hi
                 key={edu.id}
                 data-education-id={edu.id}
                 onMouseEnter={() => {
-                  if (typeof window !== 'undefined' && window.matchMedia('(hover: hover)').matches) {
+                  if (
+                    typeof window !== 'undefined' &&
+                    window.matchMedia('(hover: hover)').matches
+                  ) {
                     onItemHover?.('education', edu.id)
                   }
                 }}
                 onMouseLeave={() => {
-                  if (typeof window !== 'undefined' && window.matchMedia('(hover: hover)').matches) {
+                  if (
+                    typeof window !== 'undefined' &&
+                    window.matchMedia('(hover: hover)').matches
+                  ) {
                     onItemHover?.('education', null)
                   }
                 }}
@@ -200,7 +217,8 @@ export default function PortfolioSections({ experiences, projects, education, hi
                   <div
                     className="absolute inset-0 rounded-xl pointer-events-none"
                     style={{
-                      background: 'linear-gradient(135deg, rgba(201, 162, 39, 0.15) 0%, rgba(201, 162, 39, 0.05) 100%)',
+                      background:
+                        'linear-gradient(135deg, rgba(201, 162, 39, 0.15) 0%, rgba(201, 162, 39, 0.05) 100%)',
                       border: '1px solid rgba(201, 162, 39, 0.3)',
                     }}
                   />
@@ -220,7 +238,9 @@ export default function PortfolioSections({ experiences, projects, education, hi
                   {/* Degrees */}
                   <div className="space-y-1 mb-2">
                     {edu.degrees.map((degree, idx) => (
-                      <p key={idx} className="text-sm text-gray-400 leading-relaxed">{degree}</p>
+                      <p key={idx} className="text-sm text-gray-400 leading-relaxed">
+                        {degree}
+                      </p>
                     ))}
                   </div>
 
@@ -228,13 +248,21 @@ export default function PortfolioSections({ experiences, projects, education, hi
                   <div className="flex items-center gap-2 text-xs flex-wrap">
                     <div className="inline-flex items-center gap-2 px-1 pr-3 py-1 rounded-full bg-[#1E2124] border border-[#3A3A3C]">
                       <div className="w-5 h-5 rounded-full overflow-hidden flex items-center justify-center">
-                        <img src="/images/tags/location.png" alt="" className="w-full h-full object-cover" />
+                        <img
+                          src="/images/tags/location.png"
+                          alt=""
+                          className="w-full h-full object-cover"
+                        />
                       </div>
                       <span className="text-gray-300">{edu.location}</span>
                     </div>
                     <div className="inline-flex items-center gap-2 px-1 pr-3 py-1 rounded-full bg-[#1E2124] border border-[#3A3A3C]">
                       <div className="w-5 h-5 rounded-full overflow-hidden flex items-center justify-center">
-                        <img src="/images/tags/calendar.png" alt="" className="w-full h-full object-cover" />
+                        <img
+                          src="/images/tags/calendar.png"
+                          alt=""
+                          className="w-full h-full object-cover"
+                        />
                       </div>
                       <span className="text-gray-300">{edu.graduationDate}</span>
                     </div>
@@ -244,12 +272,16 @@ export default function PortfolioSections({ experiences, projects, education, hi
                   {edu.honors && edu.honors.length > 0 && (
                     <div className="pt-3 mt-3">
                       <div className="mb-2">
-                        <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Honors & Recognition</span>
+                        <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
+                          Honors & Recognition
+                        </span>
                       </div>
                       <div className="space-y-1.5">
                         {edu.honors.map((honor, idx) => (
                           <div key={idx} className="flex items-start gap-2">
-                            <span className="text-[#00C805] mt-0.5 flex-shrink-0 text-[10px]">▸</span>
+                            <span className="text-[#00C805] mt-0.5 flex-shrink-0 text-[10px]">
+                              ▸
+                            </span>
                             <span className="text-sm text-gray-300 leading-relaxed">{honor}</span>
                           </div>
                         ))}
@@ -261,15 +293,21 @@ export default function PortfolioSections({ experiences, projects, education, hi
                   {edu.certifications && edu.certifications.length > 0 && (
                     <div className="pt-3 mt-3">
                       <div className="mb-2">
-                        <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Certifications</span>
+                        <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
+                          Certifications
+                        </span>
                       </div>
                       <div className="space-y-2">
                         {edu.certifications.map((cert) => (
                           <div key={cert.id} className="flex items-start gap-2">
-                            <span className="text-[#00C805] mt-0.5 flex-shrink-0 text-[10px]">▸</span>
+                            <span className="text-[#00C805] mt-0.5 flex-shrink-0 text-[10px]">
+                              ▸
+                            </span>
                             <div className="flex flex-col">
-                              <span className="text-sm text-gray-300 leading-tight">{cert.name}</span>
-                              <span className="text-[11px] text-gray-500 mt-0.5">{cert.issuer}</span>
+                              <span className="text-sm text-gray-300 leading-tight">
+                                {cert.name}
+                              </span>
+                              <span className="text-xs text-gray-400 mt-0.5">{cert.issuer}</span>
                             </div>
                           </div>
                         ))}
@@ -282,7 +320,6 @@ export default function PortfolioSections({ experiences, projects, education, hi
           })}
         </div>
       </div>
-
     </div>
   )
 }

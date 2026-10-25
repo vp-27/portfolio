@@ -1,5 +1,5 @@
-import { Area, AreaChart, ResponsiveContainer, YAxis, Tooltip } from 'recharts'
-import { useRef, useCallback, useEffect, useState } from 'react'
+import { useId, useLayoutEffect, useRef, useState, type PointerEvent } from 'react'
+import { shouldPreviewMilestone, type ArmedMilestone } from '../utils/chartInteraction'
 import type { ChartDataPoint } from '../types'
 
 interface PortfolioChartProps {
@@ -11,445 +11,268 @@ interface PortfolioChartProps {
   hoveredMilestoneLabel?: string | null
 }
 
-export default function PortfolioChart({ data, isPositive, onPointClick, onPointHover, onScrubEnd, hoveredMilestoneLabel }: PortfolioChartProps) {
-  const strokeColor = isPositive ? '#00C805' : '#FF5000'
-  const chartRef = useRef<HTMLDivElement>(null)
-  const [snappedIndex, setSnappedIndex] = useState<number | null>(null)
-  const [armedMilestoneIndex, setArmedMilestoneIndex] = useState<number | null>(null)
-  const touchTapTimeRef = useRef(0)
-  const armResetTimerRef = useRef<number | null>(null)
+// This timeline needs a single series, not a general-purpose chart runtime.
+export default function PortfolioChart({
+  data,
+  isPositive,
+  onPointClick,
+  onPointHover,
+  onScrubEnd,
+  hoveredMilestoneLabel,
+}: PortfolioChartProps) {
+  const gradientId = useId().replace(/:/g, '')
+  const container = useRef<HTMLDivElement>(null)
+  const [size, setSize] = useState({ width: 800, height: 256 })
+  const [activePoint, setActivePoint] = useState<ChartDataPoint | null>(null)
+  const pointerStart = useRef<{ x: number; y: number } | null>(null)
+  const dragged = useRef(false)
+  const touchInput = useRef(false)
+  const armedMilestone = useRef<ArmedMilestone | null>(null)
+  const color = isPositive ? '#00c805' : '#ff5000'
 
-  const [isMobile, setIsMobile] = useState(() => {
-    if (typeof window === 'undefined') return false
-    return window.innerWidth < 768 || 'ontouchstart' in window || navigator.maxTouchPoints > 0
-  })
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window || (navigator.maxTouchPoints > 0 && window.innerWidth < 1024))
-    }
-    handleResize()
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
-
-  const isTouchDevice = isMobile
-
-  // Snap threshold - distance in pixels to trigger snapping
-  // Use larger threshold on touch devices for better UX
-  const snapThreshold = isMobile ? 20 : 10
-
-  // Sync snappedIndex with external hoveredMilestoneLabel prop
-  useEffect(() => {
-    if (hoveredMilestoneLabel) {
-      const idx = data.findIndex(p => p.label === hoveredMilestoneLabel)
-      if (idx !== -1) {
-        setSnappedIndex(idx)
-        return
-      }
-    }
-    setSnappedIndex(null)
-    setArmedMilestoneIndex(null)
-  }, [hoveredMilestoneLabel, data])
-
-  // Find the nearest milestone within snap threshold
-  const findNearestMilestone = useCallback((_event: any, chartData: any): ChartDataPoint | null => {
-    if (!chartData || typeof chartData.chartX !== 'number') {
-      return null
-    }
-
-    const { chartX } = chartData
-    const milestones = data.filter(point => point.label)
-
-    if (milestones.length === 0) return null
-
-    let nearestPoint = null
-    let minDistance = snapThreshold
-
-    const chartWidth = chartRef.current?.offsetWidth || 1
-    const marginLeft = 10
-    const marginRight = 10
-    const availableWidth = Math.max(1, chartWidth - marginLeft - marginRight)
-    const totalPoints = data.length > 1 ? data.length - 1 : 1
-
-    // Calculate distances to all milestone points with accurate margin offsets
-    milestones.forEach((milestone) => {
-      const dataIndex = data.findIndex(p => p === milestone)
-      const xPosition = marginLeft + (dataIndex / totalPoints) * availableWidth
-
-      // Simple distance calculation (primarily horizontal for timeline)
-      const distance = Math.abs(chartX - xPosition)
-
-      if (distance < minDistance) {
-        minDistance = distance
-        nearestPoint = milestone
-      }
+  useLayoutEffect(() => {
+    if (!container.current) return
+    const observer = new ResizeObserver(([entry]) => {
+      setSize({ width: entry.contentRect.width, height: entry.contentRect.height })
     })
-
-    return nearestPoint
-  }, [data, snapThreshold])
-
-  const handleMouseMove = (chartData: any, event: any) => {
-    if (chartData && chartData.activePayload && chartData.activePayload.length > 0) {
-      const activePoint = chartData.activePayload[0].payload
-
-      // Check if we should snap to a nearby milestone
-      const nearestMilestone = findNearestMilestone(event, chartData)
-
-      if (nearestMilestone && onPointHover) {
-        // Snap to the nearest milestone instead of the current point
-        onPointHover(nearestMilestone)
-        // Update snapped index for cursor positioning
-        const milestoneIndex = data.findIndex(p => p === nearestMilestone)
-        setSnappedIndex(milestoneIndex)
-      } else if (activePoint.label && onPointHover) {
-        // Use the active point if it has a label
-        onPointHover(activePoint)
-        const pointIndex = data.findIndex(p => p === activePoint)
-        setSnappedIndex(pointIndex)
-      } else {
-        if (onPointHover) {
-          onPointHover(activePoint)
-        }
-        setSnappedIndex(null)
-      }
-    }
-  }
-
-  const handleMouseLeave = () => {
-    if (onPointHover) {
-      onPointHover(null)
-    }
-    setSnappedIndex(null)
-  }
-
-  useEffect(() => {
-    return () => {
-      if (armResetTimerRef.current !== null) {
-        window.clearTimeout(armResetTimerRef.current)
-      }
-    }
+    observer.observe(container.current)
+    return () => observer.disconnect()
   }, [])
 
-  const handleInteractionEnd = () => {
-    if (onScrubEnd) {
-      onScrubEnd()
-    }
-  }
+  const padding = 10
+  const first = data[0]?.timestamp ?? 0
+  const duration = Math.max(1, (data.at(-1)?.timestamp ?? 1) - first)
+  const minValue = Math.min(...data.map((point) => point.value))
+  const maxValue = Math.max(...data.map((point) => point.value))
+  const spread = Math.max(6, maxValue - minValue)
+  const lowerBound = minValue - spread * 0.04
+  const upperBound = maxValue + spread * 0.04
+  const x = (point: ChartDataPoint) =>
+    padding + ((point.timestamp - first) / duration) * Math.max(1, size.width - padding * 2)
+  const y = (point: ChartDataPoint) =>
+    size.height -
+    padding -
+    ((point.value - lowerBound) / (upperBound - lowerBound)) * (size.height - padding * 2)
+  const points = data.map((point) => `${x(point).toFixed(2)},${y(point).toFixed(2)}`).join(' ')
+  const milestones = data.filter((point) => point.label)
+  const selected =
+    data.find((point) => point.label && point.label === hoveredMilestoneLabel) ??
+    (activePoint && data.includes(activePoint) ? activePoint : null)
 
-  const CustomTooltip = ({ active, payload }: any) => {
-    if (active && payload && payload.length) {
-      const point = payload[0].payload
-      return (
-        <div className="bg-transparent">
-          <p className="text-white text-xs font-medium">{point.time}</p>
-        </div>
-      )
-    }
-    return null
-  }
-
-  // Custom cursor that snaps to milestone positions
-  const CustomCursor = (props: any) => {
-    const { points, height } = props
-
-    // Always render the cursor when hovering
-    if (!points || points.length === 0) return null
-
-    let xPosition = points[0].x // Default to mouse position
-
-    // If we have a snapped index, override with the snapped position
-    if (snappedIndex !== null) {
-      const totalPoints = data.length
-      const chartWidth = chartRef.current?.offsetWidth || 1
-
-      // Calculate x position based on the snapped index
-      // Account for chart margins
-      const marginLeft = 10
-      const marginRight = 10
-      const availableWidth = chartWidth - marginLeft - marginRight
-      xPosition = marginLeft + (snappedIndex / (totalPoints - 1)) * availableWidth
-    }
-
+  const pointAt = (clientX: number, touch = false) => {
+    const localX = clientX - (container.current?.getBoundingClientRect().left ?? 0)
+    const nearestMilestone = milestones.reduce<ChartDataPoint | null>(
+      (nearest, point) =>
+        Math.abs(x(point) - localX) < (nearest ? Math.abs(x(nearest) - localX) : touch ? 24 : 12)
+          ? point
+          : nearest,
+      null,
+    )
     return (
-      <line
-        x1={xPosition}
-        y1={0}
-        x2={xPosition}
-        y2={height}
-        stroke={strokeColor}
-        strokeWidth={1}
-        strokeDasharray="none"
-      />
+      nearestMilestone ??
+      data.reduce<ChartDataPoint | null>(
+        (nearest, point) =>
+          !nearest || Math.abs(x(point) - localX) < Math.abs(x(nearest) - localX) ? point : nearest,
+        null,
+      )
     )
   }
 
-  const CustomDot = (props: any) => {
-    const { cx, cy, payload, index } = props
-    // Only show dots for points with labels (milestones)
-    if (payload.label) {
-      // Highlight when this dot is the currently hovered/snapped milestone
-      const isHovered = snappedIndex === index
-      const isArmed = armedMilestoneIndex === index
-      const dotColor = isArmed || isHovered ? '#C9A227' : strokeColor
-      const dotRadius = isArmed ? 8 : isHovered ? 6 : 4
-      const strokeWidth = isArmed ? 2.5 : isHovered ? 2 : 1.5
+  const select = (point: ChartDataPoint | null) => {
+    setActivePoint(point)
+    onPointHover?.(point)
+  }
+  const activate = (
+    point: ChartDataPoint | null,
+    clientX: number,
+    clientY: number,
+    keyboard = false,
+  ) => {
+    if (!point?.label || dragged.current) return
+    const now = Date.now()
+    if (
+      shouldPreviewMilestone(
+        point.timestamp,
+        armedMilestone.current,
+        now,
+        touchInput.current,
+        keyboard,
+      )
+    ) {
+      armedMilestone.current = { timestamp: point.timestamp, tappedAt: now }
+      select(point)
+      return
+    }
+    armedMilestone.current = null
+    onPointClick?.(point, { x: clientX, y: clientY })
+  }
+  const handlePointerMove = (event: PointerEvent<SVGSVGElement>) => {
+    if (
+      pointerStart.current &&
+      Math.hypot(event.clientX - pointerStart.current.x, event.clientY - pointerStart.current.y) > 8
+    )
+      dragged.current = true
+    select(pointAt(event.clientX, event.pointerType === 'touch'))
+  }
 
-      // Calculate width and boundaries of the tooltip to prevent cutoff on desktop
-      const bubbleWidth = 44
-      const halfWidth = bubbleWidth / 2
-      const chartWidth = chartRef.current?.offsetWidth || 300
-      
-      // Clamp x coordinates to prevent clipping on the sides (left/right margins)
-      const rectX = Math.max(8, Math.min(chartWidth - bubbleWidth - 8, cx - halfWidth))
-      
-      // Determine if tooltip should be shown below the dot to prevent clipping at the top
-      const showBelow = cy < 40
-
-      return (
-        <g className="cursor-pointer" style={{ cursor: 'pointer' }}>
-          {(isHovered || isArmed) && (
-            <circle
-              cx={cx}
-              cy={cy}
-              r={dotRadius + 5}
-              fill="#C9A227"
-              fillOpacity={0.25}
-              style={{ cursor: 'pointer' }}
-            />
+  return (
+    <figure className="m-0" aria-label="Illustrative career timeline">
+      <div
+        ref={container}
+        className="w-full h-64 md:h-72 relative"
+        style={{ touchAction: 'pan-y' }}
+      >
+        <svg
+          viewBox={`0 0 ${size.width} ${size.height}`}
+          width="100%"
+          height="100%"
+          role="group"
+          aria-label="Career milestones. Focus a milestone and press Enter to explore it."
+          onPointerDown={(event) => {
+            touchInput.current = event.pointerType === 'touch'
+            pointerStart.current = { x: event.clientX, y: event.clientY }
+            dragged.current = false
+          }}
+          onPointerMove={handlePointerMove}
+          onPointerUp={() => {
+            pointerStart.current = null
+            onScrubEnd?.()
+          }}
+          onPointerCancel={() => {
+            pointerStart.current = null
+            dragged.current = true
+            select(null)
+          }}
+          onPointerLeave={(event) => {
+            if (event.pointerType !== 'touch') select(null)
+            pointerStart.current = null
+          }}
+          onClick={(event) => activate(pointAt(event.clientX, touchInput.current), event.clientX, event.clientY)}
+          className={selected?.label ? 'cursor-pointer' : ''}
+        >
+          <defs>
+            <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={color} stopOpacity="0.24" />
+              <stop offset="100%" stopColor={color} stopOpacity="0" />
+            </linearGradient>
+          </defs>
+          {data.length > 0 && (
+            <>
+              <polygon
+                points={`${padding},${size.height} ${points} ${size.width - padding},${size.height}`}
+                fill={`url(#${gradientId})`}
+              />
+              <polyline
+                points={points}
+                fill="none"
+                stroke={color}
+                strokeWidth="1.8"
+                strokeLinejoin="round"
+                strokeLinecap="round"
+              />
+            </>
           )}
-          <circle
-            cx={cx}
-            cy={cy}
-            r={dotRadius}
-            fill={dotColor}
-            stroke="#000"
-            strokeWidth={strokeWidth}
-            style={{ cursor: 'pointer' }}
-            className="cursor-pointer hover:r-6 transition-all duration-150"
-          />
-          {/* On desktop non-touch devices, show the classic VISIT floating tooltip on hover */}
-          {!isMobile && (isHovered || isArmed) && (
-            <g className="pointer-events-none select-none hidden md:block">
-              {showBelow ? (
-                <>
-                  <rect
-                    x={rectX}
-                    y={cy + 14}
-                    width={bubbleWidth}
-                    height={18}
-                    rx={9}
-                    fill="#C9A227"
-                  />
-                  <polygon
-                    points={`${cx - 4},${cy + 14} ${cx + 4},${cy + 14} ${cx},${cy + 10}`}
-                    fill="#C9A227"
-                  />
+          {selected && (
+            <g pointerEvents="none">
+              <line
+                x1={x(selected)}
+                x2={x(selected)}
+                y1="8"
+                y2={size.height - padding}
+                stroke={color}
+                strokeOpacity="0.7"
+                strokeWidth="1"
+              />
+              {!selected.label && (
+                <circle
+                  cx={x(selected)}
+                  cy={y(selected)}
+                  r="4.5"
+                  fill={color}
+                  stroke="#000"
+                  strokeWidth="1.5"
+                />
+              )}
+              {selected.label && !touchInput.current && (
+                <g
+                  transform={`translate(${Math.max(6, Math.min(size.width - 52, x(selected) - 23))},${y(selected) < 45 ? y(selected) + 16 : y(selected) - 34})`}
+                >
+                  <rect width="46" height="20" rx="10" fill="#c9a227" />
                   <text
-                    x={rectX + halfWidth}
-                    y={cy + 23}
+                    x="23"
+                    y="13.5"
                     textAnchor="middle"
-                    dominantBaseline="central"
                     fill="#000"
-                    fontSize="9px"
-                    fontWeight="800"
-                    fontFamily="system-ui, -apple-system, sans-serif"
+                    fontSize="10"
+                    fontWeight="700"
                   >
                     VISIT
                   </text>
-                </>
-              ) : (
-                <>
-                  <rect
-                    x={rectX}
-                    y={cy - 32}
-                    width={bubbleWidth}
-                    height={18}
-                    rx={9}
-                    fill="#C9A227"
-                  />
-                  <polygon
-                    points={`${cx - 4},${cy - 14} ${cx + 4},${cy - 14} ${cx},${cy - 10}`}
-                    fill="#C9A227"
-                  />
-                  <text
-                    x={rectX + halfWidth}
-                    y={cy - 23}
-                    textAnchor="middle"
-                    dominantBaseline="central"
-                    fill="#000"
-                    fontSize="9px"
-                    fontWeight="800"
-                    fontFamily="system-ui, -apple-system, sans-serif"
-                  >
-                    VISIT
-                  </text>
-                </>
+                </g>
               )}
             </g>
           )}
-        </g>
-      )
-    }
-    return null
-  }
-
-  const handleClick = (chartData: any, event: any) => {
-    if (chartData && chartData.activePayload && chartData.activePayload.length > 0) {
-      const activePoint = chartData.activePayload[0].payload
-
-      // Apply same snapping logic for clicks
-      const nearestMilestone = findNearestMilestone(event, chartData)
-
-      const selectedPoint = nearestMilestone ?? (activePoint.label ? activePoint : null)
-      if (!selectedPoint || !onPointClick) {
-        return
-      }
-
-      const selectedIndex = data.findIndex((point) => point.time === selectedPoint.time && point.value === selectedPoint.value)
-      if (selectedIndex < 0) {
-        return
-      }
-
-      const calculateOrigin = () => {
-        if (event && (event.clientX || event.pageX || event.nativeEvent?.clientX)) {
-          return {
-            x: event.clientX || event.pageX || event.nativeEvent?.clientX,
-            y: event.clientY || event.pageY || event.nativeEvent?.clientY,
-          }
-        }
-        if (chartRef.current && selectedIndex >= 0) {
-          const rect = chartRef.current.getBoundingClientRect()
-          const xPos = rect.left + 10 + (selectedIndex / (data.length - 1)) * (rect.width - 20)
-          return { x: xPos, y: rect.top + rect.height * 0.4 }
-        }
-        return undefined
-      }
-
-      if (!isTouchDevice) {
-        setSnappedIndex(null)
-        if (onPointHover) {
-          onPointHover(null)
-        }
-        onPointClick(selectedPoint, calculateOrigin())
-        return
-      }
-
-      const now = Date.now()
-      const isSecondTapSameMilestone = armedMilestoneIndex === selectedIndex && (now - touchTapTimeRef.current) < 900
-
-      if (isSecondTapSameMilestone) {
-        setArmedMilestoneIndex(null)
-        setSnappedIndex(null)
-        if (onPointHover) {
-          onPointHover(null)
-        }
-        touchTapTimeRef.current = 0
-        if (armResetTimerRef.current !== null) {
-          window.clearTimeout(armResetTimerRef.current)
-          armResetTimerRef.current = null
-        }
-        onPointClick(selectedPoint, calculateOrigin())
-        return
-      }
-
-      setArmedMilestoneIndex(selectedIndex)
-      setSnappedIndex(selectedIndex)
-      if (onPointHover) {
-        onPointHover(selectedPoint)
-      }
-      touchTapTimeRef.current = now
-
-      if (armResetTimerRef.current !== null) {
-        window.clearTimeout(armResetTimerRef.current)
-      }
-      armResetTimerRef.current = window.setTimeout(() => {
-        setArmedMilestoneIndex((current) => (current === selectedIndex ? null : current))
-      }, 1200)
-    }
-  }
-
-  const handleTouchStart = () => {
-    if (armResetTimerRef.current !== null) {
-      window.clearTimeout(armResetTimerRef.current)
-      armResetTimerRef.current = null
-    }
-  }
-
-  const handleTouchEnd = () => {
-    if (!isTouchDevice) {
-      handleInteractionEnd()
-    }
-  }
-
-  const isMilestoneActive = (snappedIndex !== null && data[snappedIndex]?.label != null) || armedMilestoneIndex !== null
-
-  return (
-    <div
-      ref={chartRef}
-      className={`w-full h-64 md:h-64 ${isMilestoneActive ? 'chart-milestone-hover cursor-pointer' : 'chart-timeline-scrub cursor-default'}`}
-      style={{ touchAction: 'pan-y', cursor: isMilestoneActive ? 'pointer' : 'default' }}
-      onMouseUp={handleInteractionEnd}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-    >
-      <ResponsiveContainer width="100%" height="100%">
-        <AreaChart
-          data={data}
-          margin={{ top: 10, right: 10, left: 10, bottom: 10 }}
-          onClick={handleClick}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          style={{ cursor: isMilestoneActive ? 'pointer' : 'default' }}
-        >
-          <defs>
-            <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor={strokeColor} stopOpacity={0.3} />
-              <stop offset="95%" stopColor={strokeColor} stopOpacity={0} />
-            </linearGradient>
-          </defs>
-          <YAxis domain={['dataMin', 'dataMax']} hide />
-          <Tooltip
-            content={<CustomTooltip />}
-            cursor={<CustomCursor />}
-            position={{ y: 0 }}
-            offset={10}
-          />
-          <Area
-            type="monotone"
-            dataKey="value"
-            stroke={strokeColor}
-            strokeWidth={2}
-            fill="url(#colorValue)"
-            animationDuration={0}
-            isAnimationActive={false}
-            dot={<CustomDot />}
-            style={{ cursor: isMilestoneActive ? 'pointer' : 'default' }}
-            activeDot={(props: any) => {
-              // Gold when hovering over a milestone, otherwise green
-              const isHovered = snappedIndex !== null && props.payload.label
-              const isArmed = armedMilestoneIndex !== null && props.payload.label
-              const dotColor = isHovered ? '#C9A227' : strokeColor
-
-              // Hide active dot when we're snapped to a milestone
-              // This prevents showing two dots (one at mouse, one at milestone)
-              const opacity = snappedIndex !== null || isArmed ? 0 : 1
-
-              return (
+          {milestones.map((point) => {
+            const highlighted = selected === point
+            return (
+              <g
+                key={point.timestamp}
+                transform={`translate(${x(point)},${y(point)})`}
+                role="button"
+                tabIndex={0}
+                aria-label={`${point.label}, ${point.time}. Explore milestone.`}
+                onFocus={() => select(point)}
+                onBlur={() => select(null)}
+                onClick={(event) => {
+                  event.stopPropagation()
+                  activate(point, event.clientX, event.clientY)
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault()
+                    dragged.current = false
+                    const rect = event.currentTarget.getBoundingClientRect()
+                    activate(point, rect.x + rect.width / 2, rect.y + rect.height / 2, true)
+                  }
+                }}
+                className="milestone-dot cursor-pointer"
+              >
+                <circle r="16" fill="transparent" />
                 <circle
-                  cx={props.cx}
-                  cy={props.cy}
-                  r={6}
-                  fill={dotColor}
+                  className="milestone-dot-core"
+                  r={highlighted ? 6 : 4}
+                  fill={highlighted ? '#c9a227' : color}
                   stroke="#000"
-                  strokeWidth={2}
-                  opacity={opacity}
+                  strokeWidth="1.5"
                 />
-              )
-            }}
-          />
-        </AreaChart>
-      </ResponsiveContainer>
-    </div>
+                {highlighted && (
+                  <circle
+                    r="11"
+                    fill="none"
+                    stroke="#c9a227"
+                    strokeOpacity="0.35"
+                    strokeWidth="4"
+                    pointerEvents="none"
+                  />
+                )}
+              </g>
+            )
+          })}
+        </svg>
+        {selected && (
+          <div
+            aria-hidden="true"
+            className="absolute top-0 text-xs text-gray-300 bg-black/85 px-2 py-1 rounded pointer-events-none"
+            style={{ left: Math.max(8, Math.min(size.width - 125, x(selected) - 50)) }}
+          >
+            {selected.time}
+          </div>
+        )}
+      </div>
+      <figcaption className="sr-only">
+        An illustrative stock-style chart of career growth. Price movement is decorative; labeled
+        milestones link to projects, education, and experience.
+      </figcaption>
+    </figure>
   )
 }

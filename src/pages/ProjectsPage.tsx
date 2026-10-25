@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { ChevronLeft } from 'lucide-react'
-import BottomNav from '../components/BottomNav'
 import ProjectCard from '../components/ProjectCard'
 import { portfolioProjects } from '../data/portfolioData'
 
@@ -14,14 +13,14 @@ export default function ProjectsPage() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-black text-white pb-20">
+    <div className="min-h-screen bg-black text-white pb-28 md:pb-12">
       {/* Header */}
-      <div className="sticky top-0 bg-black/95 backdrop-blur-sm z-10">
+      <div className="sticky top-0 md:top-14 bg-black/95 backdrop-blur-sm z-10">
         <div className="relative flex items-center justify-center px-4 py-4 max-w-2xl mx-auto">
           <button
-            onClick={() => navigate(-1)}
+            onClick={() => navigate('/')}
             className="absolute left-4 p-1 hover:bg-[#1A1A1A] rounded-full transition-colors"
-            aria-label="Go back"
+            aria-label="Back to timeline"
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
@@ -36,14 +35,13 @@ export default function ProjectsPage() {
             key={project.id}
             project={project}
             isExpanded={expandedId === project.id}
-            onToggle={() => setExpandedId((curr) => curr === project.id ? null : project.id)}
+            onToggle={() => setExpandedId((curr) => (curr === project.id ? null : project.id))}
             disableLayoutAnimation
           />
         ))}
       </div>
 
       {/* Bottom Navigation */}
-      <BottomNav />
     </div>
   )
 }
