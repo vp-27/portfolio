@@ -3,6 +3,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { Search, X, ArrowRight, ArrowDown, ExternalLink } from 'lucide-react'
 import type { AIQueryResult } from '../utils/aiAssistant'
 import { searchPortfolio } from '../utils/portfolioSearch'
+import SearchDotWave from './SearchDotWave'
 
 interface PortfolioSearchPanelProps {
   query: string
@@ -25,6 +26,7 @@ export default function PortfolioSearchPanel({
 }: PortfolioSearchPanelProps) {
   const reducedMotion = useReducedMotion()
   const [showProgress, setShowProgress] = useState(false)
+  const [showWave, setShowWave] = useState(false)
   const matches = searchPortfolio(query)
   const targets = result?.matchingTargets ?? (matches.active ? matches.targets : [])
   const links = result?.actionLinks?.length
@@ -46,9 +48,14 @@ export default function PortfolioSearchPanel({
   useEffect(() => {
     // Fast local answers should never flash a loader or wait for an artificial timer.
     setShowProgress(false)
+    setShowWave(false)
     if (!isLoading) return
     const timer = setTimeout(() => setShowProgress(true), 180)
-    return () => clearTimeout(timer)
+    const waveTimer = setTimeout(() => setShowWave(true), 1000)
+    return () => {
+      clearTimeout(timer)
+      clearTimeout(waveTimer)
+    }
   }, [isLoading, query])
 
   const jump = (label: string, element: HTMLButtonElement) => {
@@ -67,7 +74,7 @@ export default function PortfolioSearchPanel({
           className="flex w-4 h-4 shrink-0 items-center justify-center text-rh-green"
           aria-hidden="true"
         >
-          {showProgress ? (
+          {isLoading && showProgress && !showWave ? (
             <span className="search-wave">
               {Array.from({ length: 9 }, (_, index) => (
                 <span
@@ -100,10 +107,25 @@ export default function PortfolioSearchPanel({
         </button>
       </div>
 
+      <AnimatePresence initial={false}>
+        {isLoading && showWave && (
+          <motion.div
+            key="search-dot-wave"
+            initial={reducedMotion ? false : { height: 0, opacity: 0 }}
+            animate={{ height: 76, opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: reducedMotion ? 0 : 0.18 }}
+            className="overflow-hidden"
+          >
+            <SearchDotWave />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* One persistent surface: only the prose changes from live matches to an answer.
           Model/local provenance stays internal; neither path claims to be a person. */}
       <div aria-live="polite" aria-busy={isLoading}>
-        <span className="sr-only">{showProgress ? 'Searching portfolio…' : ''}</span>
+        <span className="sr-only">{isLoading && showProgress ? 'Searching portfolio…' : ''}</span>
         <AnimatePresence initial={false} mode="wait">
           <motion.p
             key={result ? 'answer' : 'matches'}

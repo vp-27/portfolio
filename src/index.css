@@ -260,9 +260,45 @@ aside > .sidebar-heading:first-child {
     opacity: 0.85;
   }
 }
+.search-dot-wave {
+  display: grid;
+  grid-template-columns: repeat(36, minmax(0, 1fr));
+  grid-template-rows: repeat(7, minmax(0, 1fr));
+  place-items: center;
+  height: 76px;
+  width: 100%;
+}
+.search-dot-wave > span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--rh-green);
+  opacity: 0.12;
+  animation: search-dot-wave 1.6s ease-in-out infinite;
+}
+@keyframes search-dot-wave {
+  0%,
+  100% {
+    opacity: 0.12;
+    transform: scale(1);
+  }
+  40% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.35);
+  }
+  65% {
+    opacity: 0.15;
+    transform: scale(1);
+  }
+}
 @media (prefers-reduced-motion: reduce) {
-  .search-wave > span {
+  .search-wave > span,
+  .search-dot-wave > span {
     animation: none;
-    opacity: 0.7;
+    opacity: 0.35;
   }
 }
