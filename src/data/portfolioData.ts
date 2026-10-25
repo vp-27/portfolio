@@ -1,6 +1,6 @@
-import type { Skill, SkillCategory, Experience, Project, Education, Interest } from '../types'
+import type { Skill, SkillCategory, Experience, Project, Education, Interest } from '../types/index.js'
 
-export { careerMilestones, filterTimelineData, timelineRanges } from './timeline'
+export { careerMilestones, filterTimelineData, timelineRanges } from './timeline.js'
 
 // Skills Data for Portfolio Website
 export const portfolioSkills: Skill[] = [

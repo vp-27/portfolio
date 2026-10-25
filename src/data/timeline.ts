@@ -1,4 +1,4 @@
-import type { ChartDataPoint } from '../types'
+import type { ChartDataPoint } from '../types/index.js'
 
 export interface CareerMilestone {
   date: string

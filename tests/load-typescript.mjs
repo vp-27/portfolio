@@ -20,11 +20,14 @@ export function moduleUrl(input) {
     (_, prefix, relative, suffix) => {
       if (!relative.startsWith('.')) return `${prefix}${import.meta.resolve(relative)}${suffix}`
       const base = resolve(dirname(path), relative)
-      const target = extname(relative)
-        ? base
-        : existsSync(`${base}.ts`)
-          ? `${base}.ts`
-          : `${base}.tsx`
+      const target =
+        relative.endsWith('.js') && existsSync(base.slice(0, -3) + '.ts')
+          ? base.slice(0, -3) + '.ts'
+          : extname(relative)
+            ? base
+            : existsSync(`${base}.ts`)
+              ? `${base}.ts`
+              : `${base}.tsx`
       return `${prefix}${moduleUrl(target)}${suffix}`
     },
   )

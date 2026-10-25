@@ -4,8 +4,8 @@ import {
   portfolioProjects,
   portfolioSkills,
   professionalExperiences,
-} from '../src/data/portfolioData'
-import { profile } from '../src/data/profile'
+} from '../src/data/portfolioData.js'
+import { profile } from '../src/data/profile.js'
 
 const MAX_BODY_BYTES = 4096
 const MAX_QUERY_LENGTH = 500
