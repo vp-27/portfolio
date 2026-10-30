@@ -40,7 +40,7 @@ test('switching ranges and returning never regenerates chart history', () => {
 })
 
 test('recent periods retain repeatable stock texture without invented milestone labels', () => {
-  for (const range of ['1D', '1W', '1M', '3M']) {
+  for (const range of ['1D', '1W', '1M']) {
     const data = filterTimelineData(range, now)
     assert.ok(data.length >= 2)
     assert.ok(new Set(data.map((point) => point.value)).size > 20)
@@ -48,6 +48,14 @@ test('recent periods retain repeatable stock texture without invented milestone 
     assert.ok(data.some((point, index) => index > 0 && point.value < data[index - 1].value))
     assert.ok(data.every((point) => !point.label))
   }
+  const data3M = filterTimelineData('3M', now)
+  assert.ok(data3M.length >= 2)
+  assert.ok(new Set(data3M.map((point) => point.value)).size > 20)
+  assert.deepEqual(data3M, filterTimelineData('3M', now))
+  assert.ok(data3M.some((point, index) => index > 0 && point.value < data3M[index - 1].value))
+  assert.ok(
+    data3M.every((point) => !point.label || careerMilestones.some((m) => m.label === point.label)),
+  )
 })
 
 test('all milestones retain their dates and navigation targets exactly once', () => {

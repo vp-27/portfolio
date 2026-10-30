@@ -75,6 +75,13 @@ const milestoneDefinitions: readonly Omit<CareerMilestone, 'value'>[] = [
     type: 'experience',
     id: 'amazon1',
   },
+  {
+    date: '2026-09-01',
+    label: 'LLM Eval Harness',
+    category: 'Project',
+    type: 'project',
+    id: 'llm-eval',
+  },
 ]
 
 // Visual storytelling weights: each project is a modest lift; an internship is a

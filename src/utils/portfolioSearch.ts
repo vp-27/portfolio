@@ -31,6 +31,25 @@ export function isNaturalLanguageQuery(query: string): boolean {
 const entityAliases: { type: 'experience' | 'project'; id: string; aliases: string[] }[] = [
   {
     type: 'project',
+    id: 'llm-eval',
+    aliases: [
+      'llm fine tuning',
+      'llm evaluation',
+      'llm eval',
+      'mlx',
+      'mlx lm',
+      'lora',
+      'qwen3',
+      'qwen',
+      'prefix caching',
+      'kv caching',
+      'eval harness',
+      'router study',
+      'mlexperiment',
+    ],
+  },
+  {
+    type: 'project',
     id: 'gale',
     aliases: ['gale', 'gamified algorithmic', 'algorithm practice', 'leetcode', 'coding platform'],
   },

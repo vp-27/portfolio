@@ -16,6 +16,7 @@ test('project and experience queries retain their card targets and public links'
     ['GrindSheet', 'project', '3', 'GrindSheet'],
     ['Algo Trading', 'project', '1', 'Algo Trading Bot'],
     ['PerkPal', 'project', '5', 'Shark Tank Top 6'],
+    ['LLM Fine-Tuning', 'project', 'llm-eval', 'LLM Eval Harness'],
   ]) {
     const result = processAIQuery(query)
     assert.equal(result.targetType, type)
@@ -69,12 +70,12 @@ const { searchPortfolio } = await import(
   moduleUrl(new URL('./portfolioSearch.ts', import.meta.url))
 )
 
-test('live and submitted Python searches share the same five ranked matches', () => {
+test('live and submitted Python searches share the same six ranked matches', () => {
   const live = searchPortfolio('Python ')
   assert.equal(live.experiences.length, 2)
-  assert.equal(live.projects.length, 3)
-  assert.equal(live.targets.length, 5)
-  assert.equal(searchPortfolio('Pyth').targets.length, 5)
+  assert.equal(live.projects.length, 4)
+  assert.equal(live.targets.length, 6)
+  assert.equal(searchPortfolio('Pyth').targets.length, 6)
   assert.deepEqual(processAIQuery('Python').matchingTargets, live.targets)
   assert.deepEqual(searchPortfolio('What has he built with Python?').targets, live.targets)
   assert.deepEqual(processAIQuery('What has he built with Python?').matchingTargets, live.targets)
@@ -107,9 +108,9 @@ test('multiple terms require every term unless the visitor explicitly asks for e
   )
   assert.deepEqual(processAIQuery('Python and SQL').matchingTargets, both.targets)
   assert.match(processAIQuery('Python and SQL').answer, /all your search terms/)
-  assert.equal(searchPortfolio('Python or SQL').targets.length, 5)
+  assert.equal(searchPortfolio('Python or SQL').targets.length, 6)
   assert.deepEqual(searchPortfolio('SQL Python').targets, both.targets)
-  assert.equal(searchPortfolio('Python or GALE').targets.length, 6)
+  assert.equal(searchPortfolio('Python or GALE').targets.length, 7)
   assert.equal(searchPortfolio('Python and GALE').targets.length, 0)
 })
 

@@ -33,7 +33,7 @@ test('typing, pending, and submitted searches preserve the same matching-entry c
   const answered = render(processAIQuery('Python'))
   assert.deepEqual(targets(typing), targets(pending))
   assert.deepEqual(targets(typing), targets(answered))
-  assert.equal(targets(answered).length, 5)
+  assert.equal(targets(answered).length, 6)
   for (const markup of [typing, pending, answered]) {
     assert.ok(markup.includes('aria-label="Portfolio search results"'))
     assert.ok(markup.includes('aria-label="Clear search"'))

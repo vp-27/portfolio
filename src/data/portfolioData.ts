@@ -16,6 +16,8 @@ export const portfolioSkills: Skill[] = [
   { id: 'ts9', name: 'MCP (Model Context Protocol)', proficiency: 92, yearsOfExperience: 1, category: 'technical' },
   { id: 'ts10', name: 'OpenAI / Anthropic APIs', proficiency: 90, yearsOfExperience: 2, category: 'technical' },
   { id: 'ts11', name: 'AWS Bedrock', proficiency: 84, yearsOfExperience: 1, category: 'technical' },
+  { id: 'ts12', name: 'MLX / Local LLMs', proficiency: 88, yearsOfExperience: 1, category: 'technical' },
+  { id: 'ts13', name: 'LoRA & LLM Fine-Tuning', proficiency: 86, yearsOfExperience: 1, category: 'technical' },
 
   // Financial Skills
   { id: 'fs1', name: 'Financial Modeling', proficiency: 95, yearsOfExperience: 2, category: 'financial' },
@@ -129,6 +131,19 @@ export const professionalExperiences: Experience[] = [
 
 // Projects Data
 export const portfolioProjects: Project[] = [
+  {
+    id: 'llm-eval',
+    name: 'LLM Fine-Tuning & Inference Evaluation',
+    subtitle: 'Built a Python/MLX pipeline to evaluate LoRA adaptation economics, KV-prefix caching, and validation quality gates for Qwen3 8B.',
+    duration: 'Sep 2026 – Present',
+    bullets: [
+      'Built Python/MLX pipeline to test when LoRA fine-tuning could cost less than repeatedly supplying task instructions',
+      'Fine-tuned Qwen3 8B; rejected faster setup after scoring 79/96 on synthetic validation versus 96/96 for the baseline',
+      'Reduced mean Qwen3 8B latency by 18% (6.99s to 5.73s) via KV-prefix caching, preserving validation accuracy',
+    ],
+    technologies: ['Python', 'MLX', 'Qwen3', 'LoRA', 'KV Caching'],
+    logoUrl: '/images/logoImages/mlexperimentClear.png',
+  },
   {
     id: 'gale',
     name: 'GALE (Gamified Algorithmic Learning Engine)',

@@ -321,9 +321,9 @@ function processPortfolioAnswer(query: string): AIQueryResult {
         targetType: 'project',
         actionLinks: [{ label: 'Explore Projects', url: '/projects' }],
         suggestedChips: [
+          'Tell me about LLM Fine-Tuning',
           'Tell me about GALE',
           'Tell me about Edgar Agent',
-          'Tell me about GrindSheet',
         ],
       },
     )
