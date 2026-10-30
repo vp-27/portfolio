@@ -154,6 +154,10 @@ function pointAt(timestamp: number): ChartDataPoint {
     marketNoise(timestamp, 5 * 60 * 1000, 97) * 0.16
   value += texture * envelope
 
+  // A completed milestone establishes the new floor. Reflect decorative dips
+  // above it so the line keeps its texture instead of flattening at the floor.
+  value = previous.value + Math.abs(value - previous.value)
+
   return {
     timestamp,
     time: dateFormatter.format(timestamp),

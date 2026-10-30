@@ -99,3 +99,25 @@ test('internship milestones create larger visual steps than project milestones',
     .map((step) => step.rise)
   assert.ok(Math.min(...internshipSteps) > Math.max(...projectSteps))
 })
+
+test('decorative volatility never falls below the latest completed milestone', () => {
+  // Include short views just after every event as well as the full history:
+  // these catch dips that a coarse ALL view could miss.
+  const dates = [
+    now,
+    ...careerMilestones.map((milestone) =>
+      new Date(Date.parse(`${milestone.date}T00:00:00Z`) + 7 * 24 * 60 * 60 * 1000),
+    ),
+  ]
+  for (const date of dates) {
+    for (const range of timelineRanges) {
+      for (const point of filterTimelineData(range, date)) {
+        const previous = careerMilestones.findLast(
+          (milestone) => Date.parse(`${milestone.date}T00:00:00Z`) <= point.timestamp,
+        )
+        assert.ok(previous)
+        assert.ok(point.value >= previous.value, `${point.time} fell below ${previous.label}`)
+      }
+    }
+  }
+})
