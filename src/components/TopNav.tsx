@@ -17,6 +17,7 @@ export default function TopNav({
 }: TopNavProps) {
   const [isResumeDropdownOpen, setIsResumeDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const resumeButtonRef = useRef<HTMLButtonElement>(null)
   const searchInputRef = useRef<HTMLInputElement>(null)
 
   const isMac = typeof window !== 'undefined' && /Mac|iPod|iPhone|iPad/.test(navigator.userAgent)
@@ -72,14 +73,17 @@ export default function TopNav({
           )
         }
       } else if (e.key === 'Escape') {
-        setIsResumeDropdownOpen(false)
-        searchInputRef.current?.blur()
+        if (isResumeDropdownOpen) {
+          e.preventDefault()
+          setIsResumeDropdownOpen(false)
+          resumeButtonRef.current?.focus()
+        } else searchInputRef.current?.blur()
       }
     }
 
     window.addEventListener('keydown', handleGlobalKeyDown)
     return () => window.removeEventListener('keydown', handleGlobalKeyDown)
-  }, [searchQuery])
+  }, [searchQuery, isResumeDropdownOpen])
 
   return (
     <nav
@@ -136,8 +140,16 @@ export default function TopNav({
 
           {/* Navigation Links */}
           <div className="hidden md:flex items-center gap-3 lg:gap-6 md:mr-2 lg:mr-8">
-            <div className="relative" ref={dropdownRef}>
+            <div
+              className="relative"
+              ref={dropdownRef}
+              onBlur={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget))
+                  setIsResumeDropdownOpen(false)
+              }}
+            >
               <button
+                ref={resumeButtonRef}
                 aria-expanded={isResumeDropdownOpen}
                 aria-controls="resume-links"
                 onClick={() => setIsResumeDropdownOpen(!isResumeDropdownOpen)}
@@ -145,14 +157,16 @@ export default function TopNav({
               >
                 <FileText className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
                 Resume
-                <ChevronDown className="w-3 h-3 lg:w-3.5 lg:h-3.5" />
+                <ChevronDown
+                  className={`w-3 h-3 lg:w-3.5 lg:h-3.5 transition-transform duration-150 motion-reduce:transition-none ${isResumeDropdownOpen ? 'rotate-180' : ''}`}
+                />
               </button>
 
               {/* Dropdown Menu */}
               {isResumeDropdownOpen && (
                 <div
                   id="resume-links"
-                  className="absolute top-full mt-2 right-0 bg-[#1A1A1A] border border-gray-800 rounded-lg shadow-xl min-w-[200px] overflow-hidden z-50"
+                  className="resume-popover absolute top-full mt-2 right-0 w-44 bg-[var(--surface)] border border-[var(--border)] rounded-lg shadow-xl overflow-hidden z-50"
                 >
                   {resumes.map((resume) => (
                     <a
@@ -160,8 +174,11 @@ export default function TopNav({
                       href={resume.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      onClick={() => setIsResumeDropdownOpen(false)}
-                      className="block px-4 py-3 text-sm hover:bg-[#2A2A2A] border-b border-gray-800 last:border-0"
+                      onClick={() => {
+                        setIsResumeDropdownOpen(false)
+                        resumeButtonRef.current?.focus()
+                      }}
+                      className="block px-4 py-3 text-sm hover:bg-white/[0.04] focus-visible:bg-white/[0.04] transition-colors border-b border-[var(--border)] last:border-0"
                     >
                       <div className="font-medium">{resume.label}</div>
                     </a>

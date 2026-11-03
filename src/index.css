@@ -234,6 +234,25 @@ aside > .sidebar-heading:first-child {
   border-color: var(--rh-green);
   box-shadow: 0 0 0 1px var(--rh-green);
 }
+
+.resume-popover {
+  animation: resume-popover-in 150ms ease-out;
+}
+@keyframes resume-popover-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .resume-popover {
+    animation: none;
+  }
+}
 .mobile-search-field input:focus-visible {
   outline: none !important;
   outline-offset: 0;
