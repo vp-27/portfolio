@@ -13,7 +13,8 @@ export default function SkillItem({ skill, onClick, isActive }: SkillItemProps) 
     <button
       onClick={onClick}
       aria-pressed={!!isActive}
-      className="w-full px-0 lg:px-4 transition-colors group block cursor-pointer"
+      type="button"
+      className="sidebar-row w-full px-0 lg:px-4 group block cursor-pointer"
     >
       <div className="py-3 border-b border-[#2D2D2D] flex items-center justify-between">
         <span className="text-sm font-medium text-left text-white">{skill.name}</span>
@@ -24,7 +25,7 @@ export default function SkillItem({ skill, onClick, isActive }: SkillItemProps) 
           flex items-center justify-center w-12 h-6 rounded-[4px] transition-all duration-200 flex-shrink-0
           ${
             isActive
-              ? 'bg-[#00C805] text-black border border-transparent' // Active: Red/Orange
+              ? 'bg-[#00C805] text-black border border-transparent'
               : 'bg-transparent border border-[#00C805] text-[#00C805] group-hover:bg-[#00C805] group-hover:text-black active:bg-[#00C805] active:text-black' // Resting: Transparent + Border -> Hover/Active: Filled
           }
         `}

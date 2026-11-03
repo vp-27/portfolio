@@ -89,6 +89,63 @@ test('a superseded or cleared request cannot complete after cancellation', async
 const { searchPortfolio } = await import(
   moduleUrl(new URL('./portfolioSearch.ts', import.meta.url))
 )
+const { portfolioSkills } = await import(
+  moduleUrl(new URL('../data/portfolioData.ts', import.meta.url))
+)
+
+test('every sidebar skill has either published examples or a useful skill answer', async () => {
+  for (const skill of portfolioSkills) {
+    const matches = searchPortfolio(skill.name)
+    assert.equal(matches.active, true, skill.name)
+    assert.ok(
+      matches.skills.some((match) => match.id === skill.id),
+      skill.name,
+    )
+    const answer = await processAIQueryAsync(skill.name, undefined, async () => {
+      assert.fail(`A skill tap should not require live AI: ${skill.name}`)
+    })
+    assert.doesNotMatch(
+      answer.answer,
+      /no published projects|don’t have a published answer/i,
+      skill.name,
+    )
+    assert.deepEqual(answer.matchingTargets, matches.targets, skill.name)
+    if (!matches.targets.length) {
+      assert.equal(answer.targetType, 'skills', skill.name)
+      assert.ok(answer.answer.includes(skill.name), skill.name)
+      assert.ok(
+        answer.actionLinks.some((link) => link.url.startsWith('/resumes/')),
+        skill.name,
+      )
+    }
+  }
+})
+
+test('grouped skills and familiar names find the relevant published wording', () => {
+  for (const [query, type, id] of [
+    ['JavaScript / TypeScript', 'project', 'gale'],
+    ['PostgreSQL & Supabase', 'project', '3'],
+    ['Variance Analysis (P&L)', 'experience', 'amazon1'],
+    ['MCP (Model Context Protocol)', 'project', '7'],
+    ['MLX (Local LLMs)', 'project', 'llm-eval'],
+    ['Data Pipelines (ETL)', 'experience', '2'],
+    ['Stakeholder Management', 'experience', '1'],
+    ['System Design', 'project', '5'],
+  ]) {
+    assert.ok(
+      searchPortfolio(query).targets.some((target) => target.type === type && target.id === id),
+      query,
+    )
+  }
+  // Group labels can match either tool, but individual tools retain their meaning.
+  assert.equal(searchPortfolio('PostgreSQL').targets.length, 0)
+  assert.equal(searchPortfolio('TypeScript').targets.length, 0)
+  assert.equal(searchPortfolio('Amazon Bedrock').targets.length, 0)
+  assert.equal(searchPortfolio('What has he built with Amazon Bedrock?').targets.length, 0)
+  assert.equal(searchPortfolio('Java').targets.length, 0)
+  assert.equal(searchPortfolio('SQL').targets.length, 1)
+  assert.equal(searchPortfolio('zz-no-match').skills.length, 0)
+})
 
 test('live and submitted Python searches share the same six ranked matches', () => {
   const live = searchPortfolio('Python ')

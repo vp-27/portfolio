@@ -13,6 +13,9 @@ export interface Skill {
   proficiency: number // 0-100
   yearsOfExperience?: number
   category: string
+  // Published wording to search for when this full skill label is selected.
+  // Grouped labels may match either tool; individual tool queries stay specific.
+  searchTerms?: string[]
 }
 
 export interface SkillCategory {

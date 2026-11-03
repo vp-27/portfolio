@@ -76,7 +76,7 @@ function Contacts({ highlighted, compact = false }: { highlighted: boolean; comp
           href={url}
           target={label === 'Email' ? undefined : '_blank'}
           rel="noopener noreferrer"
-          className={`contact-link ${compact ? 'flex flex-1 items-center justify-center gap-1.5 rounded-full bg-black/20 py-3 text-xs text-gray-200' : 'flex items-center gap-3 px-4 py-3 text-sm hover:bg-white/[0.04] transition-colors'}`}
+          className={`contact-link ${compact ? 'flex flex-1 items-center justify-center gap-1.5 rounded-full bg-black/20 py-3 text-xs text-gray-200' : 'sidebar-row flex items-center gap-3 px-4 py-3 text-sm'}`}
         >
           <span
             className={
@@ -143,7 +143,7 @@ export default function AboutAndSkills({
               }
               aria-expanded={expanded}
               aria-controls={panelId}
-              className="w-full flex items-center gap-3 text-left py-4 lg:px-4 hover:bg-white/[0.03] rounded-lg"
+              className="sidebar-row w-full flex items-center gap-3 text-left py-4 lg:px-4 rounded-lg"
             >
               <span
                 className="w-9 h-10 rounded-md bg-[#1e2326] flex items-center justify-center"

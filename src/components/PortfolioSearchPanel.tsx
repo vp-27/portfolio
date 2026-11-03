@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { Search, X, ArrowRight, ArrowDown, ExternalLink } from 'lucide-react'
 import type { AIQueryResult } from '../utils/aiAssistant'
-import { searchPortfolio } from '../utils/portfolioSearch'
+import { searchPortfolio, describeListedSkills } from '../utils/portfolioSearch'
 import SearchDotWave from './SearchDotWave'
 
 interface PortfolioSearchPanelProps {
@@ -42,7 +42,9 @@ export default function PortfolioSearchPanel({
   const summary = matches.active
     ? matches.targets.length
       ? `${matches.targets.length} matching projects & experiences.`
-      : 'No matching projects or experience. Try another term, or press Enter to explore this topic.'
+      : matches.skills.length
+        ? describeListedSkills(matches.skills)
+        : 'No matching projects or experience. Try another term, or press Enter to explore this topic.'
     : 'Press Enter to explore this topic.'
 
   useEffect(() => {

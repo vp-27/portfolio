@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { BriefcaseBusiness, Folder, UserRound, Search, X, TrendingUp, ArrowUp } from 'lucide-react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { searchPortfolio } from '../utils/portfolioSearch'
+import { searchPortfolio, describeListedSkills } from '../utils/portfolioSearch'
 
 interface BottomNavProps {
   searchQuery?: string
@@ -142,7 +142,9 @@ export default function BottomNav({ searchQuery = '', onSearch, onAISubmit }: Bo
               ))}
               {searchQuery.trim() && matches.active && matches.targets.length === 0 && (
                 <p className="text-xs text-gray-400 py-1">
-                  No matching entries. Press Enter to explore this topic.
+                  {matches.skills.length
+                    ? `${describeListedSkills(matches.skills)} Press Enter for resume links.`
+                    : 'No matching entries. Press Enter to explore this topic.'}
                 </p>
               )}
             </div>

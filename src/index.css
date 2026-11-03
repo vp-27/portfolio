@@ -134,6 +134,17 @@ aside > .sidebar-heading:first-child {
   scrollbar-width: thin;
   scrollbar-color: #343b3f transparent;
 }
+.sidebar-row {
+  transition: background-color 160ms;
+}
+@media (hover: hover) {
+  .sidebar-row:hover {
+    background-color: #15191c;
+  }
+}
+.sidebar-row:focus-visible {
+  background-color: #15191c;
+}
 
 @layer components {
   .action-primary,

@@ -9,6 +9,7 @@ import { profile, resumes } from '../data/profile'
 import type { Experience, Project } from '../types'
 import {
   searchPortfolio,
+  describeListedSkills,
   isNaturalLanguageQuery,
   type PortfolioSearchTarget,
 } from './portfolioSearch'
@@ -42,7 +43,7 @@ export interface AIQueryResult {
   matchingTargets?: PortfolioSearchTarget[]
 }
 
-const csResume = { label: 'Open CS Resume (PDF)', url: resumes[0].url }
+const csResume = { label: 'Open Technical Resume (PDF)', url: resumes[0].url }
 const financeResume = { label: 'Open Finance Resume (PDF)', url: resumes[1].url }
 const contactLinks: ActionLink[] = [
   { label: 'Send Email', url: `mailto:${profile.email}` },
@@ -447,6 +448,18 @@ function processPortfolioAnswer(query: string): AIQueryResult {
 export function processAIQuery(query: string): AIQueryResult {
   const matches = searchPortfolio(query)
   if (!matches.active) return processPortfolioAnswer(query)
+
+  // Some published skills have no detailed case study yet. A real skill match is
+  // still useful; do not invent project evidence or present it as an unknown term.
+  if (!matches.targets.length && matches.skills.length) {
+    const financial = matches.skills.every((skill) => skill.category === 'financial')
+    return result(describeListedSkills(matches.skills), {
+      targetType: 'skills',
+      matchingTargets: [],
+      actionLinks: [financial ? financeResume : csResume],
+      suggestedChips: [],
+    })
+  }
 
   const count = `${matches.projects.length} ${matches.projects.length === 1 ? 'project' : 'projects'} and ${matches.experiences.length} ${matches.experiences.length === 1 ? 'experience' : 'experiences'}`
   const summary = matches.targets.length

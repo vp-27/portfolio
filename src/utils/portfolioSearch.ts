@@ -1,6 +1,6 @@
 import { professionalExperiences, portfolioProjects, skillCategories } from '../data/portfolioData'
 import { careerMilestones } from '../data/timeline'
-import type { Experience, Project } from '../types'
+import type { Experience, Project, Skill } from '../types'
 
 export interface PortfolioSearchTarget {
   type: 'experience' | 'project'
@@ -80,11 +80,13 @@ const entityAliases: { type: 'experience' | 'project'; id: string; aliases: stri
   { type: 'experience', id: '2', aliases: ['moweb'] },
 ]
 
+const skills = skillCategories.flatMap((category) => category.skills)
 const skillTerms = Array.from(
   new Set([
     ...skillCategories.flatMap((category) =>
       category.skills.flatMap((skill) => [
         skill.name,
+        ...(skill.searchTerms || []),
         ...skill.name.split(/[/(]/).map((part) => part.replace(/\)/g, '').trim()),
       ]),
     ),
@@ -103,6 +105,14 @@ const queryWords = new Set(
 
 export function matchesSearchTerm(text: string, term: string): boolean {
   if (contains(text, term)) return true
+  const selectedSkill = skills.find(
+    (skill) => normalizeSearch(skill.name) === normalizeSearch(term),
+  )
+  // A full grouped label means either constituent, not the literal combined phrase.
+  // This does not make a query for PostgreSQL match Supabase, or Java match JavaScript.
+  if (selectedSkill?.searchTerms?.some((phrase) => contains(text, phrase))) return true
+  const listedSkill = skills.find((skill) => normalizeSearch(skill.name) === normalizeSearch(text))
+  if (listedSkill?.searchTerms?.some((phrase) => contains(phrase, term))) return true
   // Complete known skills match whole words (Java must not become JavaScript).
   // Unknown final fragments still support incremental typing, e.g. "Pyth".
   return (
@@ -133,8 +143,12 @@ export function getSearchIntent(query: string) {
   ) {
     return inactive
   }
+  // A skill such as Amazon Bedrock is not a request for the Amazon employer card.
+  let entityQuery = ` ${normalized} `
+  for (const skill of skills)
+    entityQuery = entityQuery.replaceAll(` ${normalizeSearch(skill.name)} `, ' ')
   const entities = entityAliases.filter((entity) =>
-    entity.aliases.some((alias) => contains(normalized, alias)),
+    entity.aliases.some((alias) => contains(entityQuery, alias)),
   )
   if (
     !entities.length &&
@@ -207,6 +221,13 @@ export function searchPortfolio(
       .map((entry) => entry.item)
   const matchedExperiences = rank(experiences, 'experience')
   const matchedProjects = rank(projects, 'project')
+  const matchedSkills =
+    intent.active && !intent.entities.length && intent.terms.length
+      ? skills.filter((skill) => {
+          const matches = intent.terms.map((term) => matchesSearchTerm(skill.name, term))
+          return intent.mode === 'all' ? matches.every(Boolean) : matches.some(Boolean)
+        })
+      : []
   const target = (
     item: Experience | Project,
     type: 'experience' | 'project',
@@ -222,9 +243,14 @@ export function searchPortfolio(
     ...intent,
     experiences: matchedExperiences,
     projects: matchedProjects,
+    skills: matchedSkills,
     targets: [
       ...matchedExperiences.map((item) => target(item, 'experience')),
       ...matchedProjects.map((item) => target(item, 'project')),
     ],
   }
+}
+
+export function describeListedSkills(skills: Skill[]): string {
+  return `Listed ${skills.length === 1 ? 'skill' : 'skills'}: ${skills.map((skill) => skill.name).join(', ')}.`
 }
