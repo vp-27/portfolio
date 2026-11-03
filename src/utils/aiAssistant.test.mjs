@@ -37,6 +37,26 @@ test('resume requests produce explicit links rather than opening popups', () => 
   assert.equal(processAIQuery('Contact Vandan').targetType, 'contact')
 })
 
+test('simple contact lookups keep the verified answer and links without a model call', async () => {
+  for (const query of [
+    'contact',
+    'Contact Vandan',
+    'contact details',
+    'contact information?',
+    'email?',
+    'LinkedIn?',
+  ]) {
+    const answer = await processAIQueryAsync(query, undefined, async () => {
+      assert.fail('A contact shortcut must not replace published facts with generated prose')
+    })
+    assert.equal(answer.targetType, 'contact')
+    assert.equal(answer.source, 'portfolio')
+    assert.ok(answer.actionLinks.length > 0)
+    assert.match(answer.answer, /contact Vandan by email/)
+    assert.deepEqual(answer.actionLinks, processAIQuery(query).actionLinks)
+  }
+})
+
 test('education includes all three degrees and certifications use published records', () => {
   const answer = processAIQuery('Education').answer
   for (const degree of ['Computer Science', 'Finance', 'Data Science'])

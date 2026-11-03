@@ -498,8 +498,13 @@ export async function processAIQueryAsync(
   await Promise.resolve()
   throwIfAborted()
   const fallback = processAIQuery(query)
-  // Keyword searches are immediate and deterministic; questions may use the live model.
-  if (!isNaturalLanguageQuery(query)) return fallback
+  // Contact shortcuts are factual navigation, like keyword searches. Keep their
+  // prose and links together instead of generating a second, conflicting answer.
+  const contactLookup =
+    /^(contact(?: details| info(?:rmation)?)?|email|linkedin|github)(?: vandan(?: patel)?)?$/.test(
+      normalize(query),
+    )
+  if (!isNaturalLanguageQuery(query) || contactLookup) return fallback
 
   const controller = new AbortController()
   const cancel = () => controller.abort()

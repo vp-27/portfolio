@@ -14,9 +14,8 @@ export const profile = {
 
 export const resumes = [
   {
-    label: 'Software Engineering',
-    description: 'Technical roles',
+    label: 'Technical',
     url: '/resumes/Vandan_Patel_CS.pdf',
   },
-  { label: 'Finance', description: 'Financial roles', url: '/resumes/Vandan_Patel_Finance.pdf' },
+  { label: 'Finance', url: '/resumes/Vandan_Patel_Finance.pdf' },
 ]

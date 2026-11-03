@@ -164,7 +164,6 @@ export default function TopNav({
                       className="block px-4 py-3 text-sm hover:bg-[#2A2A2A] border-b border-gray-800 last:border-0"
                     >
                       <div className="font-medium">{resume.label}</div>
-                      <div className="text-xs text-gray-400 mt-0.5">{resume.description}</div>
                     </a>
                   ))}
                 </div>

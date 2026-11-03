@@ -5,6 +5,12 @@ import { moduleUrl } from '../tests/load-typescript.mjs'
 const { createPortfolioAssistantHandler } = await import(
   moduleUrl(new URL('./portfolioAssistant.ts', import.meta.url))
 )
+const { profile, resumes } = await import(
+  moduleUrl(new URL('../src/data/profile.ts', import.meta.url))
+)
+const { portfolioProjects } = await import(
+  moduleUrl(new URL('../src/data/portfolioData.ts', import.meta.url))
+)
 
 const request = (query = 'How does his work connect software and finance?', options = {}) =>
   new Request('https://portfolio.example/api/portfolio-assistant', {
@@ -103,6 +109,36 @@ test('API grounds a successful response in server-owned published records and ke
   assert.deepEqual(await response.json(), {
     answer: 'Amazon is internship experience; GALE is an algorithm-practice project.',
   })
+})
+
+test('model context includes the same public contact, resume, and project destinations as the UI', async () => {
+  const handler = createPortfolioAssistantHandler({
+    env: () => ({ GEMINI_API_KEY: 'server-test-key' }),
+    fetch: async (_url, init) => {
+      const prompt = JSON.parse(init.body).systemInstruction.parts[0].text
+      const context = JSON.parse(prompt.split('Public portfolio records:\n')[1])
+      assert.equal(context.profile.email, profile.email)
+      assert.equal(context.profile.linkedin, profile.linkedin)
+      assert.equal(context.profile.github, profile.github)
+      assert.equal(context.profile.location, profile.location)
+      assert.deepEqual(
+        context.resumes,
+        resumes.map(({ label, url }) => ({ label, url })),
+      )
+      for (const project of portfolioProjects) {
+        const entry = context.projects.find((item) => item.name === project.name)
+        assert.equal(entry.liveUrl, project.liveUrl)
+        assert.equal(entry.githubUrl, project.githubUrl)
+      }
+      assert.equal('phone' in context.profile, false)
+      assert.equal('address' in context.profile, false)
+      return providerResponse('Use the published email and profile links.')
+    },
+  })
+  assert.equal(
+    (await handler(request('How can I contact Vandan and find his project demos?'))).status,
+    200,
+  )
 })
 
 test('API excludes thought parts and rejects blocked, missing, oversized, or truncated answers', async () => {
