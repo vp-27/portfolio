@@ -4,6 +4,7 @@ import { useReducedMotion } from 'framer-motion'
 import { usePortfolioSearch } from '../context/portfolioSearch'
 import { scrollToVisibleElement } from '../utils/navigation'
 import { searchPortfolio } from '../utils/portfolioSearch'
+import { getChartSearchPreview } from '../utils/chartSearch'
 import PortfolioHeader from '../components/PortfolioHeader'
 import PortfolioChart from '../components/PortfolioChart'
 import AboutAndSkills from '../components/AboutAndSkills'
@@ -35,10 +36,20 @@ export default function Dashboard() {
     query: searchQuery,
     result: aiResult,
     isLoading: isAILoading,
+    loadingPhase,
     updateQuery: handleSearch,
     submitQuery: handleAISubmit,
     clearSearch,
+    submissionId,
   } = usePortfolioSearch()
+  useEffect(() => {
+    setHoveredPoint(null)
+    setHoveredCardMilestone(null)
+  }, [searchQuery])
+  const chartSearch = useMemo(() => getChartSearchPreview(searchQuery), [searchQuery])
+  // Search spans the complete career. Keep the chosen range separately so
+  // clearing the query restores it without changing the history or stock texture.
+  const displayedRange = chartSearch.active ? 'ALL' : timeRange
   const [isContactHighlighted, setIsContactHighlighted] = useState(false)
   const [blobFlight, setBlobFlight] = useState<BlobFlightData | null>(null)
   const location = useLocation()
@@ -96,8 +107,8 @@ export default function Dashboard() {
 
   // Filter chart data based on selected time range
   const chartData = useMemo(() => {
-    return filterTimelineData(timeRange)
-  }, [timeRange])
+    return filterTimelineData(displayedRange)
+  }, [displayedRange])
 
   const hoveredChartItem = useMemo(() => {
     if (!hoveredPoint?.label) return null
@@ -134,11 +145,7 @@ export default function Dashboard() {
       handleSearch('')
     } else {
       handleSearch(skillName)
-      if (window.innerWidth < 768) {
-        window.dispatchEvent(
-          new CustomEvent('open-mobile-search', { detail: { query: skillName } }),
-        )
-      }
+      requestAnimationFrame(() => scrollToVisibleElement('[data-section="timeline"]'))
     }
   }
 
@@ -228,6 +235,9 @@ export default function Dashboard() {
 
   const handleChartPointClick = (point: ChartDataPoint, origin?: { x: number; y: number }) => {
     if (point.label) {
+      // Selecting a result completes chart search and hands off to the existing
+      // gold-orb navigation. Restore the full card list before its landing.
+      if (chartSearch.active) clearSearch()
       navigateToItem(point.label, origin)
     }
   }
@@ -247,11 +257,15 @@ export default function Dashboard() {
       <div className="md:pt-14 pb-28 md:pb-8">
         <div className="max-w-[1440px] mx-auto md:px-4">
           <div className="lg:grid lg:grid-cols-[minmax(0,1fr),360px] xl:grid-cols-[minmax(0,1fr),380px] lg:gap-8 xl:gap-10">
-            <div>
-              <div className="md:px-4">
-                <PortfolioHeader hoveredPoint={activeHoveredPoint} />
+            <div data-search-flow className="isolate">
+              <div className="md:px-4" data-section="timeline">
+                <PortfolioHeader
+                  hoveredPoint={activeHoveredPoint}
+                  search={chartSearch}
+                  onClearSearch={clearSearch}
+                />
               </div>
-              <div>
+              <div className="relative z-0">
                 <PortfolioChart
                   data={chartData}
                   isPositive={true}
@@ -259,9 +273,12 @@ export default function Dashboard() {
                   onPointHover={handleChartPointHover}
                   onScrubEnd={handleScrubEnd}
                   hoveredMilestoneLabel={hoveredCardMilestone}
+                  search={chartSearch}
+                  submissionId={submissionId}
+                  loadingPhase={loadingPhase}
                 />
               </div>
-              <div className="px-4 md:px-4">
+              <div className="relative z-10 px-4 md:px-4">
                 <div
                   className="timeline-ranges flex items-center gap-1 py-2 text-xs pb-3 border-b border-[#2D2D2D]"
                   role="group"
@@ -271,18 +288,22 @@ export default function Dashboard() {
                     <button
                       key={range}
                       onClick={() => {
+                        if (chartSearch.active) clearSearch()
                         setTimeRange(range)
                         setHoveredPoint(null)
                         setHoveredCardMilestone(null)
                       }}
-                      aria-pressed={timeRange === range}
+                      aria-pressed={displayedRange === range}
                       aria-label={
                         range === 'ALL'
                           ? 'All career milestones'
                           : `Past ${range} of the career timeline`
                       }
+                      title={
+                        chartSearch.active ? `Show ${range} timeline and clear search` : undefined
+                      }
                       className={`px-2.5 py-1 rounded-lg font-bold ${
-                        timeRange === range
+                        displayedRange === range
                           ? 'bg-[#00C805] text-black'
                           : 'bg-transparent text-[#00C805] hover:bg-[#00C805]/10'
                       } transition-colors`}
@@ -293,30 +314,25 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              <div className="px-4 md:px-4">
-                {searchQuery.trim() ? (
+              <div className="relative z-10 px-4 md:px-4">
+                <BuyingPower
+                  activeMilestone={activeHoveredPoint?.label || null}
+                  onJumpToMilestone={(label, origin) => {
+                    if (chartSearch.active) clearSearch()
+                    navigateToItem(label, origin)
+                  }}
+                  search={chartSearch}
+                  onSearchSubmit={() => handleAISubmit(searchQuery)}
+                  isSearching={isAILoading}
+                />
+                {searchQuery.trim() && (
                   <PortfolioSearchPanel
                     query={searchQuery}
                     result={aiResult}
                     isLoading={isAILoading}
+                    loadingPhase={loadingPhase}
                     onSubmit={handleAISubmit}
-                    onEdit={() => {
-                      if (window.innerWidth < 768) {
-                        window.dispatchEvent(new CustomEvent('open-mobile-search'))
-                      } else {
-                        const input =
-                          document.querySelector<HTMLInputElement>('input[type="search"]')
-                        input?.focus()
-                        input?.select()
-                      }
-                    }}
                     onJump={navigateToItem}
-                    onClear={clearSearch}
-                  />
-                ) : (
-                  <BuyingPower
-                    activeMilestone={activeHoveredPoint?.label || null}
-                    onJumpToMilestone={(label, origin) => navigateToItem(label, origin)}
                   />
                 )}
               </div>

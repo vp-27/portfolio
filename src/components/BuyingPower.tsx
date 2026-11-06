@@ -1,15 +1,25 @@
 import { MousePointerClick, ArrowDown } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
+import type { ChartSearchPreview } from '../utils/chartSearch'
 
 interface BuyingPowerProps {
   activeMilestone?: string | null
   onJumpToMilestone?: (label: string, origin?: { x: number; y: number }) => void
+  search?: ChartSearchPreview
+  onSearchSubmit?: () => void
+  isSearching?: boolean
 }
 
-export default function BuyingPower({ activeMilestone, onJumpToMilestone }: BuyingPowerProps) {
+export default function BuyingPower({
+  activeMilestone,
+  onJumpToMilestone,
+  search,
+  onSearchSubmit,
+  isSearching = false,
+}: BuyingPowerProps) {
   const [hasSeenTimelineHint, setHasSeenTimelineHint] = useState(() => {
-    return sessionStorage.getItem('bpTimelineSeen') === '1'
+    return typeof sessionStorage !== 'undefined' && sessionStorage.getItem('bpTimelineSeen') === '1'
   })
 
   // Persist that we've shown the timeline hint so the entrance animation runs only once per session
@@ -19,6 +29,63 @@ export default function BuyingPower({ activeMilestone, onJumpToMilestone }: Buyi
       setHasSeenTimelineHint(true)
     }
   }, [hasSeenTimelineHint])
+
+  if (search?.active) {
+    const selected =
+      activeMilestone && search.milestoneLabels.includes(activeMilestone) ? activeMilestone : null
+    return (
+      <div id="timeline-search-controls" className="relative py-2.5 border-b border-[#2d2d2d]">
+        <div className="flex min-h-9 items-center justify-between gap-3 px-2">
+          {selected ? (
+            <button
+              type="button"
+              className="min-w-0 flex items-center gap-2 text-xs text-[#c9a227] text-left hover:text-[#e5bf45]"
+              onClick={(event) => {
+                const rect = event.currentTarget.getBoundingClientRect()
+                onJumpToMilestone?.(selected, {
+                  x: rect.x + rect.width / 2,
+                  y: rect.y + rect.height / 2,
+                })
+              }}
+              aria-label={`Visit ${selected}`}
+            >
+              <span className="truncate">{selected}</span>
+              <span className="shrink-0 font-semibold inline-flex items-center gap-1">
+                Visit <ArrowDown className="w-3 h-3" />
+              </span>
+            </button>
+          ) : (
+            <p
+              className="min-w-0 flex items-center gap-2 text-sm text-white"
+              title={search.milestoneLabels.length ? 'Select a gold milestone to visit' : undefined}
+            >
+              <span>Search results</span>
+              <MousePointerClick className="w-4 h-4 shrink-0 text-[#c9a227]" aria-hidden="true" />
+              {!!search.milestoneLabels.length && (
+                <span className="sr-only">Select a gold milestone to visit.</span>
+              )}
+            </p>
+          )}
+          <button
+            type="button"
+            onClick={onSearchSubmit}
+            disabled={isSearching}
+            aria-label={`Search deeper: ${search.query}`}
+            className="shrink-0 flex items-center gap-1.5 py-2 text-xs font-medium text-rh-green hover:text-[#16dc18] disabled:opacity-50"
+          >
+            {isSearching ? (
+              'Searching…'
+            ) : (
+              <>
+                Search deeper
+                <span aria-hidden="true">↵</span>
+              </>
+            )}
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div

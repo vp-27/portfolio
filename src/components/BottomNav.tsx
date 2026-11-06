@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react'
 import { BriefcaseBusiness, Folder, UserRound, Search, X, TrendingUp, ArrowUp } from 'lucide-react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { searchPortfolio, describeListedSkills } from '../utils/portfolioSearch'
 
 interface BottomNavProps {
   searchQuery?: string
@@ -16,11 +15,11 @@ export default function BottomNav({ searchQuery = '', onSearch, onAISubmit }: Bo
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const searchInputRef = useRef<HTMLInputElement>(null)
   const searchTriggerRef = useRef<HTMLButtonElement>(null)
-  const matches = searchPortfolio(searchQuery)
 
   const closeSearch = () => {
+    searchInputRef.current?.blur()
     setIsSearchOpen(false)
-    searchTriggerRef.current?.focus()
+    searchTriggerRef.current?.focus({ preventScroll: true })
   }
 
   useEffect(() => {
@@ -36,7 +35,10 @@ export default function BottomNav({ searchQuery = '', onSearch, onAISubmit }: Bo
 
   useEffect(() => {
     if (!isSearchOpen) return
-    const frame = requestAnimationFrame(() => searchInputRef.current?.focus())
+    const frame = requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, behavior: 'instant' })
+      searchInputRef.current?.focus({ preventScroll: true })
+    })
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setIsSearchOpen(false)
@@ -54,7 +56,6 @@ export default function BottomNav({ searchQuery = '', onSearch, onAISubmit }: Bo
     if (!query.trim()) return
     onAISubmit?.(query)
     closeSearch()
-    window.scrollTo({ top: 0, behavior: 'instant' })
   }
 
   const navItems = [
@@ -79,7 +80,7 @@ export default function BottomNav({ searchQuery = '', onSearch, onAISubmit }: Bo
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.16 }}
-            className="fixed top-3 left-3 right-3 z-[60] bg-[#151719]/95 backdrop-blur-xl border border-[#353a3e] rounded-2xl p-3 shadow-2xl md:hidden"
+            className="relative z-[60] mx-3 mt-3 bg-[#151719]/95 backdrop-blur-xl border border-[#353a3e] rounded-2xl p-3 md:hidden"
           >
             <form
               onSubmit={(event) => {
@@ -96,6 +97,7 @@ export default function BottomNav({ searchQuery = '', onSearch, onAISubmit }: Bo
                 aria-label="Search or ask about Vandan"
                 placeholder="Search or ask about Vandan…"
                 value={searchQuery}
+                enterKeyHint="search"
                 onChange={(event) => onSearch?.(event.target.value)}
                 className="min-w-0 flex-1 rounded-md bg-transparent py-2 text-base text-white placeholder-gray-400"
               />
@@ -122,32 +124,24 @@ export default function BottomNav({ searchQuery = '', onSearch, onAISubmit }: Bo
                 <X className="w-4 h-4" />
               </button>
             </form>
-            <p className="text-xs text-gray-400 mt-1 mb-2">
-              Projects, experience, or a question about Vandan.
-            </p>
-            <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-1">
-              {(searchQuery.trim()
-                ? matches.active
-                  ? matches.targets.map((target) => target.label)
-                  : []
-                : ['Amazon SCOT', 'GALE', 'Why CS & Finance?', 'Rutgers', 'Python']
-              ).map((chip) => (
-                <button
-                  key={chip}
-                  onClick={() => submit(chip)}
-                  className="shrink-0 text-xs px-3 py-2 rounded-full border border-[#353a3e] text-gray-200 hover:border-rh-green"
-                >
-                  {chip}
-                </button>
-              ))}
-              {searchQuery.trim() && matches.active && matches.targets.length === 0 && (
-                <p className="text-xs text-gray-400 py-1">
-                  {matches.skills.length
-                    ? `${describeListedSkills(matches.skills)} Press Enter for resume links.`
-                    : 'No matching entries. Press Enter to explore this topic.'}
+            {!searchQuery.trim() && (
+              <>
+                <p className="text-xs text-gray-400 mt-1 mb-2">
+                  Projects, experience, or a question about Vandan.
                 </p>
-              )}
-            </div>
+                <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-1">
+                  {['Amazon SCOT', 'GALE', 'Why CS & Finance?', 'Rutgers', 'Python'].map((chip) => (
+                    <button
+                      key={chip}
+                      onClick={() => submit(chip)}
+                      className="shrink-0 text-xs px-3 py-2 rounded-full border border-[#353a3e] text-gray-200 hover:border-rh-green"
+                    >
+                      {chip}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
           </motion.section>
         )}
       </AnimatePresence>

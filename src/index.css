@@ -269,25 +269,27 @@ aside > .sidebar-heading:first-child {
   outline-offset: 0;
 }
 
-.search-wave {
-  display: grid;
-  grid-template-columns: repeat(3, 2px);
-  gap: 2px;
+/* Search uses the existing chart as its index. On submission, short gold traces
+   travel down the matched guides and meet the answer below; the curve stays put. */
+.timeline-search-beam {
+  opacity: 0;
+  filter: drop-shadow(0 0 4px #c9a22766);
+  animation: timeline-search-beam 580ms ease-in both;
 }
-.search-wave > span {
-  width: 2px;
-  height: 2px;
-  border-radius: 50%;
-  background: var(--rh-green);
-  animation: search-wave 1.2s ease-in-out infinite;
-}
-@keyframes search-wave {
-  0%,
-  100% {
-    opacity: 0.25;
+@keyframes timeline-search-beam {
+  0% {
+    stroke-dashoffset: 0.16;
+    opacity: 0;
   }
-  45% {
+  18% {
     opacity: 0.85;
+  }
+  85% {
+    opacity: 0.7;
+  }
+  100% {
+    stroke-dashoffset: -1;
+    opacity: 0;
   }
 }
 .search-dot-wave {
@@ -311,22 +313,25 @@ aside > .sidebar-heading:first-child {
   100% {
     opacity: 0.12;
     transform: scale(1);
+    background-color: var(--rh-green);
   }
   40% {
     opacity: 0.2;
     transform: scale(1);
+    background-color: var(--rh-green);
   }
   50% {
     opacity: 0.95;
     transform: scale(1.35);
+    background-color: var(--rh-gold);
   }
   65% {
     opacity: 0.15;
     transform: scale(1);
+    background-color: var(--rh-green);
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .search-wave > span,
   .search-dot-wave > span {
     animation: none;
     opacity: 0.35;

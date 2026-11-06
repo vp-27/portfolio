@@ -42,6 +42,11 @@ function PortfolioLayout() {
         onAISubmit={search.submitQuery}
         searchQuery={search.query}
       />
+      <BottomNav
+        searchQuery={search.query}
+        onSearch={search.updateQuery}
+        onAISubmit={search.submitQuery}
+      />
       <main id="main-content" tabIndex={-1} className={location.pathname === '/' ? '' : 'md:pt-16'}>
         <Routes>
           <Route path="/" element={<Dashboard />} />
@@ -62,11 +67,6 @@ function PortfolioLayout() {
           />
         </Routes>
       </main>
-      <BottomNav
-        searchQuery={search.query}
-        onSearch={search.updateQuery}
-        onAISubmit={search.submitQuery}
-      />
     </div>
   )
 }

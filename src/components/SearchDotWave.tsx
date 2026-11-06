@@ -1,5 +1,6 @@
 // A center-out dot wave, like the original loader, using CSS instead of a canvas
 // render loop or resize listener. Fixed-size dots stay crisp at mobile widths.
+// These same delays carry a gold crest through the green wave in one animation.
 const columns = 36
 const rows = 7
 const delays = Array.from({ length: columns * rows }, (_, index) => {

@@ -3,11 +3,19 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { PortfolioSearchContext } from '../context/portfolioSearch'
 import { processAIQueryAsync, type AIQueryResult } from '../utils/aiAssistant'
 import { scrollToVisibleElement } from '../utils/navigation'
+import { getChartSearchPreview } from '../utils/chartSearch'
+import {
+  playSearchPresentation,
+  searchTravelDuration,
+  type SearchPhase,
+} from '../utils/searchPresentation'
 
 export default function PortfolioSearchProvider({ children }: { children: ReactNode }) {
   const [query, setQuery] = useState('')
   const [result, setResult] = useState<AIQueryResult | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [loadingPhase, setLoadingPhase] = useState<SearchPhase>('idle')
+  const [submissionId, setSubmissionId] = useState(0)
   const request = useRef<AbortController | null>(null)
   const navigate = useNavigate()
   const location = useLocation()
@@ -19,6 +27,8 @@ export default function PortfolioSearchProvider({ children }: { children: ReactN
     setQuery(next)
     setResult(null)
     setIsLoading(false)
+    setLoadingPhase('idle')
+    setSubmissionId(0)
   }, [])
 
   const clearSearch = useCallback(() => updateQuery(''), [updateQuery])
@@ -28,6 +38,14 @@ export default function PortfolioSearchProvider({ children }: { children: ReactN
   useEffect(() => {
     if (location.pathname !== '/') clearSearch()
   }, [location.pathname, clearSearch])
+
+  useEffect(() => {
+    if (!submissionId || location.pathname !== '/') return
+    const frame = requestAnimationFrame(() => {
+      if (!request.current?.signal.aborted) scrollToVisibleElement('[data-section="timeline"]')
+    })
+    return () => cancelAnimationFrame(frame)
+  }, [submissionId, location.pathname])
 
   const submitQuery = useCallback(
     (input?: string) => {
@@ -39,31 +57,41 @@ export default function PortfolioSearchProvider({ children }: { children: ReactN
       setQuery(next)
       setResult(null)
       setIsLoading(true)
+      const matches = getChartSearchPreview(next).milestoneLabels.length
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      setLoadingPhase(searchTravelDuration(matches, reducedMotion) ? 'travel' : 'wave')
+      setSubmissionId((previous) => previous + 1)
       if (location.pathname !== '/') navigate('/')
-      // Enter moves to the existing search surface once; answer arrival does not
-      // scroll again or interrupt a visitor who has started exploring a match.
-      requestAnimationFrame(() => {
-        if (!controller.signal.aborted) scrollToVisibleElement('[data-section="search-answer"]')
-      })
 
-      void processAIQueryAsync(next, controller.signal)
-        .then((answer) => {
-          if (!controller.signal.aborted) setResult(answer)
+      const answer = processAIQueryAsync(next, controller.signal).catch(
+        (): AIQueryResult => ({
+          answer:
+            'That answer is unavailable. You can still browse the projects, experience, and resumes below.',
+          milestoneLabel: null,
+          targetType: null,
+          targetId: null,
+          suggestedChips: ['Show me projects', 'Contact Vandan'],
+          source: 'portfolio',
+        }),
+      )
+      const presentation = playSearchPresentation({
+        matches,
+        signal: controller.signal,
+        reducedMotion,
+        onWave: () => setLoadingPhase('wave'),
+      })
+      void Promise.all([answer, presentation])
+        .then(([response]) => {
+          if (!controller.signal.aborted) setResult(response)
         })
         .catch(() => {
-          if (!controller.signal.aborted)
-            setResult({
-              answer:
-                'That answer is unavailable. You can still browse the projects, experience, and resumes below.',
-              milestoneLabel: null,
-              targetType: null,
-              targetId: null,
-              suggestedChips: ['Show me projects', 'Contact Vandan'],
-              source: 'portfolio',
-            })
+          /* Editing, clearing, or navigating cancels the presentation. */
         })
         .finally(() => {
-          if (!controller.signal.aborted) setIsLoading(false)
+          if (!controller.signal.aborted) {
+            setIsLoading(false)
+            setLoadingPhase('idle')
+          }
         })
     },
     [query, location.pathname, navigate],
@@ -71,7 +99,16 @@ export default function PortfolioSearchProvider({ children }: { children: ReactN
 
   return (
     <PortfolioSearchContext.Provider
-      value={{ query, result, isLoading, updateQuery, submitQuery, clearSearch }}
+      value={{
+        query,
+        result,
+        isLoading,
+        loadingPhase,
+        submissionId,
+        updateQuery,
+        submitQuery,
+        clearSearch,
+      }}
     >
       {children}
     </PortfolioSearchContext.Provider>

@@ -10,16 +10,15 @@ const { default: PortfolioSearchPanel } = await import(
 const { processAIQuery } = await import(
   moduleUrl(new URL('../utils/aiAssistant.ts', import.meta.url))
 )
-const render = (result = null, isLoading = false, query = 'Python') =>
+const render = (result = null, isLoading = false, query = 'Python', loadingPhase) =>
   renderToStaticMarkup(
     createElement(PortfolioSearchPanel, {
       query,
       result,
       isLoading,
+      loadingPhase,
       onSubmit() {},
-      onEdit() {},
       onJump() {},
-      onClear() {},
     }),
   )
 const targets = (markup) =>
@@ -36,9 +35,12 @@ test('typing, pending, and submitted searches preserve the same matching-entry c
   assert.equal(targets(answered).length, 6)
   for (const markup of [typing, pending, answered]) {
     assert.ok(markup.includes('aria-label="Portfolio search results"'))
-    assert.ok(markup.includes('aria-label="Clear search"'))
-    assert.ok(markup.includes('>Search</span>'))
+    assert.ok(!markup.includes('aria-label="Clear search"'))
+    assert.ok(!markup.includes('>Search</span>'))
+    assert.ok(!markup.includes('Edit search:'))
   }
+  assert.ok(!typing.includes('matching projects &amp; experiences'))
+  assert.ok(answered.includes('4 projects and 2 experiences match your search.'))
 })
 
 test('provider availability does not change the product identity or expose backend status', () => {
@@ -64,4 +66,25 @@ test('a listed skill without a case study is recognized while typing and after s
     }
     assert.ok(answered.includes('/resumes/'))
   }
+})
+
+test('one wave replaces the tiny indicator and appears only after the chart travel phase', () => {
+  const travel = render(null, true, 'Python', 'travel')
+  assert.ok(!travel.includes('class="search-dot-wave"'))
+  assert.ok(travel.includes('data-search-wave'), 'reserve the wave landing during travel')
+  for (const query of ['Python', 'zz-no-match']) {
+    const wave = render(null, true, query, 'wave')
+    assert.equal((wave.match(/class="search-dot-wave"/g) || []).length, 1)
+    assert.ok(!wave.includes('class="search-wave"'))
+    assert.ok(!wave.includes('Press Enter'))
+  }
+})
+
+test('the answer replaces the wave in the same space without a floating or collapsing transition', () => {
+  const pending = render(null, true, 'Python', 'wave')
+  const answered = render(processAIQuery('Python'))
+  for (const markup of [pending, answered]) assert.ok(markup.includes('min-h-[76px]'))
+  assert.ok(!answered.includes('transform:'))
+  assert.ok(!answered.includes('class="search-dot-wave"'))
+  assert.ok(answered.includes('4 projects and 2 experiences match your search.'))
 })

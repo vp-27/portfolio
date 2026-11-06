@@ -63,7 +63,9 @@ function LetterReel({
           >
             {index === 0 && target === 0
               ? character || '\u00a0'
-              : uppercase ? letter.toUpperCase() : letter}
+              : uppercase
+                ? letter.toUpperCase()
+                : letter}
           </span>
         ))}
       </motion.span>
@@ -71,22 +73,44 @@ function LetterReel({
   )
 }
 
-export default function AlphabetReelText({ text }: { text: string }) {
+export default function AlphabetReelText({ text, wrap = false }: { text: string; wrap?: boolean }) {
   const [initialText] = useState(text)
   const [slots, setSlots] = useState(text.length)
   // Keep existing reels mounted when a shorter title arrives so they can roll
   // to blank and collapse, then be reused on the next hover.
   if (text.length > slots) setSlots(text.length)
 
-  return (
-    <span aria-hidden="true" className="inline-flex align-top" style={{ lineHeight: rowHeight }}>
-      {Array.from({ length: slots }, (_, index) => (
+  const reels = (start: number, end: number) =>
+    Array.from({ length: end - start }, (_, offset) => {
+      const index = start + offset
+      return (
         <LetterReel
           key={index}
           character={text[index] || ''}
           initialCharacter={initialText[index] || ''}
         />
-      ))}
+      )
+    })
+  // Keep ordinary chart titles on their original single reel. Search sentences
+  // wrap at word boundaries, with a character-wrap fallback for a very long token.
+  const words = wrap ? [...text.matchAll(/\S+\s*|\s+/g)] : []
+
+  return (
+    <span
+      aria-hidden="true"
+      className={`inline-flex align-top ${wrap ? 'max-w-full flex-wrap' : ''}`}
+      style={{ lineHeight: rowHeight }}
+    >
+      {wrap
+        ? words.map((word, index) => (
+            <span key={index} className="inline-flex max-w-full flex-wrap">
+              {reels(
+                word.index!,
+                index === words.length - 1 ? slots : word.index! + word[0].length,
+              )}
+            </span>
+          ))
+        : reels(0, slots)}
     </span>
   )
 }

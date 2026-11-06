@@ -1,32 +1,28 @@
-import { useEffect, useState } from 'react'
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { Search, X, ArrowRight, ArrowDown, ExternalLink } from 'lucide-react'
+import { motion, useReducedMotion } from 'framer-motion'
+import { ArrowRight, ArrowDown, ExternalLink } from 'lucide-react'
 import type { AIQueryResult } from '../utils/aiAssistant'
 import { searchPortfolio, describeListedSkills } from '../utils/portfolioSearch'
 import SearchDotWave from './SearchDotWave'
+import type { SearchPhase } from '../utils/searchPresentation'
 
 interface PortfolioSearchPanelProps {
   query: string
   result: AIQueryResult | null
   isLoading: boolean
+  loadingPhase?: SearchPhase
   onSubmit: (query: string) => void
-  onEdit: () => void
   onJump: (label: string, origin: { x: number; y: number }) => void
-  onClear: () => void
 }
 
 export default function PortfolioSearchPanel({
   query,
   result,
   isLoading,
+  loadingPhase = isLoading ? 'wave' : 'idle',
   onSubmit,
-  onEdit,
   onJump,
-  onClear,
 }: PortfolioSearchPanelProps) {
   const reducedMotion = useReducedMotion()
-  const [showProgress, setShowProgress] = useState(false)
-  const [showWave, setShowWave] = useState(false)
   const matches = searchPortfolio(query)
   const targets = result?.matchingTargets ?? (matches.active ? matches.targets : [])
   const links = result?.actionLinks?.length
@@ -40,25 +36,13 @@ export default function PortfolioSearchPanel({
       ? [result.milestoneLabel]
       : []
   const summary = matches.active
-    ? matches.targets.length
-      ? `${matches.targets.length} matching projects & experiences.`
-      : matches.skills.length
-        ? describeListedSkills(matches.skills)
-        : 'No matching projects or experience. Try another term, or press Enter to explore this topic.'
+    ? matches.skills.length
+      ? describeListedSkills(matches.skills)
+      : 'No matching projects or experience. Try another term, or press Enter to explore this topic.'
     : 'Press Enter to explore this topic.'
-
-  useEffect(() => {
-    // Fast local answers should never flash a loader or wait for an artificial timer.
-    setShowProgress(false)
-    setShowWave(false)
-    if (!isLoading) return
-    const timer = setTimeout(() => setShowProgress(true), 180)
-    const waveTimer = setTimeout(() => setShowWave(true), 1000)
-    return () => {
-      clearTimeout(timer)
-      clearTimeout(waveTimer)
-    }
-  }, [isLoading, query])
+  // The chart owns the query, total count, clear action, and search identity.
+  // Before submission the named matches are enough; reveal prose on Enter.
+  const answer = isLoading ? null : result?.answer || (targets.length ? null : summary)
 
   const jump = (label: string, element: HTMLButtonElement) => {
     const rect = element.getBoundingClientRect()
@@ -71,76 +55,34 @@ export default function PortfolioSearchPanel({
       aria-label="Portfolio search results"
       className="py-3 px-1 border-b border-[#2d2d2d] text-left"
     >
-      <div className="flex items-center gap-2 mb-3">
-        <span
-          className="flex w-4 h-4 shrink-0 items-center justify-center text-rh-green"
-          aria-hidden="true"
+      {/* Reserve the same space from travel through answer. The wave is the
+          transition; completing it must not float the text or lift the links. */}
+      {(isLoading || answer) && (
+        <div
+          aria-live="polite"
+          aria-busy={isLoading}
+          className={isLoading || result ? 'min-h-[76px] flex items-center' : ''}
         >
-          {isLoading && showProgress && !showWave ? (
-            <span className="search-wave">
-              {Array.from({ length: 9 }, (_, index) => (
-                <span
-                  key={index}
-                  style={{ animationDelay: `${(index % 3) * 100 + Math.floor(index / 3) * 70}ms` }}
-                />
-              ))}
-            </span>
+          <span className="sr-only">{isLoading ? 'Searching portfolio…' : ''}</span>
+          {isLoading ? (
+            <div data-search-wave className="h-[76px] w-full">
+              {loadingPhase === 'wave' && (
+                <motion.div
+                  initial={reducedMotion ? false : { opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: reducedMotion ? 0 : 0.18 }}
+                >
+                  <SearchDotWave />
+                </motion.div>
+              )}
+            </div>
           ) : (
-            <Search className="w-4 h-4" />
+            <p className="text-sm text-gray-200 leading-relaxed whitespace-pre-line py-3">
+              {answer}
+            </p>
           )}
-        </span>
-        <span className="text-xs font-semibold uppercase tracking-wider text-rh-green">Search</span>
-        <button
-          type="button"
-          onClick={onEdit}
-          title={query}
-          aria-label={`Edit search: ${query}`}
-          className="min-w-0 truncate text-xs text-gray-400 text-left hover:text-white"
-        >
-          &ldquo;{query}&rdquo;
-        </button>
-        <button
-          type="button"
-          onClick={onClear}
-          aria-label="Clear search"
-          className="ml-auto shrink-0 p-2 text-gray-400 hover:text-white"
-        >
-          <X className="w-4 h-4" />
-        </button>
-      </div>
-
-      <AnimatePresence initial={false}>
-        {isLoading && showWave && (
-          <motion.div
-            key="search-dot-wave"
-            initial={reducedMotion ? false : { height: 0, opacity: 0 }}
-            animate={{ height: 76, opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: reducedMotion ? 0 : 0.18 }}
-            className="overflow-hidden"
-          >
-            <SearchDotWave />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* One persistent surface: only the prose changes from live matches to an answer.
-          Model/local provenance stays internal; neither path claims to be a person. */}
-      <div aria-live="polite" aria-busy={isLoading}>
-        <span className="sr-only">{isLoading && showProgress ? 'Searching portfolio…' : ''}</span>
-        <AnimatePresence initial={false} mode="wait">
-          <motion.p
-            key={result ? 'answer' : 'matches'}
-            initial={reducedMotion ? false : { opacity: 0, y: 3 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: reducedMotion ? 0 : 0.12 }}
-            className="text-sm text-gray-200 leading-relaxed whitespace-pre-line mb-3"
-          >
-            {result?.answer || summary}
-          </motion.p>
-        </AnimatePresence>
-      </div>
+        </div>
+      )}
 
       {links.length > 0 && (
         <div className="flex flex-wrap gap-2 mb-3">

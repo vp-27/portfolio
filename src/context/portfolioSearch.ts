@@ -1,10 +1,13 @@
 import { createContext, useContext } from 'react'
 import type { AIQueryResult } from '../utils/aiAssistant'
+import type { SearchPhase } from '../utils/searchPresentation'
 
 export interface PortfolioSearchState {
   query: string
   result: AIQueryResult | null
   isLoading: boolean
+  loadingPhase: SearchPhase
+  submissionId: number
   updateQuery: (query: string) => void
   submitQuery: (query?: string) => void
   clearSearch: () => void
