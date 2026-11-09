@@ -269,6 +269,11 @@ aside > .sidebar-heading:first-child {
   outline-offset: 0;
 }
 
+/* The open mobile search panel already has a clear control in the field. */
+#mobile-search ~ main .timeline-search-clear {
+  display: none;
+}
+
 /* Search uses the existing chart as its index. On submission, short gold traces
    travel down the matched guides and meet the answer below; the curve stays put. */
 .timeline-search-beam {

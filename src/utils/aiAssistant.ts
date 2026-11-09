@@ -511,13 +511,15 @@ export async function processAIQueryAsync(
   await Promise.resolve()
   throwIfAborted()
   const fallback = processAIQuery(query)
-  // Contact shortcuts are factual navigation, like keyword searches. Keep their
-  // prose and links together instead of generating a second, conflicting answer.
+  // Contact shortcuts keep their verified prose and links together.
   const contactLookup =
     /^(contact(?: details| info(?:rmation)?)?|email|linkedin|github)(?: vandan(?: patel)?)?$/.test(
       normalize(query),
     )
-  if (!isNaturalLanguageQuery(query) || contactLookup) return fallback
+  // A submitted topic can need an explanation even if it is only a skill name.
+  // Direct lookups already have their own published descriptions or actions.
+  const matchedTopic = fallback.targetType === null && !!fallback.matchingTargets?.length
+  if (contactLookup || (!isNaturalLanguageQuery(query) && !matchedTopic)) return fallback
 
   const controller = new AbortController()
   const cancel = () => controller.abort()

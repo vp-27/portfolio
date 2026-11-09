@@ -93,7 +93,7 @@ const { portfolioSkills } = await import(
   moduleUrl(new URL('../data/portfolioData.ts', import.meta.url))
 )
 
-test('every sidebar skill has either published examples or a useful skill answer', async () => {
+test('every sidebar skill has either published examples or a useful local fallback', () => {
   for (const skill of portfolioSkills) {
     const matches = searchPortfolio(skill.name)
     assert.equal(matches.active, true, skill.name)
@@ -101,9 +101,7 @@ test('every sidebar skill has either published examples or a useful skill answer
       matches.skills.some((match) => match.id === skill.id),
       skill.name,
     )
-    const answer = await processAIQueryAsync(skill.name, undefined, async () => {
-      assert.fail(`A skill tap should not require live AI: ${skill.name}`)
-    })
+    const answer = processAIQuery(skill.name)
     assert.doesNotMatch(
       answer.answer,
       /no published projects|don’t have a published answer/i,
@@ -240,9 +238,29 @@ test('live AI supplies prose while trusted links and result routing remain local
   assert.equal(answer.answer, 'Amazon is experience; GALE is a project.')
   assert.deepEqual(answer.matchingTargets, searchPortfolio(query).targets)
   assert.notEqual(answer.targetId, 'untrusted')
-  await processAIQueryAsync('Python', undefined, async () =>
-    assert.fail('Keywords must not incur a model call'),
-  )
+  let lookedUpProject = false
+  await processAIQueryAsync('GALE', undefined, async () => {
+    lookedUpProject = true
+    return Response.json({ answer: 'Unexpected request' })
+  })
+  assert.equal(lookedUpProject, false)
+})
+
+test('submitting Financial Modeling requests an explanation and preserves both matching entries', async () => {
+  const query = 'Financial Modeling'
+  const fallback = processAIQuery(query)
+  assert.deepEqual(fallback.matchingTargets.map(({ id }) => id), ['amazon1', '5'])
+  const explanation = 'At Amazon, Vandan forecast liquidation backlog. For PerkPal, he modeled a $2.4B opportunity.'
+  const answer = await processAIQueryAsync(query, undefined, async (url, options) => {
+    assert.equal(url, '/api/portfolio-assistant')
+    assert.deepEqual(JSON.parse(options.body), { query })
+    return Response.json({ answer: explanation })
+  })
+  assert.equal(answer.source, 'ai')
+  assert.equal(answer.answer, explanation)
+  assert.deepEqual(answer.matchingTargets, fallback.matchingTargets)
+  const unavailable = await processAIQueryAsync(query, undefined, async () => new Response(null, { status: 503 }))
+  assert.deepEqual(unavailable, { ...fallback, aiUnavailable: true })
 })
 
 test('unconfigured, failed, malformed, and empty AI responses retain useful local answers', async () => {

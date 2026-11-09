@@ -111,6 +111,23 @@ test('API grounds a successful response in server-owned published records and ke
   })
 })
 
+test('a short skill topic sends only its highest ranked published examples', async () => {
+  const handler = createPortfolioAssistantHandler({
+    env: () => ({ GEMINI_API_KEY: 'server-test-key' }),
+    fetch: async (_url, init) => {
+      const prompt = JSON.parse(init.body).systemInstruction.parts[0].text
+      const context = JSON.parse(prompt.split('Public portfolio records:\n')[1])
+      assert.deepEqual(Object.keys(context), ['name', 'experience', 'projects'])
+      assert.equal(context.experience.length, 1)
+      assert.match(context.experience[0].company, /^Amazon/)
+      assert.equal(context.projects.length, 1)
+      assert.match(context.projects[0].name, /PerkPal/)
+      return providerResponse('Amazon and PerkPal provide published financial modeling examples.')
+    },
+  })
+  assert.equal((await handler(request('Financial Modeling'))).status, 200)
+})
+
 test('model context includes the same public contact, resume, and project destinations as the UI', async () => {
   const handler = createPortfolioAssistantHandler({
     env: () => ({ GEMINI_API_KEY: 'server-test-key' }),

@@ -49,7 +49,7 @@ export default function PortfolioHeader({
             type="button"
             onClick={onClearSearch}
             aria-label="Clear timeline search"
-            className="shrink-0 p-2 -mr-1 text-gray-400 hover:text-white"
+            className="timeline-search-clear shrink-0 p-2 -mr-1 text-gray-400 hover:text-white md:hidden"
           >
             <X className="w-4 h-4" />
           </button>

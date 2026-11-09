@@ -1,6 +1,6 @@
-import { professionalExperiences, portfolioProjects, skillCategories } from '../data/portfolioData'
-import { careerMilestones } from '../data/timeline'
-import type { Experience, Project, Skill } from '../types'
+import { professionalExperiences, portfolioProjects, skillCategories } from '../data/portfolioData.js'
+import { careerMilestones } from '../data/timeline.js'
+import type { Experience, Project, Skill } from '../types/index.js'
 
 export interface PortfolioSearchTarget {
   type: 'experience' | 'project'
