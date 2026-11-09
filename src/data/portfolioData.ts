@@ -83,6 +83,13 @@ export const professionalExperiences: Experience[] = [
     startDate: 'May 2026',
     endDate: 'Aug 2026',
     logoUrl: '/images/experience_images/amazon.png',
+    highlights: [
+      'Reconciled $15M+ in monthly liquidation costs to published close totals for the first time, separating algorithmic and manual cost drivers.',
+      'Built a headless Excel engine with 99.86% output fidelity and a 5,700× speedup on its main aggregation workload. Exposed workbook data through MCP.',
+      'Audited 12K+ liquidation records and found that 31% of volume ran outside the controlled system. Leadership used the findings in its close narrative.',
+      'Added two layers of authorization to session auto-titling on an AI platform serving 30,000+ users. Made chat opt-in, uncovered five bugs, and added regression tests.',
+      'Built the first monthly forecast for inventory flagged for liquidation and back-tested it over 24 months.',
+    ],
     bullets: [
       'Built P&L variance attribution decomposing volatile $15M+/month liquidation costs into algorithmic vs manual drivers, explaining MoM/YoY swings and establishing the first tie-out to published close totals.',
       'Identified 31% of volume executing outside the controlled system and a multimillion-dollar definition gap driving unreconciled variance through an audit of 12K+ records, with findings adopted into senior leadership\'s close narrative.',

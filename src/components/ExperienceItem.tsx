@@ -192,7 +192,7 @@ export default function ExperienceItem({
 
                 {/* Bullets */}
                 <div className="space-y-3">
-                  {experience.bullets.map((bullet, idx) => (
+                  {(experience.highlights ?? experience.bullets).map((bullet, idx) => (
                     <p
                       key={idx}
                       className="text-sm text-gray-300 leading-relaxed pl-3 border-l-2"

@@ -34,6 +34,7 @@ export interface Experience {
   endDate: string
   logoUrl?: string
   bullets: string[]
+  highlights?: string[] // Shorter card copy when the full record is useful for search.
   technologies?: string[]
   brandColor?: string
 }
